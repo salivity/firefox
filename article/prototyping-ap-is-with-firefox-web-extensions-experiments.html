@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototyping APIs with Firefox WebExtensions Experiments - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of Firefox WebExtensions Experiments, a powerful toolkit that enables developers to design, build, and test new browser extension APIs directly within Firefox Nightly. It explains the core purpose of these ex">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/prototyping-ap-is-with-firefox-web-extensions-experiments">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Prototyping APIs with Firefox WebExtensions Experiments - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/prototyping-ap-is-with-firefox-web-extensions-experiments" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of Firefox WebExtensions Experiments, a powerful toolkit that enables developers to design, build, and test new browser extension APIs directly within Firefox Nightly. It explains the core purpose of these ex" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="prototyping-apis-with-firefox-webextensions-experiments">Prototyping
+APIs with Firefox WebExtensions Experiments</h1>
+<p>This article provides a comprehensive overview of Firefox
+WebExtensions Experiments, a powerful toolkit that enables developers to
+design, build, and test new browser extension APIs directly within
+Firefox Nightly. It explains the core purpose of these experiments, the
+structural components required to build them, and the exact process by
+which they grant access to privileged browser internals for rapid API
+prototyping without needing to compile the Firefox source code.</p>
+<h2 id="what-are-webextensions-experiments">What are WebExtensions
+Experiments?</h2>
+<p>WebExtensions Experiments are a specialized mechanism provided by
+Mozilla that allows developers to create experimental APIs for Firefox
+extensions. Standard WebExtensions are limited to a predefined set of
+secure, cross-browser APIs. When developers need functionality that does
+not yet exist in the standard WebExtensions API, they can use
+Experiments to bridge the gap.</p>
+<p>Instead of downloading the massive Firefox source code, writing C++
+or internal JavaScript, and compiling a custom browser build, developers
+can package their new API just like a standard browser extension. This
+drastically lowers the barrier to entry for contributing to Firefox's
+extension capabilities.</p>
+<h2 id="how-they-enable-prototyping-in-firefox-nightly">How They Enable
+Prototyping in Firefox Nightly</h2>
+<p>To maintain security for general users, standard releases of Firefox
+block extensions from accessing internal browser components. However,
+Firefox Nightly (and Developer Edition) includes switches that lift
+these restrictions, turning the browser into a sandbox for API
+development.</p>
+<p>WebExtensions Experiments work in Nightly by allowing an extension to
+run privileged code—known as Chrome-privileged JavaScript. This code has
+unrestricted access to Firefox internals, including XPCOM components and
+internal JavaScript modules (JSMs).</p>
+<p>To prototype an API in Firefox Nightly, a developer must configure
+the browser and structure their extension using three specific
+components.</p>
+<h3 id="1-configuring-firefox-nightly">1. Configuring Firefox
+Nightly</h3>
+<p>Before an experiment can run, Firefox Nightly must be configured to
+allow unsigned, privileged extensions. Developers must navigate to
+<code>about:config</code> in the browser and set the following
+preferences:</p>
+<ul>
+<li><code>extensions.experiments.enabled</code> set to <code>true</code>
+(Enables the Experiments feature).</li>
+<li><code>xpinstall.signatures.required</code> set to <code>false</code>
+(Allows installing the unverified prototype).</li>
+</ul>
+<h3 id="2-the-api-schema-json">2. The API Schema (JSON)</h3>
+<p>The first technical component of an experiment is the Schema. Written
+in JSON, the schema defines the shape of the new API. It acts as a
+contract between the privileged browser internals and the unprivileged
+extension code. The schema specifies:</p>
+<ul>
+<li>The namespace of the new API (e.g.,
+<code>browser.myNewApi</code>).</li>
+<li>The functions, events, and types that the API will expose.</li>
+<li>The parameters those functions accept and the data types they
+return.</li>
+</ul>
+<h3 id="3-the-api-implementation-javascript">3. The API Implementation
+(JavaScript)</h3>
+<p>The implementation file is where the actual logic of the API lives.
+This JavaScript file runs in a privileged scope, meaning it can interact
+directly with the browser's UI, file system, and network layers.</p>
+<p>When an extension calls a function defined in the JSON schema, the
+implementation file intercepts the call, executes the privileged Firefox
+internal code, and returns the result safely back to the standard
+extension environment.</p>
+<h3 id="4-the-manifest-declaration">4. The Manifest Declaration</h3>
+<p>To tie the schema and the implementation together, the developer must
+declare the experiment in the extension's <code>manifest.json</code>
+file using the <code>experiment_apis</code> key.</p>
+<p>This section of the manifest tells Firefox Nightly what the API is
+named, where to find the JSON schema file, and which JavaScript file
+contains the privileged implementation code. Once loaded via the
+<code>about:debugging</code> page in Nightly, the new API becomes
+immediately available for use in the extension's background scripts or
+popups.</p>
+<h2 id="from-prototype-to-production">From Prototype to Production</h2>
+<p>WebExtensions Experiments are not meant for permanent distribution to
+end-users, as Mozilla will not sign extensions containing experimental
+APIs for standard Firefox releases. Instead, they serve as a
+proof-of-concept. Once a developer successfully prototypes an API in
+Nightly and proves its utility and security, they can submit their code
+to Mozilla via Bugzilla to be reviewed and potentially integrated
+directly into the official Firefox source code for all developers to
+use.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/prototyping-ap-is-with-firefox-web-extensions-experiments';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

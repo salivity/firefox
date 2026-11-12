@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming Platforms with Firefox PiP Subtitle Support - firefox</title>
+    <meta name="description" content="This article provides a quick overview of the video streaming platforms that support subtitles and closed captions inside the Picture-in-Picture (PiP) window of the Mozilla Firefox web browser. While standard browser PiP modes historically stripped away t">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/streaming-platforms-with-firefox-pi-p-subtitle-support">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Streaming Platforms with Firefox PiP Subtitle Support - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/streaming-platforms-with-firefox-pi-p-subtitle-support" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of the video streaming platforms that support subtitles and closed captions inside the Picture-in-Picture (PiP) window of the Mozilla Firefox web browser. While standard browser PiP modes historically stripped away t" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="streaming-platforms-with-firefox-pip-subtitle-support">Streaming
+Platforms with Firefox PiP Subtitle Support</h1>
+<p>This article provides a quick overview of the video streaming
+platforms that support subtitles and closed captions inside the
+Picture-in-Picture (PiP) window of the Mozilla Firefox web browser.
+While standard browser PiP modes historically stripped away text tracks,
+Firefox resolved this limitation by natively supporting the WebVTT
+format and engineering custom rendering adapters for major streaming
+services. Below is the breakdown of streaming platforms that
+successfully display subtitles in Firefox's PiP mode, categorized by how
+they render the text.</p>
+<h2 id="platforms-using-custom-subtitle-rendering">Platforms Using
+Custom Subtitle Rendering</h2>
+<p>Most major commercial streaming services do not use standard HTML5
+video text tracks. Instead, they use complex, custom-built HTML and CSS
+overlays to display subtitles for Digital Rights Management (DRM) and
+styling purposes. Because these custom subtitles do not naturally
+transfer to a Picture-in-Picture window, Mozilla created site-specific
+adapters that read the custom subtitle data on the webpage and re-render
+it inside the Firefox PiP player.</p>
+<p>The following platforms are explicitly supported in Firefox PiP
+through custom subtitle rendering:</p>
+<ul>
+<li><strong>YouTube:</strong> Supports both auto-generated captions and
+user-uploaded subtitle tracks.</li>
+<li><strong>Netflix:</strong> Supports standard subtitles and closed
+captions across its entire catalog.</li>
+<li><strong>Amazon Prime Video:</strong> Renders standard subtitles
+inside the PiP window.</li>
+<li><strong>Disney+:</strong> Supports multi-language subtitles and
+closed captioning.</li>
+<li><strong>Hulu:</strong> Displays standard platform captions in the
+popped-out window.</li>
+<li><strong>Max (formerly HBO Max):</strong> Supports standard subtitle
+tracks.</li>
+<li><strong>Funimation:</strong> Renders anime subtitles directly in the
+PiP window.</li>
+<li><strong>Hotstar (Disney+ Hotstar):</strong> Supports regional and
+English subtitle overlays.</li>
+<li><strong>SonyLIV:</strong> Renders custom site captions inside the
+PiP player.</li>
+</ul>
+<h2 id="platforms-supporting-webvtt-natively">Platforms Supporting
+WebVTT Natively</h2>
+<p>WebVTT (Web Video Text Tracks) is the World Wide Web Consortium (W3C)
+standard for displaying timed text in connection with the HTML5
+<code>&lt;track&gt;</code> element. Firefox natively supports WebVTT in
+its Picture-in-Picture window. This means that any website adhering to
+this universal web standard will automatically have working PiP
+subtitles without needing a custom update from Mozilla.</p>
+<p>Major platforms and video players that utilize native WebVTT and work
+seamlessly with Firefox PiP include:</p>
+<ul>
+<li><strong>Vimeo:</strong> Works on all videos where the creator has
+uploaded a standard <code>.vtt</code> caption file.</li>
+<li><strong>Coursera:</strong> Supports interactive transcripts and
+lecture subtitles in the PiP window.</li>
+<li><strong>edX:</strong> Renders educational video captions
+natively.</li>
+<li><strong>Tubi:</strong> Uses standard WebVTT tracks for its free,
+ad-supported movie catalog.</li>
+<li><strong>Dailymotion:</strong> Supports native text tracks on
+applicable videos.</li>
+<li><strong>Plex and Jellyfin (Web Apps):</strong> When streaming
+personal media in Firefox, if the subtitle format is <code>.vtt</code>
+or <code>.srt</code> (which the server converts to WebVTT on the fly),
+the subtitles will appear in the PiP window without requiring
+server-side video transcoding.</li>
+<li><strong>Open-Source HTML5 Players:</strong> Websites utilizing
+standard players like Video.js, Plyr, or JW Player (when configured to
+use native HTML5 text tracks) will automatically display subtitles in
+Firefox PiP.</li>
+</ul>
+<h2 id="how-to-ensure-subtitles-appear-in-firefox-pip">How to Ensure
+Subtitles Appear in Firefox PiP</h2>
+<p>Regardless of whether a platform uses WebVTT or custom rendering,
+Firefox requires the subtitle track to be active on the main webpage
+first. To use them, start playing your video, turn on the Closed
+Captions (CC) or subtitles using the streaming platform's native video
+player controls, and then click the Firefox Picture-in-Picture toggle.
+Once the PiP window is open, you can also adjust the subtitle font size
+directly using the settings cog icon inside the Firefox PiP player.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/streaming-platforms-with-firefox-pi-p-subtitle-support';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

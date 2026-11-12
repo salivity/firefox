@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Strips Tracking Parameters From URLs - firefox</title>
+    <meta name="description" content="This article explains how the Mozilla Firefox web browser protects user privacy through its Query Parameter Stripping feature. It covers the function of tracking parameters like fbclid and utmsource, the technical mechanics of how Firefox intercepts and c">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-strips-tracking-parameters-from-ur-ls">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Strips Tracking Parameters From URLs - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-strips-tracking-parameters-from-ur-ls" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Mozilla Firefox web browser protects user privacy through its Query Parameter Stripping feature. It covers the function of tracking parameters like fbclid and utmsource, the technical mechanics of how Firefox intercepts and c" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-strips-tracking-parameters-from-urls">How Firefox
+Strips Tracking Parameters From URLs</h1>
+<p>This article explains how the Mozilla Firefox web browser protects
+user privacy through its Query Parameter Stripping feature. It covers
+the function of tracking parameters like <code>fbclid</code> and
+<code>utm_source</code>, the technical mechanics of how Firefox
+intercepts and cleans URLs before loading a webpage, how the "Copy
+Without Site Tracking" tool functions, and how users can enable or
+customize these protections within the browser.</p>
+<h3 id="understanding-url-tracking-parameters">Understanding URL
+Tracking Parameters</h3>
+<p>Uniform Resource Locators (URLs) often contain query parameters—extra
+information appended to the end of a web address following a question
+mark (<code>?</code>). While many parameters are necessary for a website
+to function, such as <code>?page=2</code> or <code>?search=shoes</code>,
+others are used exclusively for surveillance and analytics.</p>
+<p>Companies append identifiers like <code>fbclid</code> (Facebook Click
+Identifier) or <code>utm_source</code> (Urchin Tracking Module) to
+links. When you click a link containing these parameters, the
+destination website reads them to learn where you came from, which
+specific link you clicked, and sometimes links your activity back to
+your personal social media or advertising profile.</p>
+<h3 id="the-mechanics-of-query-parameter-stripping">The Mechanics of
+Query Parameter Stripping</h3>
+<p>Firefox neutralizes URL-based tracking by intercepting web requests
+before they leave the browser. The process happens automatically in
+milliseconds through the following steps:</p>
+<ol type="1">
+<li><strong>URL Interception:</strong> When you click a link or enter a
+web address into the navigation bar, Firefox pauses the network request
+before contacting the destination server.</li>
+<li><strong>Parsing the Query String:</strong> The browser separates the
+base URL from the query string (everything after the <code>?</code>). It
+breaks the query string down into individual key-value pairs, which are
+separated by ampersands (<code>&amp;</code>).</li>
+<li><strong>List Matching:</strong> Firefox compares the keys (the
+parameter names) against an internal blocklist of known tracking
+parameters maintained by Mozilla via its Remote Settings service.</li>
+<li><strong>Targeted Removal:</strong> If a parameter matches the
+blocklist, Firefox deletes that specific key-value pair from the URL. It
+leaves all non-tracking parameters untouched so the website continues to
+function normally.</li>
+<li><strong>Executing the Clean Request:</strong> Firefox reconstructs
+the URL without the tracking code and sends the clean request to the
+destination server. The server never receives the tracking
+identifier.</li>
+</ol>
+<p>For example, if you click a link structured as
+<code>https://example.com/?product=123&amp;fbclid=IwAR123xyz</code>,
+Firefox intercepts it, identifies <code>fbclid</code> as a tracker,
+strips it out, and loads <code>https://example.com/?product=123</code>
+instead.</p>
+<h3 id="navigation-stripping-vs-copy-without-site-tracking">Navigation
+Stripping vs. Copy Without Site Tracking</h3>
+<p>Firefox handles parameters like <code>fbclid</code> and
+<code>utm_source</code> slightly differently depending on the action you
+are taking, to prevent breaking legitimate website analytics while
+maximizing user privacy.</p>
+<ul>
+<li><strong>Automatic Navigation Stripping:</strong> When you click
+links to browse the web, Firefox automatically removes parameters that
+identify individual users across sites, such as <code>fbclid</code>
+(Facebook), <code>gclid</code> (Google), and <code>msclkid</code>
+(Microsoft).</li>
+<li><strong>Copy Without Site Tracking:</strong> Parameters like
+<code>utm_source</code> are generally campaign-level trackers rather
+than individual user trackers. To strip <code>utm_source</code> and
+dozens of other marketing parameters, Firefox includes a context-menu
+feature. When you right-click a link and select "Copy Without Site
+Tracking," Firefox runs the URL through a much larger, more aggressive
+blocklist before placing the cleaned link onto your clipboard.</li>
+</ul>
+<h3 id="how-to-enable-and-customize-the-feature">How to Enable and
+Customize the Feature</h3>
+<p>By default, automatic Query Parameter Stripping is active in Private
+Browsing windows. To enable it for all browsing sessions, you must
+adjust your Enhanced Tracking Protection settings:</p>
+<ol type="1">
+<li>Open Firefox and click the menu button in the top-right corner.</li>
+<li>Select <strong>Settings</strong>, then click <strong>Privacy &amp;
+Security</strong> on the left sidebar.</li>
+<li>Under <strong>Enhanced Tracking Protection</strong>, select the
+<strong>Strict</strong> radio button.</li>
+</ol>
+<p>For advanced users who want Firefox to automatically strip
+<code>utm_source</code> and other custom parameters during regular
+navigation without using the right-click menu, the blocklist can be
+manually modified:</p>
+<ol type="1">
+<li>Type <code>about:config</code> into the Firefox address bar and
+press Enter.</li>
+<li>Accept the risk warning to proceed.</li>
+<li>Search for <code>privacy.query_stripping.strip_list</code>.</li>
+<li>Edit the value by typing in the parameters you want to automatically
+remove, separated by spaces (e.g.,
+<code>utm_source utm_medium utm_campaign</code>).</li>
+</ol>
+<p>Once added to this list, Firefox will treat those parameters the
+exact same way it treats <code>fbclid</code>, removing them
+automatically whenever a webpage loads.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-strips-tracking-parameters-from-ur-ls';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

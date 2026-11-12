@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Shared Memory Buffers and the GPU Compositor - firefox</title>
+    <meta name="description" content="This article provides a technical overview of how the Firefox web browser manages shared memory (Shmem) buffers between isolated content processes and the GPU compositor. It covers the creation of shared memory via Firefox&#39;s Inter-Process Communication (I">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-shared-memory-buffers-and-the-gpu-compositor">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Shared Memory Buffers and the GPU Compositor - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-shared-memory-buffers-and-the-gpu-compositor" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a technical overview of how the Firefox web browser manages shared memory (Shmem) buffers between isolated content processes and the GPU compositor. It covers the creation of shared memory via Firefox&#39;s Inter-Process Communication (I" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-shared-memory-buffers-and-the-gpu-compositor">Firefox
+Shared Memory Buffers and the GPU Compositor</h1>
+<p>This article provides a technical overview of how the Firefox web
+browser manages shared memory (Shmem) buffers between isolated content
+processes and the GPU compositor. It covers the creation of shared
+memory via Firefox's Inter-Process Communication (IPC) layer, the
+abstractions used to represent graphical textures, the integration with
+the WebRender engine, and the synchronization and security mechanisms
+that keep data transfers fast and safe.</p>
+<h2 id="the-role-of-shared-memory-in-multi-process-firefox">The Role of
+Shared Memory in Multi-Process Firefox</h2>
+<p>Firefox uses a multi-process architecture where web pages run in
+sandboxed content processes, while final rendering happens in a
+privileged GPU (or compositor) process. Because standard IPC pipes are
+too slow for transferring megabytes of decoded images, fonts, and
+rendering commands at 60 frames per second or higher, Firefox relies on
+shared memory (Shmem).</p>
+<p>Shared memory allows both the content process and the GPU compositor
+to map the same physical RAM into their respective virtual address
+spaces. The content process writes graphical data into this memory
+block, and the GPU process reads it directly to upload it to the
+graphics card's Video RAM (VRAM).</p>
+<h2 id="ipdl-and-shmem-allocation">IPDL and Shmem Allocation</h2>
+<p>Firefox defines its inter-process communication using a custom
+language called IPDL (Inter-Process Communication Definition Language).
+IPDL provides a built-in <code>Shmem</code> type that abstracts the
+underlying operating system's shared memory APIs:</p>
+<ul>
+<li><strong>Windows:</strong> <code>CreateFileMapping</code> and
+<code>MapViewOfFile</code></li>
+<li><strong>Linux/Android:</strong> <code>memfd_create</code> or
+<code>shm_open</code> with <code>mmap</code></li>
+<li><strong>macOS:</strong> <code>mach_vm_allocate</code> and Mach
+ports</li>
+</ul>
+<p>When a content process needs a shared memory buffer, it calls an
+allocation method on an IPDL protocol actor, such as
+<code>PCompositorBridge</code> or <code>PImageBridge</code>. This
+creates the OS-level shared memory segment and duplicates the file
+descriptor or handle across the IPC boundary. Once both processes map
+the handle, they share a raw memory buffer without needing to copy bytes
+over the IPC pipe itself.</p>
+<h2 id="textureclient-and-texturehost">TextureClient and
+TextureHost</h2>
+<p>To manage graphical data like decoded video frames, canvas elements,
+and rasterized blobs, Firefox uses a pair of C++ abstractions over raw
+Shmem buffers:</p>
+<ul>
+<li><strong>TextureClient:</strong> Resides in the content process. It
+represents the producer side of the buffer. The content process locks
+the <code>TextureClient</code>, writes pixel data into the underlying
+Shmem, unlocks it, and notifies the compositor.</li>
+<li><strong>TextureHost:</strong> Resides in the GPU process. It
+represents the consumer side. When notified, the
+<code>TextureHost</code> reads the pixel data from the mapped Shmem and
+uploads it to a hardware texture on the GPU.</li>
+</ul>
+<p>Note that while Firefox uses OS-specific hardware buffers (like DXGI
+shared surfaces on Windows or DMABuf on Linux) whenever possible to keep
+data entirely on the GPU, Shmem-backed textures remain essential for
+software-decoded media, fallback rendering paths, and transferring raw
+buffer data that has not yet been uploaded to the GPU.</p>
+<h2 id="webrender-and-display-list-serialization">WebRender and Display
+List Serialization</h2>
+<p>Firefox’s GPU-based rendering engine, WebRender, relies heavily on
+Shmem to receive instructions from content processes. Instead of sending
+individual drawing commands over IPC, the content process builds a
+WebRender Display List—a serialized stream of layout primitives like
+rectangles, text runs, borders, and shadows.</p>
+<p>This serialized display list, alongside resource updates (such as raw
+font data and un-cached image bytes), is written into large Shmem
+buffers. The content process then sends a lightweight IPC message
+containing only the metadata and references to the Shmem segments. The
+GPU process's WebRender instance reads the display list directly out of
+the shared memory, parses it, builds the frame, and issues the final GPU
+draw calls.</p>
+<h2 id="synchronization-and-buffer-recycling">Synchronization and Buffer
+Recycling</h2>
+<p>Sharing memory between two asynchronous processes requires strict
+synchronization to prevent tearing and data corruption. Firefox uses an
+ownership model combined with read/write locks and GPU fences:</p>
+<ol type="1">
+<li><strong>Write Phase:</strong> The content process allocates or
+acquires a Shmem buffer, writes data to it, and transfers logical
+ownership to the GPU process via an IPC message.</li>
+<li><strong>Read Phase:</strong> The content process is forbidden from
+modifying the buffer while the GPU process owns it. The GPU process
+reads the Shmem and transfers the contents to VRAM.</li>
+<li><strong>Recycling Phase:</strong> Allocating and mapping OS shared
+memory is computationally expensive, as it requires kernel transitions
+and page table updates. Instead of destroying the Shmem after one use,
+the GPU process sends an IPC message back to the content process to
+return ownership once the GPU upload is complete. The content process
+places the buffer into a pool to be reused for the next frame.</li>
+</ol>
+<h2 id="security-and-untrusted-content">Security and Untrusted
+Content</h2>
+<p>In Firefox's threat model, content processes are considered untrusted
+because they parse arbitrary code from the web. If a content process is
+compromised, an attacker might try to corrupt the GPU process via shared
+memory. Firefox mitigates this through two primary mechanisms:</p>
+<ul>
+<li><strong>Strict Access Rights:</strong> IPDL enforces ownership
+rules. When a <code>Shmem</code> is sent from one process to another,
+the sender can be configured to lose mapping access, or the receiver can
+map it as read-only.</li>
+<li><strong>Preventing TOCTOU Attacks:</strong> A compromised content
+process might attempt a Time-of-Check to Time-of-Use (TOCTOU) attack by
+altering data inside the Shmem buffer <em>while</em> the GPU process is
+validating and reading it. For critical data structures like WebRender
+display lists or metadata descriptors, the GPU process either validates
+data after copying it into private memory or relies on Rust’s
+memory-safe parsing within WebRender to gracefully reject malformed
+streams without crashing or executing arbitrary code.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-shared-memory-buffers-and-the-gpu-compositor';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

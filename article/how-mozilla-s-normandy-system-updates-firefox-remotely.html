@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Mozilla&#39;s Normandy System Updates Firefox Remotely - firefox</title>
+    <meta name="description" content="This article explores Mozilla&#39;s Normandy system, the backend infrastructure that allows the Firefox web browser to receive configuration changes, feature toggles, and critical hotfixes without requiring a full software update. It breaks down what Normandy">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-mozilla-s-normandy-system-updates-firefox-remotely">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Mozilla&#39;s Normandy System Updates Firefox Remotely - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-mozilla-s-normandy-system-updates-firefox-remotely" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Mozilla&#39;s Normandy system, the backend infrastructure that allows the Firefox web browser to receive configuration changes, feature toggles, and critical hotfixes without requiring a full software update. It breaks down what Normandy" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-mozillas-normandy-system-updates-firefox-remotely">How
+Mozilla's Normandy System Updates Firefox Remotely</h1>
+<p>This article explores Mozilla's Normandy system, the backend
+infrastructure that allows the Firefox web browser to receive
+configuration changes, feature toggles, and critical hotfixes without
+requiring a full software update. It breaks down what Normandy is, the
+client-server mechanics of its recipe-based architecture, how it targets
+specific user groups, and the security measures in place to protect user
+privacy and control.</p>
+<h2 id="what-is-the-normandy-system">What is the Normandy System?</h2>
+<p>Normandy is a remote configuration and experimentation system built
+directly into Firefox. Historically, if Mozilla wanted to enable a
+hidden feature, run an A/B test, or fix a minor configuration bug,
+engineers had to compile, test, and distribute a complete browser update
+to hundreds of millions of users.</p>
+<p>Normandy eliminates this bottleneck by decoupling configuration
+management from the standard software release cycle. It allows Mozilla
+to dynamically alter the behavior of Firefox installations already
+deployed in the field in near real-time.</p>
+<h2 id="how-normandy-works-recipes-and-actions">How Normandy Works:
+Recipes and Actions</h2>
+<p>The Normandy system operates on a client-server architecture. The
+Normandy server hosts a collection of instructions known as "recipes,"
+while the Normandy client (referred to internally in Firefox as the
+Shield Recipe Client) is built into the browser itself.</p>
+<p>Every few hours, Firefox connects to the Normandy server and
+downloads a list of active recipes. A recipe is a lightweight JSON file
+containing three primary components:</p>
+<ol type="1">
+<li><strong>The Filter Expression:</strong> Criteria determining which
+browsers should run the recipe.</li>
+<li><strong>The Action:</strong> The specific task the browser needs to
+perform.</li>
+<li><strong>The Arguments:</strong> The exact data or settings required
+to complete the action.</li>
+</ol>
+<h2 id="local-targeting-and-filtering">Local Targeting and
+Filtering</h2>
+<p>Mozilla rarely applies a configuration change to every Firefox user
+simultaneously. Instead, Normandy uses client-side filtering to target
+specific demographics without compromising user privacy.</p>
+<p>Recipes include filter expressions written in JEXL (JavaScript
+Expression Language). When Firefox downloads a recipe, it evaluates the
+JEXL expression locally against the browser's own environment. The
+client checks variables such as:</p>
+<ul>
+<li>Firefox version and update channel (Release, Beta, Nightly).</li>
+<li>Operating system and hardware architecture.</li>
+<li>Geographic region and language locale.</li>
+<li>Existing preference states.</li>
+</ul>
+<p>Because this evaluation happens entirely on the user's device,
+Firefox does not need to send private system profiling data to Mozilla's
+servers to determine if it qualifies for an update. If the local
+environment matches the recipe's criteria, Firefox executes the
+action.</p>
+<h2 id="rolling-out-changes-without-a-full-update">Rolling Out Changes
+Without a Full Update</h2>
+<p>Normandy bypasses the need for full browser updates by manipulating
+mechanisms that already exist within Firefox. When a recipe's filter
+matches a user's browser, it triggers one of several built-in
+actions:</p>
+<h3 id="1-preference-rollouts-and-rollbacks">1. Preference Rollouts and
+Rollbacks</h3>
+<p>Much of Firefox's functionality is governed by preferences found in
+the <code>about:config</code> menu. Mozilla frequently ships new
+features in a dormant state (switched to <code>false</code>) within a
+standard browser update. Using Normandy, Mozilla can send a recipe to
+flip that preference to <code>true</code>, instantly activating the
+feature without downloading new code. Conversely, if a newly activated
+feature causes stability issues, Mozilla can update the recipe to flip
+the preference back to <code>false</code>, disabling the broken feature
+globally within hours.</p>
+<h3 id="2-system-add-on-deployment">2. System Add-on Deployment</h3>
+<p>Firefox uses "System Add-ons" to modularize certain browser features.
+Normandy can instruct Firefox to silently download and install a
+specific add-on from Mozilla’s servers. This allows engineers to ship
+actual code fixes—referred to as hotfixes—to patch critical bugs or
+security flaws immediately, rather than waiting days to build and
+distribute a full browser installer.</p>
+<h3 id="3-shield-studies-ab-testing">3. Shield Studies (A/B
+Testing)</h3>
+<p>Normandy powers Mozilla's "Shield Studies," which are controlled
+experiments used to test new interfaces or performance tweaks. A recipe
+can assign a small, randomized percentage of users to a test group,
+temporarily alter their browser configurations, and measure the impact
+via telemetry before Mozilla decides to make the change permanent for
+everyone.</p>
+<h2 id="security-and-user-control">Security and User Control</h2>
+<p>Because a system capable of altering browser settings remotely is a
+high-value target for attackers, Normandy relies on strict cryptographic
+verification. Every recipe published on the Normandy server is digitally
+signed by Mozilla's private keys. Before the Firefox client processes
+any recipe, it verifies the cryptographic signature using a public key
+hardcoded into the browser. If a recipe is tampered with in transit, the
+signature validation fails, and Firefox ignores the instructions.</p>
+<p>Users also retain ultimate control over the Normandy system. While
+critical security hotfixes may be applied broadly, users can opt out of
+configuration experiments and preference rollouts at any time. This is
+done by navigating to the Firefox <strong>Settings</strong> menu,
+selecting <strong>Privacy &amp; Security</strong>, scrolling to the
+<strong>Firefox Data Collection and Use</strong> section, and unchecking
+the box labeled <strong>Allow Firefox to install and run
+studies</strong>. Disabling this setting instructs the local Normandy
+client to stop executing experimental recipes and immediately reverts
+any active studies back to the browser's default state.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-mozilla-s-normandy-system-updates-firefox-remotely';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

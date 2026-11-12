@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Managing Firefox Extensions with policies.json - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview for enterprise system administrators on how to manage browser add-ons in Mozilla Firefox using the policies.json configuration file. You will learn where to place the configuration file across different opera">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/managing-firefox-extensions-with-policies-json">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Managing Firefox Extensions with policies.json - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/managing-firefox-extensions-with-policies-json" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview for enterprise system administrators on how to manage browser add-ons in Mozilla Firefox using the policies.json configuration file. You will learn where to place the configuration file across different opera" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="managing-firefox-extensions-with-policiesjson">Managing Firefox
+Extensions with policies.json</h1>
+<p>This article provides a comprehensive overview for enterprise system
+administrators on how to manage browser add-ons in Mozilla Firefox using
+the <code>policies.json</code> configuration file. You will learn where
+to place the configuration file across different operating systems, how
+to retrieve unique extension identifiers, and the exact JSON syntax
+required to either silently force-install critical extensions or block
+unauthorized ones from being used by end-users.</p>
+<h3 id="1-set-up-the-policiesjson-file">1. Set Up the
+<code>policies.json</code> File</h3>
+<p>To deploy enterprise policies in Firefox without using Active
+Directory or Group Policy Objects (GPO), you must create a file named
+<code>policies.json</code>. Firefox looks for this file in a specific
+<code>distribution</code> folder depending on the operating system.</p>
+<p>Create the <code>distribution</code> directory if it does not already
+exist, and place the <code>policies.json</code> file in the
+corresponding path:</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>C:\Program Files\Mozilla Firefox\distribution\policies.json</code></li>
+<li><strong>macOS:</strong>
+<code>/Applications/Firefox.app/Contents/Resources/distribution/policies.json</code></li>
+<li><strong>Linux:</strong>
+<code>/etc/firefox/policies/policies.json</code></li>
+</ul>
+<h3 id="2-obtain-the-extension-id-and-install-url">2. Obtain the
+Extension ID and Install URL</h3>
+<p>To manage a specific extension, you need its unique Extension ID. If
+you are force-installing it, you also need its source URL.</p>
+<p><strong>To find the Extension ID:</strong></p>
+<ol type="1">
+<li>Install the extension on a test machine.</li>
+<li>Open Firefox and navigate to <code>about:support</code> in the
+address bar.</li>
+<li>Scroll down to the <strong>Add-ons</strong> section.</li>
+<li>Locate the extension in the list and copy the string in the
+<strong>ID</strong> column (it usually looks like an email address,
+e.g., <code>uBlock0@raymondhill.net</code>, or a GUID wrapped in curly
+braces).</li>
+</ol>
+<p><strong>To find the Install URL:</strong></p>
+<ol type="1">
+<li>Go to the Mozilla Add-ons store (addons.mozilla.org) and find the
+extension.</li>
+<li>Right-click the <strong>Add to Firefox</strong> button and select
+<strong>Copy Link</strong>.</li>
+<li>For enterprise stability, replace the version-specific filename at
+the end of the URL with <code>latest.xpi</code>.
+<ul>
+<li><em>Example:</em>
+<code>https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi</code></li>
+</ul></li>
+</ol>
+<h3 id="3-configure-the-extensionsettings-policy">3. Configure the
+<code>ExtensionSettings</code> Policy</h3>
+<p>Firefox uses the <code>ExtensionSettings</code> policy key to control
+add-on behavior. Within this key, you define rules for specific
+Extension IDs or use an asterisk (<code>*</code>) to define a global
+default rule for all extensions.</p>
+<p>There are four primary <code>installation_mode</code> values you can
+use:</p>
+<ul>
+<li><code>allowed</code>: Users can install and uninstall the extension
+freely (default).</li>
+<li><code>blocked</code>: Users cannot install the extension. If it is
+already installed, it is disabled and removed.</li>
+<li><code>force_installed</code>: The extension is silently installed
+and cannot be disabled or removed by the user.</li>
+<li><code>normal_installed</code>: The extension is silently installed,
+and the user can choose to disable it, but cannot remove it.</li>
+</ul>
+<h3 id="4-example-policiesjson-configuration">4. Example
+<code>policies.json</code> Configuration</h3>
+<p>Below is a complete example of a <code>policies.json</code> file. It
+demonstrates how to force-install one extension, block a specific
+extension, and allow all other extensions by default.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;policies&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ExtensionSettings&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;*&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;allowed&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;uBlock0@raymondhill.net&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;force_installed&quot;</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;install_url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;unwanted-extension@example.com&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;blocked&quot;</span><span class="fu">,</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;blocked_install_message&quot;</span><span class="fu">:</span> <span class="st">&quot;This extension is blocked by your IT department.&quot;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="5-block-all-extensions-except-an-approved-list-allowlisting">5.
+Block All Extensions Except an Approved List (Allowlisting)</h3>
+<p>In high-security environments, you may want to block users from
+installing any extensions except the ones you explicitly approve or
+force-install. To do this, set the global <code>*</code> rule to
+<code>blocked</code>, and then define the exceptions.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;policies&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;ExtensionSettings&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;*&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;blocked&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;blocked_install_message&quot;</span><span class="fu">:</span> <span class="st">&quot;Installing unapproved extensions is restricted by the system administrator.&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;uBlock0@raymondhill.net&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;force_installed&quot;</span><span class="fu">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;install_url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">},</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;approved-optional-addon@example.com&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;installation_mode&quot;</span><span class="fu">:</span> <span class="st">&quot;allowed&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="6-verify-the-configuration">6. Verify the Configuration</h3>
+<p>After saving the <code>policies.json</code> file in the correct
+directory, restart Firefox to apply the changes.</p>
+<p>To verify that the policies are active and free of syntax errors:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:policies</code> in the address
+bar.</li>
+<li>Check the <strong>Active</strong> tab to confirm your
+<code>ExtensionSettings</code> rules are listed.</li>
+<li>If the policy is not working, click the <strong>Errors</strong> tab
+to troubleshoot any JSON formatting mistakes or invalid parameters.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/managing-firefox-extensions-with-policies-json';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

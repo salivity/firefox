@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Handles Passive and Active Mixed Content - firefox</title>
+    <meta name="description" content="This article explains how the Mozilla Firefox web browser manages security risks when a secure HTTPS webpage attempts to load insecure HTTP subresources, a scenario known as mixed content. It breaks down the fundamental differences between passive and act">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-handles-passive-and-active-mixed-content">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Handles Passive and Active Mixed Content - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-handles-passive-and-active-mixed-content" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Mozilla Firefox web browser manages security risks when a secure HTTPS webpage attempts to load insecure HTTP subresources, a scenario known as mixed content. It breaks down the fundamental differences between passive and act" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-handles-passive-and-active-mixed-content">How
+Firefox Handles Passive and Active Mixed Content</h1>
+<p>This article explains how the Mozilla Firefox web browser manages
+security risks when a secure HTTPS webpage attempts to load insecure
+HTTP subresources, a scenario known as mixed content. It breaks down the
+fundamental differences between passive and active mixed content, the
+specific security threats each category poses, and the exact mechanisms
+Firefox uses—such as automatic blocking, protocol upgrading, and visual
+security indicators—to protect users from data interception and
+manipulation.</p>
+<h3 id="understanding-mixed-content">Understanding Mixed Content</h3>
+<p>When you visit a website beginning with HTTPS, the connection between
+your browser and the website's server is encrypted and secure. However,
+if that secure HTML page loads additional subresources—such as images,
+videos, stylesheets, or scripts—over an unencrypted HTTP connection, it
+creates "mixed content." Because the HTTP components are vulnerable to
+eavesdropping and Man-in-the-Middle (MitM) attacks, they compromise the
+security of the entire HTTPS page. Firefox mitigates this risk by
+dividing mixed content into two categories: passive and active.</p>
+<h3 id="passive-mixed-content-display-content">Passive Mixed Content
+(Display Content)</h3>
+<p>Passive mixed content refers to HTTP subresources that cannot
+directly interact with, alter, or control the rest of the webpage.</p>
+<p><strong>Examples of passive content include:</strong></p>
+<ul>
+<li>Images (<code>&lt;img&gt;</code>)</li>
+<li>Audio files (<code>&lt;audio&gt;</code>)</li>
+<li>Video files (<code>&lt;video&gt;</code>)</li>
+<li>Object subresources (<code>&lt;object&gt;</code>)</li>
+</ul>
+<p><strong>The Security Risk:</strong> The threat level for passive
+content is relatively low to moderate. An attacker intercepting an HTTP
+image or video could replace it with an inappropriate file, deface the
+way the page looks to the user, or infer what page the user is viewing.
+However, the attacker cannot use an image or video to steal user
+passwords, hijack the session, or rewrite the webpage's code.</p>
+<p><strong>How Firefox Handles Passive Mixed Content:</strong></p>
+<ul>
+<li><strong>Automatic Upgrading:</strong> In modern versions of Firefox,
+the browser automatically attempts to upgrade passive mixed content from
+HTTP to HTTPS in the background. If the server supports HTTPS for that
+media file, it loads securely without any issue.</li>
+<li><strong>Blocking Un-upgradable Content:</strong> If the automatic
+upgrade fails because the server does not host the media over HTTPS,
+modern Firefox blocks the passive content from loading altogether to
+maintain the integrity of the secure connection.</li>
+<li><strong>Visual Warnings (Legacy Behavior):</strong> In older
+versions of Firefox, or if automatic upgrading is manually disabled by
+the user, Firefox allows passive HTTP content to load so the webpage
+does not appear broken. When this happens, Firefox alters the padlock
+icon in the address bar by overlaying a yellow warning triangle. This
+informs the user that the connection is only partially encrypted and not
+fully secure.</li>
+</ul>
+<h3 id="active-mixed-content-scriptable-content">Active Mixed Content
+(Scriptable Content)</h3>
+<p>Active mixed content refers to HTTP subresources that have access to
+all or part of the Document Object Model (DOM) of the HTTPS page. This
+type of content can alter the behavior of the webpage and interact with
+the user.</p>
+<p><strong>Examples of active content include:</strong></p>
+<ul>
+<li>JavaScript files (<code>&lt;script&gt;</code>)</li>
+<li>CSS Stylesheets (<code>&lt;link&gt;</code>)</li>
+<li>Iframes (<code>&lt;iframe&gt;</code>)</li>
+<li><code>XMLHttpRequest</code> and <code>fetch()</code> requests</li>
+<li>Web fonts (<code>@font-face</code>)</li>
+</ul>
+<p><strong>The Security Risk:</strong> The threat level for active
+content is critical. If an attacker intercepts an unencrypted HTTP
+script or stylesheet, they can inject malicious code directly into the
+HTTPS page. This allows the attacker to gain complete control over the
+page, steal sensitive data, capture login credentials, hijack user
+sessions, or redirect the user to a phishing site.</p>
+<p><strong>How Firefox Handles Active Mixed Content:</strong></p>
+<ul>
+<li><strong>Blocked by Default:</strong> Firefox strictly blocks all
+active mixed content by default. The browser intercepts and terminates
+the insecure HTTP request before it ever leaves the user's device.</li>
+<li><strong>Preserving the Padlock:</strong> Because Firefox prevents
+the dangerous content from loading, the security of the webpage remains
+intact. Consequently, the user continues to see the standard secure
+padlock icon in the address bar. However, blocking these scripts or
+stylesheets may cause the webpage to look broken or function
+incorrectly.</li>
+<li><strong>Developer Console Alerts:</strong> When active content is
+blocked, Firefox does not typically show a disruptive pop-up to the
+everyday user. Instead, it logs a detailed security error in the Web
+Developer Console, allowing website administrators to identify and fix
+the insecure HTTP links.</li>
+</ul>
+<h3 id="advanced-configuration-in-firefox">Advanced Configuration in
+Firefox</h3>
+<p>Firefox allows advanced users and developers to modify how the
+browser handles mixed content through its internal configuration page
+(<code>about:config</code>). While changing these settings can leave the
+browser vulnerable, they are controlled by three primary
+preferences:</p>
+<ul>
+<li><strong><code>security.mixed_content.block_active_content</code></strong>:
+Set to <code>true</code> by default. Changing this to <code>false</code>
+disables protection and allows dangerous active HTTP content to load on
+HTTPS pages.</li>
+<li><strong><code>security.mixed_content.upgrade_display_content</code></strong>:
+Set to <code>true</code> in modern Firefox. This instructs the browser
+to automatically rewrite passive HTTP media requests to HTTPS.</li>
+<li><strong><code>security.mixed_content.block_display_content</code></strong>:
+Set to <code>false</code> by default, as upgrading is preferred. If set
+to <code>true</code> (and upgrading is disabled), Firefox will strictly
+block all passive content just like it blocks active content.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-handles-passive-and-active-mixed-content';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

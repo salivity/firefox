@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Disables Custom CSS Stylesheets by Default - firefox</title>
+    <meta name="description" content="In Mozilla Firefox, customizing the browser&#39;s interface or web page appearances using userChrome.css and userContent.css requires manually setting the toolkit.legacyUserProfileCustomizations.stylesheets preference to true. Introduced in Firefox 69, this r">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-disables-custom-css-stylesheets-by-default">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Disables Custom CSS Stylesheets by Default - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-disables-custom-css-stylesheets-by-default" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In Mozilla Firefox, customizing the browser&#39;s interface or web page appearances using userChrome.css and userContent.css requires manually setting the toolkit.legacyUserProfileCustomizations.stylesheets preference to true. Introduced in Firefox 69, this r" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-disables-custom-css-stylesheets-by-default">Why
+Firefox Disables Custom CSS Stylesheets by Default</h1>
+<p>In Mozilla Firefox, customizing the browser's interface or web page
+appearances using <code>userChrome.css</code> and
+<code>userContent.css</code> requires manually setting the
+<code>toolkit.legacyUserProfileCustomizations.stylesheets</code>
+preference to <code>true</code>. Introduced in Firefox 69, this
+requirement was implemented primarily to improve browser startup
+performance for the vast majority of users who do not use custom
+stylesheets, while also reducing technical support overhead and
+preventing broken interfaces after routine browser updates.</p>
+<h3 id="1-faster-startup-performance">1. Faster Startup Performance</h3>
+<p>The primary reason Mozilla disabled custom CSS loading by default is
+to speed up how fast Firefox launches. Prior to version 69, Firefox had
+to search the hard drive for a <code>chrome</code> directory and check
+for the existence of <code>userChrome.css</code> and
+<code>userContent.css</code> every single time the browser started.</p>
+<p>Checking the file system (Disk I/O) during startup creates a
+performance bottleneck, especially on older mechanical hard drives.
+Because telemetry data showed that less than 1% of Firefox users
+actually utilized custom stylesheets, Mozilla decided to bypass this
+check by default. By requiring the <code>about:config</code> toggle,
+Firefox avoids unnecessary file system checks for the vast majority of
+its user base, resulting in a faster startup time.</p>
+<h3 id="2-preventing-broken-user-interfaces">2. Preventing Broken User
+Interfaces</h3>
+<p>Firefox undergoes rapid development, with new versions releasing
+every few weeks. The browser’s user interface is built using standard
+web technologies (HTML, CSS, and JavaScript), and Mozilla engineers
+frequently change the internal structure, class names, and IDs of
+interface elements to add features or improve performance.</p>
+<p><code>userChrome.css</code> relies on targeting these specific
+internal elements. When Mozilla updates the browser's underlying code,
+custom stylesheets often become incompatible. This can lead to severe
+visual glitches, missing buttons, or a completely unusable browser
+window. By hiding the feature behind a configuration flag, Mozilla
+ensures that only advanced users—who understand how to troubleshoot and
+update their own CSS—enable it.</p>
+<h3 id="3-reducing-technical-support-overhead">3. Reducing Technical
+Support Overhead</h3>
+<p>Before this toggle existed, users would frequently follow online
+tutorials to alter their browser's appearance, copy and paste CSS code
+into their profile folder, and eventually forget they had done so.
+Months or years later, a Firefox update would clash with that forgotten
+CSS file and break the browser's layout.</p>
+<p>Users would then report these visual issues to Mozilla as Firefox
+bugs, flooding support forums and bug trackers. Requiring users to
+explicitly flip a preference containing the word "legacy" serves as a
+clear warning that the feature is not officially supported and is used
+at their own risk.</p>
+<h3 id="4-mitigating-ui-spoofing-risks">4. Mitigating UI Spoofing
+Risks</h3>
+<p>While performance and maintenance are the main drivers, disabling
+stylesheets by default also provides a minor security benefit.
+<code>userChrome.css</code> has the power to completely alter the
+appearance of the browser, including hiding security indicators, the
+address bar, or warning messages. Requiring a preference change in
+<code>about:config</code> adds an extra layer of protection against
+malicious scripts or third-party programs attempting to silently drop a
+modified CSS file into a user's profile folder to spoof the browser
+interface.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-disables-custom-css-stylesheets-by-default';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

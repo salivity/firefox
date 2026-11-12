@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Happens When Firefox Detects a Malicious Download - firefox</title>
+    <meta name="description" content="When you download a file using the Firefox Web Browser, built-in security features actively scan the file to protect your computer from harm. This article provides a complete overview of how Firefox utilizes threat databases to identify malicious executab">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/what-happens-when-firefox-detects-a-malicious-download">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Happens When Firefox Detects a Malicious Download - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/what-happens-when-firefox-detects-a-malicious-download" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When you download a file using the Firefox Web Browser, built-in security features actively scan the file to protect your computer from harm. This article provides a complete overview of how Firefox utilizes threat databases to identify malicious executab" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-happens-when-firefox-detects-a-malicious-download">What
+Happens When Firefox Detects a Malicious Download</h1>
+<p>When you download a file using the Firefox Web Browser, built-in
+security features actively scan the file to protect your computer from
+harm. This article provides a complete overview of how Firefox utilizes
+threat databases to identify malicious executables and potentially
+unwanted programs (PUPs), the immediate quarantine actions the browser
+takes, the warning alerts displayed to the user, and the options
+available to either delete the threat or bypass the security block.</p>
+<h2 id="the-detection-process">The Detection Process</h2>
+<p>Firefox relies on Google's Safe Browsing service to evaluate the
+safety of files you attempt to download. When you initiate a download,
+Firefox checks the file against two levels of security:</p>
+<ol type="1">
+<li><strong>Local Lists:</strong> Firefox maintains a locally stored,
+frequently updated list of known malicious URLs and file hashes. If the
+download matches an entry on this list, it is flagged immediately.</li>
+<li><strong>Remote Application Reputation Check:</strong> If an
+executable file (such as an <code>.exe</code>, <code>.msi</code>, or
+<code>.dmg</code>) is not found on the local list, Firefox sends
+metadata about the file—such as its download URL, cryptographic hash,
+and file size—to Google Safe Browsing servers to verify if the program
+is safe.</li>
+</ol>
+<h2 id="immediate-quarantine">Immediate Quarantine</h2>
+<p>If a file is identified as a virus, spyware, trojan, or potentially
+unwanted program, Firefox prevents the file from being finalized on your
+hard drive. While the data is technically downloaded into a temporary
+cache, Firefox locks the file so that it cannot be opened or executed by
+you or your operating system.</p>
+<h2 id="visual-warnings-and-threat-categories">Visual Warnings and
+Threat Categories</h2>
+<p>Instead of showing a completed download animation, the Downloads icon
+in the Firefox toolbar will display a warning badge (an exclamation
+point). Clicking the Downloads icon opens the download panel, which
+presents a specific warning based on the severity of the threat:</p>
+<ul>
+<li><strong>Malware or Virus (High Risk):</strong> The file is flagged
+with a red warning icon. Firefox states that the file contains a virus
+or malware. This applies to executables designed to damage your system
+or steal data.</li>
+<li><strong>Potentially Unwanted Program (Medium Risk):</strong> The
+file is flagged with a yellow warning icon. Firefox warns that the file
+may harm your browsing experience. PUPs typically include adware,
+browser hijackers, or bundled software that makes unexpected changes to
+your settings without clear consent.</li>
+<li><strong>Uncommon or Unverified Software:</strong> Also marked with a
+yellow warning, this indicates the file is not commonly downloaded and
+lacks a verifiable digital signature, making it potentially
+dangerous.</li>
+</ul>
+<h2 id="user-resolution-options">User Resolution Options</h2>
+<p>Firefox does not permanently delete the blocked file without your
+input, as false positives can occasionally occur. Instead, the browser
+forces you to make a deliberate choice inside the Downloads panel:</p>
+<ul>
+<li><strong>Remove File:</strong> This is the default, highlighted
+option. Clicking this immediately erases the quarantined temporary file
+from your system.</li>
+<li><strong>Allow Download (Bypass):</strong> If you are completely
+certain the file is safe, you can click the arrow next to the blocked
+download to view more details. From this secondary menu, you can select
+the option to allow the download, which releases the file from
+quarantine and saves it to your computer.</li>
+</ul>
+<p>To disable these checks entirely, a user must manually navigate to
+the Firefox Privacy &amp; Security settings and uncheck the "Block
+dangerous and deceptive content" boxes, though doing so leaves the
+system vulnerable to automated drive-by downloads and disguised
+malware.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/what-happens-when-firefox-detects-a-malicious-download';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

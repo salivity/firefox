@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First-Party Isolation vs Total Cookie Protection in Firefox - firefox</title>
+    <meta name="description" content="This article explains the key differences between First-Party Isolation (privacy.firstparty.isolate) and Total Cookie Protection in the Firefox web browser. While both features are designed to stop cross-site tracking by compartmentalizing your browsing d">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/first-party-isolation-vs-total-cookie-protection-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="First-Party Isolation vs Total Cookie Protection in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/first-party-isolation-vs-total-cookie-protection-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the key differences between First-Party Isolation (privacy.firstparty.isolate) and Total Cookie Protection in the Firefox web browser. While both features are designed to stop cross-site tracking by compartmentalizing your browsing d" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="first-party-isolation-vs-total-cookie-protection-in-firefox">First-Party
+Isolation vs Total Cookie Protection in Firefox</h1>
+<p>This article explains the key differences between First-Party
+Isolation (<code>privacy.firstparty.isolate</code>) and Total Cookie
+Protection in the Firefox web browser. While both features are designed
+to stop cross-site tracking by compartmentalizing your browsing data,
+they differ significantly in how they handle website compatibility.
+First-Party Isolation takes an absolute, rigid approach that often
+breaks modern web features, whereas Total Cookie Protection is a modern
+evolution that dynamically grants temporary exceptions for essential
+functions like single sign-on services.</p>
+<h3 id="what-is-first-party-isolation-fpi">What is First-Party Isolation
+(FPI)?</h3>
+<p>First-Party Isolation, enabled via the
+<code>privacy.firstparty.isolate</code> preference in Firefox's
+<code>about:config</code> menu, is a feature originally developed for
+the Tor Browser and later brought to Firefox.</p>
+<p>FPI works by keying all browser data—including cookies, cache, DOM
+storage, and TLS session identifiers—to the primary domain shown in the
+address bar (the first party). If a tracker is embedded on three
+different websites you visit, FPI forces the browser to create three
+entirely separate data profiles for that tracker. Because the tracker
+cannot combine this data, it cannot follow you across the web.</p>
+<p>The downside to FPI is its rigidity. It makes zero exceptions for
+legitimate cross-site communication. Consequently, enabling
+<code>privacy.firstparty.isolate</code> frequently breaks websites that
+rely on third-party logins (like "Sign in with Google" or Microsoft
+SSO), embedded payment gateways, and certain content delivery
+networks.</p>
+<h3 id="what-is-total-cookie-protection-tcp">What is Total Cookie
+Protection (TCP)?</h3>
+<p>Total Cookie Protection (internally known by Mozilla as Dynamic
+First-Party Isolation, or dFPI) is the direct successor to FPI and is
+now enabled by default in Firefox.</p>
+<p>Like FPI, Total Cookie Protection creates a separate "cookie jar" for
+every website you visit. Despite having "Cookie" in the name, TCP also
+isolates other forms of browser storage, such as LocalStorage and the
+browser cache, preventing trackers from using alternative methods to
+identify you across different sites.</p>
+<p>The defining feature of TCP is that it is <strong>dynamic</strong>.
+It understands the difference between invisible tracking and intentional
+user interaction. If you try to use a third-party login button or an
+embedded comment system, TCP detects your interaction and makes a
+temporary, localized exception. It allows the third-party service to
+access its cookies just enough to log you in, without exposing your
+browsing history to passive trackers.</p>
+<h3 id="the-core-differences">The Core Differences</h3>
+<ul>
+<li><strong>Website Compatibility:</strong> FPI is strict and breaks
+many modern websites, particularly federated logins. TCP uses heuristics
+and the Storage Access API to dynamically allow cross-site data sharing
+only when necessary for site functionality.</li>
+<li><strong>Accessibility:</strong> FPI is a hidden setting that must be
+manually toggled via <code>privacy.firstparty.isolate</code> in
+<code>about:config</code>. TCP is enabled by default in Firefox's
+standard privacy settings.</li>
+<li><strong>Development Status:</strong> Mozilla actively maintains and
+updates TCP to ensure it balances privacy and usability. FPI is largely
+considered a legacy feature within standard Firefox, maintained
+primarily for downstream projects like the Tor Browser.</li>
+</ul>
+<h3 id="which-one-should-you-use">Which One Should You Use?</h3>
+<p>For standard web browsing, you should rely on <strong>Total Cookie
+Protection</strong> and leave <code>privacy.firstparty.isolate</code>
+set to <code>false</code>.</p>
+<p>Enabling both at the same time is counterproductive. Because FPI is
+an older, absolute rule, turning it on overrides the dynamic exceptions
+of Total Cookie Protection. You do not gain twice the privacy by
+enabling both; instead, you simply disable the "smart" functionality of
+TCP and revert your browser to the stricter, site-breaking behavior of
+FPI.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/first-party-isolation-vs-total-cookie-protection-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Restricts Local Fonts to Prevent Fingerprinting - firefox</title>
+    <meta name="description" content="This article provides an overview of how the Mozilla Firefox web browser combats browser fingerprinting by restricting website access to locally installed, non-standard fonts. By limiting font visibility to a standardized list of base operating system fon">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-restricts-local-fonts-to-prevent-fingerprinting">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Restricts Local Fonts to Prevent Fingerprinting - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-restricts-local-fonts-to-prevent-fingerprinting" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how the Mozilla Firefox web browser combats browser fingerprinting by restricting website access to locally installed, non-standard fonts. By limiting font visibility to a standardized list of base operating system fon" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-restricts-local-fonts-to-prevent-fingerprinting">How
+Firefox Restricts Local Fonts to Prevent Fingerprinting</h1>
+<p>This article provides an overview of how the Mozilla Firefox web
+browser combats browser fingerprinting by restricting website access to
+locally installed, non-standard fonts. By limiting font visibility to a
+standardized list of base operating system fonts, utilizing
+language-specific font allowlists, and offering granular
+<code>about:config</code> preferences, Firefox drastically reduces the
+unique identifying data (entropy) that trackers can extract from a
+user's device.</p>
+<h2 id="the-threat-of-font-fingerprinting">The Threat of Font
+Fingerprinting</h2>
+<p>Websites can determine which fonts are installed on your computer
+using JavaScript APIs or by measuring the dimensions of invisible text
+rendered with CSS. Because users install different applications—such as
+Microsoft Office, Adobe Creative Cloud, or specific video games—that add
+unique fonts to their system, the exact combination of installed fonts
+acts as a unique digital fingerprint. To reduce this fingerprinting
+entropy, Firefox makes different users look identical by hiding
+non-standard fonts from web content.</p>
+<h2 id="system-font-allowlisting">System Font Allowlisting</h2>
+<p>Firefox restricts access to locally installed fonts primarily through
+a mechanism known as font visibility restriction. Instead of allowing
+websites to query the operating system's entire font directory, Firefox
+intercepts font requests and checks them against a hardcoded allowlist
+of standard fonts.</p>
+<ul>
+<li><strong>OS-Specific Baselines:</strong> Firefox maintains strict
+lists of the default fonts that ship natively with Windows, macOS,
+Linux, and Android.</li>
+<li><strong>Blocking User-Installed Fonts:</strong> If a website
+requests a font that you installed manually or through third-party
+software, Firefox denies the request. The browser behaves as if the font
+does not exist and renders the text using a standard fallback font
+instead.</li>
+<li><strong>Web Fonts Exception:</strong> To prevent websites from
+breaking visually, Firefox still allows sites to download and use remote
+web fonts (via the CSS <code>@font-face</code> rule), as these do not
+reveal any information about the user's local machine.</li>
+</ul>
+<h2 id="language-pack-exceptions">Language Pack Exceptions</h2>
+<p>Strictly limiting fonts to a basic English-centric operating system
+list can break websites that require characters from other scripts, such
+as CJK (Chinese, Japanese, Korean) or Arabic.</p>
+<p>To solve this without exposing the entire font library, Firefox
+categorizes supplemental system fonts by language. Firefox automatically
+detects the user's locale and permits access to the standard OS fonts
+associated with that specific language pack. This ensures proper text
+rendering for international users while keeping the pool of exposed
+fonts uniform among users in the same region.</p>
+<h2 id="how-firefox-enforces-font-restrictions">How Firefox Enforces
+Font Restrictions</h2>
+<p>Firefox applies these restrictions differently depending on the
+user's selected privacy level. The browser manages this behavior using
+internal values ranging from 1 to 3:</p>
+<ol type="1">
+<li><strong>Level 1 (Base System Fonts Only):</strong> Only the core
+fonts included with a fresh installation of the operating system are
+exposed to websites.</li>
+<li><strong>Level 2 (Base System + Language Pack Fonts):</strong> The
+core OS fonts plus the standard supplemental fonts for the user's
+specific language locale are exposed.</li>
+<li><strong>Level 3 (All Fonts):</strong> Websites can access all
+locally installed fonts, including user-installed ones.</li>
+</ol>
+<p>By default, Firefox enables font restrictions in <strong>Private
+Browsing windows</strong> and when <strong>Enhanced Tracking Protection
+(ETP)</strong> is set to <strong>Strict</strong>.</p>
+<h2 id="manual-configuration-via-aboutconfig">Manual Configuration via
+<code>about:config</code></h2>
+<p>Advanced users can manually control how Firefox restricts font access
+by typing <code>about:config</code> into the address bar and modifying
+specific preferences:</p>
+<ul>
+<li><strong><code>privacy.resistFingerprinting</code>:</strong> Setting
+this boolean preference to <code>true</code> enables Firefox's strongest
+anti-fingerprinting protections (inherited from the Tor Uplift project).
+This strictly locks font visibility to Level 1, exposing only base
+system fonts regardless of the browsing mode.</li>
+<li><strong><code>layout.css.font-visibility.standard</code>:</strong>
+Controls font visibility in standard browsing windows. Changing this
+integer from <code>3</code> to <code>1</code> or <code>2</code> enforces
+font restrictions at all times.</li>
+<li><strong><code>layout.css.font-visibility.private</code>:</strong>
+Controls the font restriction level specifically for Private Browsing
+windows.</li>
+<li><strong><code>layout.css.font-visibility.trackingprotection</code>:</strong>
+Controls the font restriction level when Enhanced Tracking Protection is
+active.</li>
+</ul>
+<p>By intercepting font enumeration attempts and enforcing these strict
+allowlists, Firefox ensures that a user with thousands of custom fonts
+appears identical to a user on a brand-new operating system
+installation, effectively neutralizing font-based tracking.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-restricts-local-fonts-to-prevent-fingerprinting';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

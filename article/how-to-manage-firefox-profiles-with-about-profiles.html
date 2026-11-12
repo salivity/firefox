@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Manage Firefox Profiles with about:profiles - firefox</title>
+    <meta name="description" content="Firefox&#39;s about:profiles page is a built-in management tool that enables users to control multiple, isolated browser environments without closing their current browsing session. Each profile acts as a separate container with its own bookmarks, history, ex">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-manage-firefox-profiles-with-about-profiles">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Manage Firefox Profiles with about:profiles - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-manage-firefox-profiles-with-about-profiles" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox&#39;s about:profiles page is a built-in management tool that enables users to control multiple, isolated browser environments without closing their current browsing session. Each profile acts as a separate container with its own bookmarks, history, ex" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-manage-firefox-profiles-with-aboutprofiles">How to Manage
+Firefox Profiles with about:profiles</h1>
+<p>Firefox's <code>about:profiles</code> page is a built-in management
+tool that enables users to control multiple, isolated browser
+environments without closing their current browsing session. Each
+profile acts as a separate container with its own bookmarks, history,
+extensions, and settings. This article explains how to access this
+internal page and use its interface to create, launch, rename, and
+delete profiles directly while the Firefox Web Browser is running.</p>
+<h2 id="accessing-the-profile-manager">Accessing the Profile
+Manager</h2>
+<p>To manage profiles while Firefox is open, type
+<code>about:profiles</code> into the address bar and press Enter. Unlike
+the traditional profile manager that requires launching Firefox via
+command-line arguments while all browser windows are closed, this
+internal page operates live within your active browser tab. It displays
+a list of all existing profiles, their root and local directory paths,
+and the controls to manage them.</p>
+<h2 id="creating-an-isolated-profile">Creating an Isolated Profile</h2>
+<p>You can generate a fresh, completely isolated browser environment
+directly from the <code>about:profiles</code> interface.</p>
+<ol type="1">
+<li>Click the <strong>Create a New Profile</strong> button at the top of
+the page.</li>
+<li>This launches the Profile Wizard in a pop-up window. Click
+<strong>Next</strong> to proceed.</li>
+<li>Enter a descriptive name for the new profile. By default, Firefox
+automatically generates a dedicated, randomized folder in your system's
+application data directory to keep this profile's data isolated, though
+you can click <strong>Choose Folder...</strong> to specify a custom
+storage location.</li>
+<li>Click <strong>Finish</strong>. The new profile immediately appears
+in the <code>about:profiles</code> list, ready for use without requiring
+a browser restart.</li>
+</ol>
+<h2 id="launching-a-profile-side-by-side">Launching a Profile
+Side-by-Side</h2>
+<p>The <code>about:profiles</code> page allows you to run multiple
+profiles simultaneously. Under every listed profile—except the one you
+are currently using—there is a button labeled <strong>Launch profile in
+new browser</strong>.</p>
+<p>Clicking this button spawns an entirely separate instance of Firefox
+assigned to that specific profile. Because the profiles are isolated,
+you can log into the same websites with different accounts, use
+different themes, and run separate extensions in the newly launched
+window without any data bleeding into your original running session.</p>
+<h2 id="renaming-a-profile">Renaming a Profile</h2>
+<p>To organize your profiles better, you can change their display names
+at any time.</p>
+<ol type="1">
+<li>Locate the profile you wish to modify on the
+<code>about:profiles</code> page.</li>
+<li>Click the <strong>Rename</strong> button situated below that
+profile's directory information.</li>
+<li>A prompt will appear asking for the new name. Type the desired name
+and click <strong>OK</strong>.</li>
+</ol>
+<p>Firefox immediately updates the profile's identifier on the page.
+Renaming a profile only changes its label within the manager; it does
+not alter the actual folder name on your hard drive, ensuring that file
+paths and active configurations remain unbroken.</p>
+<h2 id="deleting-a-profile">Deleting a Profile</h2>
+<p>When a profile is no longer needed, you can remove it using the
+<strong>Remove</strong> button located beneath the target profile.</p>
+<p>For data integrity reasons, Firefox will not allow you to delete the
+profile that is currently active in the window you are using. The
+<strong>Remove</strong> button simply does not appear for the profile
+marked "This is the profile in use and it cannot be deleted."
+Furthermore, if a secondary profile is currently running in another open
+window, you must close that specific window before deleting it.</p>
+<p>Upon clicking <strong>Remove</strong> on an inactive profile, Firefox
+presents a confirmation dialog with two choices:</p>
+<ul>
+<li><strong>Don't Delete Files:</strong> Removes the profile from the
+<code>about:profiles</code> list, making it inaccessible through the
+manager, but leaves the data folder intact on your hard drive for backup
+purposes.</li>
+<li><strong>Delete Files:</strong> Permanently erases the profile from
+the list and deletes its entire root and local storage folders,
+including all associated bookmarks, passwords, and settings.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-manage-firefox-profiles-with-about-profiles';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Self-Host Firefox Sync Using syncstorage-rs - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide for privacy-conscious users on how to self-host Mozilla&#39;s syncstorage-rs server and configure the Firefox Web Browser to use this private infrastructure. By deploying your own sync server using Docker and MariaDB">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-self-host-firefox-sync-using-syncstorage-rs">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Self-Host Firefox Sync Using syncstorage-rs - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-self-host-firefox-sync-using-syncstorage-rs" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide for privacy-conscious users on how to self-host Mozilla&#39;s syncstorage-rs server and configure the Firefox Web Browser to use this private infrastructure. By deploying your own sync server using Docker and MariaDB" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-self-host-firefox-sync-using-syncstorage-rs">How to
+Self-Host Firefox Sync Using syncstorage-rs</h1>
+<p>This article provides a step-by-step guide for privacy-conscious
+users on how to self-host Mozilla's <code>syncstorage-rs</code> server
+and configure the Firefox Web Browser to use this private
+infrastructure. By deploying your own sync server using Docker and
+MariaDB, and updating a single configuration setting within Firefox, you
+can maintain complete control over your browsing history, bookmarks,
+passwords, and open tabs without storing your encrypted data on
+Mozilla's cloud servers.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before deploying the server, ensure you have the following ready:</p>
+<ul>
+<li>A Linux server with Docker and Docker Compose installed.</li>
+<li>A registered domain name (or subdomain) pointing to your
+server.</li>
+<li>A reverse proxy (such as Nginx, Caddy, or Traefik) configured to
+handle HTTPS/TLS termination for your domain.</li>
+<li>A Mozilla Account (formerly Firefox Account). Note that this setup
+self-hosts the <em>data storage</em>, while still using Mozilla's public
+authentication servers to verify your identity.</li>
+</ul>
+<h3 id="step-1-prepare-the-database">Step 1: Prepare the Database</h3>
+<p>The <code>syncstorage-rs</code> server requires a MySQL or MariaDB
+instance with two separate databases: one for storing the actual sync
+data (<code>syncstorage</code>) and one for managing authentication
+tokens (<code>tokenserver</code>).</p>
+<p>Create a project directory on your server:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> firefox-sync <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> firefox-sync</span></code></pre></div>
+<p>Create an initialization SQL script named <code>init.sql</code> to
+automatically build the required databases and permissions when the
+database container starts:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> syncstorage_rs;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">DATABASE</span> <span class="cf">IF</span> <span class="kw">NOT</span> <span class="kw">EXISTS</span> tokenserver_rs;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> syncstorage_rs.<span class="op">*</span> <span class="kw">TO</span> <span class="st">&#39;syncuser&#39;</span>@<span class="st">&#39;%&#39;</span>;</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">GRANT</span> <span class="kw">ALL</span> <span class="kw">PRIVILEGES</span> <span class="kw">ON</span> tokenserver_rs.<span class="op">*</span> <span class="kw">TO</span> <span class="st">&#39;syncuser&#39;</span>@<span class="st">&#39;%&#39;</span>;</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FLUSH</span> <span class="kw">PRIVILEGES</span>;</span></code></pre></div>
+<h3 id="step-2-configure-docker-compose">Step 2: Configure Docker
+Compose</h3>
+<p>Next, generate two random secrets that the server will use for
+security. Run the following command twice and save the outputs:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> <span class="at">-c</span> 32 /dev/urandom <span class="kw">|</span> <span class="fu">base64</span></span></code></pre></div>
+<p>Create a <code>docker-compose.yml</code> file in your
+<code>firefox-sync</code> directory. Replace
+<code>your_db_password</code>, <code>your_root_password</code>,
+<code>secret_1</code>, <code>secret_2</code>, and
+<code>https://sync.yourdomain.com</code> with your actual values.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;3.8&#39;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mariadb</span><span class="kw">:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mariadb:10.11</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> sync-db</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">restart</span><span class="kw">:</span><span class="at"> unless-stopped</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> your_root_password</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> syncuser</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> your_db_password</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./db_data:/var/lib/mysql</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">healthcheck</span><span class="kw">:</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">test</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&quot;CMD&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;healthcheck.sh&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;--connect&quot;</span><span class="kw">,</span><span class="at"> </span><span class="st">&quot;--innodb_initialized&quot;</span><span class="kw">]</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">interval</span><span class="kw">:</span><span class="at"> 10s</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">timeout</span><span class="kw">:</span><span class="at"> 5s</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">retries</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">syncstorage</span><span class="kw">:</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mozilla/syncstorage-rs:latest</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">container_name</span><span class="kw">:</span><span class="at"> sync-server</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">restart</span><span class="kw">:</span><span class="at"> unless-stopped</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">mariadb</span><span class="kw">:</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">condition</span><span class="kw">:</span><span class="at"> service_healthy</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">&quot;127.0.0.1:8000:8000&quot;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_HOST</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.0.0.0</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_PORT</span><span class="kw">:</span><span class="at"> </span><span class="dv">8000</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_HUMAN_LOGS</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_MASTER_SECRET</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;secret_1&quot;</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_HASH_SECRET</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;secret_2&quot;</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_SYNCSTORAGE__DATABASE_URL</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;mysql://syncuser:your_db_password@mariadb:3306/syncstorage_rs&quot;</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__DATABASE_URL</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;mysql://syncuser:your_db_password@mariadb:3306/tokenserver_rs&quot;</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__ENABLED</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;true&quot;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__RUN_MIGRATIONS</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;true&quot;</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__FXA_EMAIL_DOMAIN</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;api.accounts.firefox.com&quot;</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__FXA_OAUTH_SERVER_URL</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;https://oauth.accounts.firefox.com&quot;</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__FXA_METRICS_HASH_SECRET</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;secret_2&quot;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">SYNC_TOKENSERVER__ADDITIONAL_BLOCKING_THREADS_FOR_FXA_REQUESTS</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span></code></pre></div>
+<p>Start the containers to initialize the databases and run the
+migrations:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
+<h3 id="step-3-register-the-node-in-the-token-server">Step 3: Register
+the Node in the Token Server</h3>
+<p>Even though the server is running, it will reject sync attempts until
+you register your domain as an available storage node inside the
+<code>tokenserver_rs</code> database.</p>
+<p>Run the following command to access the MariaDB container (enter your
+<code>MYSQL_ROOT_PASSWORD</code> when prompted):</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> sync-db mariadb <span class="at">-u</span> root <span class="at">-p</span> tokenserver_rs</span></code></pre></div>
+<p>Once inside the MariaDB shell, run these two SQL queries. Replace
+<code>https://sync.yourdomain.com</code> with your actual HTTPS domain
+URL, and set <code>capacity</code> to the maximum number of users you
+want this server to support:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> services (<span class="kw">id</span>, service, pattern) <span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="st">&#39;sync-1.5&#39;</span>, <span class="st">&#39;{node}/1.5/{uid}&#39;</span>);</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> nodes (<span class="kw">id</span>, service, node, available, current_load, capacity, downed, backoff) </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">&#39;https://sync.yourdomain.com&#39;</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">0</span>);</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>EXIT;</span></code></pre></div>
+<h3 id="step-4-configure-the-reverse-proxy">Step 4: Configure the
+Reverse Proxy</h3>
+<p>The <code>syncstorage-rs</code> container is now listening on
+<code>127.0.0.1:8000</code>. Configure your chosen reverse proxy to
+route traffic from <code>https://sync.yourdomain.com</code> to
+<code>http://127.0.0.1:8000</code>.</p>
+<p>Ensure your reverse proxy passes the standard
+<code>X-Forwarded-For</code> and <code>X-Forwarded-Proto</code> headers,
+and that a valid SSL/TLS certificate (such as one from Let's Encrypt) is
+active. Firefox will refuse to sync over an unencrypted HTTP
+connection.</p>
+<p>You can verify the server is reachable by navigating to
+<code>https://sync.yourdomain.com/__heartbeat__</code> in your browser.
+It should return a JSON response indicating the database and server are
+healthy.</p>
+<h3 id="step-5-point-firefox-to-your-private-server">Step 5: Point
+Firefox to Your Private Server</h3>
+<p>With the server operational, you must instruct Firefox to use your
+private infrastructure instead of Mozilla's default storage servers.</p>
+<ol type="1">
+<li>Open the Firefox Web Browser.</li>
+<li>If you are currently logged into a Mozilla Account in Firefox,
+<strong>sign out</strong> first.</li>
+<li>In the address bar, type <code>about:config</code> and press
+<strong>Enter</strong>.</li>
+<li>Click <strong>Accept the Risk and Continue</strong>.</li>
+<li>In the search bar, type
+<code>identity.sync.tokenserver.uri</code>.</li>
+<li>Click the <strong>Edit</strong> (pencil) icon next to the
+preference.</li>
+<li>Replace the default URL with your custom domain, appending
+<code>/1.0/sync/1.5</code> to the end. It must look like this:
+<code>https://sync.yourdomain.com/1.0/sync/1.5</code></li>
+<li>Click the <strong>Save</strong> (checkmark) icon.</li>
+<li>Log back into your Mozilla Account in Firefox.</li>
+</ol>
+<h3 id="verification">Verification</h3>
+<p>To confirm that Firefox is utilizing your self-hosted server, type
+<code>about:sync-log</code> into the Firefox address bar. If a sync has
+occurred, you will see log files listed. Open the most recent log file
+and verify that the requests are being sent to
+<code>https://sync.yourdomain.com</code>. You can also check the
+<code>syncstorage_rs</code> database on your server; the
+<code>bso</code> (Basic Storage Object) table will now be populated with
+your encrypted browser data. You can repeat Step 5 on any other desktop
+or mobile Firefox browser to sync data across all your devices using
+your private server.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-self-host-firefox-sync-using-syncstorage-rs';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

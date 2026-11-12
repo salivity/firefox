@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Updates and Maintains the HSTS Preload List - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how the Mozilla Firefox web browser maintains and updates its HTTP Strict Transport Security (HSTS) preload list. It explains how Mozilla sources the initial domain data from the Chromium project, the automated">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-updates-and-maintains-the-hsts-preload-list">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Updates and Maintains the HSTS Preload List - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-updates-and-maintains-the-hsts-preload-list" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how the Mozilla Firefox web browser maintains and updates its HTTP Strict Transport Security (HSTS) preload list. It explains how Mozilla sources the initial domain data from the Chromium project, the automated" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-updates-and-maintains-the-hsts-preload-list">How
+Firefox Updates and Maintains the HSTS Preload List</h1>
+<p>This article provides a complete overview of how the Mozilla Firefox
+web browser maintains and updates its HTTP Strict Transport Security
+(HSTS) preload list. It explains how Mozilla sources the initial domain
+data from the Chromium project, the automated verification process used
+to validate the security of those domains, how the finalized list is
+compiled into the Firefox source code, and how updates are delivered to
+users through the standard browser release cycle.</p>
+<h2 id="sourcing-from-the-chromium-project">Sourcing from the Chromium
+Project</h2>
+<p>Mozilla does not operate its own independent submission portal for
+the HSTS preload list. Instead, Firefox relies on the central HSTS
+preload list maintained by the Chromium project. Website administrators
+submit their domains to the Chromium list, which acts as the universal
+starting point for most major web browsers, including Firefox, Chrome,
+Edge, and Safari.</p>
+<h2 id="automated-verification-and-pruning">Automated Verification and
+Pruning</h2>
+<p>Firefox does not blindly import the Chromium preload list. Instead,
+Mozilla runs an automated periodic script within its own infrastructure
+to verify that the domains on the Chromium list actively meet Mozilla's
+strict security standards.</p>
+<p>The automated script fetches the current Chromium JSON file and tests
+every newly submitted domain, as well as existing domains on the list.
+To pass Mozilla's verification, a domain must meet the following
+criteria:</p>
+<ul>
+<li>It must serve a valid HTTPS certificate.</li>
+<li>It must redirect all HTTP traffic to HTTPS.</li>
+<li>It must serve the <code>Strict-Transport-Security</code> header on
+the base domain.</li>
+<li>The HSTS header must include the <code>preload</code>
+directive.</li>
+<li>The HSTS header must include the <code>includeSubDomains</code>
+directive.</li>
+<li>The <code>max-age</code> directive in the header must be set to at
+least 18 weeks (10,886,400 seconds).</li>
+</ul>
+<p>If a domain on the Chromium list fails to respond or no longer meets
+these criteria during Mozilla's automated scan, it is excluded or pruned
+from the Firefox version of the list. This ensures that dead domains or
+sites that have intentionally downgraded their security do not bloat the
+browser or become inaccessible to Firefox users.</p>
+<h2 id="compiling-the-list-into-firefox">Compiling the List into
+Firefox</h2>
+<p>Once the automated script finishes querying the domains, it generates
+a C++ header file named <code>nsSTSPreloadList.inc</code>. This file
+contains a static, binary-searchable list of all the validated HSTS
+domains.</p>
+<p>Mozilla engineers review the automated output, and the updated
+<code>nsSTSPreloadList.inc</code> file is committed directly into the
+<code>mozilla-central</code> source code repository. Because the list is
+hardcoded into the browser's source code for performance and security
+reasons, it becomes a permanent part of that specific Firefox build.</p>
+<h2 id="delivering-updates-to-users">Delivering Updates to Users</h2>
+<p>Updates to the HSTS preload list are delivered to end-users through
+Firefox's standard rapid release cycle, often referred to as "riding the
+trains."</p>
+<ol type="1">
+<li><strong>Firefox Nightly:</strong> The automated HSTS update script
+runs roughly once a week. When the updated list is committed to the
+source code, users on the Nightly channel receive the new preload list
+immediately in their next daily update.</li>
+<li><strong>Firefox Beta:</strong> Every four weeks, the code from
+Nightly merges into the Beta channel. The HSTS preload list is frozen at
+this point for that specific version, barring any critical security
+issues or urgent removal requests.</li>
+<li><strong>Firefox Stable:</strong> Four weeks after entering Beta, the
+build is pushed to the general public as the official Stable
+release.</li>
+</ol>
+<p>Because of this train model, it typically takes between four to eight
+weeks from the time a domain is added to the Chromium preload list for
+it to be actively enforced as preloaded in the standard release of
+Firefox.</p>
+<h2 id="local-maintenance-and-overrides">Local Maintenance and
+Overrides</h2>
+<p>Between browser updates, Firefox maintains HSTS states locally in the
+user's profile folder within a file named
+<code>SiteSecurityServiceState.txt</code>.</p>
+<p>If a user visits a website that is not yet on the preload list, but
+the site sends a valid HSTS header, Firefox records the domain in this
+local text file. Conversely, if a site is on the hardcoded preload list
+and sends a header with <code>max-age=0</code> (which is the standard
+way to revoke HSTS), Firefox will ignore the revocation request. Because
+preloaded statuses are compiled into the browser binary, a domain can
+only be removed from Firefox's preload enforcement by requesting removal
+through the Chromium project and waiting for the change to propagate
+through Mozilla's automated scripts and release cycle.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-updates-and-maintains-the-hsts-preload-list';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

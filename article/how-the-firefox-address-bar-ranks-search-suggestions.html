@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the Firefox Address Bar Ranks Search Suggestions - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of how the Firefox address bar, commonly known as the Awesome Bar, ranks suggestions as you type. By utilizing a specialized algorithm called &quot;Frecency,&quot; Firefox evaluates your browsing history, bookmarks, an">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-the-firefox-address-bar-ranks-search-suggestions">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How the Firefox Address Bar Ranks Search Suggestions - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-the-firefox-address-bar-ranks-search-suggestions" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of how the Firefox address bar, commonly known as the Awesome Bar, ranks suggestions as you type. By utilizing a specialized algorithm called &quot;Frecency,&quot; Firefox evaluates your browsing history, bookmarks, an" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-the-firefox-address-bar-ranks-search-suggestions">How the
+Firefox Address Bar Ranks Search Suggestions</h1>
+<p>This article provides a comprehensive overview of how the Firefox
+address bar, commonly known as the Awesome Bar, ranks suggestions as you
+type. By utilizing a specialized algorithm called "Frecency," Firefox
+evaluates your browsing history, bookmarks, and currently open tabs
+based on how frequently and recently you have interacted with them.
+Understanding this ranking system reveals how the browser predicts your
+destination by assigning specific point values to different types of
+user actions, URL matches, and adaptive learning patterns.</p>
+<h3 id="the-core-algorithm-frecency">The Core Algorithm: Frecency</h3>
+<p>At the heart of the Firefox address bar is the "Frecency" algorithm,
+a portmanteau of the words "frequency" and "recency." Every unique URL
+stored in the browser's database is assigned a dynamic Frecency score.
+When you type into the address bar, Firefox searches your database for
+matches in URLs, page titles, and bookmark tags, and then orders the
+dropdown suggestions from the highest Frecency score to the lowest.</p>
+<h3 id="how-browsing-history-is-ranked">How Browsing History is
+Ranked</h3>
+<p>Standard browsing history is evaluated using two main metrics: the
+"visit type" (how you arrived at the page) and "recency buckets" (when
+you visited the page).</p>
+<p><strong>Visit Types</strong> Not all page views are treated equally.
+Firefox assigns different point bonuses depending on the user intent
+behind the navigation:</p>
+<ul>
+<li><strong>Typed URLs:</strong> Typing a web address directly into the
+address bar and pressing Enter yields the highest point bonus, as it
+demonstrates deliberate intent.</li>
+<li><strong>Followed Links:</strong> Clicking a standard link on a
+webpage awards a moderate amount of points.</li>
+<li><strong>Redirects and Frames:</strong> Automatic redirects or pages
+loaded inside iframes receive very few or zero points, preventing
+background web activity from cluttering your suggestions.</li>
+</ul>
+<p><strong>Recency Buckets</strong> Because your browsing habits change
+over time, Frecency scores decay. Firefox categorizes your past visits
+into tiered time "buckets":</p>
+<ul>
+<li>Visited within the last 4 days (100% weight)</li>
+<li>Visited within the last 14 days (70% weight)</li>
+<li>Visited within the last 31 days (50% weight)</li>
+<li>Visited within the last 90 days (30% weight)</li>
+<li>Visited more than 90 days ago (10% weight)</li>
+</ul>
+<p>Firefox calculates a URL's score by multiplying the visit type points
+by the weight of the time bucket. Consequently, a site you visited twice
+today will likely outrank a site you visited ten times four months
+ago.</p>
+<h3 id="how-bookmarks-are-ranked">How Bookmarks are Ranked</h3>
+<p>Bookmarks are treated as high-priority items in the Awesome Bar. When
+you bookmark a webpage, Firefox immediately applies a large, permanent
+base boost to that URL's Frecency score. This ensures that even a newly
+bookmarked page with only a single visit, or an old bookmark you haven't
+visited in a year, will still rank competitively against your active
+browsing history.</p>
+<p>Additionally, bookmarks are ranked using metadata:</p>
+<ul>
+<li><strong>Bookmark Visits:</strong> Clicking a bookmark to navigate to
+a site awards a high visit-type bonus, second only to typing the URL
+directly.</li>
+<li><strong>Tags and Titles:</strong> Firefox allows users to add custom
+tags and titles to bookmarks. If the text you type into the address bar
+matches a bookmark tag, Firefox heavily weights that result, pushing it
+toward the top of the list.</li>
+</ul>
+<h3 id="how-open-tabs-are-ranked">How Open Tabs are Ranked</h3>
+<p>Currently open tabs largely bypass the standard Frecency competition
+through Firefox’s "Switch to Tab" feature. The browser actively indexes
+the URLs and page titles of all tabs open across your current
+session.</p>
+<p>If your typed query matches an open tab, Firefox prioritizes it by
+injecting a "Switch to Tab" suggestion near the top of the address bar
+results. While the open tab still relies on text-matching relevance, its
+status as an active tab overrides the need for a high historical
+Frecency score. This prevents tab duplication by encouraging you to jump
+to the existing tab rather than loading the webpage a second time.</p>
+<h3 id="adaptive-learning-input-history">Adaptive Learning (Input
+History)</h3>
+<p>Beyond raw Frecency scores, the Awesome Bar uses adaptive learning to
+personalize rankings based on your past selections.</p>
+<p>When you type a specific string of letters and click on a resulting
+suggestion, Firefox records that exact pairing in its "input history."
+For example, if you type "fi" and select a specific financial website
+from the middle of the suggestion list, Firefox remembers this action.
+The next time you type "fi", that specific financial site receives an
+adaptive boost that overrides standard Frecency calculations, placing it
+at the very top of your suggestions. The more often you select that URL
+after typing those specific letters, the stronger that association
+becomes.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-the-firefox-address-bar-ranks-search-suggestions';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

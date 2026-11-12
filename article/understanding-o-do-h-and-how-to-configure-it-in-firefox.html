@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding ODoH and How to Configure It in Firefox - firefox</title>
+    <meta name="description" content="This article provides a quick overview and a straightforward guide to Oblivious DNS over HTTPS (ODoH), a privacy protocol designed to enhance your online anonymity. First, it explains what ODoH is and how it improves upon standard encrypted DNS by separat">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/understanding-o-do-h-and-how-to-configure-it-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Understanding ODoH and How to Configure It in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/understanding-o-do-h-and-how-to-configure-it-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview and a straightforward guide to Oblivious DNS over HTTPS (ODoH), a privacy protocol designed to enhance your online anonymity. First, it explains what ODoH is and how it improves upon standard encrypted DNS by separat" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="understanding-odoh-and-how-to-configure-it-in-firefox">Understanding
+ODoH and How to Configure It in Firefox</h1>
+<p>This article provides a quick overview and a straightforward guide to
+Oblivious DNS over HTTPS (ODoH), a privacy protocol designed to enhance
+your online anonymity. First, it explains what ODoH is and how it
+improves upon standard encrypted DNS by separating your IP address from
+your browsing queries. Second, it provides a step-by-step walkthrough on
+how to configure and enable ODoH within the Mozilla Firefox web browser
+using its advanced configuration settings.</p>
+<h2 id="what-is-oblivious-dns-over-https-odoh">What is Oblivious DNS
+over HTTPS (ODoH)?</h2>
+<p>When you type a website name into your browser, the Domain Name
+System (DNS) translates that name into an IP address so your computer
+can load the site. Standard DNS requests are sent in plain text,
+allowing your Internet Service Provider (ISP) to see every website you
+visit.</p>
+<p>DNS over HTTPS (DoH) was created to solve this by encrypting your DNS
+queries. However, DoH has a flaw: the DNS resolver (such as Cloudflare
+or Google) still sees both your IP address and the websites you are
+requesting. You are simply shifting trust from your ISP to the DNS
+provider.</p>
+<p>Oblivious DNS over HTTPS (ODoH) solves this trust issue. Standardized
+by the Internet Engineering Task Force (IETF), ODoH adds a layer of
+public-key encryption and an intermediary proxy server between you and
+the DNS resolver. This ensures that no single entity knows both who you
+are and what websites you are visiting.</p>
+<h2 id="how-odoh-works">How ODoH Works</h2>
+<p>ODoH relies on three distinct components to protect your privacy:</p>
+<ol type="1">
+<li><strong>The Client (Your Browser):</strong> When you request a
+website, your browser encrypts the DNS query specifically for the Target
+resolver. It then sends this encrypted query to a Proxy.</li>
+<li><strong>The Oblivious Proxy:</strong> The proxy receives the request
+from your browser. It sees your IP address, but because the query is
+encrypted, it cannot see what website you are trying to visit. The proxy
+simply forwards the encrypted query to the Target.</li>
+<li><strong>The Oblivious Target (The Resolver):</strong> The Target
+decrypts your query and finds the IP address of the website you want to
+visit. However, because the request came from the Proxy, the Target only
+sees the Proxy's IP address, not yours. It encrypts the answer and sends
+it back through the Proxy to your browser.</li>
+</ol>
+<p>By separating the network traffic, the Proxy knows who you are but
+not what you are asking for, and the Target knows what is being asked
+for, but not who is asking.</p>
+<h2 id="how-to-configure-odoh-in-firefox">How to Configure ODoH in
+Firefox</h2>
+<p>Configuring ODoH natively in Firefox requires using the browser's
+advanced configuration page, as these settings are not visible in the
+standard settings menu.</p>
+<h3 id="step-1-open-the-advanced-configuration-page">Step 1: Open the
+Advanced Configuration Page</h3>
+<ol type="1">
+<li>Open the Firefox browser.</li>
+<li>Type <code>about:config</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button to
+proceed to the settings search page.</li>
+</ol>
+<h3 id="step-2-enable-firefoxs-trusted-recursive-resolver-trr">Step 2:
+Enable Firefox's Trusted Recursive Resolver (TRR)</h3>
+<p>Before ODoH can work, you must tell Firefox to use encrypted DNS
+instead of your operating system's default DNS.</p>
+<ol type="1">
+<li>In the search bar at the top of the <code>about:config</code> page,
+type <code>network.trr.mode</code>.</li>
+<li>Click the <strong>Edit</strong> (pencil) icon next to the
+preference.</li>
+<li>Change the value to <code>2</code> (this uses encrypted DNS by
+default and falls back to standard DNS if it fails) or <code>3</code>
+(this forces encrypted DNS only, with no fallback).</li>
+<li>Click the <strong>Save</strong> (checkmark) icon.</li>
+</ol>
+<h3 id="step-3-enable-odoh">Step 3: Enable ODoH</h3>
+<ol type="1">
+<li>In the <code>about:config</code> search bar, type
+<code>network.trr.odoh.enabled</code>.</li>
+<li>Double-click the preference or click the <strong>Toggle</strong>
+icon on the right to change its value from <code>false</code> to
+<code>true</code>.</li>
+</ol>
+<h3 id="step-4-configure-the-odoh-target-and-proxy">Step 4: Configure
+the ODoH Target and Proxy</h3>
+<p>For ODoH to function, you must specify both the Target resolver and
+the intermediary Proxy you wish to use.</p>
+<ol type="1">
+<li><strong>Set the Target Host:</strong> Search for
+<code>network.trr.odoh.target_host</code>. Click the
+<strong>Edit</strong> icon and enter the URL of a public ODoH target
+(for example, <code>https://odoh.cloudflare-dns.com</code>). Save the
+change.</li>
+<li><strong>Set the Target Path:</strong> Search for
+<code>network.trr.odoh.target_path</code>. Edit the value and set it to
+<code>dns-query</code>. Save the change.</li>
+<li><strong>Set the Configs URI:</strong> Search for
+<code>network.trr.odoh.configs_uri</code>. Edit the value and enter the
+target's configuration URL (for example,
+<code>https://odoh.cloudflare-dns.com/odohconfigs</code>). Save the
+change.</li>
+<li><strong>Set the Proxy URI:</strong> Search for
+<code>network.trr.odoh.proxy_uri</code>. Click the <strong>Edit</strong>
+icon and enter the URL of a trusted ODoH proxy server provided by a
+third party (never use the same provider for both the Target and the
+Proxy, as this defeats the purpose of ODoH). Save the change.</li>
+</ol>
+<h3 id="step-5-restart-firefox">Step 5: Restart Firefox</h3>
+<p>Close and reopen the Firefox browser. Your DNS queries will now be
+routed through the Oblivious Proxy before reaching the Oblivious Target,
+ensuring your IP address and your browsing habits remain completely
+separated.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/understanding-o-do-h-and-how-to-configure-it-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

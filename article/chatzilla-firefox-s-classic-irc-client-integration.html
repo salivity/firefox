@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatzilla: Firefox&#39;s Classic IRC Client Integration - firefox</title>
+    <meta name="description" content="This article explores Chatzilla, a historic Internet Relay Chat (IRC) client built entirely on Mozilla technologies, and examines its deep integration with the Firefox web browser ecosystem. Originally developed as a core component of the Mozilla Applicat">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/chatzilla-firefox-s-classic-irc-client-integration">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Chatzilla: Firefox&#39;s Classic IRC Client Integration - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/chatzilla-firefox-s-classic-irc-client-integration" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Chatzilla, a historic Internet Relay Chat (IRC) client built entirely on Mozilla technologies, and examines its deep integration with the Firefox web browser ecosystem. Originally developed as a core component of the Mozilla Applicat" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="chatzilla-firefoxs-classic-irc-client-integration">Chatzilla:
+Firefox's Classic IRC Client Integration</h1>
+<p>This article explores Chatzilla, a historic Internet Relay Chat (IRC)
+client built entirely on Mozilla technologies, and examines its deep
+integration with the Firefox web browser ecosystem. Originally developed
+as a core component of the Mozilla Application Suite, Chatzilla evolved
+into a widely used extension for Firefox that allowed users and
+developers to communicate in real-time directly within their browser,
+until architectural changes in Firefox eventually ended its
+lifecycle.</p>
+<h3 id="what-was-chatzilla">What Was Chatzilla?</h3>
+<p>Chatzilla was a cross-platform IRC client written entirely in
+JavaScript, HTML, CSS, and XUL (XML User Interface Language), which was
+Mozilla’s proprietary markup language for user interfaces. Because it
+was built using web and browser technologies rather than compiled
+platform-specific code, Chatzilla could run on any operating system that
+supported the Mozilla platform, including Windows, macOS, and Linux.</p>
+<p>It offered all standard IRC functionalities, including:</p>
+<ul>
+<li>Multiple server connections.</li>
+<li>Channel and private messaging.</li>
+<li>UTF-8 character encoding support.</li>
+<li>Direct Client-to-Client (DCC) file transfers and chats.</li>
+<li>SSL/TLS encryption.</li>
+</ul>
+<p>Because the message display window was rendered by Mozilla's Gecko
+layout engine, users could easily customize the look and feel of their
+chat windows using standard CSS stylesheets, known within the client as
+"Motifs." Furthermore, advanced users could write custom plugins in
+JavaScript to automate tasks and add new commands.</p>
+<h3 id="origins-in-the-mozilla-application-suite">Origins in the Mozilla
+Application Suite</h3>
+<p>Before the release of the standalone Firefox browser, the Mozilla
+Foundation developed the monolithic Mozilla Application Suite, which
+bundled a web browser, an email client, an HTML editor, and an IRC
+client into a single application. Chatzilla was introduced in 2000 as
+the suite's built-in IRC client.</p>
+<p>When the Mozilla Foundation decided to shift its focus to standalone
+applications—creating Firefox for browsing and Thunderbird for
+email—Chatzilla was separated from the main browser codebase. However,
+it remained a default, built-in component of SeaMonkey, the
+community-driven successor to the original Mozilla Application
+Suite.</p>
+<h3 id="integration-with-the-firefox-ecosystem">Integration with the
+Firefox Ecosystem</h3>
+<p>For Firefox users, Chatzilla was made available as an installable
+browser extension. Its shared codebase with Firefox allowed for a level
+of integration that standalone desktop IRC clients could not match.</p>
+<p><strong>Unified User Interface</strong> Once installed as an add-on,
+Chatzilla could be launched as a separate window using the Firefox
+runtime, or it could be opened directly inside a standard Firefox
+browser tab. This allowed users to manage their chat rooms alongside
+their web browsing sessions without switching applications.</p>
+<p><strong>Protocol Handling</strong> Installing Chatzilla automatically
+registered the <code>irc://</code> and <code>ircs://</code> (secure IRC)
+URL protocols within Firefox. When a user clicked an IRC link on a
+webpage, Firefox would automatically launch Chatzilla, connect to the
+specified server, and join the designated channel.</p>
+<p><strong>Shared Resources and Security</strong> Instead of maintaining
+its own networking stack, Chatzilla utilized Firefox’s internal
+networking libraries (Necko) and security components (Network Security
+Services). This meant Chatzilla inherited the browser's proxy settings,
+certificate management, and SSL/TLS capabilities automatically.</p>
+<p><strong>The Mozilla Community Hub</strong> Historically, the Mozilla
+project used IRC as its primary communication medium for developers,
+testers, and contributors. Because Chatzilla was easily accessible via
+the Firefox Add-ons repository, it became the default gateway for power
+users and new contributors to join the <code>irc.mozilla.org</code>
+network, report bugs, and collaborate on the development of Firefox
+itself.</p>
+<h3 id="deprecation-and-end-of-life">Deprecation and End of Life</h3>
+<p>Chatzilla’s deep integration with Firefox was ultimately the cause of
+its demise. The client relied heavily on XUL for its interface and XPCOM
+(Cross-Platform Component Object Model) for low-level access to raw TCP
+network sockets, which are required for the IRC protocol.</p>
+<p>In November 2017, Mozilla released Firefox 57, codenamed "Firefox
+Quantum." This update completely overhauled the browser's architecture
+and permanently dropped support for legacy XUL and XPCOM extensions in
+favor of the modern, secure WebExtensions API.</p>
+<p>Because the WebExtensions API did not allow add-ons to make raw TCP
+socket connections, Chatzilla could not be ported to the new Firefox
+architecture. With the release of Firefox 57, Chatzilla ceased to
+function in modern versions of the browser, marking the end of its
+integration with the Firefox ecosystem.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/chatzilla-firefox-s-classic-irc-client-integration';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

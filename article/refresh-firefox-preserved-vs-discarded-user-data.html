@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refresh Firefox: Preserved vs. Discarded User Data - firefox</title>
+    <meta name="description" content="The &quot;Refresh Firefox&quot; feature is a built-in troubleshooting tool designed to fix browser issues like slowness or crashing by restoring the browser to its default state. This article provides a direct breakdown of the exact user data that Firefox safely pr">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/refresh-firefox-preserved-vs-discarded-user-data">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Refresh Firefox: Preserved vs. Discarded User Data - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/refresh-firefox-preserved-vs-discarded-user-data" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The &quot;Refresh Firefox&quot; feature is a built-in troubleshooting tool designed to fix browser issues like slowness or crashing by restoring the browser to its default state. This article provides a direct breakdown of the exact user data that Firefox safely pr" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="refresh-firefox-preserved-vs-discarded-user-data">Refresh
+Firefox: Preserved vs. Discarded User Data</h1>
+<p>The "Refresh Firefox" feature is a built-in troubleshooting tool
+designed to fix browser issues like slowness or crashing by restoring
+the browser to its default state. This article provides a direct
+breakdown of the exact user data that Firefox safely preserves during
+this process, as well as the specific customizations, settings, and
+add-ons that are discarded when you click the Refresh button.</p>
+<h3 id="user-data-that-is-preserved">User Data That is Preserved</h3>
+<p>When you refresh Firefox, it creates a brand new user profile and
+automatically transfers your most important personal data into it. You
+will not lose the following information:</p>
+<ul>
+<li><strong>Bookmarks:</strong> All saved bookmarks, including their
+folder structures and tags, remain intact.</li>
+<li><strong>Browsing and Download History:</strong> Your record of
+visited websites and previously downloaded files is kept.</li>
+<li><strong>Passwords:</strong> All saved login credentials stored in
+the Firefox Password Manager are transferred.</li>
+<li><strong>Cookies:</strong> Active website cookies are saved, keeping
+you logged into most of your frequented websites.</li>
+<li><strong>Web Form Auto-fill Information:</strong> Saved addresses,
+credit card details, and other form-fill data are preserved.</li>
+<li><strong>Personal Dictionary:</strong> Any custom words you have
+added to the Firefox spellchecker remain saved.</li>
+<li><strong>Open Windows and Tabs:</strong> The session you had open at
+the exact moment of the refresh will be restored when the browser
+restarts.</li>
+</ul>
+<h3 id="user-data-that-is-discarded">User Data That is Discarded</h3>
+<p>Because incorrect settings and faulty add-ons are the most common
+causes of browser problems, Firefox completely removes them during a
+refresh. The following data is discarded and reset to factory
+defaults:</p>
+<ul>
+<li><strong>Extensions and Themes:</strong> All installed add-ons,
+browser extensions, and visual themes are removed.</li>
+<li><strong>Website Permissions:</strong> Site-specific permissions—such
+as allowing or blocking access to your camera, microphone, location, or
+pop-ups—are wiped out.</li>
+<li><strong>Modified Preferences:</strong> Any changes made in the
+Firefox Settings menu or advanced tweaks made via the
+<code>about:config</code> page are reset to default.</li>
+<li><strong>Added Search Engines:</strong> Custom search engines you
+added to the browser are removed, leaving only the default search
+providers.</li>
+<li><strong>DOM Storage:</strong> Website-specific local data (similar
+to cookies, often used by web apps to store data offline) is
+cleared.</li>
+<li><strong>Security Certificate and Device Settings:</strong> Custom
+security certificates you have imported are removed.</li>
+<li><strong>Download Actions:</strong> Preferences detailing how Firefox
+should handle specific file types (e.g., always opening PDFs in a
+specific program) are reset.</li>
+<li><strong>Toolbar Customizations:</strong> Any changes to the layout
+of your buttons, toolbars, and custom <code>userChrome.css</code> styles
+are discarded.</li>
+</ul>
+<h3 id="the-desktop-backup">The Desktop Backup</h3>
+<p>While the discarded data is removed from the active browser, it is
+not immediately deleted from your computer. When you click Refresh,
+Firefox places a folder on your desktop named <strong>Old Firefox
+Data</strong>. This folder contains your entire previous profile. If you
+accidentally lose a critical setting or piece of data during the
+refresh, you can manually recover the files from this folder and move
+them into your new Firefox profile. If the refresh goes smoothly, you
+can safely delete this folder to free up hard drive space.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/refresh-firefox-preserved-vs-discarded-user-data';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

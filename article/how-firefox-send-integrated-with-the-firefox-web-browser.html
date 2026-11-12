@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Send Integrated with the Firefox Web Browser - firefox</title>
+    <meta name="description" content="This article explores how Mozilla’s discontinued Firefox Send service integrated with the Firefox Web Browser to provide seamless, end-to-end encrypted file sharing. It covers the transition from an experimental browser extension to a web-based tool, the">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-send-integrated-with-the-firefox-web-browser">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Send Integrated with the Firefox Web Browser - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-send-integrated-with-the-firefox-web-browser" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how Mozilla’s discontinued Firefox Send service integrated with the Firefox Web Browser to provide seamless, end-to-end encrypted file sharing. It covers the transition from an experimental browser extension to a web-based tool, the" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-send-integrated-with-the-firefox-web-browser">How
+Firefox Send Integrated with the Firefox Web Browser</h1>
+<p>This article explores how Mozilla’s discontinued Firefox Send service
+integrated with the Firefox Web Browser to provide seamless, end-to-end
+encrypted file sharing. It covers the transition from an experimental
+browser extension to a web-based tool, the use of built-in browser APIs
+for client-side encryption, the integration with Firefox Accounts for
+expanded storage limits, and how the browser handled decryption keys
+locally to ensure user privacy.</p>
+<h2 id="origin-as-a-firefox-test-pilot-extension">Origin as a Firefox
+Test Pilot Extension</h2>
+<p>Firefox Send began its life in 2017 as part of the Firefox Test Pilot
+program. This program allowed users to install experimental features
+directly into the Firefox browser via a specialized add-on. During this
+phase, Firefox Send was tightly integrated into the browser's interface,
+allowing users to test encrypted file transfers and provide telemetry
+data to Mozilla developers before the service was spun off into a
+standalone web application in 2019.</p>
+<h2 id="client-side-encryption-via-the-web-crypto-api">Client-Side
+Encryption via the Web Crypto API</h2>
+<p>The core of Firefox Send's security relied directly on the
+capabilities of the web browser itself. Instead of encrypting files on
+Mozilla's servers, Firefox Send utilized the native Web Crypto API built
+into the Firefox browser.</p>
+<p>When a user selected a file to upload, the browser executed
+JavaScript code locally on the user's machine to encrypt the file using
+the AES-GCM (128-bit) algorithm. The file was broken down into chunks,
+encrypted inside the browser's memory, and only then uploaded to
+Mozilla’s cloud storage. Because the browser handled the encryption
+before transit, Mozilla servers never had access to the unencrypted
+data.</p>
+<h2 id="url-fragment-key-management">URL Fragment Key Management</h2>
+<p>To ensure the recipient could decrypt the file without Mozilla ever
+seeing the password, Firefox Send relied on standard browser behavior
+regarding URL fragments (everything following the <code>#</code> symbol
+in a web address).</p>
+<ol type="1">
+<li>Upon encrypting a file, the uploader's browser generated a unique
+decryption key.</li>
+<li>This key was appended to the generated sharing link as a URL
+fragment.</li>
+<li>By standard web protocol design, browsers do not send URL fragments
+to web servers when requesting a page.</li>
+<li>When the recipient opened the link, their browser downloaded the
+encrypted file from Mozilla's servers and then used the key hidden in
+the URL fragment to decrypt the file locally within their own
+browser.</li>
+</ol>
+<h2 id="firefox-accounts-and-toolbar-integration">Firefox Accounts and
+Toolbar Integration</h2>
+<p>While Firefox Send functioned as a web application accessible by any
+modern browser, it featured deep ecosystem integration with the Firefox
+Web Browser through Firefox Accounts.</p>
+<p>In the Firefox browser toolbar, clicking the Firefox Account avatar
+menu provided direct shortcuts to Firefox Send alongside other Mozilla
+services like Firefox Monitor and Firefox Lockwise. If a user was
+already signed into their Firefox Account for browser syncing
+(bookmarks, passwords, and history), they were automatically
+authenticated on the Firefox Send platform.</p>
+<p>This browser-level authentication unlocked several features:</p>
+<ul>
+<li><strong>Increased File Limits:</strong> Unauthenticated users could
+only send files up to 1GB. Users logged into their browser's Firefox
+Account could send files up to 2.5GB.</li>
+<li><strong>Download Controls:</strong> Authenticated users could set
+links to expire after a specific number of downloads (from 1 to 100)
+rather than just a single download.</li>
+<li><strong>Time Limits:</strong> Users with an account could keep files
+active for up to 7 days, compared to the 24-hour limit for unregistered
+users.</li>
+<li><strong>Management Dashboard:</strong> The browser synced a list of
+active uploads, allowing the sender to revoke access and delete files
+from Mozilla's servers at any time.</li>
+</ul>
+<h2 id="discontinuation-of-the-service">Discontinuation of the
+Service</h2>
+<p>In July 2020, Mozilla temporarily suspended and subsequently shut
+down Firefox Send permanently. Because the browser-based client-side
+encryption was completely private, Mozilla had no visibility into the
+files being shared. Malicious actors exploited this privacy to use
+Firefox Send as a content delivery network for malware, ransomware, and
+phishing attacks. Because the abuse undermined the safety of the broader
+web ecosystem, Mozilla removed the Firefox Send integrations from the
+browser and decommissioned the service.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-send-integrated-with-the-firefox-web-browser';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

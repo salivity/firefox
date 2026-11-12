@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Cookie Clearing Site Exceptions Work - firefox</title>
+    <meta name="description" content="This article explains the mechanics of site exceptions when using the automatic cookie and site data clearing feature in the Mozilla Firefox web browser. By understanding how Firefox prioritizes user-defined rules over global privacy settings, you can mai">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-cookie-clearing-site-exceptions-work">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Cookie Clearing Site Exceptions Work - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-cookie-clearing-site-exceptions-work" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the mechanics of site exceptions when using the automatic cookie and site data clearing feature in the Mozilla Firefox web browser. By understanding how Firefox prioritizes user-defined rules over global privacy settings, you can mai" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-cookie-clearing-site-exceptions-work">How Firefox
+Cookie Clearing Site Exceptions Work</h1>
+<p>This article explains the mechanics of site exceptions when using the
+automatic cookie and site data clearing feature in the Mozilla Firefox
+web browser. By understanding how Firefox prioritizes user-defined rules
+over global privacy settings, you can maintain a high level of privacy
+by wiping general browsing data upon closing the browser while staying
+logged into your most trusted websites. We will cover how the exception
+list overrides the auto-clear function, the different types of
+permission states, how to configure these settings, and how to avoid
+common conflicts with other browser history settings.</p>
+<h2 id="the-core-mechanism-global-rules-vs-exceptions">The Core
+Mechanism: Global Rules vs. Exceptions</h2>
+<p>When you enable the "Delete cookies and site data when Firefox is
+closed" setting, you are applying a global rule to the browser. By
+default, this treats every browsing session as temporary, wiping all
+local storage, login states, and site preferences the moment you exit
+Firefox.</p>
+<p>Site exceptions act as a whitelist that overrides this global rule.
+When you add a specific website to the Exceptions list and set its
+status to "Allow," Firefox flags that domain's data as persistent. When
+the browser closes and runs its cleanup routine, it checks the database
+of stored cookies against your exception list. Any data matching a
+whitelisted domain is bypassed during the deletion process, keeping you
+logged in and preserving your site preferences for your next
+session.</p>
+<h2 id="types-of-exception-rules">Types of Exception Rules</h2>
+<p>When managing exceptions in Firefox, you can assign one of three
+statuses to a website. Here is how each interacts with the automatic
+clearing feature:</p>
+<ul>
+<li><strong>Allow:</strong> This is the standard exception. The website
+is permitted to store cookies and site data on your device permanently.
+The automatic clearing feature will completely ignore this site's data
+when Firefox closes.</li>
+<li><strong>Allow for Session:</strong> The website can store cookies
+and data, but Firefox will delete it when the browser closes. If you
+already have automatic cookie clearing enabled globally, this rule is
+redundant, as it performs the exact same action.</li>
+<li><strong>Block:</strong> The website is completely prevented from
+storing any cookies or site data on your device, even while you are
+actively browsing it.</li>
+</ul>
+<h2 id="subdomains-and-cross-site-data">Subdomains and Cross-Site
+Data</h2>
+<p>When you add an exception for a base domain (for example,
+<code>https://example.com</code>), Firefox automatically applies this
+exception to its subdomains (such as <code>mail.example.com</code> or
+<code>account.example.com</code>). However, the rule is strictly tied to
+the protocol you specify; an exception for <code>http://</code> will not
+automatically apply to <code>https://</code>, though typing just the
+domain name into the exception manager will usually create rules for
+both.</p>
+<p>Furthermore, Firefox utilizes Total Cookie Protection, which confines
+cookies to the site where they were created. If you add
+<code>example.com</code> to your exceptions list, third-party trackers
+embedded on <code>example.com</code> cannot use that exception to track
+you across other websites that are not on your exception list.</p>
+<h2 id="how-to-configure-site-exceptions">How to Configure Site
+Exceptions</h2>
+<p>To set up automatic clearing with exceptions, follow these steps:</p>
+<ol type="1">
+<li>Open Firefox, click the menu button in the top-right corner, and
+select <strong>Settings</strong>.</li>
+<li>Click on <strong>Privacy &amp; Security</strong> in the left-hand
+menu.</li>
+<li>Scroll down to the <strong>Cookies and Site Data</strong>
+section.</li>
+<li>Check the box for <strong>Delete cookies and site data when Firefox
+is closed</strong>.</li>
+<li>Click the <strong>Manage Exceptions...</strong> button located
+directly to the right of that setting.</li>
+<li>In the address field, type the exact URL of the website you want to
+keep data for.</li>
+<li>Click <strong>Allow</strong>, then click <strong>Save
+Changes</strong> at the bottom of the prompt.</li>
+</ol>
+<p>Alternatively, you can add an exception while actively visiting a
+website by pressing <code>Ctrl + I</code> (on Windows/Linux) or
+<code>Cmd + I</code> (on macOS) to open the Page Info window, navigating
+to the <strong>Permissions</strong> tab, unchecking "Use Default" under
+<strong>Set Cookies</strong>, and selecting <strong>Allow</strong>.</p>
+<h2 id="avoiding-conflicts-with-history-settings">Avoiding Conflicts
+with History Settings</h2>
+<p>A common issue users face is having their exception list ignored when
+Firefox closes. This happens when a secondary setting in the
+<strong>History</strong> section conflicts with the <strong>Cookies and
+Site Data</strong> section.</p>
+<p>If you scroll down to the <strong>History</strong> section in your
+Privacy &amp; Security settings and have Firefox set to "Use custom
+settings for history," you will see a checkbox for <strong>Clear history
+when Firefox closes</strong>. If you enable this and click the
+<strong>Settings...</strong> button next to it, ensure that
+<strong>Cookies</strong> and <strong>Offline Website Data</strong> are
+unchecked, or ensure you are using an updated version of Firefox that
+merges these rules. In older versions of Firefox, checking "Cookies" in
+the History clearing settings acts as a master wipe, deleting everything
+upon exit and ignoring the exceptions you configured in the Cookies and
+Site Data section.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-cookie-clearing-site-exceptions-work';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HarfBuzz: Powering Complex Typography in Firefox - firefox</title>
+    <meta name="description" content="This article provides an overview of the critical role the HarfBuzz text shaping engine plays within the Mozilla Firefox web browser. It explains the concept of text shaping, how HarfBuzz translates raw Unicode text into correctly positioned visual glyphs">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/harf-buzz-powering-complex-typography-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HarfBuzz: Powering Complex Typography in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/harf-buzz-powering-complex-typography-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of the critical role the HarfBuzz text shaping engine plays within the Mozilla Firefox web browser. It explains the concept of text shaping, how HarfBuzz translates raw Unicode text into correctly positioned visual glyphs" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="harfbuzz-powering-complex-typography-in-firefox">HarfBuzz:
+Powering Complex Typography in Firefox</h1>
+<p>This article provides an overview of the critical role the HarfBuzz
+text shaping engine plays within the Mozilla Firefox web browser. It
+explains the concept of text shaping, how HarfBuzz translates raw
+Unicode text into correctly positioned visual glyphs, its management of
+complex non-Latin scripts and advanced OpenType features, and where it
+sits within Firefox’s broader graphics rendering pipeline to deliver
+accurate web typography.</p>
+<h2 id="what-is-text-shaping">What is Text Shaping?</h2>
+<p>When a web page loads in Firefox, the text is initially received as a
+string of Unicode characters. However, fonts do not contain Unicode
+characters; they contain visual shapes called glyphs. Text shaping is
+the process of converting a sequence of Unicode characters into a
+properly arranged sequence of glyphs.</p>
+<p>For basic English text, this process is relatively straightforward,
+as one character usually equals one glyph placed side-by-side. However,
+for complex typography and many global languages, a simple one-to-one
+mapping fails. This is where HarfBuzz steps in as Firefox's dedicated
+text shaping engine.</p>
+<h2 id="rendering-global-and-complex-scripts">Rendering Global and
+Complex Scripts</h2>
+<p>HarfBuzz is essential for making the web accessible to users around
+the world. Many writing systems require intricate rules to be legible,
+which HarfBuzz executes automatically:</p>
+<ul>
+<li><strong>Contextual Shaping:</strong> In scripts like Arabic, a
+letter changes its visual shape depending on whether it appears at the
+beginning, middle, or end of a word, or in isolation. HarfBuzz analyzes
+the surrounding characters and selects the correct glyph form.</li>
+<li><strong>Ligatures:</strong> In many languages, including Indic
+scripts like Devanagari, combining two or more consonants often results
+in an entirely new, merged glyph shape. Even in Latin scripts,
+combinations like "fi" or "fl" are often merged into a single glyph to
+improve appearance.</li>
+<li><strong>Character Reordering:</strong> In several South and
+Southeast Asian scripts, a vowel might be pronounced after a consonant,
+and therefore typed after it in Unicode, but visually it must be drawn
+<em>before</em> or <em>around</em> the consonant. HarfBuzz reorders
+these glyphs before Firefox draws them on the screen.</li>
+<li><strong>Diacritic and Mark Positioning:</strong> Languages like
+Vietnamese or Hebrew rely heavily on accent marks and vowel points
+placed above, below, or inside base characters. HarfBuzz calculates the
+exact X and Y coordinates to anchor these marks without overlapping or
+colliding with other glyphs.</li>
+</ul>
+<h2 id="enabling-advanced-opentype-features">Enabling Advanced OpenType
+Features</h2>
+<p>Beyond linguistic necessity, HarfBuzz allows Firefox to support rich
+typographic styling defined by web designers via CSS. Modern OpenType
+fonts contain internal lookup tables—specifically the Glyph Substitution
+(GSUB) and Glyph Positioning (GPOS) tables.</p>
+<p>HarfBuzz reads these font tables and applies them based on CSS
+properties such as <code>font-kerning</code>, <code>font-variant</code>,
+and <code>font-feature-settings</code>. This allows Firefox to
+accurately render:</p>
+<ul>
+<li><strong>Kerning:</strong> Adjusting the space between specific pairs
+of letters (like "A" and "V") so the spacing looks optically even.</li>
+<li><strong>Fractions and Numerals:</strong> Converting standard numbers
+and slashes (1/2) into proper diagonal fractions, or switching between
+tabular and old-style figures.</li>
+<li><strong>Stylistic Alternates:</strong> Swapping standard letters for
+decorative swashes, small caps, or historical forms requested by the
+webpage's stylesheet.</li>
+<li><strong>Emoji Sequences:</strong> Combining multiple Unicode
+points—such as a base person emoji, a skin tone modifier, and a
+microscope—joined by Zero-Width Joiners (ZWJ) into a single "scientist"
+emoji glyph.</li>
+</ul>
+<h2 id="how-harfbuzz-fits-into-firefoxs-pipeline">How HarfBuzz Fits into
+Firefox's Pipeline</h2>
+<p>HarfBuzz does not actually draw pixels on the screen; it is strictly
+a layout calculator for text. Within Firefox's Gecko rendering engine,
+text rendering follows a strict pipeline:</p>
+<ol type="1">
+<li><strong>Parsing and Styling:</strong> Firefox reads the HTML and CSS
+to determine what text needs to be displayed and which font files to
+use.</li>
+<li><strong>Itemization:</strong> Firefox breaks paragraphs down into
+smaller chunks called "text runs," which share the same font, size,
+language, and direction (Left-to-Right or Right-to-Left).</li>
+<li><strong>Shaping (HarfBuzz):</strong> Firefox passes the text run and
+the font data to HarfBuzz. HarfBuzz processes the font's internal tables
+and returns a list of specific Glyph IDs along with exact X and Y
+positioning offsets and advance widths.</li>
+<li><strong>Rasterization:</strong> Firefox takes the coordinates
+provided by HarfBuzz and hands them over to platform-specific
+rasterizers (such as DirectWrite on Windows, CoreText on macOS, or
+FreeType on Linux) and its GPU-accelerated compositor, WebRender, to
+actually paint the pixels onto the monitor.</li>
+</ol>
+<p>By isolating the complex math of typography into HarfBuzz, Firefox
+ensures that text is shaped consistently across all operating systems.
+Because HarfBuzz is written in heavily optimized C++, it performs these
+thousands of lookups and coordinate calculations in microseconds,
+allowing Firefox to render text-heavy webpages smoothly and
+accurately.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/harf-buzz-powering-complex-typography-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

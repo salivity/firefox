@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspecting JS Properties with Firefox DOM Property Viewer - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of how the DOM Property Viewer in the Firefox Developer Tools inspects JavaScript properties attached to a selected HTML element. You will learn how the tool bridges the gap between static HTML markup and dyn">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/inspecting-js-properties-with-firefox-dom-property-viewer">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Inspecting JS Properties with Firefox DOM Property Viewer - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/inspecting-js-properties-with-firefox-dom-property-viewer" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of how the DOM Property Viewer in the Firefox Developer Tools inspects JavaScript properties attached to a selected HTML element. You will learn how the tool bridges the gap between static HTML markup and dyn" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="inspecting-js-properties-with-firefox-dom-property-viewer">Inspecting
+JS Properties with Firefox DOM Property Viewer</h1>
+<p>This article provides a comprehensive overview of how the DOM
+Property Viewer in the Firefox Developer Tools inspects JavaScript
+properties attached to a selected HTML element. You will learn how the
+tool bridges the gap between static HTML markup and dynamic JavaScript
+objects, how to trigger the inspection of a specific node, how the
+viewer organizes the JavaScript prototype chain, and how it safely
+evaluates live property values and getters during the debugging
+process.</p>
+<h3 id="mapping-html-elements-to-javascript-objects">Mapping HTML
+Elements to JavaScript Objects</h3>
+<p>When a webpage loads, the browser parses the HTML markup and builds
+the Document Object Model (DOM). Behind the scenes, Firefox’s JavaScript
+engine (SpiderMonkey) represents every HTML element as a JavaScript
+object.</p>
+<p>When you select an HTML element in the Firefox Inspector, the
+Developer Tools assign a temporary reference to that element, known as
+<code>$0</code>. To inspect its JavaScript properties, you can
+right-click the highlighted HTML node in the Inspector and select
+<strong>Show DOM Properties</strong>. This action opens the split
+console and automatically passes the selected element into the
+inspection viewer. Instead of showing standard HTML attributes (like
+<code>class="header"</code>), the viewer queries the JavaScript engine
+for the underlying object's memory reference and retrieves all keys,
+values, and methods bound to that specific instance.</p>
+<h3 id="traversing-the-prototype-chain">Traversing the Prototype
+Chain</h3>
+<p>JavaScript uses prototypal inheritance, meaning a single HTML element
+inherits properties and methods from a hierarchy of parent objects. The
+Firefox property viewer inspects the selected element by walking up this
+prototype chain and grouping the properties accordingly.</p>
+<p>When you expand the inspected element, you will see its direct
+properties listed alphabetically, followed by a
+<code>&lt;prototype&gt;</code> property. Expanding the
+<code>&lt;prototype&gt;</code> reveals the inheritance hierarchy, which
+typically follows this exact path:</p>
+<ol type="1">
+<li><strong>Element-Specific Prototype:</strong> Properties unique to
+that tag (e.g., <code>HTMLInputElementPrototype</code> or
+<code>HTMLDivElementPrototype</code>).</li>
+<li><strong>HTMLElementPrototype:</strong> Properties shared by all HTML
+elements, such as <code>innerText</code>, <code>offsetHeight</code>, and
+<code>dataset</code>.</li>
+<li><strong>ElementPrototype:</strong> General XML/HTML element
+properties like <code>classList</code>, <code>clientWidth</code>, and
+<code>getAttribute()</code>.</li>
+<li><strong>NodePrototype:</strong> DOM tree properties such as
+<code>childNodes</code>, <code>parentNode</code>, and
+<code>textContent</code>.</li>
+<li><strong>EventTargetPrototype:</strong> Event-handling methods
+including <code>addEventListener()</code> and
+<code>dispatchEvent()</code>.</li>
+<li><strong>Object:</strong> The base JavaScript object methods like
+<code>hasOwnProperty()</code> and <code>toString()</code>.</li>
+</ol>
+<p>By segmenting properties into these collapsible prototype levels,
+Firefox makes it clear whether a property is defined directly on the
+element by a script or inherited natively from the browser's DOM
+specification.</p>
+<h3 id="evaluating-live-values-and-nested-objects">Evaluating Live
+Values and Nested Objects</h3>
+<p>Unlike the HTML Inspector, which shows the static markup structure,
+the DOM Property Viewer reads the live state of the element's JavaScript
+properties at the exact moment of inspection.</p>
+<ul>
+<li><strong>Primitive Values:</strong> Strings, numbers, and booleans
+(such as an input element's current <code>value</code>, or its
+<code>scrollTop</code> position) are displayed immediately next to the
+property name.</li>
+<li><strong>Nested Objects:</strong> Properties that return other
+objects—such as <code>style</code> (a <code>CSSStyleDeclaration</code>
+object), <code>dataset</code> (a <code>DOMStringMap</code>), or
+<code>children</code> (an <code>HTMLCollection</code>)—are rendered with
+an expandable arrow. Clicking the arrow prompts the viewer to fetch the
+child properties of that sub-object on demand, saving memory by not
+loading the entire DOM tree at once.</li>
+</ul>
+<h3 id="safely-handling-javascript-getters">Safely Handling JavaScript
+Getters</h3>
+<p>Many DOM properties are not simple static values; they are
+"getters"—functions that execute code to calculate and return a value
+when accessed. To prevent the inspection process from accidentally
+triggering side effects or altering the state of your web application,
+the viewer does not always evaluate custom or complex getters
+automatically.</p>
+<p>Instead, it identifies these properties and displays a small
+<strong>Invoke getter</strong> button (often represented by a
+<code>&gt;&gt;</code> icon) next to the property name. When you click
+this button, Firefox executes the getter function in the context of the
+selected HTML element and replaces the button with the newly returned
+value.</p>
+<h3 id="filtering-and-interacting-with-properties">Filtering and
+Interacting with Properties</h3>
+<p>Because a standard HTML element inherits hundreds of properties and
+methods, the DOM Property Viewer provides interactive tools to manage
+the data:</p>
+<ul>
+<li><strong>Searching:</strong> If you use the standalone
+<strong>DOM</strong> tab in the Developer Tools toolbar, a filter bar at
+the top allows you to type a string and dynamically hide any properties
+that do not match your query.</li>
+<li><strong>Modifying Values:</strong> While most native DOM properties
+are read-only, custom JavaScript properties attached to the element by
+your scripts can often be edited directly or manipulated via the console
+using the <code>$0.propertyName</code> syntax.</li>
+<li><strong>Context Menu Actions:</strong> Right-clicking any inspected
+property allows you to copy its exact value, copy the property path to
+your clipboard, or store the specific property as a global variable
+(e.g., <code>temp0</code>) for further testing in the Web Console.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/inspecting-js-properties-with-firefox-dom-property-viewer';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

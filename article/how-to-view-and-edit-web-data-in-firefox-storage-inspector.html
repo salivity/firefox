@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to View and Edit Web Data in Firefox Storage Inspector - firefox</title>
+    <meta name="description" content="The Firefox Storage Inspector is a built-in developer tool that allows you to inspect, modify, and delete various types of client-side web data stored by a webpage. This article provides a comprehensive overview of how to access the Storage Inspector and">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-view-and-edit-web-data-in-firefox-storage-inspector">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to View and Edit Web Data in Firefox Storage Inspector - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-view-and-edit-web-data-in-firefox-storage-inspector" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Firefox Storage Inspector is a built-in developer tool that allows you to inspect, modify, and delete various types of client-side web data stored by a webpage. This article provides a comprehensive overview of how to access the Storage Inspector and" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-view-and-edit-web-data-in-firefox-storage-inspector">How
+to View and Edit Web Data in Firefox Storage Inspector</h1>
+<p>The Firefox Storage Inspector is a built-in developer tool that
+allows you to inspect, modify, and delete various types of client-side
+web data stored by a webpage. This article provides a comprehensive
+overview of how to access the Storage Inspector and use its interface to
+view and manage Cookies, Local Storage, Session Storage, Cache Storage,
+and IndexedDB directly within the browser.</p>
+<h3 id="accessing-the-storage-inspector">Accessing the Storage
+Inspector</h3>
+<p>To begin managing web storage, open the page you want to inspect in
+Firefox. You can open the Storage Inspector directly by pressing
+<code>Shift + F9</code> on your keyboard. Alternatively, open the
+Firefox Developer Tools by pressing <code>F12</code> (or
+<code>Cmd + Opt + I</code> on macOS, <code>Ctrl + Shift + I</code> on
+Windows/Linux) and click on the <strong>Storage</strong> tab at the top
+of the panel.</p>
+<p>The Storage Inspector is divided into three main sections: the
+Storage Tree on the left (listing the storage types and origins), the
+Table Widget in the center (displaying the data), and the Sidebar on the
+right (showing parsed data for a selected item).</p>
+<h3 id="managing-cookies">Managing Cookies</h3>
+<p>Cookies are small pieces of data sent from a website and stored on
+the user's computer.</p>
+<ul>
+<li><strong>Viewing:</strong> In the left pane, expand the
+<strong>Cookies</strong> node and click on the listed domain. The center
+table will populate with all cookies for that domain, displaying columns
+for Name, Value, Domain, Path, Expires, Size, HttpOnly, Secure, and
+SameSite. Clicking on any cookie opens the right-hand sidebar, which
+displays the value in an easy-to-read format, even parsing JSON-like
+structures automatically.</li>
+<li><strong>Editing:</strong> You can edit almost any attribute of a
+cookie directly. Double-click the cell you wish to change (such as the
+Name, Value, or HttpOnly status), type the new information, and press
+<code>Enter</code> to save it.</li>
+<li><strong>Adding and Deleting:</strong> To create a new cookie, click
+the <code>+</code> (Plus) button at the top of the table, which
+generates a default cookie row that you can immediately edit. To remove
+cookies, right-click a specific row and select <strong>Delete "Cookie
+Name"</strong>, <strong>Delete All From "Domain"</strong>, or
+<strong>Delete All Session Cookies</strong>.</li>
+</ul>
+<h3 id="managing-local-storage-and-session-storage">Managing Local
+Storage and Session Storage</h3>
+<p>Local Storage and Session Storage store data as simple key-value
+pairs. Local Storage persists even after the browser is closed, while
+Session Storage is cleared when the page session ends. Because they
+function similarly, the Storage Inspector handles them the same way.</p>
+<ul>
+<li><strong>Viewing:</strong> Expand either <strong>Local
+Storage</strong> or <strong>Session Storage</strong> in the left pane
+and select the origin URL. The center table will display two columns:
+<strong>Key</strong> and <strong>Value</strong>. If a value contains
+complex data like a JSON object or an array, clicking the row will open
+the right-hand sidebar, presenting the data in an expandable,
+collapsible tree view.</li>
+<li><strong>Editing:</strong> To modify existing data, double-click
+either the Key or the Value cell in the center table. Input your changes
+and press <code>Enter</code> to apply them immediately to the browser's
+storage.</li>
+<li><strong>Adding and Deleting:</strong> Click the <code>+</code>
+button in the top toolbar of the Storage Inspector to insert a new
+key-value pair. To remove data, right-click on an entry and choose
+<strong>Delete "Key Name"</strong> or <strong>Delete All</strong> to
+wipe the storage for that origin completely.</li>
+</ul>
+<h3 id="managing-cache-storage">Managing Cache Storage</h3>
+<p>Cache Storage is utilized by Service Workers to store network request
+and response pairs for offline use or faster loading times.</p>
+<ul>
+<li><strong>Viewing:</strong> Expand the <strong>Cache Storage</strong>
+node in the left pane. Below it, you will see the origin URL; expand
+this to view the individually named caches created by the website.
+Clicking a specific cache populates the center table with the cached
+URLs, alongside details like the response status (e.g., 200 OK), content
+type, and file size.</li>
+<li><strong>Editing and Deleting:</strong> Because Cache Storage holds
+complete network responses (like HTML files, images, and scripts), you
+cannot inline-edit the contents of a cached file via the table. However,
+you can manage the cache's state. Right-click any cached URL in the
+table and select <strong>Delete "URL"</strong> to remove that specific
+asset. You can also right-click the named cache in the left-hand tree
+and select <strong>Delete All</strong> to clear the entire cache
+container.</li>
+</ul>
+<h3 id="managing-indexeddb">Managing IndexedDB</h3>
+<p>IndexedDB is a low-level API for client-side storage of significant
+amounts of structured data, including files and blobs.</p>
+<ul>
+<li><strong>Viewing:</strong> In the left pane, expand the
+<strong>IndexedDB</strong> node. You will need to expand multiple
+levels: first the origin URL, then the specific Database name, and
+finally the Object Store (which is similar to a table in a traditional
+database). Selecting the database itself displays metadata like the
+version and object store count. Selecting an Object Store populates the
+center table with the stored Keys and Values. Clicking any row opens the
+right-hand sidebar to let you inspect the deeply nested JavaScript
+objects stored within that entry.</li>
+<li><strong>Editing and Deleting:</strong> The Firefox Storage Inspector
+does not currently support inline editing of IndexedDB values;
+modifications to existing values must be executed via JavaScript in the
+Web Console. However, you have full control over deleting data.
+Right-click a specific row in an Object Store to <strong>Delete
+"Key"</strong>, or right-click the Object Store in the left pane and
+select <strong>Delete All</strong> to empty it. You can also right-click
+the database name in the left pane and select <strong>Delete
+"Database"</strong> to remove it entirely, provided the webpage does not
+have an active, blocking connection to it.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-view-and-edit-web-data-in-firefox-storage-inspector';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

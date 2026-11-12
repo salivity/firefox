@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TenFourFox: Keeping Firefox Alive on PowerPC Macs - firefox</title>
+    <meta name="description" content="This article explores the TenFourFox project, an ambitious open-source initiative that extended the lifespan of Apple&#39;s PowerPC Macintosh computers for over a decade. Following Apple and Mozilla&#39;s abandonment of the PowerPC architecture, TenFourFox provid">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/ten-four-fox-keeping-firefox-alive-on-power-pc-macs">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="TenFourFox: Keeping Firefox Alive on PowerPC Macs - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/ten-four-fox-keeping-firefox-alive-on-power-pc-macs" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the TenFourFox project, an ambitious open-source initiative that extended the lifespan of Apple&#39;s PowerPC Macintosh computers for over a decade. Following Apple and Mozilla&#39;s abandonment of the PowerPC architecture, TenFourFox provid" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="tenfourfox-keeping-firefox-alive-on-powerpc-macs">TenFourFox:
+Keeping Firefox Alive on PowerPC Macs</h1>
+<p>This article explores the TenFourFox project, an ambitious
+open-source initiative that extended the lifespan of Apple's PowerPC
+Macintosh computers for over a decade. Following Apple and Mozilla's
+abandonment of the PowerPC architecture, TenFourFox provided a secure,
+modern web browser for Mac OS X 10.4 Tiger and 10.5 Leopard. By
+utilizing custom code optimizations, processor-specific builds, and
+backported security protocols, the project successfully bridged the gap
+between vintage hardware and the rapidly evolving modern internet until
+its conclusion in 2021.</p>
+<h2 id="what-was-the-tenfourfox-project">What Was the TenFourFox
+Project?</h2>
+<p>In 2006, Apple began transitioning its Macintosh line from PowerPC
+processors (the G3, G4, and G5) to Intel processors. By 2009, Apple
+dropped PowerPC support entirely with the release of Mac OS X 10.6 Snow
+Leopard. Mozilla followed suit in 2010, announcing that Firefox 4 would
+no longer support PowerPC Macs or Mac OS X 10.4 (Tiger), leaving
+millions of functional computers without a modern, secure web
+browser.</p>
+<p>To solve this problem, developer Cameron Kaiser launched TenFourFox
+in late 2010. The name was a play on "10.4" (referring to Mac OS X
+Tiger) and Firefox. The project was a direct fork of the Mozilla Firefox
+source code, specifically engineered to run on PowerPC-based Macintosh
+systems running Mac OS X 10.4 and 10.5.</p>
+<h2 id="how-tenfourfox-worked-on-aging-hardware">How TenFourFox Worked
+on Aging Hardware</h2>
+<p>Keeping a modern web browser running on an abandoned operating system
+and a discontinued processor architecture required significant software
+engineering. The modern web is resource-heavy, and PowerPC Macs were
+rapidly falling behind in raw computing power. Kaiser and a small group
+of contributors used several specific techniques to keep the browser
+viable.</p>
+<h3 id="1-custom-javascript-just-in-time-jit-compilation">1. Custom
+JavaScript Just-In-Time (JIT) Compilation</h3>
+<p>Modern websites rely heavily on JavaScript. When Mozilla dropped
+PowerPC support, they also stopped developing a PowerPC-compatible
+JavaScript JIT compiler, which translates JavaScript into machine code
+on the fly for faster execution. Without it, browsing the web on a
+PowerPC Mac would have been unbearably slow.</p>
+<p>TenFourFox introduced its own custom-written PowerPC JIT compiler. It
+converted Mozilla’s JaegerMonkey and later IonMonkey JavaScript engines
+to work on PowerPC architecture. This single feature drastically
+increased browsing speeds and made modern web applications usable on
+vintage Macs.</p>
+<h3 id="2-processor-specific-builds-and-altivec-acceleration">2.
+Processor-Specific Builds and AltiVec Acceleration</h3>
+<p>Unlike standard software that comes in a single downloadable file for
+all computers, TenFourFox was distributed in multiple distinct versions
+tailored to specific PowerPC processors:</p>
+<ul>
+<li><strong>G3</strong></li>
+<li><strong>G4 (7400)</strong></li>
+<li><strong>G4 (7450/G4e)</strong></li>
+<li><strong>G5</strong></li>
+</ul>
+<p>By splitting the builds, the compiler could optimize the code for the
+exact cache sizes and instruction sets of each chip. Furthermore, for G4
+and G5 processors, TenFourFox heavily utilized "AltiVec" (branded by
+Apple as the Velocity Engine). AltiVec was a floating-point and integer
+vector instruction set unique to PowerPC. TenFourFox used AltiVec to
+accelerate media decoding, image rendering (like PNGs and JPEGs), and
+HTML5 video playback, offloading work that would otherwise choke the
+main CPU.</p>
+<h3 id="3-bridging-the-operating-system-gap">3. Bridging the Operating
+System Gap</h3>
+<p>As Mozilla updated Firefox, the browser's code increasingly relied on
+newer Apple programming interfaces (APIs) found only in newer versions
+of OS X. TenFourFox had to act as a translator. The project maintained
+an abstraction layer that intercepted calls for modern OS X features and
+rewrote them to use older equivalents available in Mac OS X 10.4 and
+10.5.</p>
+<h3 id="4-backporting-modern-security-and-web-standards">4. Backporting
+Modern Security and Web Standards</h3>
+<p>An outdated operating system lacks modern security certificates and
+encryption protocols, which prevents users from accessing secure
+(<code>https://</code>) websites. Because TenFourFox used Mozilla's
+built-in Network Security Services (NSS) rather than relying on Apple's
+outdated OS X security framework, it was able to support modern TLS 1.2
+and TLS 1.3 encryption. This allowed PowerPC Macs to safely access
+banks, email, and modern web services long after Apple's built-in Safari
+browser stopped connecting to them.</p>
+<h3 id="5-bypassing-rust-and-multiprocess-requirements">5. Bypassing
+Rust and Multiprocess Requirements</h3>
+<p>In its later years, Mozilla began rewriting core parts of Firefox in
+the Rust programming language and introduced a multiprocess architecture
+called "Electrolysis" (e10s). Neither Rust nor e10s worked properly on
+old PowerPC Macs.</p>
+<p>To keep TenFourFox alive, Kaiser froze the browser's core on an
+Extended Support Release (Firefox ESR 45) and manually backported
+security patches, JavaScript updates, and CSS features from newer
+versions of Firefox into this older framework. He also stripped out the
+multiprocess requirements, forcing the browser to run in a single
+process to conserve the limited RAM available on older Macs.</p>
+<h2 id="the-end-of-the-project">The End of the Project</h2>
+<p>TenFourFox officially ended active development in April 2021,
+coinciding with the 20th anniversary of Mac OS X. By that point, the
+modern web had become too bloated and complex for single-core and
+dual-core PowerPC processors to handle efficiently, regardless of
+software optimizations. Additionally, the structural differences between
+the modern Firefox codebase and the modified ESR 45 codebase made
+backporting security updates unsustainable for a single developer.
+Despite its end, TenFourFox remains one of the most successful
+retro-computing software projects in history, granting PowerPC Macs an
+extra decade of internet functionality.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/ten-four-fox-keeping-firefox-alive-on-power-pc-macs';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

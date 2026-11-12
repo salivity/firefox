@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overriding Styles in Firefox Using userContent.css - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how the userContent.css file in the Mozilla Firefox browser allows users to override the default styling of both external websites and internal about: pages. By enabling a hidden configuration preference, creat">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/overriding-styles-in-firefox-using-user-content-css">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Overriding Styles in Firefox Using userContent.css - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/overriding-styles-in-firefox-using-user-content-css" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how the userContent.css file in the Mozilla Firefox browser allows users to override the default styling of both external websites and internal about: pages. By enabling a hidden configuration preference, creat" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="overriding-styles-in-firefox-using-usercontentcss">Overriding
+Styles in Firefox Using userContent.css</h1>
+<p>This article provides a complete overview of how the
+<code>userContent.css</code> file in the Mozilla Firefox browser allows
+users to override the default styling of both external websites and
+internal <code>about:</code> pages. By enabling a hidden configuration
+preference, creating the stylesheet in the browser profile directory,
+and utilizing Mozilla-specific CSS rules, users can bypass standard web
+design constraints and customize their browsing experience.</p>
+<h2 id="how-the-override-mechanism-works">How the Override Mechanism
+Works</h2>
+<p>Web browsers render pages using a cascading hierarchy of stylesheets:
+browser defaults (user agent styles), user-defined styles, and website
+styles (author styles). Normally, website styles override user-defined
+styles.</p>
+<p>However, the CSS specification dictates that if a user-defined style
+includes the <code>!important</code> declaration, it takes absolute
+precedence over the website's styles—even if the website also uses
+<code>!important</code>. Firefox reads the <code>userContent.css</code>
+file at startup and injects its rules into every page load as a
+user-defined stylesheet, allowing you to force custom CSS onto any
+webpage.</p>
+<h2 id="step-1-enable-custom-stylesheets-in-firefox">Step 1: Enable
+Custom Stylesheets in Firefox</h2>
+<p>To optimize startup performance, Firefox does not look for the
+<code>userContent.css</code> file by default. You must manually tell the
+browser to load it.</p>
+<ol type="1">
+<li>Open Firefox, type <code>about:config</code> into the address bar,
+and press <strong>Enter</strong>.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>In the search bar at the top, type
+<code>toolkit.legacyUserProfileCustomizations.stylesheets</code>.</li>
+<li>Double-click the preference to change its value from
+<code>false</code> to <code>true</code>.</li>
+</ol>
+<h2 id="step-2-create-the-usercontentcss-file">Step 2: Create the
+userContent.css File</h2>
+<p>The file does not exist by default; you must create it inside your
+specific Firefox profile folder.</p>
+<ol type="1">
+<li>Type <code>about:support</code> in the Firefox address bar and press
+<strong>Enter</strong>.</li>
+<li>Locate the <strong>Profile Folder</strong> row under the Application
+Basics section and click the <strong>Open Folder</strong> button.</li>
+<li>Inside this profile directory, create a new folder and name it
+<code>chrome</code> (use all lowercase letters).</li>
+<li>Open the new <code>chrome</code> folder and create a new plain text
+file named <code>userContent.css</code> (case-sensitive).</li>
+</ol>
+<h2 id="step-3-override-specific-websites">Step 3: Override Specific
+Websites</h2>
+<p>If you write standard CSS directly into <code>userContent.css</code>,
+it will apply to every single website you visit. To restrict your CSS
+rules to specific websites, you must wrap your code in the
+Mozilla-specific <code>@-moz-document</code> at-rule.</p>
+<p>You can target sites using three primary functions inside this
+rule:</p>
+<ul>
+<li><code>domain()</code>: Affects the specified domain and all its
+subdomains.</li>
+<li><code>url()</code>: Affects only the exact web address
+specified.</li>
+<li><code>url-prefix()</code>: Affects any page that begins with the
+specified address.</li>
+</ul>
+<p>Open <code>userContent.css</code> in any text editor and add your
+rules. Remember to include <code>!important</code> after every property
+value to ensure it overrides the website's native CSS.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode css"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Applies to example.com and all its subdomains */</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">@-moz-document</span> domain<span class="fu">(</span><span class="st">&quot;example.com&quot;</span><span class="fu">)</span> {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    body {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#121212</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">color</span><span class="ch">:</span> <span class="cn">#e0e0e0</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.annoying-banner</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">display</span><span class="ch">:</span> <span class="dv">none</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">/* Applies only to a specific page */</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">@-moz-document</span> <span class="fu">url(</span><span class="st">&quot;https://www.wikipedia.org/&quot;</span><span class="fu">)</span> {</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.central-featured</span> {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">opacity</span><span class="ch">:</span> <span class="dv">0.5</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="step-4-override-internal-about-pages">Step 4: Override Internal
+<code>about:</code> Pages</h2>
+<p>For security reasons, Firefox blocks standard web extensions (like
+Stylus or Dark Reader) from modifying internal browser pages, such as
+the New Tab page, settings, or <code>about:config</code>. Because
+<code>userContent.css</code> operates natively at the browser level, it
+bypasses these security restrictions entirely.</p>
+<p>You can style internal pages using the exact same
+<code>@-moz-document</code> syntax by targeting their internal URLs.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode css"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Changes the background color of the New Tab and Home pages */</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">@-moz-document</span> <span class="fu">url(</span><span class="st">&quot;about:newtab&quot;</span><span class="fu">)</span>, <span class="fu">url(</span><span class="st">&quot;about:home&quot;</span><span class="fu">)</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    body {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#1e1e2e</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Hides the search bar on the New Tab page */</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.search-wrapper</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">display</span><span class="ch">:</span> <span class="dv">none</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">/* Modifies the Firefox Settings page */</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">@-moz-document</span> url-prefix<span class="fu">(</span><span class="st">&quot;about:preferences&quot;</span><span class="fu">)</span> {</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">.navigation</span> {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#000000</span> <span class="at">!important</span><span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="applying-your-changes">Applying Your Changes</h2>
+<p>Firefox only reads the <code>userContent.css</code> file when the
+application first launches. Whenever you add, remove, or edit rules
+inside the file, you must save the document and completely restart the
+Firefox browser for your changes to take effect. To find the exact CSS
+selectors (classes and IDs) needed for your overrides, right-click on
+any webpage or <code>about:</code> page, select
+<strong>Inspect</strong>, and use the Firefox Developer Tools to examine
+the page's HTML structure.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/overriding-styles-in-firefox-using-user-content-css';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

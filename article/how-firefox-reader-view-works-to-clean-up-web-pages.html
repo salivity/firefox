@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Reader View Works to Clean Up Web Pages - firefox</title>
+    <meta name="description" content="Firefox’s Reader View transforms cluttered web pages into clean, readable text by using an open-source JavaScript library called Readability.js. When activated, this tool analyzes the underlying structure of a webpage, assigns scores to different sections">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-reader-view-works-to-clean-up-web-pages">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Reader View Works to Clean Up Web Pages - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-reader-view-works-to-clean-up-web-pages" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox’s Reader View transforms cluttered web pages into clean, readable text by using an open-source JavaScript library called Readability.js. When activated, this tool analyzes the underlying structure of a webpage, assigns scores to different sections" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-reader-view-works-to-clean-up-web-pages">How Firefox
+Reader View Works to Clean Up Web Pages</h1>
+<p>Firefox’s Reader View transforms cluttered web pages into clean,
+readable text by using an open-source JavaScript library called
+Readability.js. When activated, this tool analyzes the underlying
+structure of a webpage, assigns scores to different sections based on
+text density and HTML tags, and isolates the highest-scoring section as
+the main article. Once the core text is identified, Firefox strips away
+the original website's styling, scripts, advertisements, and sidebars,
+injecting the remaining raw content into a minimalist template that
+users can customize for optimal reading.</p>
+<h2 id="1-cloning-the-webpage">1. Cloning the Webpage</h2>
+<p>When you load a webpage, Firefox does not alter the live page
+directly. Instead, it creates a hidden copy of the page's Document
+Object Model (DOM), which is the structural map of the webpage. Working
+on a clone ensures that the original page remains intact in case you
+exit Reader View, and it allows the browser to aggressively delete
+elements without breaking the live site.</p>
+<h2 id="2-removing-obvious-clutter">2. Removing Obvious Clutter</h2>
+<p>Before looking for the article, the Readability algorithm performs a
+broad sweep to delete elements that never contain main article text. It
+immediately strips out:</p>
+<ul>
+<li>All <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code> tags,
+removing tracking codes, interactive ads, and the website's visual
+formatting.</li>
+<li>Hidden elements that are not visible to the user.</li>
+<li>Specific HTML tags associated with clutter, such as
+<code>&lt;nav&gt;</code>, <code>&lt;footer&gt;</code>,
+<code>&lt;aside&gt;</code>, and <code>&lt;form&gt;</code>.</li>
+</ul>
+<h2 id="3-scoring-the-content">3. Scoring the Content</h2>
+<p>To find the actual article among the remaining HTML, Firefox uses a
+heuristic scoring system. It scans the page for block-level
+elements—primarily <code>&lt;p&gt;</code> (paragraph),
+<code>&lt;div&gt;</code>, and <code>&lt;article&gt;</code> tags—and
+grades them based on their likelihood of being the main content.</p>
+<p><strong>Points are added for:</strong></p>
+<ul>
+<li>Semantic HTML tags or class names that contain words like "article",
+"body", "content", or "main".</li>
+<li>High character counts within paragraphs.</li>
+<li>The presence of multiple commas, which strongly indicates natural,
+written sentences rather than navigation menus or ad copy.</li>
+</ul>
+<p><strong>Points are deducted for:</strong></p>
+<ul>
+<li>Class names or IDs containing words like "comment", "sidebar",
+"footer", "promo", "ad", or "widget".</li>
+<li>High "link density." If a block of text consists mostly of clickable
+links rather than plain text, the algorithm assumes it is a navigation
+menu, a list of related articles, or a sidebar, and penalizes it
+heavily.</li>
+</ul>
+<h2 id="4-isolating-the-main-article">4. Isolating the Main Article</h2>
+<p>As paragraphs are scored, their points are passed up to their parent
+containers (the <code>&lt;div&gt;</code> or <code>&lt;section&gt;</code>
+boxes that hold them). The parent container that accumulates the highest
+total score is declared the winner and is identified as the main body of
+the article. Everything outside of this winning container is completely
+discarded.</p>
+<h2 id="5-secondary-cleanup">5. Secondary Cleanup</h2>
+<p>Even inside the winning article container, websites often embed
+inline advertisements, "Read More" links, and social media sharing
+buttons. Firefox runs a second pass inside the winning container to
+clean it up. It removes empty tags, strips out inline styling
+attributes, and deletes sub-containers that have a high link density or
+suspicious class names. It also extracts the article's title, author,
+and publication date from the page's metadata to display neatly at the
+top.</p>
+<h2 id="6-applying-the-reader-view-template">6. Applying the Reader View
+Template</h2>
+<p>Finally, Firefox takes the purified HTML—which now consists only of
+headings, paragraphs, blockquotes, and essential images—and places it
+into a brand-new, isolated document. Firefox applies its own internal
+Cascading Style Sheets (CSS) to this document. This default stylesheet
+provides a uniform font, wide margins, and a distraction-free
+background, while connecting the text to the Reader View sidebar
+controls so you can adjust text size, font type, and color themes.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-reader-view-works-to-clean-up-web-pages';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

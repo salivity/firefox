@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox WebDriver BiDi Implementation for Test Frameworks - firefox</title>
+    <meta name="description" content="This article provides an overview of how the WebDriver BiDi (Bidirectional) automation protocol is architected and implemented within the Mozilla Firefox browser. It explains how Firefox handles low-latency, two-way communication using its internal Remote">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-web-driver-bi-di-implementation-for-test-frameworks">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox WebDriver BiDi Implementation for Test Frameworks - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-web-driver-bi-di-implementation-for-test-frameworks" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how the WebDriver BiDi (Bidirectional) automation protocol is architected and implemented within the Mozilla Firefox browser. It explains how Firefox handles low-latency, two-way communication using its internal Remote" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="firefox-webdriver-bidi-implementation-for-test-frameworks">Firefox
+WebDriver BiDi Implementation for Test Frameworks</h1>
+<p>This article provides an overview of how the WebDriver BiDi
+(Bidirectional) automation protocol is architected and implemented
+within the Mozilla Firefox browser. It explains how Firefox handles
+low-latency, two-way communication using its internal Remote Agent,
+routes commands across a multi-process environment via the
+MessageHandler framework, hooks into native Gecko APIs, and ultimately
+enables modern testing frameworks like Puppeteer and Playwright to
+automate the browser without relying on proprietary protocols.</p>
+<h2 id="the-role-of-the-firefox-remote-agent">The Role of the Firefox
+Remote Agent</h2>
+<p>At the core of Firefox's WebDriver BiDi implementation is an internal
+component called the Remote Agent. Historically, browser automation via
+WebDriver Classic relied on an external binary (Geckodriver) translating
+HTTP requests into Firefox's internal Marionette protocol. WebDriver
+BiDi requires a fast, persistent, two-way connection so the browser can
+push events (like console logs or network requests) to the testing
+script the moment they happen.</p>
+<p>When Firefox is launched in automation mode, the Remote Agent spins
+up an embedded HTTP server directly inside the browser. When a testing
+framework initiates a BiDi session, the Remote Agent upgrades the HTTP
+connection to a WebSocket connection. This WebSocket serves as the
+bidirectional pipeline for receiving JSON-RPC commands from the test
+runner and emitting asynchronous browser events back to it.</p>
+<h2 id="multi-process-routing-via-the-messagehandler">Multi-Process
+Routing via the MessageHandler</h2>
+<p>Modern Firefox uses a multi-process architecture (known as Project
+Fission) to isolate web content for security and stability. A single
+browser session consists of a main Parent Process and multiple Content
+Processes for different tabs and cross-origin iframes.</p>
+<p>To execute WebDriver BiDi commands across these isolated processes,
+Firefox engineers built the <code>MessageHandler</code> framework:</p>
+<ol type="1">
+<li><strong>The Root Scope:</strong> The WebSocket connection terminates
+in the Parent Process. A Root <code>MessageHandler</code> receives the
+incoming JSON-RPC payload, validates it, and determines where the
+command needs to be executed.</li>
+<li><strong>Inter-Process Communication (IPC):</strong> If a command
+handles browser-wide tasks (like intercepting network traffic or
+creating a new tab), it stays in the Parent Process. If it interacts
+with a webpage (like evaluating JavaScript or extracting DOM elements),
+the Root <code>MessageHandler</code> forwards the command to the
+appropriate Content Process using Firefox’s <code>JSWindowActor</code>
+IPC mechanism.</li>
+<li><strong>The WindowGlobal Scope:</strong> Inside the Content Process,
+a <code>WindowGlobal</code> <code>MessageHandler</code> receives the
+forwarded command, executes it against the specific frame or document,
+and sends the result back up to the Parent Process, which relays it over
+the WebSocket.</li>
+</ol>
+<p>This architecture also works in reverse for events. When a test
+script subscribes to an event (such as <code>log.entryAdded</code>), the
+Root <code>MessageHandler</code> broadcasts this subscription to all
+existing and future Content Processes. When a webpage logs to the
+console, the Content Process captures it and pushes the data up to the
+Parent Process to be sent to the testing framework.</p>
+<h2 id="mapping-bidi-modules-to-gecko-internals">Mapping BiDi Modules to
+Gecko Internals</h2>
+<p>The WebDriver BiDi specification is divided into distinct modules,
+such as <code>session</code>, <code>browsingContext</code>,
+<code>script</code>, <code>network</code>, and <code>log</code>. In
+Firefox, each module is implemented as an isolated JavaScript class
+within the <code>MessageHandler</code> ecosystem that interfaces
+directly with Gecko (Firefox's layout engine) and SpiderMonkey
+(Firefox's JavaScript engine).</p>
+<ul>
+<li><strong>Network Module:</strong> Implemented in the Parent Process,
+this module hooks directly into Necko, Firefox's networking library. It
+observes HTTP channels to report request and response data, and allows
+test frameworks to intercept, modify, or fail network requests on the
+fly.</li>
+<li><strong>Script and Log Modules:</strong> Implemented primarily in
+the Content Process, these modules utilize the <code>Debugger</code> API
+provided by SpiderMonkey. This is the same underlying API used by the
+Firefox DevTools. It allows the BiDi implementation to evaluate scripts
+in specific sandboxes, manage object references (handles), and listen
+for uncaught exceptions and console API calls.</li>
+<li><strong>BrowsingContext Module:</strong> This module spans both
+Parent and Content processes to manage tabs, windows, and iframes. It
+listens to internal Gecko window management and navigation events to
+accurately report when a page has started loading, when the
+DOMContentLoaded event fires, and when navigation is complete.</li>
+</ul>
+<h2 id="integration-with-puppeteer-and-playwright">Integration with
+Puppeteer and Playwright</h2>
+<p>Testing frameworks like Puppeteer and Playwright require low-level
+control and event-driven architecture to prevent flaky tests.
+Previously, achieving this in Firefox required workarounds: Puppeteer
+relied on an experimental, incomplete implementation of the Chrome
+DevTools Protocol (CDP) built into Firefox, while Playwright maintained
+a heavily patched, custom build of Firefox using a proprietary juggler
+protocol.</p>
+<p>WebDriver BiDi unifies this landscape by offering a standardized
+protocol natively inside stock Firefox:</p>
+<ul>
+<li><strong>Puppeteer:</strong> Puppeteer now uses WebDriver BiDi as its
+default way to automate Firefox. When Puppeteer launches Firefox, it
+connects to the Remote Agent's WebSocket endpoint. Puppeteer’s internal
+BiDi adapter translates high-level Puppeteer API calls (like
+<code>page.goto()</code> or <code>page.evaluate()</code>) directly into
+standard WebDriver BiDi JSON-RPC payloads.</li>
+<li><strong>Playwright:</strong> The implementation of BiDi in Firefox
+provides the exact primitives Playwright needs—such as execution context
+tracking, network interception, and realm isolation—natively in the
+browser. This allows Playwright to transition toward using standard
+Firefox releases via WebDriver BiDi rather than maintaining custom
+browser forks.</li>
+</ul>
+<h2 id="hybrid-execution-with-geckodriver">Hybrid Execution with
+Geckodriver</h2>
+<p>While Puppeteer and Playwright communicate exclusively over
+WebSockets, other tools (like Selenium) use a mix of traditional HTTP
+WebDriver commands and modern BiDi commands. Firefox supports this
+hybrid model through Geckodriver. When a session is started via
+Geckodriver with the <code>"webSocketUrl": true</code> capability,
+Geckodriver launches Firefox, negotiates the connection with the
+internal Remote Agent, and acts as a proxy. This allows test runners to
+use legacy commands alongside real-time BiDi event listeners in the
+exact same browsing session.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-web-driver-bi-di-implementation-for-test-frameworks';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

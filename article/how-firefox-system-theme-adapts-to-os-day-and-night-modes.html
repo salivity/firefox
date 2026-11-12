@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox System Theme Adapts to OS Day and Night Modes - firefox</title>
+    <meta name="description" content="This article explains how the System Theme setting in the Mozilla Firefox web browser automatically synchronizes its appearance with your operating system&#39;s day and night schedule. We will cover the underlying mechanism that allows Firefox to detect syste">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-system-theme-adapts-to-os-day-and-night-modes">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox System Theme Adapts to OS Day and Night Modes - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-system-theme-adapts-to-os-day-and-night-modes" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the System Theme setting in the Mozilla Firefox web browser automatically synchronizes its appearance with your operating system&#39;s day and night schedule. We will cover the underlying mechanism that allows Firefox to detect syste" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-system-theme-adapts-to-os-day-and-night-modes">How
+Firefox System Theme Adapts to OS Day and Night Modes</h1>
+<p>This article explains how the System Theme setting in the Mozilla
+Firefox web browser automatically synchronizes its appearance with your
+operating system's day and night schedule. We will cover the underlying
+mechanism that allows Firefox to detect system-level color changes, how
+this affects both the browser interface and the websites you visit, and
+the steps required to configure this seamless transition on your
+device.</p>
+<h3 id="the-core-mechanism-os-integration">The Core Mechanism: OS
+Integration</h3>
+<p>Firefox does not have a built-in clock to track sunrise and sunset
+for its default themes. Instead, the "System theme — auto" setting
+relies entirely on communication with your device's operating system
+(Windows, macOS, Linux, iOS, or Android).</p>
+<p>Modern operating systems use Application Programming Interfaces
+(APIs) to broadcast system-wide settings to installed applications. When
+you select the System Theme, Firefox actively listens to these OS-level
+APIs. The moment your operating system switches from Light Mode to Dark
+Mode based on its internal schedule, it sends a signal to all open
+applications. Firefox catches this signal and instantly swaps its color
+palette without requiring a browser restart.</p>
+<h3 id="impact-on-the-browser-interface">Impact on the Browser
+Interface</h3>
+<p>When the operating system triggers a schedule change, Firefox updates
+its "chrome"—the visual elements that frame the webpages you view. This
+includes:</p>
+<ul>
+<li>The tab bar and background tabs.</li>
+<li>The address bar and search bar.</li>
+<li>The bookmarks toolbar and sidebar.</li>
+<li>Built-in Firefox pages, such as the New Tab page, Settings menu, and
+History manager.</li>
+<li>Context menus (right-click menus) and drop-down lists.</li>
+</ul>
+<h3 id="impact-on-websites-css-media-queries">Impact on Websites (CSS
+Media Queries)</h3>
+<p>The System Theme setting goes beyond just changing the browser's
+menus; it also tells websites what color scheme you prefer.</p>
+<p>Firefox achieves this using a web standard called the
+<code>prefers-color-scheme</code> CSS media query. When your OS switches
+to night mode and Firefox adapts, the browser alters the value of this
+query from <code>light</code> to <code>dark</code>. Any website you
+visit that is coded to detect this media query will automatically switch
+to its own dark theme to match your browser and operating system.</p>
+<h3 id="how-to-set-it-up">How to Set It Up</h3>
+<p>For this automatic adaptation to work, you must configure both your
+operating system and Firefox.</p>
+<p><strong>Step 1: Enable the OS Schedule</strong> Ensure your operating
+system is set to change themes automatically:</p>
+<ul>
+<li><strong>macOS:</strong> Go to System Settings &gt; Appearance, and
+select "Auto."</li>
+<li><strong>Android / iOS:</strong> Go to Display settings and enable
+the "Dark theme" or "Appearance" schedule (usually set from sunset to
+sunrise).</li>
+<li><strong>Windows:</strong> Windows 10 and 11 do not natively support
+time-based theme switching out of the box without workarounds (like Task
+Scheduler or apps like "Auto Dark Mode"), though Firefox will still
+immediately adapt whenever the Windows theme is toggled.</li>
+<li><strong>Linux:</strong> Depending on your desktop environment (like
+GNOME or KDE), enable the Night Light or automatic dark style schedule
+in your system settings.</li>
+</ul>
+<p><strong>Step 2: Enable System Theme in Firefox</strong></p>
+<ol type="1">
+<li>Open Firefox and click the menu button (three horizontal lines) in
+the top-right corner.</li>
+<li>Click on <strong>Add-ons and themes</strong> (or press
+<code>Ctrl+Shift+A</code> on Windows/Linux, <code>Cmd+Shift+A</code> on
+Mac).</li>
+<li>Select <strong>Themes</strong> in the left-hand menu.</li>
+<li>Locate <strong>System theme — auto</strong> and click
+<strong>Enable</strong>.</li>
+</ol>
+<p>Once both steps are complete, Firefox will remain locked in step with
+your operating system, providing a bright, readable interface during the
+day and an eye-friendly dark interface at night.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-system-theme-adapts-to-os-day-and-night-modes';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

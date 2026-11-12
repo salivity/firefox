@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decoding the Firefox about:buildconfig Page - firefox</title>
+    <meta name="description" content="This article provides a complete overview of the internal about:buildconfig page in the Mozilla Firefox web browser. By typing about:buildconfig into the Firefox address bar, users and developers can inspect the exact parameters used to compile their spec">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/decoding-the-firefox-about-buildconfig-page">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Decoding the Firefox about:buildconfig Page - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/decoding-the-firefox-about-buildconfig-page" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of the internal about:buildconfig page in the Mozilla Firefox web browser. By typing about:buildconfig into the Firefox address bar, users and developers can inspect the exact parameters used to compile their spec" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="decoding-the-firefox-aboutbuildconfig-page">Decoding the Firefox
+about:buildconfig Page</h1>
+<p>This article provides a complete overview of the internal
+<code>about:buildconfig</code> page in the Mozilla Firefox web browser.
+By typing <code>about:buildconfig</code> into the Firefox address bar,
+users and developers can inspect the exact parameters used to compile
+their specific version of the browser. This includes the exact Mercurial
+or Git source repository commit link, the target system architecture,
+and the comprehensive list of compiler flags and configuration options
+used during the build process.</p>
+<h3 id="exact-source-repository-commit-link">Exact Source Repository
+Commit Link</h3>
+<p>At the top of the <code>about:buildconfig</code> page, under the
+<strong>Source</strong> heading, Firefox displays the exact repository
+revision used to create the browser binary. Because Firefox is built
+across different release channels (Nightly, Beta, Release, and ESR),
+this link varies depending on the installed version, but it always
+points to the precise commit hash.</p>
+<ul>
+<li><strong>Official Mozilla Builds:</strong> Official builds use
+Mozilla's Mercurial repository. The link is formatted as
+<code>https://hg.mozilla.org/releases/mozilla-release/rev/[commit-hash]</code>
+for standard releases, or
+<code>https://hg.mozilla.org/mozilla-central/rev/[commit-hash]</code>
+for Nightly builds.</li>
+<li><strong>Custom or Linux Distribution Builds:</strong> If Firefox is
+built from Mozilla's official Git mirror (<code>gecko-dev</code>) or by
+a third-party maintainer, this section may display a Git commit URL
+pointing to the respective GitHub or GitLab repository revision.</li>
+</ul>
+<p>Clicking this link takes you directly to the version control log for
+that exact build, ensuring complete transparency regarding the source
+code.</p>
+<h3 id="target-architecture">Target Architecture</h3>
+<p>Directly below the source link, the <strong>Build platform</strong>
+section reveals the target architecture. This is represented as a
+"target triplet" string, which tells the compiler what processor
+architecture, vendor, and operating system the browser is meant to run
+on.</p>
+<p>Because every system requires a different binary, the target
+architecture shown will match your device. The most common target
+strings include:</p>
+<ul>
+<li><strong>64-bit Windows:</strong>
+<code>x86_64-pc-windows-msvc</code></li>
+<li><strong>64-bit Linux:</strong> <code>x86_64-pc-linux-gnu</code></li>
+<li><strong>Intel-based macOS:</strong>
+<code>x86_64-apple-darwin</code></li>
+<li><strong>Apple Silicon (M-series) macOS:</strong>
+<code>aarch64-apple-darwin</code></li>
+<li><strong>ARM64 Linux / Android:</strong>
+<code>aarch64-linux-android</code> or
+<code>aarch64-unknown-linux-gnu</code></li>
+</ul>
+<h3 id="compiler-flags-and-build-tools">Compiler Flags and Build
+Tools</h3>
+<p>The <strong>Build tools</strong> section breaks down the exact
+compilers—typically Clang (<code>clang</code> and <code>clang++</code>)
+for C/C++ and <code>rustc</code> for Rust—along with their version
+numbers and the specific compiler flags passed to them during
+compilation. These flags dictate how the source code is optimized,
+secured, and translated into machine code.</p>
+<p>While the exact list of flags depends on your operating system, they
+generally fall into the following categories:</p>
+<ul>
+<li><strong>Optimization Flags:</strong> Flags like <code>-O2</code> or
+<code>-O3</code> (on Linux/macOS) or <code>-O2</code> / <code>/O2</code>
+(on Windows) instruct the compiler to optimize the code for maximum
+execution speed.</li>
+<li><strong>Architecture-Specific Flags:</strong> Flags such as
+<code>-msse2</code> or <code>-mfpmath=sse</code> specify the exact CPU
+instruction sets the browser is allowed to use.</li>
+<li><strong>Warning and Error Flags:</strong> Flags like
+<code>-Wall</code>, <code>-Wempty-body</code>,
+<code>-Wignored-qualifiers</code>, and
+<code>-Wno-invalid-offsetof</code> control which code warnings the
+compiler outputs or ignores during the build process.</li>
+<li><strong>Security Hardening Flags:</strong> Modern Firefox builds
+include flags to prevent memory exploitation, such as
+<code>-fstack-protector-strong</code> (protects against stack buffer
+overflows), <code>-fPIC</code> (Position Independent Code), and
+<code>-D_FORTIFY_SOURCE=2</code>.</li>
+<li><strong>Debugging and Symbol Flags:</strong> Flags like
+<code>-g</code> or <code>-Z</code> generate debugging information so
+that crash reports (via Mozilla Crash Reporter) can be accurately mapped
+back to the source code.</li>
+<li><strong>Preprocessor Macros:</strong> Flags starting with
+<code>-D</code> (such as <code>-DNDEBUG=1</code> and
+<code>-DTRIMMED=1</code>) define internal variables that strip out
+developer-only diagnostic code to keep the final release build fast and
+lightweight.</li>
+</ul>
+<h3 id="configure-options">Configure Options</h3>
+<p>At the very bottom of the <code>about:buildconfig</code> page is the
+<strong>Configure options</strong> section. Unlike compiler flags, which
+are sent to Clang or Rust, these flags are passed to Mozilla's internal
+build system (<code>mach</code>) before compilation begins.</p>
+<p>This section shows high-level structural decisions, such as
+<code>--enable-application=browser</code>,
+<code>--enable-release</code>, <code>--enable-optimize</code>,
+<code>--enable-official-branding</code>, and the file paths to specific
+SDKs or API keys (like Google Location Service or SafeBrowsing keys)
+integrated into the browser.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/decoding-the-firefox-about-buildconfig-page';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

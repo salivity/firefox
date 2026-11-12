@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Blake Ross and Dave Hyatt Created the Firefox Browser - firefox</title>
+    <meta name="description" content="In the early 2000s, software engineers Blake Ross and Dave Hyatt initiated the creation of the Firefox web browser by starting an experimental, stripped-down branch of the bloated Mozilla Application Suite. Frustrated by the main suite&#39;s slow performance,">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-blake-ross-and-dave-hyatt-created-the-firefox-browser">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Blake Ross and Dave Hyatt Created the Firefox Browser - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-blake-ross-and-dave-hyatt-created-the-firefox-browser" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the early 2000s, software engineers Blake Ross and Dave Hyatt initiated the creation of the Firefox web browser by starting an experimental, stripped-down branch of the bloated Mozilla Application Suite. Frustrated by the main suite&#39;s slow performance," />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-blake-ross-and-dave-hyatt-created-the-firefox-browser">How
+Blake Ross and Dave Hyatt Created the Firefox Browser</h1>
+<p>In the early 2000s, software engineers Blake Ross and Dave Hyatt
+initiated the creation of the Firefox web browser by starting an
+experimental, stripped-down branch of the bloated Mozilla Application
+Suite. Frustrated by the main suite's slow performance, excessive
+features, and corporate-driven design decisions, the duo sought to build
+a fast, standalone browser focused purely on the user experience. This
+article explores the motivations behind their rebellion against software
+bloat, the technical decisions that shaped their experimental branch,
+and how this grassroots initiative ultimately evolved into Mozilla
+Firefox.</p>
+<h3 id="the-problem-with-the-mozilla-suite">The Problem with the Mozilla
+Suite</h3>
+<p>By 2002, the open-source Mozilla project was primarily focused on
+developing the Mozilla Application Suite. Backed by Netscape—which had
+been acquired by America Online (AOL)—the suite was designed as an
+all-in-one internet package. It combined a web browser, an email client,
+a newsgroup reader, an HTML webpage editor, and an IRC chat client into
+a single program.</p>
+<p>Dave Hyatt, a veteran Netscape programmer, and Blake Ross, a teenage
+prodigy who had been contributing to Mozilla since age 14, saw that this
+integrated approach was failing. The suite suffered from severe "feature
+creep." Every new addition made the software slower, harder to maintain,
+and more confusing for everyday users who just wanted to browse the
+internet. Furthermore, management demands from AOL often prioritized
+corporate goals over usability.</p>
+<h3 id="launching-the-experimental-branch">Launching the Experimental
+Branch</h3>
+<p>Convinced that the Mozilla project was heading in the wrong
+direction, Ross and Hyatt decided to take matters into their own hands
+in early 2002. They initiated an experimental sub-project within the
+Mozilla repository, originally titled "m/b" (short for
+mozilla/browser).</p>
+<p>Because the Mozilla Suite was open-source, Ross and Hyatt did not
+need executive permission to start a new branch. They worked on the
+project largely in their spare time, treating it as a rogue experiment
+to prove that a standalone browser was superior to an integrated
+suite.</p>
+<h3 id="stripping-away-the-excess">Stripping Away the Excess</h3>
+<p>To build the new browser, Ross and Hyatt did not start from scratch.
+Instead, they kept the core technology that worked and discarded
+everything else. Their approach focused on three main objectives:</p>
+<ul>
+<li><strong>Isolating the Engine:</strong> They extracted Gecko,
+Mozilla's powerful and standards-compliant layout engine, away from the
+rest of the application suite.</li>
+<li><strong>Removing Non-Browser Tools:</strong> They completely excised
+the email client, the HTML composer, and the IRC chat programs from the
+codebase, drastically reducing the software's memory footprint.</li>
+<li><strong>Rebuilding the Interface:</strong> Utilizing XUL (XML User
+Interface Language), a technology Hyatt had helped invent, they
+constructed a brand-new, lightweight user interface. They simplified the
+notoriously complex Mozilla preferences menu and designed clean toolbars
+aimed at non-technical users.</li>
+</ul>
+<p>To appease power users who missed the removed features, Ross and
+Hyatt designed the browser to be modular. Instead of baking every tool
+into the default installation, they created an architecture that allowed
+users to download small add-ons—the precursor to modern browser
+extensions.</p>
+<h3 id="from-phoenix-to-firefox">From Phoenix to Firefox</h3>
+<p>By September 2002, the experimental branch was stable enough for a
+public release. Calling the project "Phoenix" (symbolizing the browser
+rising from the ashes of Netscape), Ross, Hyatt, and fellow contributor
+Ben Goodger released Phoenix 0.1.</p>
+<p>The response from the tech community was overwhelmingly positive.
+Testers praised Phoenix for its blistering speed, clean design, and
+innovative features like pop-up blocking and tabbed browsing. The
+experimental branch quickly overshadowed the main Mozilla Application
+Suite in popularity.</p>
+<p>Recognizing the undeniable success of Ross and Hyatt's experiment,
+the Mozilla Foundation officially shifted its primary focus away from
+the old suite and toward the new standalone browser in 2003. After
+trademark disputes forced the team to change the project's name from
+Phoenix to Firebird, it was finally renamed Firefox in early 2004,
+culminating in the historic release of Firefox 1.0 later that year.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-blake-ross-and-dave-hyatt-created-the-firefox-browser';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

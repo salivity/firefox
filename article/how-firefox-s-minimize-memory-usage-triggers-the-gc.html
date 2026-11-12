@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s &quot;Minimize Memory Usage&quot; Triggers the GC - firefox</title>
+    <meta name="description" content="Clicking the &quot;Minimize memory usage&quot; button in Firefox&#39;s about:memory page forces the browser to immediately reclaim as much system RAM as possible. This article provides a direct breakdown of the internal actions triggered by this button, explaining how">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-minimize-memory-usage-triggers-the-gc">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s &quot;Minimize Memory Usage&quot; Triggers the GC - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-minimize-memory-usage-triggers-the-gc" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Clicking the &quot;Minimize memory usage&quot; button in Firefox&#39;s about:memory page forces the browser to immediately reclaim as much system RAM as possible. This article provides a direct breakdown of the internal actions triggered by this button, explaining how" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-minimize-memory-usage-triggers-the-gc">How
+Firefox's "Minimize Memory Usage" Triggers the GC</h1>
+<p>Clicking the "Minimize memory usage" button in Firefox's
+<code>about:memory</code> page forces the browser to immediately reclaim
+as much system RAM as possible. This article provides a direct breakdown
+of the internal actions triggered by this button, explaining how it
+broadcasts a global low-memory notification, initiates multiple rounds
+of aggressive garbage and cycle collection, compacts the memory heap,
+discards compiled code, and purges internal browser caches to return
+unused memory back to the operating system.</p>
+<h3 id="1-the-global-memory-pressure-event">1. The Global
+Memory-Pressure Event</h3>
+<p>When you click "Minimize memory usage", Firefox does not just run a
+standard cleanup. Instead, it broadcasts a global internal notification
+called <code>memory-pressure</code> with the specific parameter
+<code>heap-minimize</code> across the parent process and all content
+processes. Every major subsystem in the browser listens for this
+specific event and reacts immediately.</p>
+<h3 id="2-full-non-incremental-shrinking-garbage-collection">2. Full,
+Non-Incremental Shrinking Garbage Collection</h3>
+<p>Inside SpiderMonkey (Firefox's JavaScript engine), the garbage
+collector (GC) usually runs incrementally in small slices to avoid
+freezing the browser. The <code>heap-minimize</code> trigger overrides
+this behavior and forces a full, non-incremental <strong>Shrinking
+GC</strong> across all memory zones simultaneously.</p>
+<p>A Shrinking GC performs three aggressive actions:</p>
+<ul>
+<li><strong>Mark and Sweep:</strong> It pauses JavaScript execution to
+scan the entire memory heap, identifying and deleting all unreachable
+JavaScript objects.</li>
+<li><strong>Heap Compaction:</strong> Standard garbage collection leaves
+gaps of free memory between live objects (fragmentation). A shrinking GC
+physically relocates live objects in memory, packing them tightly
+together into fewer memory arenas.</li>
+<li><strong>Decommitting Memory:</strong> Once the live objects are
+compacted, the newly emptied memory arenas and chunks are actively
+decommitted. This means Firefox uses operating system calls to hand the
+physical RAM directly back to the OS, rather than holding onto it for
+future browser use.</li>
+</ul>
+<h3 id="3-flushing-jit-code">3. Flushing JIT Code</h3>
+<p>As part of the shrinking GC, SpiderMonkey purges nearly all
+Just-In-Time (JIT) compiled machine code. Firefox compiles frequently
+used JavaScript into native machine code for speed, which consumes a
+significant amount of memory. The GC deletes this compiled code and
+falls back to the baseline interpreter. If a webpage still needs the
+code, it will simply recompile it later.</p>
+<h3 id="4-triggering-the-cycle-collector">4. Triggering the Cycle
+Collector</h3>
+<p>JavaScript objects are managed by the Garbage Collector, while C++
+and DOM (Document Object Model) objects are managed by Reference
+Counting. Reference counting cannot automatically free "cycles" (where
+Object A points to Object B, and Object B points back to Object A).</p>
+<p>To solve this, the button triggers Firefox's <strong>Cycle Collector
+(CC)</strong> immediately after the JS GC finishes. The Cycle Collector
+analyzes the web of C++ and DOM references, identifies isolated loops of
+dead objects, breaks the links, and frees the memory.</p>
+<h3 id="5-the-multi-pass-loop">5. The Multi-Pass Loop</h3>
+<p>A single pass of the Garbage Collector and Cycle Collector is often
+not enough. A dead JavaScript object might be keeping a C++ DOM element
+alive, which in turn is keeping another JavaScript object alive.</p>
+<p>To untangle these cross-language references, the "Minimize memory
+usage" action runs the Shrinking GC and the Cycle Collector in a
+sequential loop—typically <strong>three times in a row</strong>.</p>
+<ol type="1">
+<li>Pass 1 frees unreferenced JS objects, which exposes dead C++
+cycles.</li>
+<li>The CC deletes those C++ cycles, which exposes newly unreferenced JS
+objects.</li>
+<li>Pass 2 and Pass 3 clean up the remaining fallout until no more
+memory can be freed.</li>
+</ol>
+<h3 id="6-purging-browser-caches">6. Purging Browser Caches</h3>
+<p>Before and during the GC/CC passes, the <code>memory-pressure</code>
+notification forces other browser subsystems to dump their temporary
+data. This includes:</p>
+<ul>
+<li>Decoded image caches (forcing images to be re-decoded if scrolled
+back into view).</li>
+<li>The Back/Forward cache (bfcache), which keeps previously visited
+pages in memory for instant navigation.</li>
+<li>Font, style, and network caches.</li>
+</ul>
+<p>By emptying these caches first, thousands of underlying DOM and
+JavaScript objects lose their active references, making them immediately
+eligible to be swept away and decommitted by the Garbage Collector
+during its shrinking passes.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-minimize-memory-usage-triggers-the-gc';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Vertical Tab Extensions Use the Firefox Sidebar API - firefox</title>
+    <meta name="description" content="This article provides a quick overview of the technical relationship between popular vertical tab extensions, such as Tree Style Tab and Sidebery, and the Firefox Web Browser&#39;s Sidebar API. It covers how these extensions allocate user interface space, syn">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-vertical-tab-extensions-use-the-firefox-sidebar-api">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Vertical Tab Extensions Use the Firefox Sidebar API - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-vertical-tab-extensions-use-the-firefox-sidebar-api" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of the technical relationship between popular vertical tab extensions, such as Tree Style Tab and Sidebery, and the Firefox Web Browser&#39;s Sidebar API. It covers how these extensions allocate user interface space, syn" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-vertical-tab-extensions-use-the-firefox-sidebar-api">How
+Vertical Tab Extensions Use the Firefox Sidebar API</h1>
+<p>This article provides a quick overview of the technical relationship
+between popular vertical tab extensions, such as Tree Style Tab and
+Sidebery, and the Firefox Web Browser's Sidebar API. It covers how these
+extensions allocate user interface space, synchronize with browser tabs
+in real-time, maintain hierarchical tree structures across sessions, and
+navigate the security limitations of the Firefox WebExtensions
+framework.</p>
+<h3 id="declaring-the-sidebar-space">Declaring the Sidebar Space</h3>
+<p>To exist in the Firefox sidebar, extensions like Tree Style Tab and
+Sidebery must first declare their presence in their
+<code>manifest.json</code> configuration file. They achieve this using
+the <code>sidebar_action</code> manifest key.</p>
+<p>This key defines the default title, icon, and, most importantly, the
+local HTML file (<code>default_panel</code>) that Firefox will render
+inside the sidebar container. Unlike content scripts that are injected
+into standard web pages, this HTML file runs in a privileged extension
+context. It acts as a persistent, independent webpage positioned next to
+the main browser viewport, styled entirely with the extension's own
+CSS.</p>
+<h3 id="controlling-the-view-with-browsersidebaraction">Controlling the
+View with <code>browser.sidebarAction</code></h3>
+<p>Once declared in the manifest, the extension controls the sidebar's
+behavior using the <code>browser.sidebarAction</code> JavaScript API.
+This API allows the extension to programmatically open, close, or toggle
+the sidebar panel—usually in response to a user clicking a toolbar
+button or pressing a keyboard shortcut like <code>F1</code>.</p>
+<p>Because a user might have multiple Firefox windows open at once, the
+<code>sidebarAction</code> API scopes its operations by
+<code>windowId</code>. This allows Sidebery and Tree Style Tab to render
+a unique sidebar instance for every open window, ensuring that the
+vertical tab bar only displays the tabs relevant to the specific window
+the user is currently viewing.</p>
+<h3 id="real-time-synchronization-via-browsertabs">Real-Time
+Synchronization via <code>browser.tabs</code></h3>
+<p>The Sidebar API itself is merely a blank container; it does not
+inherently know anything about browser tabs. To function as a tab
+manager, vertical tab extensions rely heavily on the
+<code>browser.tabs</code> API.</p>
+<p>When the sidebar HTML document loads, its JavaScript executes
+<code>browser.tabs.query({currentWindow: true})</code> to fetch an array
+of all open tabs in that window. The extension then builds a Document
+Object Model (DOM) representation of these tabs inside the sidebar.</p>
+<p>To keep the sidebar synchronized with the browser, the extension
+attaches event listeners to the <code>browser.tabs</code> API:</p>
+<ul>
+<li><strong><code>onCreated</code>:</strong> Fires when a new tab is
+opened, prompting the extension to insert a new tab element into the
+sidebar DOM.</li>
+<li><strong><code>onRemoved</code>:</strong> Fires when a tab is closed,
+telling the extension to delete the corresponding element.</li>
+<li><strong><code>onUpdated</code>:</strong> Fires when a tab's URL,
+title, or favicon changes, allowing the sidebar to update loading
+spinners and text.</li>
+<li><strong><code>onActivated</code>:</strong> Fires when the user
+switches tabs, allowing the extension to highlight the newly active tab
+in the vertical list.</li>
+</ul>
+<p>Conversely, when a user clicks, drags, or closes a tab inside the
+extension's sidebar, the extension captures that click event and sends a
+command back to Firefox (such as <code>browser.tabs.remove()</code> or
+<code>browser.tabs.move()</code>) to execute the action in the actual
+browser.</p>
+<h3 id="creating-and-saving-the-tree-structure">Creating and Saving the
+"Tree" Structure</h3>
+<p>Firefox’s native tab system is completely flat, meaning the browser
+does not natively understand parent-child tab relationships. Tree Style
+Tab and Sidebery manufacture this hierarchy by combining the
+<code>openerTabId</code> property with the <code>browser.sessions</code>
+API.</p>
+<p>When you middle-click a link on a webpage to open a new tab, Firefox
+records the ID of the source tab in the new tab's
+<code>openerTabId</code> property. The vertical tab extension reads this
+property and visually indents the new tab underneath the source tab in
+the sidebar's HTML.</p>
+<p>However, if the user restarts Firefox, the <code>openerTabId</code>
+data can be lost or insufficient for complex trees. To solve this,
+extensions use the <code>browser.sessions.setTabValue()</code> API. This
+allows the extension to attach custom JSON metadata—such as tree depth,
+custom group colors, collapsed states, and parent IDs—directly to the
+native Firefox tab object. When Firefox restarts and restores the
+session, the extension calls <code>getTabValue()</code> on every tab to
+reconstruct the exact visual tree structure.</p>
+<h3 id="api-limitations-and-the-native-tab-bar">API Limitations and the
+Native Tab Bar</h3>
+<p>While the interaction between these extensions and the Firefox API is
+robust, it is restricted by WebExtensions security boundaries. The
+Sidebar API only grants the extension control over the rectangular box
+of the sidebar itself; it does not allow the extension to modify the
+rest of the Firefox user interface.</p>
+<p>Because there is no API available to hide the native horizontal tab
+strip at the top of the browser, users of Tree Style Tab and Sidebery
+end up with two visible tab bars by default. To bypass this API
+limitation, users must manually create a <code>userChrome.css</code>
+file in their Firefox profile directory to hide the native horizontal
+tabs using custom CSS rules.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-vertical-tab-extensions-use-the-firefox-sidebar-api';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

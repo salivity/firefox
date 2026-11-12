@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrubbing Timelines in the Firefox Animations Panel - firefox</title>
+    <meta name="description" content="This article provides a complete guide on how web developers can use the Firefox Developer Tools Animations panel to inspect and manually scrub through CSS transitions and Web Animations API (WAAPI) timelines. It covers how to access the tool, how the uni">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/scrubbing-timelines-in-the-firefox-animations-panel">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Scrubbing Timelines in the Firefox Animations Panel - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/scrubbing-timelines-in-the-firefox-animations-panel" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete guide on how web developers can use the Firefox Developer Tools Animations panel to inspect and manually scrub through CSS transitions and Web Animations API (WAAPI) timelines. It covers how to access the tool, how the uni" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="scrubbing-timelines-in-the-firefox-animations-panel">Scrubbing
+Timelines in the Firefox Animations Panel</h1>
+<p>This article provides a complete guide on how web developers can use
+the Firefox Developer Tools Animations panel to inspect and manually
+scrub through CSS transitions and Web Animations API (WAAPI) timelines.
+It covers how to access the tool, how the unified timeline captures
+different animation types, and the exact mechanics of dragging the
+scrubber to debug frame-by-frame property changes.</p>
+<h3 id="accessing-the-animations-panel">Accessing the Animations
+Panel</h3>
+<p>To scrub through animations, you first need to open the tool and
+trigger the animations you want to inspect.</p>
+<ol type="1">
+<li>Open Firefox and navigate to the webpage containing the
+animations.</li>
+<li>Open Developer Tools by pressing <code>F12</code> (or
+<code>Ctrl+Shift+I</code> on Windows/Linux, <code>Cmd+Option+I</code> on
+macOS).</li>
+<li>Select the <strong>Inspector</strong> tab.</li>
+<li>In the secondary pane (usually on the right or bottom), click on the
+<strong>Animations</strong> tab.</li>
+<li>Select the <code>&lt;body&gt;</code> element in the DOM tree to
+capture all active animations on the page, or select a specific DOM node
+to isolate its animations.</li>
+</ol>
+<h3 id="how-the-unified-timeline-works">How the Unified Timeline
+Works</h3>
+<p>Firefox automatically detects and groups CSS transitions, CSS
+<code>@keyframes</code> animations, and JavaScript-driven Web Animations
+API instances into a single, synchronized timeline.</p>
+<p>Each animation is displayed as a horizontal bar plotted against a
+millisecond time scale at the top of the panel. Firefox distinguishes
+the animation types using distinct labels and colors:</p>
+<ul>
+<li><strong>CSS Transitions</strong> are labeled with the
+<code>Transition</code> prefix and represent implicit state
+changes.</li>
+<li><strong>Web Animations API</strong> timelines are labeled with
+either the <code>Script</code> prefix or their assigned <code>id</code>
+property from JavaScript.</li>
+</ul>
+<p>Because both types share the same time scale, you can scrub through a
+CSS transition and a WAAPI animation simultaneously to verify their
+synchronization.</p>
+<h3 id="scrubbing-the-timeline">Scrubbing the Timeline</h3>
+<p>The scrubbing mechanism allows you to override the browser's active
+animation clock and manually control the playback head.</p>
+<ul>
+<li><strong>Locate the Scrubber:</strong> At the top of the Animations
+panel, directly inside the millisecond ruler, there is a vertical line
+with a handle at the top. This is the scrubber (or playhead).</li>
+<li><strong>Click and Drag:</strong> Click anywhere on the time scale
+ruler or grab the scrubber handle directly. Drag it left to rewind or
+right to advance the animation.</li>
+<li><strong>Real-Time Viewport Updates:</strong> As you drag the
+scrubber, Firefox immediately updates the DOM elements in the main
+browser viewport to reflect their exact state at that specific
+millisecond.</li>
+<li><strong>Automatic Pausing:</strong> Grabbing the scrubber
+automatically pauses the timeline playback, allowing you to hold the
+animation on a single frame indefinitely.</li>
+</ul>
+<h3 id="granular-scrubbing-controls">Granular Scrubbing Controls</h3>
+<p>When dealing with fast CSS transitions or complex WAAPI sequences,
+dragging the scrubber at normal speed can feel imprecise. Firefox
+provides two features to assist with fine-tuning:</p>
+<ol type="1">
+<li><strong>Playback Rate Multiplier:</strong> In the toolbar at the top
+of the Animations panel, there is a dropdown menu set to <code>1x</code>
+by default. Changing this to <code>0.1x</code> or <code>0.5x</code>
+slows down the playback and expands the effective precision you have
+when observing the timeline before pausing to scrub.</li>
+<li><strong>Animated Property Inspection:</strong> Clicking on an
+individual animation bar in the main timeline opens a detailed view at
+the bottom of the panel. This view plots the specific CSS properties
+being manipulated (such as <code>opacity</code> or
+<code>transform</code>) along a curve based on the easing function. As
+you drag the main scrubber, a secondary vertical indicator moves across
+these property curves, showing you the exact calculated value of the CSS
+property at that precise moment in the timeline.</li>
+</ol>
+<h3 id="handling-finite-vs-infinite-animations">Handling Finite vs.
+Infinite Animations</h3>
+<p>When scrubbing, CSS transitions typically have a short, finite
+duration. Once a transition finishes, it may disappear from the active
+listener if triggered by a pseudo-class like <code>:hover</code>.</p>
+<p>To scrub a <code>:hover</code> CSS transition effectively:</p>
+<ol type="1">
+<li>Select the element in the Inspector.</li>
+<li>Click the <code>:hov</code> button in the Rules panel and check the
+<code>:hover</code> box to force the state.</li>
+<li>The transition will record in the Animations panel.</li>
+<li>You can now use the scrubber to move back and forth through the
+transition without needing to keep your mouse cursor over the element in
+the viewport.</li>
+</ol>
+<p>For Web Animations API timelines that use
+<code>iterations: Infinity</code>, the Animations panel displays a
+repeating pattern on the timeline bar. Scrubbing works within the bounds
+of the captured iteration blocks displayed on the screen.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/scrubbing-timelines-in-the-firefox-animations-panel';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effects of privacy.resistFingerprinting in Firefox - firefox</title>
+    <meta name="description" content="Enabling the privacy.resistFingerprinting preference in Firefox&#39;s about:config menu activates a comprehensive suite of defenses designed to make your browser appear identical to everyone else&#39;s. Originally developed as part of the Tor Uplift project, this">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/effects-of-privacy-resist-fingerprinting-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Effects of privacy.resistFingerprinting in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/effects-of-privacy-resist-fingerprinting-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Enabling the privacy.resistFingerprinting preference in Firefox&#39;s about:config menu activates a comprehensive suite of defenses designed to make your browser appear identical to everyone else&#39;s. Originally developed as part of the Tor Uplift project, this" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="effects-of-privacyresistfingerprinting-in-firefox">Effects of
+privacy.resistFingerprinting in Firefox</h1>
+<p>Enabling the <code>privacy.resistFingerprinting</code> preference in
+Firefox's <code>about:config</code> menu activates a comprehensive suite
+of defenses designed to make your browser appear identical to everyone
+else's. Originally developed as part of the Tor Uplift project, this
+setting neutralizes browser fingerprinting by spoofing hardware details,
+restricting Web APIs, and standardizing system configurations. This
+article outlines the specific, sweeping behavioral changes that occur
+the moment you set this preference to true.</p>
+<h3 id="system-and-hardware-spoofing">System and Hardware Spoofing</h3>
+<p>Websites routinely query your browser to learn about your underlying
+hardware and operating system. When
+<code>privacy.resistFingerprinting</code> is active, Firefox feeds these
+scripts standardized, fake data:</p>
+<ul>
+<li><strong>CPU Cores:</strong> The
+<code>navigator.hardwareConcurrency</code> property is locked to
+<code>2</code>, hiding your actual processor core count.</li>
+<li><strong>User-Agent and OS:</strong> Your User-Agent string and
+platform information are spoofed to report a generic operating system
+(such as Windows 10 or a generic Linux build) and the latest Firefox
+Extended Support Release (ESR) version, regardless of the actual Firefox
+version you are running.</li>
+<li><strong>Keyboard Layout:</strong> Firefox suppresses specific
+keyboard layout details and standardizes key event codes to prevent
+trackers from guessing your physical keyboard language.</li>
+</ul>
+<h3 id="timezone-and-locale-standardization">Timezone and Locale
+Standardization</h3>
+<p>Your geographic location can easily be inferred from your system
+clock and language settings. To prevent this, Firefox enforces strict
+standardization:</p>
+<ul>
+<li><strong>UTC Timezone:</strong> The browser’s internal clock is
+locked to Coordinated Universal Time (UTC). Any website using JavaScript
+to check your time will see UTC, which often causes web apps like
+calendars, email clients, and messaging platforms to display incorrect
+local times.</li>
+<li><strong>Language Spoofing:</strong> When you enable this setting,
+Firefox will often prompt you to spoof your language setting to
+<code>en-US</code> (American English), hiding your native system locale
+from web servers.</li>
+</ul>
+<h3 id="screen-and-window-dimensions">Screen and Window Dimensions</h3>
+<p>Your monitor resolution and browser window size create a highly
+unique metric. Firefox neutralizes this vector through several
+aggressive visual and reporting changes:</p>
+<ul>
+<li><strong>Standardized New Windows:</strong> Whenever you open a new
+browser window, Firefox forces it to open at a rounded, standard
+resolution (typically 1000x1000 or 1000x900 pixels, depending on your
+screen size) rather than remembering your last maximized state.</li>
+<li><strong>Viewport Spoofing:</strong> Firefox lies about your
+monitor's total resolution, reporting that your screen size is identical
+to the exact size of the current browser viewport. If you resize the
+window, your reported "monitor resolution" changes with it.</li>
+<li><strong>Color Depth and Pixel Ratio:</strong> Screen color depth is
+consistently reported as 24-bit, and device pixel ratios are
+standardized to hide high-DPI (Retina) displays.</li>
+</ul>
+<h3 id="canvas-webgl-and-font-restrictions">Canvas, WebGL, and Font
+Restrictions</h3>
+<p>Trackers frequently force your browser to silently draw hidden 2D or
+3D graphics to see how your specific graphics card and installed fonts
+render them. Firefox blocks these techniques directly:</p>
+<ul>
+<li><strong>Canvas Extraction Prompts:</strong> Websites are blocked
+from silently reading data from HTML5 Canvas elements. If a site tries
+to extract canvas data, Firefox returns a completely blank white image
+and displays an icon in the address bar asking if you want to allow the
+site to use canvas data. This breaks many online image editors by
+default.</li>
+<li><strong>WebGL Limitations:</strong> WebGL capabilities are heavily
+restricted. Specific vendor and renderer information (which reveals your
+exact graphics card model) is hidden or replaced with generic
+values.</li>
+<li><strong>Font Whitelisting:</strong> Websites are restricted to using
+a specific, standardized list of system fonts bundled with or approved
+by the browser. Trackers can no longer enumerate the unique collection
+of custom fonts installed on your computer.</li>
+</ul>
+<h3 id="web-api-modifications-and-disabling">Web API Modifications and
+Disabling</h3>
+<p>Many modern web features leak too much information about your device
+and are either degraded or entirely shut off:</p>
+<ul>
+<li><strong>AudioContext Spoofing:</strong> The Web Audio API, which can
+be used to fingerprint your sound card's processing characteristics, is
+altered or disabled to prevent audio signal analysis.</li>
+<li><strong>Reduced Timer Precision:</strong> High-resolution timers
+(like <code>performance.now()</code>) are intentionally degraded and
+rounded to the nearest 100 milliseconds (or similar intervals). This
+stops timing attacks and micro-architectural side-channel attacks like
+Spectre.</li>
+<li><strong>Disabled Hardware APIs:</strong> The Gamepad API (detects
+connected controllers), the Web Speech API, the Navigator.plugins list,
+and ambient light or device motion sensors are completely disabled.</li>
+<li><strong>Media Devices:</strong> Websites can no longer enumerate
+your microphones and webcams to count how many devices you have plugged
+in before asking for permission.</li>
+<li><strong>Network Information:</strong> The Network Information API is
+restricted so websites cannot tell if you are on Wi-Fi, Ethernet, or a
+cellular connection.</li>
+</ul>
+<h3 id="user-interface-and-theme-adjustments">User Interface and Theme
+Adjustments</h3>
+<p>Fingerprinting scripts can detect whether you use Dark Mode or custom
+OS accent colors. To stop this, Firefox overrides your visual
+preferences:</p>
+<ul>
+<li><strong>Forced Light Mode:</strong> Websites are always told that
+your system prefers a light color scheme
+(<code>prefers-color-scheme: light</code>), even if your operating
+system and Firefox theme are set to dark mode.</li>
+<li><strong>System Colors:</strong> Standard CSS system colors are
+stripped of your OS customization and reverted to default, uniform
+values.</li>
+<li><strong>Zoom Reset:</strong> Site-specific zoom levels may be
+restricted or reset to prevent trackers from calculating font rendering
+differences based on your zoom preferences.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/effects-of-privacy-resist-fingerprinting-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

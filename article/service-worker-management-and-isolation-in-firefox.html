@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Worker Management and Isolation in Firefox - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of how the Firefox web browser manages and isolates background Service Workers within its multi-process architecture. It details how Firefox utilizes Project Fission (Site Isolation) to confine Service Worker">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/service-worker-management-and-isolation-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Service Worker Management and Isolation in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/service-worker-management-and-isolation-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of how the Firefox web browser manages and isolates background Service Workers within its multi-process architecture. It details how Firefox utilizes Project Fission (Site Isolation) to confine Service Worker" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="service-worker-management-and-isolation-in-firefox">Service
+Worker Management and Isolation in Firefox</h1>
+<p>This article provides a comprehensive overview of how the Firefox web
+browser manages and isolates background Service Workers within its
+multi-process architecture. It details how Firefox utilizes Project
+Fission (Site Isolation) to confine Service Workers to origin-specific
+processes, how the central Parent Process controls their lifecycles and
+network interception, and the threading mechanisms used to ensure
+background tasks do not degrade browser performance or compromise
+security.</p>
+<h3 id="site-isolation-and-process-allocation">Site Isolation and
+Process Allocation</h3>
+<p>Firefox relies on a multi-process architecture reinforced by Project
+Fission, which enforces strict Site Isolation. In this model, every
+website (defined by its effective top-level domain plus one, or eTLD+1)
+is allocated its own sandboxed content process.</p>
+<p>Firefox applies this exact same isolation boundary to Service
+Workers. A Service Worker is never placed in a shared, universal worker
+process. Instead, it is strictly bound to the content process assigned
+to its specific origin:</p>
+<ul>
+<li><strong>When a tab is open:</strong> If a user has an active tab
+open for <code>example.com</code>, the Service Worker for
+<code>example.com</code> is spawned inside the existing content process
+already dedicated to that site.</li>
+<li><strong>When no tab is open:</strong> If a Service Worker is woken
+up in the background (for instance, by a Push Notification API event)
+and no tabs for that site are currently open, Firefox spawns a new,
+isolated content process specifically for that site's origin to execute
+the worker.</li>
+</ul>
+<p>By isolating Service Workers into site-specific processes, Firefox
+ensures that a vulnerability in a worker cannot be exploited to read
+memory belonging to a different website.</p>
+<h3 id="centralized-management-in-the-parent-process">Centralized
+Management in the Parent Process</h3>
+<p>While the actual JavaScript execution of a Service Worker happens
+inside an unprivileged, sandboxed content process, the orchestration and
+management are handled entirely by the privileged Parent Process (also
+known as the Broker Process).</p>
+<p>Within the Parent Process lives the
+<code>ServiceWorkerManager</code>. This component acts as the single
+source of truth for all Service Worker registrations, scopes, update
+checks, and lifecycle states across the entire browser. Keeping the
+<code>ServiceWorkerManager</code> in the Parent Process is a critical
+security measure. It prevents a compromised content process from
+spoofing Service Worker registrations, escalating privileges, or
+interfering with the workers of other origins.</p>
+<h3 id="threading-and-execution-model">Threading and Execution
+Model</h3>
+<p>Even though a Service Worker shares a content process with open tabs
+of the same origin, it does not share their execution thread. Web pages
+run on the content process's main thread, which handles the DOM, layout,
+and user input.</p>
+<p>To prevent background tasks from freezing the user interface, Firefox
+executes Service Workers on dedicated DOM Worker threads within that
+content process. This asynchronous threading model guarantees that heavy
+computations, asset caching, or IndexedDB operations performed by a
+Service Worker will not cause visual stutter or input delay in the
+active web page.</p>
+<h3
+id="inter-process-communication-ipc-and-network-interception">Inter-Process
+Communication (IPC) and Network Interception</h3>
+<p>A primary function of a Service Worker is to act as a programmable
+network proxy, intercepting <code>fetch</code> events. Because content
+processes in Firefox are tightly sandboxed, they do not have direct
+access to the system's network stack; all network requests must be
+brokered by the Parent Process.</p>
+<p>Firefox handles Service Worker network interception using its
+<code>PBackground</code> IPC (Inter-Process Communication)
+framework:</p>
+<ol type="1">
+<li><strong>Request Initiation:</strong> A web page makes a network
+request. The content process forwards this request via IPC to the Parent
+Process.</li>
+<li><strong>Interception Check:</strong> The Parent Process consults its
+internal <code>ServiceWorkerManager</code> to determine if the
+requesting page is controlled by an active Service Worker.</li>
+<li><strong>Routing to the Worker:</strong> If a match is found, the
+Parent Process suspends the standard network request and sends a
+<code>fetch</code> event via <code>PBackground</code> IPC to the
+specific content process and worker thread hosting the site's Service
+Worker.</li>
+<li><strong>Resolution:</strong> The Service Worker executes its logic
+(such as pulling a response from the Cache API) and sends the data back
+to the Parent Process over IPC, which then delivers the response to the
+web page. If the Service Worker decides to fetch the resource from the
+internet, it asks the Parent Process to perform the network request on
+its behalf.</li>
+</ol>
+<h3 id="lifecycle-control-and-resource-quotas">Lifecycle Control and
+Resource Quotas</h3>
+<p>Because Service Workers run in the background without visible UI,
+they present a risk of secretly exhausting system CPU and memory.
+Firefox mitigates this through strict lifecycle management enforced by
+the Parent Process.</p>
+<p>Service Workers are event-driven and are not allowed to run
+indefinitely. When the Parent Process wakes a Service Worker to handle
+an event (like <code>fetch</code>, <code>push</code>, or
+<code>sync</code>), it starts a strict idle timer and an execution
+timeout timer.</p>
+<ul>
+<li><strong>Idle Termination:</strong> Once the worker finishes
+processing its events and goes idle for a short period (typically 30
+seconds), the Parent Process sends an IPC command to terminate the
+worker thread.</li>
+<li><strong>Hung Worker Termination:</strong> If a Service Worker gets
+stuck in an infinite loop or fails to resolve an event promise within a
+designated timeframe (typically a few minutes), the Parent Process
+forcefully kills the worker thread.</li>
+</ul>
+<p>If the terminated Service Worker was running in a content process
+that has no open tabs associated with it, the Parent Process will
+immediately shut down or recycle that entire content process,
+immediately reclaiming system memory.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/service-worker-management-and-isolation-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

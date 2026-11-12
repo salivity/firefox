@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is XPCOM and How Does Firefox Use It Internally? - firefox</title>
+    <meta name="description" content="This article provides a comprehensive look at the Cross-Platform Component Object Model (XPCOM) and its vital role inside the Mozilla Firefox web browser. It covers the fundamental definition of XPCOM, how it enables different programming languages to com">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/what-is-xpcom-and-how-does-firefox-use-it-internally">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What is XPCOM and How Does Firefox Use It Internally? - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/what-is-xpcom-and-how-does-firefox-use-it-internally" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive look at the Cross-Platform Component Object Model (XPCOM) and its vital role inside the Mozilla Firefox web browser. It covers the fundamental definition of XPCOM, how it enables different programming languages to com" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-is-xpcom-and-how-does-firefox-use-it-internally">What is
+XPCOM and How Does Firefox Use It Internally?</h1>
+<p>This article provides a comprehensive look at the Cross-Platform
+Component Object Model (XPCOM) and its vital role inside the Mozilla
+Firefox web browser. It covers the fundamental definition of XPCOM, how
+it enables different programming languages to communicate with one
+another, and the specific ways Firefox utilizes this framework to manage
+everything from user interface interactions to networking and memory
+management. Finally, it briefly examines how the use of XPCOM in Firefox
+has evolved over time.</p>
+<h2 id="what-is-xpcom">What is XPCOM?</h2>
+<p>XPCOM stands for Cross-Platform Component Object Model. Developed by
+Mozilla, it is a cross-platform software component framework heavily
+inspired by Microsoft’s Component Object Model (COM).</p>
+<p>In simple terms, XPCOM breaks down a massive software application
+into smaller, modular, and reusable pieces called "components." Because
+it is cross-platform, these components work seamlessly across Windows,
+macOS, Linux, and Android.</p>
+<p>The primary superpower of XPCOM is that it is language-agnostic. It
+allows components written in entirely different programming
+languages—specifically C++, Rust, and JavaScript—to communicate and
+interact with each other as if they were written in the same
+language.</p>
+<h2 id="how-xpcom-works">How XPCOM Works</h2>
+<p>To understand how Firefox uses XPCOM, it is necessary to understand
+three core concepts of the framework:</p>
+<ul>
+<li><strong>Interfaces:</strong> Components do not expose their raw code
+to the rest of the application. Instead, they communicate through strict
+contracts called "interfaces." An interface defines what functions and
+properties a component has, without revealing how they are
+implemented.</li>
+<li><strong>XPIDL (Cross-Platform Interface Definition
+Language):</strong> Mozilla developers write these interfaces in a
+special language called XPIDL. During the browser build process, a
+compiler reads the XPIDL files and automatically generates the necessary
+code bindings for C++, Rust, and JavaScript.</li>
+<li><strong><code>nsISupports</code>:</strong> Every XPCOM component
+inherits from a base interface called <code>nsISupports</code>. This
+base interface handles two critical tasks: discovering what interfaces
+an object supports (via a method called <code>QueryInterface</code>) and
+managing the object's lifespan in memory through reference
+counting.</li>
+</ul>
+<h2 id="how-firefox-uses-xpcom-internally">How Firefox Uses XPCOM
+Internally</h2>
+<p>Firefox is a massive application built with a split architecture. Its
+underlying rendering engine (Gecko) is written in C++ and Rust for
+maximum performance, while its user interface (the tabs, address bar,
+and menus) is written in JavaScript, HTML, and CSS for flexibility.
+XPCOM is the glue that holds this architecture together.</p>
+<h3 id="1-bridging-languages-via-xpconnect">1. Bridging Languages via
+XPConnect</h3>
+<p>The most important internal use of XPCOM in Firefox is a technology
+layer called <strong>XPConnect</strong>. When you click the "Reload"
+button in the Firefox user interface, a JavaScript function is
+triggered. Through XPConnect, that JavaScript code calls an XPCOM
+interface, which executes the underlying C++ or Rust code responsible
+for fetching the webpage again. Without XPCOM, the JavaScript front-end
+would have no way to command the C++/Rust back-end.</p>
+<h3 id="2-core-browser-services">2. Core Browser Services</h3>
+<p>Firefox uses XPCOM to run "Services"—singleton components that only
+have one instance running during the browser's entire lifecycle. Major
+internal systems are packaged as XPCOM services, including:</p>
+<ul>
+<li><strong>Necko:</strong> Firefox’s networking library, which handles
+HTTP requests, DNS lookups, and sockets.</li>
+<li><strong>File I/O:</strong> The system that allows the browser to
+safely read from and write to your computer's hard drive (such as saving
+a downloaded file).</li>
+<li><strong>Preferences and Profiles:</strong> The system that reads and
+updates settings seen in the <code>about:config</code> page.</li>
+<li><strong>Places:</strong> The database management system that handles
+your bookmarks and browsing history.</li>
+</ul>
+<h3 id="3-memory-management">3. Memory Management</h3>
+<p>When data is passed back and forth between C++, Rust, and JavaScript,
+knowing when to delete that data to free up RAM is a complex problem.
+C++ uses manual memory management, Rust uses ownership rules, and
+JavaScript uses a Garbage Collector. XPCOM solves this using reference
+counting. XPCOM tracks how many different parts of the browser are
+currently using a component. When that count drops to zero, XPCOM
+automatically destroys the component and frees the memory.</p>
+<h3 id="4-threading-and-event-loops">4. Threading and Event Loops</h3>
+<p>Modern browsers must perform heavy tasks without freezing the user
+interface. Firefox uses XPCOM to manage its thread pools and event
+loops. XPCOM allows a C++ networking thread working in the background to
+safely package data and dispatch it back to the main UI thread so it can
+be displayed to the user.</p>
+<h2 id="the-evolution-of-xpcom-in-firefox">The Evolution of XPCOM in
+Firefox</h2>
+<p>Historically, Firefox exposed XPCOM to third-party developers. This
+allowed add-on creators to build extremely powerful browser extensions
+that could alter almost any part of Firefox. However, because XPCOM gave
+extensions direct access to Firefox's internal organs, a poorly written
+add-on could easily crash the browser or create severe security
+vulnerabilities.</p>
+<p>In 2017, Mozilla stopped allowing extensions to use XPCOM directly,
+transitioning instead to the safer, standardized WebExtensions API.</p>
+<p>Internally, however, XPCOM remains the backbone of Firefox. Over the
+last several years, Mozilla has modernized XPCOM, stripping out legacy
+bloat and adding seamless support for the Rust programming language.
+This allows Firefox developers to gradually replace older C++ components
+with memory-safe Rust components without having to rewrite the rest of
+the browser.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/what-is-xpcom-and-how-does-firefox-use-it-internally';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

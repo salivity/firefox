@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s WebRender Uses Your GPU to Draw Web Pages - firefox</title>
+    <meta name="description" content="This article explains how Mozilla Firefox&#39;s WebRender engine revolutionizes web page rendering by shifting the drawing workload from the CPU to the GPU. By treating web pages much like 3D video games, WebRender translates standard HTML and CSS elements in">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-web-render-uses-your-gpu-to-draw-web-pages">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s WebRender Uses Your GPU to Draw Web Pages - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-web-render-uses-your-gpu-to-draw-web-pages" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how Mozilla Firefox&#39;s WebRender engine revolutionizes web page rendering by shifting the drawing workload from the CPU to the GPU. By treating web pages much like 3D video games, WebRender translates standard HTML and CSS elements in" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-webrender-uses-your-gpu-to-draw-web-pages">How
+Firefox's WebRender Uses Your GPU to Draw Web Pages</h1>
+<p>This article explains how Mozilla Firefox's WebRender engine
+revolutionizes web page rendering by shifting the drawing workload from
+the CPU to the GPU. By treating web pages much like 3D video games,
+WebRender translates standard HTML and CSS elements into specialized GPU
+instructions called shaders, executing them in massive parallel batches.
+Below is a straightforward breakdown of how this architecture processes
+layout data, utilizes graphics hardware, and ultimately delivers a
+consistently smooth browsing experience.</p>
+<h2 id="shifting-from-cpu-painting-to-gpu-rendering">Shifting from CPU
+Painting to GPU Rendering</h2>
+<p>Traditionally, web browsers relied heavily on the Central Processing
+Unit (CPU) to "paint" elements of a web page into flat layers, only
+using the Graphics Processing Unit (GPU) at the very end to stitch those
+layers together. This created a major bottleneck on high-resolution
+displays and complex websites. WebRender eliminates the CPU painting
+step entirely. Instead, it sends raw structural descriptions of the page
+directly to the GPU, allowing the graphics card to draw every pixel
+directly to the screen for every single frame.</p>
+<h2 id="the-display-list">The Display List</h2>
+<p>The rendering process begins with Firefox’s layout engine, Gecko.
+Gecko calculates the size and position of all elements on the screen and
+packages this information into a structure called a Display List. This
+list does not contain pixels; rather, it contains basic geometric
+primitives—such as rectangles, borders, box shadows, and text runs—along
+with rules on how they are stacked. Gecko then hands this Display List
+over to WebRender.</p>
+<h2 id="frame-building-and-culling">Frame Building and Culling</h2>
+<p>Once WebRender receives the Display List, it prepares the data for
+the GPU in a phase called Frame Building. During this step, WebRender
+performs "culling," an optimization technique borrowed directly from 3D
+video game engines. It analyzes the Display List and immediately
+discards any elements that are outside the user's current view
+(off-screen) or completely hidden behind other solid elements. This
+ensures the GPU never wastes time or power drawing pixels the user
+cannot see.</p>
+<h2 id="custom-shaders-for-css-elements">Custom Shaders for CSS
+Elements</h2>
+<p>GPUs are built to render 3D triangles, meaning they do not naturally
+understand web concepts like CSS gradients, box shadows, or rounded
+corners. To bridge this gap, WebRender uses a suite of custom-built GPU
+programs called "shaders." WebRender has specific shaders designed
+exclusively for drawing text, complex borders, drop shadows, and solid
+colors. Because GPUs have thousands of cores designed to run shaders in
+parallel, they can mathematically calculate and draw these complex CSS
+effects significantly faster than a CPU ever could.</p>
+<h2 id="batching-draw-calls">Batching Draw Calls</h2>
+<p>Even with a powerful GPU, sending drawing instructions one by one
+creates a communication bottleneck. To maximize efficiency, WebRender
+groups similar visual elements together in a process called batching.
+For example, if a web page has fifty different paragraphs of text,
+WebRender groups all that text into a single "batch" and instructs the
+GPU to draw all fifty paragraphs at the exact same time using the text
+shader. By minimizing the number of "draw calls" sent to the hardware,
+WebRender easily maintains a smooth 60 frames-per-second (or higher)
+refresh rate.</p>
+<h2 id="caching-text-and-images">Caching Text and Images</h2>
+<p>While geometric shapes and shadows are calculated and redrawn from
+scratch on every frame, recalculating complex font characters (glyphs)
+and decoding images every millisecond would overwhelm even a modern GPU.
+WebRender solves this using a GPU Texture Cache. The first time a
+specific font character or image is needed, it is prepared and saved
+directly into the GPU's high-speed memory (VRAM). For all subsequent
+frames, the GPU simply copies the pre-drawn text or image from its own
+memory, making scrolling and zooming effortless.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-web-render-uses-your-gpu-to-draw-web-pages';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

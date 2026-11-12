@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Mozilla Rewrote Critical Firefox Components in Rust - firefox</title>
+    <meta name="description" content="Mozilla began rewriting critical components of the Firefox web browser in the Rust programming language primarily to solve long-standing issues with security, stability, and performance. For decades, Firefox relied heavily on C++, a fast and powerful lang">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-mozilla-rewrote-critical-firefox-components-in-rust">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Mozilla Rewrote Critical Firefox Components in Rust - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-mozilla-rewrote-critical-firefox-components-in-rust" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Mozilla began rewriting critical components of the Firefox web browser in the Rust programming language primarily to solve long-standing issues with security, stability, and performance. For decades, Firefox relied heavily on C++, a fast and powerful lang" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-mozilla-rewrote-critical-firefox-components-in-rust">Why
+Mozilla Rewrote Critical Firefox Components in Rust</h1>
+<p>Mozilla began rewriting critical components of the Firefox web
+browser in the Rust programming language primarily to solve
+long-standing issues with security, stability, and performance. For
+decades, Firefox relied heavily on C++, a fast and powerful language
+that is notoriously unforgiving when it comes to manual memory
+management and multi-threading. By transitioning core browser elements
+to Rust—a language Mozilla originally sponsored and developed—the
+company successfully eliminated entire classes of memory-related
+security vulnerabilities and unlocked the ability to safely run complex
+browser tasks across multiple processor cores simultaneously.</p>
+<h3 id="the-limitations-of-c">The Limitations of C++</h3>
+<p>Web browsers are among the most complex pieces of software in use
+today. They must process untrusted code from across the internet at high
+speeds. Historically, C++ was the only viable language for building
+browser engines because it offered low-level control over hardware and
+maximum performance.</p>
+<p>However, C++ requires developers to manage memory manually. Even the
+most experienced programmers make mistakes, leading to system crashes
+and severe security flaws. Mozilla needed a language that offered the
+raw speed of C++ but with built-in guardrails to prevent human
+error.</p>
+<h3 id="eliminating-memory-vulnerabilities">Eliminating Memory
+Vulnerabilities</h3>
+<p>The primary reason for adopting Rust is memory safety. Across the
+software industry, roughly 70% of all high-severity security bugs in C
+and C++ codebases are caused by memory unsafety. These include bugs like
+buffer overflows (writing data outside an allocated memory block) and
+"use-after-free" errors (attempting to access memory after it has been
+cleared). Hackers frequently exploit these exact flaws to take control
+of users' computers through their web browsers.</p>
+<p>Rust solves this through a unique system of "ownership" and
+"borrowing." The Rust compiler enforces strict rules about how memory is
+accessed and cleared before the program is even built. If a developer
+writes code with a memory bug, the code simply refuses to compile. This
+eradicated memory-related security vulnerabilities in the rewritten
+Firefox components without needing a "garbage collector," which would
+have slowed the browser down.</p>
+<h3 id="unlocking-multi-core-performance">Unlocking Multi-Core
+Performance</h3>
+<p>For years, computers have been built with multi-core processors, yet
+web browsers largely failed to take full advantage of them. Running code
+in parallel across multiple cores (multi-threading) in C++ is extremely
+dangerous. It often leads to "data races," which occur when two threads
+try to modify the same piece of memory at the exact same time, resulting
+in unpredictable crashes that are nearly impossible to debug.</p>
+<p>Rust enforces "fearless concurrency." The same compiler checks that
+ensure memory safety also guarantee that data races cannot happen. This
+allowed Mozilla engineers to finally break up heavy browser tasks and
+run them in parallel across all available CPU cores, drastically
+speeding up page load times.</p>
+<h3 id="key-components-rewritten-in-rust">Key Components Rewritten in
+Rust</h3>
+<p>Mozilla integrated Rust into Firefox through a massive overhaul known
+as Project Quantum. The most notable Rust-based additions include:</p>
+<ul>
+<li><strong>Stylo (Quantum CSS):</strong> Mozilla replaced its aging C++
+CSS engine with Stylo, written in Rust. Stylo processes webpage styling
+rules in parallel across multiple CPU cores, significantly reducing the
+time it takes to load and display modern websites.</li>
+<li><strong>WebRender:</strong> Written in Rust, WebRender replaced the
+older graphics rendering system. It treats webpage rendering like a 3D
+video game, offloading the work from the CPU to the GPU (Graphics
+Processing Unit) to ensure smooth scrolling and animations at 60 frames
+per second or higher.</li>
+<li><strong>Media Parsers:</strong> Processing audio and video files is
+a common vector for cyberattacks. Mozilla rewrote MP4 metadata parsers
+and audio subsystems in Rust so that malformed media files could no
+longer trigger memory exploits in Firefox.</li>
+</ul>
+<h3 id="increased-developer-productivity">Increased Developer
+Productivity</h3>
+<p>Before Rust, Mozilla engineers frequently had to abandon promising
+ideas for making Firefox faster because the C++ code required to execute
+them was deemed too complex and risky to maintain.</p>
+<p>By shifting to Rust, developers no longer had to spend weeks hunting
+down obscure memory bugs or worrying that a new feature would compromise
+browser stability. With the Rust compiler acting as an automated safety
+net, Mozilla's engineering teams could ship complex, high-performance
+code with confidence, ultimately revitalizing Firefox to compete with
+modern browser standards.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-mozilla-rewrote-critical-firefox-components-in-rust';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Letterboxing Hides Your True Screen Size - firefox</title>
+    <meta name="description" content="This article explores how the Firefox web browser uses a privacy technique called Letterboxing to protect users from browser fingerprinting. By dynamically adding margins around a webpage, Letterboxing masks a user&#39;s exact window and screen dimensions. Th">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-letterboxing-hides-your-true-screen-size">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Letterboxing Hides Your True Screen Size - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-letterboxing-hides-your-true-screen-size" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how the Firefox web browser uses a privacy technique called Letterboxing to protect users from browser fingerprinting. By dynamically adding margins around a webpage, Letterboxing masks a user&#39;s exact window and screen dimensions. Th" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-letterboxing-hides-your-true-screen-size">How
+Firefox Letterboxing Hides Your True Screen Size</h1>
+<p>This article explores how the Firefox web browser uses a privacy
+technique called Letterboxing to protect users from browser
+fingerprinting. By dynamically adding margins around a webpage,
+Letterboxing masks a user's exact window and screen dimensions. The
+following sections break down the mechanics of screen-size tracking, how
+Letterboxing groups users into standardized dimension buckets, and how
+to enable this hidden feature in Firefox.</p>
+<h2 id="the-threat-of-window-dimension-fingerprinting">The Threat of
+Window Dimension Fingerprinting</h2>
+<p>Websites can track you without cookies by collecting your device's
+unique characteristics, a process known as browser fingerprinting. One
+of the easiest metrics for trackers to capture is your browser's
+viewport—the visible area of a webpage.</p>
+<p>Because users resize windows randomly, use different monitor
+resolutions, and have varying operating system taskbars, bookmarks bars,
+or browser toolbars, the exact pixel width and height of a browser's
+viewport is often unique. Trackers read these exact dimensions to
+identify and follow a user across different websites.</p>
+<h2 id="the-mechanics-of-letterboxing">The Mechanics of
+Letterboxing</h2>
+<p>Originally developed for the Tor Browser and later integrated into
+Firefox via the Tor Uplift project, Letterboxing neutralizes viewport
+tracking. It does this by decoupling the size of your actual browser
+window from the size of the webpage being rendered. Instead of allowing
+a website to fill the entire available browser space, Firefox creates an
+invisible container inside the window and renders the webpage strictly
+within those confines.</p>
+<p>Here is how the disguise works in practice:</p>
+<ul>
+<li><strong>Dimension Bucketing:</strong> Letterboxing restricts the
+rendered webpage to a set of predefined, standardized dimensions, which
+are typically multiples of 200 pixels in width and 100 pixels in
+height.</li>
+<li><strong>Rounding Down:</strong> When you open or resize your Firefox
+window, the browser calculates the largest standardized "bucket" that
+can fit inside your current window. For example, if your actual usable
+browser space is 1366x654 pixels, Firefox will round the webpage
+rendering area down to 1200x600 pixels.</li>
+<li><strong>Adding Visual Margins:</strong> To fill the gap between your
+actual window size (1366x654) and the spoofed webpage size (1200x600),
+Firefox adds blank, gray borders around the webpage. This mimics the
+black bars seen when watching a widescreen movie on a standard
+television, which is where the term "letterboxing" originates.</li>
+<li><strong>Spoofing Web APIs:</strong> When a tracking script attempts
+to read your screen or window dimensions using JavaScript (such as
+<code>window.innerWidth</code> or <code>window.innerHeight</code>) or
+CSS media queries, Firefox reports the dimensions of the inner
+letterboxed area (1200x600) rather than your true window size.</li>
+</ul>
+<p>If you resize your window, the webpage will not smoothly scale with
+your mouse cursor. Instead, the gray margins will grow or shrink until
+your window crosses the threshold into the next 200x100 pixel bucket, at
+which point the webpage will snap to the new standardized size.</p>
+<h2 id="the-crowd-immunity-effect">The Crowd Immunity Effect</h2>
+<p>The ultimate goal of Letterboxing is not to give you a completely
+fake, randomized screen size, which would actually make you stand out
+more to trackers. Instead, its goal is uniformity. By forcing millions
+of different custom window sizes into a small handful of 200x100 pixel
+increments, Firefox forces thousands of users to share the exact same
+viewport dimensions. You effectively blend into a crowd of other
+privacy-conscious users, rendering the screen-size metric useless for
+individual identification.</p>
+<h2 id="how-to-enable-letterboxing-in-firefox">How to Enable
+Letterboxing in Firefox</h2>
+<p>While Letterboxing is enabled by default in the Tor Browser, it is a
+hidden preference in standard Firefox. You can activate it manually by
+following these steps:</p>
+<ol type="1">
+<li>Type <code>about:config</code> into the Firefox address bar and
+press <strong>Enter</strong>.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>In the search bar at the top, type
+<code>privacy.resistFingerprinting.letterboxing</code>.</li>
+<li>Double-click the preference to change its value from
+<code>false</code> to <code>true</code>.</li>
+</ol>
+<p>Once enabled, the change is immediate. If you resize your browser
+window, you will instantly see the gray margins appear, actively
+shielding your true window dimensions from the websites you visit.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-letterboxing-hides-your-true-screen-size';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

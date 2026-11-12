@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocking Website Clipboard Hijacking in Firefox - firefox</title>
+    <meta name="description" content="This article explores the dom.event.clipboardevents.enabled preference in the Mozilla Firefox web browser and how it protects user control and privacy. By modifying this single configuration setting, users can prevent websites from detecting, blocking, or">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/blocking-website-clipboard-hijacking-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Blocking Website Clipboard Hijacking in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/blocking-website-clipboard-hijacking-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the dom.event.clipboardevents.enabled preference in the Mozilla Firefox web browser and how it protects user control and privacy. By modifying this single configuration setting, users can prevent websites from detecting, blocking, or" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="blocking-website-clipboard-hijacking-in-firefox">Blocking
+Website Clipboard Hijacking in Firefox</h1>
+<p>This article explores the
+<code>dom.event.clipboardevents.enabled</code> preference in the Mozilla
+Firefox web browser and how it protects user control and privacy. By
+modifying this single configuration setting, users can prevent websites
+from detecting, blocking, or altering their copy, cut, and paste
+actions. Below is a straightforward breakdown of how websites manipulate
+clipboard behavior, the exact effect of disabling this preference, the
+potential side effects on modern web applications, and how to change the
+setting yourself.</p>
+<h2 id="how-websites-abuse-clipboard-events">How Websites Abuse
+Clipboard Events</h2>
+<p>Normally, browsers allow websites to use JavaScript to listen for
+<code>copy</code>, <code>cut</code>, and <code>paste</code> events.
+While this is meant to support advanced web functionality, many websites
+use these events to restrict users or modify their data. Common examples
+of clipboard manipulation include:</p>
+<ul>
+<li><strong>Hijacking copied text:</strong> Automatically appending
+source links, copyright notices, or tracking URLs to the end of text you
+copy from an article.</li>
+<li><strong>Blocking copy actions:</strong> Preventing users from
+copying text on a webpage to deter plagiarism or scraping.</li>
+<li><strong>Blocking paste actions:</strong> Disabling the ability to
+paste text into input fields, most commonly seen in "Confirm Email" or
+"Password" boxes, which frustrates password manager users.</li>
+<li><strong>Data harvesting:</strong> Detecting when a user pastes
+information into a page to immediately capture it before they even hit a
+submit button.</li>
+</ul>
+<h2 id="the-effect-of-domeventclipboardeventsenabled">The Effect of
+<code>dom.event.clipboardevents.enabled</code></h2>
+<p>In Firefox, the <code>dom.event.clipboardevents.enabled</code>
+preference dictates whether the browser informs a webpage that a copy,
+cut, or paste action has occurred. By default, this preference is set to
+<code>true</code>.</p>
+<p>When you change this preference to <code>false</code>, Firefox
+completely blinds websites to your clipboard activity. The copy, cut,
+and paste functions still work normally for you at the operating system
+level, but the browser stops firing the corresponding JavaScript events
+to the webpage.</p>
+<p>Setting this preference to <code>false</code> results in the
+following immediate effects:</p>
+<ul>
+<li><strong>Unaltered Copying:</strong> You will only ever copy the
+exact text you highlighted. Websites can no longer inject "Read more
+at..." links into your clipboard.</li>
+<li><strong>Unrestricted Pasting:</strong> Websites can no longer block
+you from using Ctrl+V (or Cmd+V) or the right-click context menu to
+paste passwords and emails into form fields.</li>
+<li><strong>Bypassing Copy Restrictions:</strong> Websites that use
+JavaScript to block the <code>copy</code> command will fail to stop you
+from copying their text.</li>
+<li><strong>Enhanced Privacy:</strong> Scripts running in the background
+of a webpage cannot monitor how often you copy or cut text, nor can they
+trigger hidden actions when you do so.</li>
+</ul>
+<h2 id="the-drawbacks-of-disabling-clipboard-events">The Drawbacks of
+Disabling Clipboard Events</h2>
+<p>While disabling this preference is great for reading articles and
+filling out basic forms, it will break legitimate features on complex
+web applications.</p>
+<p>Modern productivity tools—such as Google Docs, Microsoft Word Online,
+Notion, and web-based email clients—rely heavily on clipboard events to
+function properly. They use these events to maintain text formatting,
+handle custom layouts, and allow you to paste images directly from your
+clipboard. If <code>dom.event.clipboardevents.enabled</code> is set to
+<code>false</code>, copying and pasting within these specific
+applications may strip all formatting, fail to paste images, or stop
+working altogether.</p>
+<h2 id="how-to-modify-the-preference-in-firefox">How to Modify the
+Preference in Firefox</h2>
+<p>If you want to prevent websites from interfering with your clipboard,
+you can disable the setting in a few steps:</p>
+<ol type="1">
+<li>Open a new tab in Firefox, type <code>about:config</code> into the
+address bar, and press <strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button on
+the warning page.</li>
+<li>In the search bar at the top, type
+<code>dom.event.clipboardevents.enabled</code>.</li>
+<li>Locate the preference in the list and click the
+<strong>Toggle</strong> icon on the right (or double-click the row) to
+change its value from <code>true</code> to <code>false</code>.</li>
+</ol>
+<p>The change takes effect immediately. If you ever encounter a web
+application where copying and pasting stops working correctly, you can
+return to this menu and toggle the setting back to
+<code>true</code>.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/blocking-website-clipboard-hijacking-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

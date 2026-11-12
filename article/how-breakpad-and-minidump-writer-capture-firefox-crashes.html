@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Breakpad and minidump-writer Capture Firefox Crashes - firefox</title>
+    <meta name="description" content="This article explains the technical mechanisms behind how the Firefox Web Browser captures vital diagnostic data during an unexpected crash. It covers the role of the legacy C++ Breakpad library and Mozilla&#39;s newer Rust-based minidump-writer tool. You wil">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-breakpad-and-minidump-writer-capture-firefox-crashes">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Breakpad and minidump-writer Capture Firefox Crashes - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-breakpad-and-minidump-writer-capture-firefox-crashes" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical mechanisms behind how the Firefox Web Browser captures vital diagnostic data during an unexpected crash. It covers the role of the legacy C++ Breakpad library and Mozilla&#39;s newer Rust-based minidump-writer tool. You wil" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-breakpad-and-minidump-writer-capture-firefox-crashes">How
+Breakpad and minidump-writer Capture Firefox Crashes</h1>
+<p>This article explains the technical mechanisms behind how the Firefox
+Web Browser captures vital diagnostic data during an unexpected crash.
+It covers the role of the legacy C++ Breakpad library and Mozilla's
+newer Rust-based <code>minidump-writer</code> tool. You will learn how
+these tools intercept fatal system exceptions, safely inspect the
+failing process from the outside, and package thread states, register
+values, and stack memory into a compact minidump file for engineering
+analysis.</p>
+<h3 id="intercepting-the-fatal-exception">Intercepting the Fatal
+Exception</h3>
+<p>When Firefox encounters a fatal error—such as a segmentation fault,
+an illegal instruction, or an out-of-memory condition—the operating
+system kernel intervenes. On Windows, the OS uses Structured Exception
+Handling (SEH); on macOS, it uses Mach exceptions; and on Linux and
+Android, the kernel sends POSIX signals like <code>SIGSEGV</code> or
+<code>SIGABRT</code>.</p>
+<p>To capture diagnostic data before the OS terminates the browser,
+Firefox registers an exception handler as soon as it launches. When a
+fatal error occurs, this handler intercepts the OS signal or exception.
+Because a crashing process is inherently unstable—its memory heap may be
+corrupted or its stack completely exhausted—the crashing process cannot
+safely write its own diagnostic file.</p>
+<h3 id="the-out-of-process-architecture">The Out-of-Process
+Architecture</h3>
+<p>To bypass the instability of the crashed process, Firefox uses an
+out-of-process crash generation architecture. When the in-process
+exception handler catches a fatal error, it performs the absolute
+minimum amount of work necessary. It freezes the crashing process and
+sends a request over an Inter-Process Communication (IPC) channel—such
+as a named pipe on Windows or a Unix domain socket on Linux—to a
+separate, healthy process (usually the main browser process or a
+dedicated crash helper).</p>
+<p>This IPC message contains basic information: the Process ID (PID) of
+the failed process, the Thread ID (TID) of the exact thread that
+triggered the crash, and the memory address of the exception details.
+Once the message is sent, the external crash generator takes over, using
+either Breakpad or <code>minidump-writer</code> to extract the data from
+the outside.</p>
+<h3 id="how-breakpad-captures-data">How Breakpad Captures Data</h3>
+<p>Historically, Firefox relied entirely on Breakpad, a cross-platform
+C++ library originally developed by Google. When the external Breakpad
+crash generation server receives the IPC distress signal, it uses
+operating-system-specific APIs to inspect the frozen Firefox
+process:</p>
+<ul>
+<li><strong>Windows:</strong> Breakpad uses the
+<code>MiniDumpWriteDump</code> function provided by the Windows
+<code>DbgHelp</code> library, or directly reads process states via
+<code>ReadProcessMemory</code> and <code>GetThreadContext</code>.</li>
+<li><strong>macOS:</strong> Breakpad communicates with the crashed
+process via Mach ports, using APIs like <code>task_suspend</code> and
+<code>thread_get_state</code> to read memory and registers.</li>
+<li><strong>Linux:</strong> Breakpad attaches to the process using the
+<code>ptrace</code> system call and reads process information from the
+<code>/proc</code> pseudo-filesystem.</li>
+</ul>
+<p>Breakpad suspends all active threads in the target process so their
+states do not change during inspection. It then reads the memory of the
+crashed process and formats the extracted data into a binary
+<code>.dmp</code> (minidump) file.</p>
+<h3 id="transitioning-to-the-rust-minidump-writer">Transitioning to the
+Rust <code>minidump-writer</code></h3>
+<p>Parsing the memory of a corrupted, crashing process using C++ (as
+Breakpad does) is risky. If the crashed process contains malformed
+memory structures, the C++ crash reporter might hit a memory-safety bug
+and crash while trying to write the crash report. To eliminate this risk
+on Linux and Android, Mozilla replaced Breakpad’s minidump generation
+phase with a tool written in Rust called
+<code>minidump-writer</code>.</p>
+<p>Because Rust enforces strict memory safety and bounds checking at
+compile time, <code>minidump-writer</code> can safely parse corrupted
+memory pointers from a compromised Firefox process without crashing
+itself.</p>
+<p>When invoked, <code>minidump-writer</code> executes the following
+steps:</p>
+<ol type="1">
+<li><strong>Attaching and Suspending:</strong> It uses
+<code>ptrace</code> (<code>PTRACE_ATTACH</code> or
+<code>PTRACE_SEIZE</code>) to attach to every thread in the crashed
+Firefox process, halting their execution.</li>
+<li><strong>Scraping <code>/proc</code>:</strong> It reads
+<code>/proc/$PID/maps</code> to identify all memory regions and shared
+libraries currently loaded into the process, and
+<code>/proc/$PID/status</code> to gather process state information.</li>
+<li><strong>Reading Memory:</strong> It uses the
+<code>process_vm_readv</code> system call (or falls back to
+<code>/proc/$PID/mem</code> and <code>ptrace</code>) to copy relevant
+slices of memory out of the crashed browser and into its own safe memory
+space.</li>
+</ol>
+<h3 id="the-diagnostic-data-inside-a-minidump">The Diagnostic Data
+Inside a Minidump</h3>
+<p>Both Breakpad and <code>minidump-writer</code> produce the exact same
+output: a standardized minidump file. To protect user privacy and keep
+the file size small (usually a few hundred kilobytes), these tools
+intentionally ignore the bulk of the browser's heap memory, which
+contains open web pages, images, and passwords. Instead, they
+selectively capture only the data required to reconstruct the crash:</p>
+<ul>
+<li><strong>Thread List and CPU Contexts:</strong> The tools iterate
+through every thread in the process and capture the exact values stored
+in the CPU registers (such as the instruction pointer, stack pointer,
+and general-purpose registers) at the millisecond of the crash.</li>
+<li><strong>Stack Memory:</strong> For each thread, the tools locate the
+stack pointer register and copy the raw bytes of memory from the top of
+the stack down to the base of the stack. This raw stack memory contains
+the return addresses and local variables needed to reconstruct the call
+stack (backtrace).</li>
+<li><strong>Loaded Modules:</strong> The tools record a list of all
+executables and shared libraries (such as <code>.dll</code>,
+<code>.so</code>, or <code>.dylib</code> files) loaded into the
+process's address space. Crucially, they extract the unique Build ID (or
+UUID) of each library, which Mozilla’s servers later use to match the
+raw memory addresses to human-readable source code function names.</li>
+<li><strong>Exception Stream:</strong> They record the specific crash
+reason (e.g., <code>EXCEPTION_ACCESS_VIOLATION</code> or
+<code>SIGSEGV</code>), the exact instruction address that caused the
+fault, and the memory address the instruction was trying to access.</li>
+<li><strong>System Info:</strong> They gather basic metadata about the
+host machine, including the CPU architecture, the number of processors,
+and the exact operating system version.</li>
+</ul>
+<p>Once Breakpad or <code>minidump-writer</code> finishes serializing
+this data into the minidump file on the user's disk, it detaches from
+the crashed process. The operating system finally terminates the dead
+Firefox process, and the Firefox Crash Reporter interface opens,
+allowing the user to send the newly generated minidump to Mozilla for
+analysis.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-breakpad-and-minidump-writer-capture-firefox-crashes';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

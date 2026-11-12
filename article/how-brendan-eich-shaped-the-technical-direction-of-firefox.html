@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Brendan Eich Shaped the Technical Direction of Firefox - firefox</title>
+    <meta name="description" content="Brendan Eich, the creator of JavaScript and co-founder of the Mozilla project, served as Mozilla’s Chief Technology Officer for nearly a decade before briefly becoming CEO in 2014. During his tenure, Eich was the primary architect of the Firefox web brows">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-brendan-eich-shaped-the-technical-direction-of-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Brendan Eich Shaped the Technical Direction of Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-brendan-eich-shaped-the-technical-direction-of-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Brendan Eich, the creator of JavaScript and co-founder of the Mozilla project, served as Mozilla’s Chief Technology Officer for nearly a decade before briefly becoming CEO in 2014. During his tenure, Eich was the primary architect of the Firefox web brows" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-brendan-eich-shaped-the-technical-direction-of-firefox">How
+Brendan Eich Shaped the Technical Direction of Firefox</h1>
+<p>Brendan Eich, the creator of JavaScript and co-founder of the Mozilla
+project, served as Mozilla’s Chief Technology Officer for nearly a
+decade before briefly becoming CEO in 2014. During his tenure, Eich was
+the primary architect of the Firefox web browser's technical evolution.
+This article explores how he guided Firefox from an experimental
+spin-off into a major industry competitor by championing a lightweight
+browser architecture, revolutionizing JavaScript performance, enforcing
+open web standards over proprietary plugins, and initiating the
+development of the Rust programming language to secure the browser's
+future.</p>
+<h3 id="shifting-to-a-lightweight-architecture">Shifting to a
+Lightweight Architecture</h3>
+<p>In the early 2000s, the Mozilla project was focused on the Mozilla
+Application Suite, a heavy software package that combined a web browser,
+email client, and HTML editor. Recognizing that the suite was becoming
+bloated and slow, Eich supported a small rebellion within the
+organization led by Dave Hyatt and Blake Ross.</p>
+<p>They created an experimental, standalone browser originally named
+Phoenix, which later became Firefox. Eich used his technical leadership
+to pivot Mozilla’s engineering resources away from the bulky suite and
+toward this agile, standalone browser. He also championed the continued
+development of Gecko, the open-source layout engine that allowed Firefox
+to render web pages quickly and consistently across different operating
+systems.</p>
+<h3 id="revolutionizing-javascript-performance">Revolutionizing
+JavaScript Performance</h3>
+<p>Having invented JavaScript at Netscape in 1995, Eich naturally placed
+the language at the center of Firefox's technical strategy. He oversaw
+the development of SpiderMonkey, Firefox’s original JavaScript engine.
+For years, JavaScript was considered too slow for complex applications,
+a limitation Eich was determined to overcome.</p>
+<p>In 2008, under Eich’s technical direction, Mozilla introduced
+TraceMonkey, the first Just-In-Time (JIT) compiler for JavaScript. This
+technology drastically increased the speed of web applications by
+compiling JavaScript into native machine code as it ran.</p>
+<p>Later, Eich strongly backed the development of asm.js, a strict
+subset of JavaScript designed to allow computer software written in
+languages like C or C++ to run inside the Firefox browser at near-native
+speeds. This innovation proved that browsers could handle heavy tasks
+like 3D gaming without external add-ons, and it laid the direct
+technical foundation for WebAssembly, a modern web standard.</p>
+<h3 id="eradicating-proprietary-plugins">Eradicating Proprietary
+Plugins</h3>
+<p>During the mid-2000s, the web relied heavily on proprietary plugins
+like Adobe Flash, Microsoft Silverlight, and Java Applets for video,
+audio, and complex graphics. Eich viewed these closed systems as a
+threat to the open web and a major source of security vulnerabilities
+and browser crashes in Firefox.</p>
+<p>To make plugins obsolete, Eich directed Mozilla’s engineering teams
+to build equivalent capabilities directly into the browser using open
+standards. Under his guidance, Firefox became a pioneer in adopting
+HTML5 video and audio tags. Furthermore, Eich championed the creation of
+WebGL, a standard that brought hardware-accelerated 3D graphics directly
+to the browser without needing a plugin. He also initiated projects like
+PDF.js, which allowed Firefox to render PDF documents natively using
+only HTML5 and JavaScript.</p>
+<h3 id="addressing-browser-security-with-rust-and-servo">Addressing
+Browser Security with Rust and Servo</h3>
+<p>Perhaps Eich’s most forward-thinking technical contribution was
+recognizing the limitations of C++, the programming language used to
+build Firefox. While C++ was fast, it was prone to memory management
+errors, which were the root cause of most browser crashes and security
+exploits.</p>
+<p>In 2006, Mozilla engineer Graydon Hoare began working on a new
+programming language called Rust, designed to be as fast as C++ but with
+built-in memory safety. Eich recognized the potential of Rust early on
+and officially sponsored the project within Mozilla.</p>
+<p>Alongside Rust, Eich greenlit the development of Servo, an
+experimental browser engine built from the ground up to take advantage
+of modern multi-core processors. Although Eich left Mozilla in 2014, his
+investment in Rust and Servo directly enabled the 2017 release of
+"Firefox Quantum," a massive overhaul that integrated Rust components
+into Gecko, making Firefox significantly faster and more secure.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-brendan-eich-shaped-the-technical-direction-of-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Partnered with Cloudflare and NextDNS for DoH - firefox</title>
+    <meta name="description" content="This article explores Mozilla&#39;s decision to partner with Cloudflare and NextDNS to implement DNS over HTTPS (DoH) by default in the Firefox browser for specific regions. It examines the privacy vulnerabilities of traditional DNS, how DoH solves these issu">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-partnered-with-cloudflare-and-next-dns-for-do-h">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Partnered with Cloudflare and NextDNS for DoH - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-partnered-with-cloudflare-and-next-dns-for-do-h" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Mozilla&#39;s decision to partner with Cloudflare and NextDNS to implement DNS over HTTPS (DoH) by default in the Firefox browser for specific regions. It examines the privacy vulnerabilities of traditional DNS, how DoH solves these issu" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-partnered-with-cloudflare-and-nextdns-for-doh">Why
+Firefox Partnered with Cloudflare and NextDNS for DoH</h1>
+<p>This article explores Mozilla's decision to partner with Cloudflare
+and NextDNS to implement DNS over HTTPS (DoH) by default in the Firefox
+browser for specific regions. It examines the privacy vulnerabilities of
+traditional DNS, how DoH solves these issues by encrypting user traffic,
+why Cloudflare and NextDNS met Mozilla's strict privacy standards, and
+the regional factors that influenced this targeted rollout strategy.</p>
+<h2 id="the-vulnerability-of-traditional-dns">The Vulnerability of
+Traditional DNS</h2>
+<p>The Domain Name System (DNS) acts as the phonebook of the internet,
+translating human-friendly website names into the numerical IP addresses
+computers use to locate each other. Historically, these DNS lookups have
+been sent in plain text without any encryption.</p>
+<p>Even if you visit a secure website using HTTPS, the initial DNS
+request remains visible. This allows Internet Service Providers (ISPs),
+malicious actors on public Wi-Fi, and government entities to see exactly
+which websites you are visiting. Unencrypted DNS is also vulnerable to
+spoofing and "man-in-the-middle" attacks, where a third party intercepts
+the request and redirects the user to a fraudulent website.</p>
+<h2 id="how-dns-over-https-doh-solves-the-problem">How DNS over HTTPS
+(DoH) Solves the Problem</h2>
+<p>Mozilla decided to implement DNS over HTTPS (DoH) by default to close
+this longstanding privacy loophole. DoH works by taking the plain-text
+DNS requests your browser makes and sending them through an encrypted
+HTTPS connection.</p>
+<p>By disguising DNS queries as regular, encrypted web traffic, third
+parties on the network can no longer eavesdrop on your browsing history,
+block specific requests, or tamper with the results. It ensures that the
+journey to a website is just as secure as the website itself.</p>
+<h2 id="why-mozilla-chose-cloudflare-and-nextdns">Why Mozilla Chose
+Cloudflare and NextDNS</h2>
+<p>Encrypting DNS traffic does not eliminate the need for trust; it
+simply shifts that trust from the user's local ISP to the DNS resolver
+handling the encrypted requests. To prevent these new DNS providers from
+abusing their position, Mozilla created the Trusted Recursive Resolver
+(TRR) program.</p>
+<p>Mozilla partnered with Cloudflare and NextDNS because they were
+willing to sign strict contracts adhering to the TRR privacy policy. The
+requirements for this partnership included:</p>
+<ul>
+<li><strong>Limited Data Retention:</strong> Providers are only allowed
+to retain anonymised DNS data for a maximum of 24 hours strictly for
+operational and debugging purposes.</li>
+<li><strong>No Data Monetization:</strong> Providers are strictly
+forbidden from selling, licensing, or sharing user data with third
+parties to build advertising profiles or track users.</li>
+<li><strong>Transparency and Auditing:</strong> Providers must clearly
+publish their privacy practices and submit to regular audits to prove
+they are deleting user data as promised.</li>
+<li><strong>Speed and Reliability:</strong> Both Cloudflare and NextDNS
+possess the massive global server infrastructure required to resolve
+encrypted queries in milliseconds, ensuring Firefox users do not
+experience a slowdown in browsing speeds.</li>
+</ul>
+<h2 id="why-the-rollout-was-limited-to-specific-regions">Why the Rollout
+Was Limited to Specific Regions</h2>
+<p>Mozilla initially launched default DoH only in the United States
+before slowly expanding to other regions like Canada, Russia, and
+Ukraine. They chose a regional rollout rather than a global one for
+three main reasons:</p>
+<h3 id="1-varying-isp-privacy-laws">1. Varying ISP Privacy Laws</h3>
+<p>In 2017, the United States Congress repealed regulations that
+prevented ISPs from selling their customers' browsing histories to
+advertisers. This created an urgent need to protect American users from
+their own ISPs. In contrast, regions like the European Union already had
+strong legal frameworks, such as the GDPR, which legally barred ISPs
+from harvesting and selling DNS data without consent.</p>
+<h3 id="2-pushback-over-centralization-and-local-laws">2. Pushback Over
+Centralization and Local Laws</h3>
+<p>In Europe, particularly in the UK and Germany, internet regulators
+and ISPs strongly opposed Mozilla's initial DoH plans. They argued that
+routing European web traffic through a handful of US-based companies
+(like Cloudflare) centralized internet infrastructure and undermined
+European digital sovereignty. Furthermore, British ISPs complained that
+DoH allowed users to bypass legally mandated country-wide blocks on
+illegal content and broke ISP-level parental controls.</p>
+<h3 id="3-network-compatibility-testing">3. Network Compatibility
+Testing</h3>
+<p>Enabling DoH globally all at once risked breaking millions of complex
+networks. A phased regional rollout allowed Mozilla to test the feature
+and build safeguard mechanisms. This gave Firefox engineers time to
+ensure that DoH would automatically turn itself off if it detected
+enterprise networks, school filters, or local parental controls
+configured on a home router.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-partnered-with-cloudflare-and-next-dns-for-do-h';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

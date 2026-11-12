@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Restricts Extensions with Quarantined Domains - firefox</title>
+    <meta name="description" content="This article provides a quick overview of Mozilla Firefox’s Quarantined Domains feature and explains why the browser restricts extensions on sensitive websites by default. Introduced in Firefox 115, this security measure blocks third-party add-ons from ru">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-restricts-extensions-with-quarantined-domains">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Restricts Extensions with Quarantined Domains - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-restricts-extensions-with-quarantined-domains" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of Mozilla Firefox’s Quarantined Domains feature and explains why the browser restricts extensions on sensitive websites by default. Introduced in Firefox 115, this security measure blocks third-party add-ons from ru" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-restricts-extensions-with-quarantined-domains">Why
+Firefox Restricts Extensions with Quarantined Domains</h1>
+<p>This article provides a quick overview of Mozilla Firefox’s
+Quarantined Domains feature and explains why the browser restricts
+extensions on sensitive websites by default. Introduced in Firefox 115,
+this security measure blocks third-party add-ons from running on
+specific high-risk websites to protect user privacy, prevent financial
+fraud, and stop malicious actors from exploiting browser
+vulnerabilities. Below, we examine the mechanics of Quarantined Domains,
+the exact reasons Mozilla restricts extension access on certain sites,
+and how users can manage these settings.</p>
+<h2 id="what-is-the-quarantined-domains-feature">What is the Quarantined
+Domains Feature?</h2>
+<p>Quarantined Domains is a built-in security feature in the Firefox web
+browser that prevents web extensions from functioning on a specific,
+Mozilla-maintained list of websites. Even if a user has granted an
+extension permission to "Access your data for all websites," the
+Quarantined Domains protocol overrides this permission for the sites on
+the restricted list.</p>
+<p>The feature operates dynamically. Mozilla can update the list of
+quarantined domains remotely without requiring the user to update their
+browser. When you visit a quarantined domain, your installed extensions
+are temporarily paused or blocked from injecting scripts, reading page
+data, or modifying the content of that specific tab. Extensions that
+have been specifically vetted under Mozilla's Recommended Extensions
+program are occasionally exempt from these restrictions, provided they
+meet strict security standards.</p>
+<h2 id="why-firefox-restricts-extensions-on-sensitive-websites">Why
+Firefox Restricts Extensions on Sensitive Websites</h2>
+<p>Browser extensions require significant privileges to function
+correctly, such as the ability to read and modify everything you type
+and view on a webpage. While most extensions use these permissions
+legitimately, malicious actors frequently create or hijack extensions to
+steal sensitive information. Firefox restricts extensions on certain
+websites by default for several critical reasons:</p>
+<h3 id="1-protecting-high-value-targets">1. Protecting High-Value
+Targets</h3>
+<p>Cybercriminals often design malicious extensions to target specific
+websites, such as online banking portals, cryptocurrency exchanges, and
+government tax platforms. By quarantining these domains, Firefox ensures
+that even if a user accidentally installs a malicious add-on, that
+add-on cannot read passwords, hijack sessions, or alter transaction
+details on those sensitive sites.</p>
+<h3 id="2-securing-browser-integrity">2. Securing Browser Integrity</h3>
+<p>Even before the Quarantined Domains feature existed, Firefox
+restricted extensions from running on its own internal pages and
+Mozilla-owned websites, such as <code>addons.mozilla.org</code>. If
+extensions were allowed to run on the Firefox Add-ons website, a single
+malicious extension could silently install more malware, fake user
+reviews, or prevent the user from accessing the menu required to
+uninstall the rogue extension.</p>
+<h3 id="3-rapid-response-to-new-threats">3. Rapid Response to New
+Threats</h3>
+<p>Previously, if Mozilla discovered that a group of malicious
+extensions was targeting a specific website to steal user data,
+engineers had to locate and ban each extension individually. Attackers
+would simply upload new copies of the extension to bypass the ban.
+Quarantined Domains flips this dynamic. Instead of playing whack-a-mole
+with thousands of rogue extensions, Mozilla can immediately quarantine
+the targeted website, instantly neutralizing the attack vector for all
+Firefox users.</p>
+<h3 id="4-preventing-paywall-and-security-bypasses">4. Preventing
+Paywall and Security Bypasses</h3>
+<p>In some cases, websites suffer from specific vulnerabilities in how
+they interact with browser extensions, leading to severe data leaks.
+Quarantining the domain gives the website administrators time to fix
+their underlying security flaws while keeping Firefox users safe in the
+interim.</p>
+<h2 id="how-to-manage-quarantined-domains">How to Manage Quarantined
+Domains</h2>
+<p>While the default restrictions are designed to protect the vast
+majority of users, advanced users may occasionally want a trusted
+extension—such as a password manager or an ad blocker—to run on a
+restricted site. Firefox allows users to override these restrictions
+either per extension or globally.</p>
+<p><strong>To allow a specific extension on restricted
+sites:</strong></p>
+<ol type="1">
+<li>Enter <code>about:addons</code> in the Firefox address bar and press
+Enter.</li>
+<li>Click on the extension you wish to modify.</li>
+<li>Scroll down to the <strong>Run on sites with restrictions</strong>
+option.</li>
+<li>Select <strong>Allow</strong>.</li>
+</ol>
+<p><strong>To disable the Quarantined Domains feature
+entirely:</strong></p>
+<ol type="1">
+<li>Enter <code>about:config</code> in the Firefox address bar and press
+Enter.</li>
+<li>Click <strong>Accept the Risk and Continue</strong>.</li>
+<li>Search for the preference
+<code>extensions.quarantinedDomains.enabled</code>.</li>
+<li>Double-click the preference to change its value from
+<code>true</code> to <code>false</code>.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-restricts-extensions-with-quarantined-domains';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

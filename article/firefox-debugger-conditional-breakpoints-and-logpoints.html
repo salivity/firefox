@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Debugger: Conditional Breakpoints and Logpoints - firefox</title>
+    <meta name="description" content="This article provides a quick overview and guide to understanding and utilizing conditional breakpoints and logpoints within the Firefox JavaScript Debugger. By mastering these two advanced debugging features, developers can pause code execution only when">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-debugger-conditional-breakpoints-and-logpoints">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Debugger: Conditional Breakpoints and Logpoints - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-debugger-conditional-breakpoints-and-logpoints" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview and guide to understanding and utilizing conditional breakpoints and logpoints within the Firefox JavaScript Debugger. By mastering these two advanced debugging features, developers can pause code execution only when" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-debugger-conditional-breakpoints-and-logpoints">Firefox
+Debugger: Conditional Breakpoints and Logpoints</h1>
+<p>This article provides a quick overview and guide to understanding and
+utilizing conditional breakpoints and logpoints within the Firefox
+JavaScript Debugger. By mastering these two advanced debugging features,
+developers can pause code execution only when specific criteria are met
+and log values directly to the console without cluttering their source
+code with temporary <code>console.log()</code> statements. Read on to
+learn the exact mechanics of these tools and how to implement them in
+your debugging workflow.</p>
+<h2 id="how-conditional-breakpoints-work">How Conditional Breakpoints
+Work</h2>
+<p>A standard breakpoint pauses code execution every single time the
+JavaScript engine reaches the specified line. In contrast, a conditional
+breakpoint attaches a custom JavaScript expression to that line of
+code.</p>
+<p>When the browser executes the script and reaches the conditional
+breakpoint, the Firefox Debugger intercepts the execution and evaluates
+your expression in the current scope:</p>
+<ul>
+<li><strong>If the expression evaluates to a truthy value:</strong> The
+debugger pauses execution on that line, allowing you to inspect
+variables and the call stack.</li>
+<li><strong>If the expression evaluates to a falsy value:</strong> The
+debugger ignores the breakpoint and continues executing the script
+without interruption.</li>
+</ul>
+<p>This mechanism is ideal for debugging loops, event listeners, or
+frequently called functions where pausing on every iteration is
+impractical.</p>
+<h3 id="setting-a-conditional-breakpoint-in-firefox">Setting a
+Conditional Breakpoint in Firefox</h3>
+<ol type="1">
+<li>Open the Firefox Developer Tools (press <code>F12</code> or
+<code>Ctrl+Shift+I</code> / <code>Cmd+Option+I</code>) and navigate to
+the <strong>Debugger</strong> panel.</li>
+<li>Open the JavaScript file you want to debug.</li>
+<li>Right-click on the line number in the left-hand gutter where you
+want to pause execution.</li>
+<li>Select <strong>Add condition</strong> from the context menu.</li>
+<li>An inline input box will appear. Type a valid JavaScript expression
+that evaluates to a boolean (for example, <code>index === 99</code> or
+<code>user.role === 'admin'</code>).</li>
+<li>Press <code>Enter</code> to save it. The line number will now be
+marked with an orange arrow, indicating an active conditional
+breakpoint.</li>
+</ol>
+<h2 id="how-logpoints-work">How Logpoints Work</h2>
+<p>A logpoint is a specialized variation of a breakpoint that never
+pauses code execution. Instead, it instructs the Firefox Debugger to
+output information directly to the Web Console and immediately resume
+running the script.</p>
+<p>When the JavaScript engine hits a line with a logpoint, the debugger
+evaluates the expression you provided—using the variables available in
+that specific scope—and prints the result to the console. It operates
+identically to writing <code>console.log()</code> in your code, with the
+major advantage that you do not have to modify your source files,
+rebuild your project, or refresh the browser.</p>
+<h3 id="setting-a-logpoint-in-firefox">Setting a Logpoint in
+Firefox</h3>
+<ol type="1">
+<li>Inside the <strong>Debugger</strong> panel, find the line of code
+where you want to inspect data.</li>
+<li>Right-click the line number in the left-hand gutter.</li>
+<li>Select <strong>Add log</strong> from the context menu.</li>
+<li>An inline input box will appear. Enter the variables or expressions
+you wish to output. You can pass multiple arguments separated by commas,
+just like a standard console log (for example,
+<code>'Current state:', this.state, userCount</code>).</li>
+<li>Press <code>Enter</code> to activate it. The line number will be
+marked with a purple arrow.</li>
+<li>Press <code>Esc</code> while in the Debugger to open the split
+<strong>Console</strong> view at the bottom of the window. As your code
+runs, the output from your logpoint will appear here alongside the file
+name and line number.</li>
+</ol>
+<h2 id="managing-your-breakpoints-and-logpoints">Managing Your
+Breakpoints and Logpoints</h2>
+<p>Both conditional breakpoints and logpoints are tracked in the
+<strong>Breakpoints</strong> pane, located in the right-hand sidebar of
+the Firefox Debugger.</p>
+<p>From this pane, you can:</p>
+<ul>
+<li><strong>Toggle:</strong> Use the checkbox next to any conditional
+breakpoint or logpoint to temporarily disable or re-enable it without
+losing your written expressions.</li>
+<li><strong>Edit:</strong> Right-click the marker in the code gutter and
+select <strong>Edit condition</strong> or <strong>Edit log</strong> to
+modify the expression.</li>
+<li><strong>Remove:</strong> Left-click the marker in the gutter, or
+click the close button next to the item in the Breakpoints pane, to
+delete it entirely.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-debugger-conditional-breakpoints-and-logpoints';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeckoView: Rebuilding Firefox for Android from Scratch - firefox</title>
+    <meta name="description" content="This article explores GeckoView, Mozilla&#39;s standalone Android library that encapsulates the Gecko web rendering engine, and explains how this foundational technology enabled developers to completely rebuild the Firefox for Android browser from the ground">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/gecko-view-rebuilding-firefox-for-android-from-scratch">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="GeckoView: Rebuilding Firefox for Android from Scratch - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/gecko-view-rebuilding-firefox-for-android-from-scratch" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores GeckoView, Mozilla&#39;s standalone Android library that encapsulates the Gecko web rendering engine, and explains how this foundational technology enabled developers to completely rebuild the Firefox for Android browser from the ground" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="geckoview-rebuilding-firefox-for-android-from-scratch">GeckoView:
+Rebuilding Firefox for Android from Scratch</h1>
+<p>This article explores GeckoView, Mozilla's standalone Android library
+that encapsulates the Gecko web rendering engine, and explains how this
+foundational technology enabled developers to completely rebuild the
+Firefox for Android browser from the ground up. By separating the
+complex rendering engine from the user interface, GeckoView allowed
+Mozilla to modernize its mobile browser, resulting in drastically
+improved performance, stronger security, and faster feature
+development.</p>
+<h2 id="what-is-geckoview">What is GeckoView?</h2>
+<p>GeckoView is an open-source project maintained by Mozilla that
+packages the Gecko browser engine—the same engine that powers Firefox on
+desktop computers—into a reusable Android library.</p>
+<p>To understand GeckoView, it helps to compare it to Android's native
+<code>WebView</code>. While <code>WebView</code> allows Android
+developers to embed web content into their apps using Google's Blink
+engine, GeckoView serves the exact same purpose using Mozilla's Gecko
+engine. However, unlike the system <code>WebView</code>, GeckoView is
+completely self-contained. Apps that use it bundle the engine directly
+within their code, meaning the web experience remains consistent
+regardless of the Android version the user is running.</p>
+<h2 id="the-problem-with-the-original-firefox-for-android">The Problem
+with the Original Firefox for Android</h2>
+<p>Before the rebuild, the original Firefox for Android (internally
+codenamed "Fennec") suffered from severe architectural debt. It was
+built over a decade ago when Android development tools were in their
+infancy.</p>
+<p>In Fennec, the user interface (UI) and the Gecko rendering engine
+were tightly coupled. A change to the browser’s visual layout often
+required digging into the complex underlying engine code, and vice
+versa. This tangled architecture caused several major issues:</p>
+<ul>
+<li><strong>Slow Development Cycles:</strong> Compiling the app took a
+long time, and adding simple UI features was unnecessarily
+difficult.</li>
+<li><strong>Performance Bottlenecks:</strong> The monolithic structure
+made it extremely difficult to integrate Mozilla's "Quantum" engine
+upgrades, which had already revolutionized the speed of the desktop
+browser.</li>
+<li><strong>Inability to Modernize:</strong> Developers could not easily
+adopt modern Android development standards, such as the Kotlin
+programming language or standard Android Jetpack libraries.</li>
+</ul>
+<h2 id="how-geckoview-enabled-the-rebuild">How GeckoView Enabled the
+Rebuild</h2>
+<p>In 2019, Mozilla decided to retire Fennec and build a brand-new
+browser from scratch, codenamed "Fenix" (which was eventually released
+as the new Firefox for Android in 2020). GeckoView was the cornerstone
+of this massive undertaking.</p>
+<h3 id="decoupling-the-engine-from-the-ui">Decoupling the Engine from
+the UI</h3>
+<p>GeckoView provided a clean, standardized Application Programming
+Interface (API). Instead of intertwining the browser's interface with
+the engine, GeckoView acted as a wall of separation. Engine developers
+could focus purely on making Gecko fast and secure using C++ and Rust,
+while Android developers could build the user interface using modern
+Kotlin code. The UI team simply used GeckoView's APIs to tell the engine
+what to load and render.</p>
+<h3 id="bringing-quantum-speed-to-mobile">Bringing "Quantum" Speed to
+Mobile</h3>
+<p>Because GeckoView wraps the latest version of the desktop Gecko
+engine, it allowed Mozilla to effortlessly bring Project Quantum
+improvements to Android. The rebuilt browser instantly benefited from
+faster page load times, smoother scrolling, and reduced memory usage
+without the mobile team having to rewrite those optimizations
+specifically for Android.</p>
+<h3 id="fostering-a-modular-ecosystem">Fostering a Modular
+Ecosystem</h3>
+<p>With GeckoView acting as a stable foundation, Mozilla created
+"Android Components"—a collection of independent, reusable code
+libraries for common browser features like tabs, bookmarks, and tracking
+protection. By combining GeckoView with these components, Mozilla didn't
+just rebuild the main Firefox app; they also streamlined the development
+of privacy-focused browsers like Firefox Focus.</p>
+<h3 id="improving-security-and-privacy">Improving Security and
+Privacy</h3>
+<p>GeckoView allowed Mozilla to implement a multiprocess architecture on
+Android. By isolating web content processes from the main application
+process, the new Firefox became much more resilient to crashes and
+significantly more secure against malicious websites. Furthermore,
+because Mozilla controls the entire GeckoView stack, they were able to
+bake Enhanced Tracking Protection and support for desktop-class browser
+extensions directly into the mobile experience—features that are heavily
+restricted in Google's standard <code>WebView</code>.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/gecko-view-rebuilding-firefox-for-android-from-scratch';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

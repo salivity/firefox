@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Simulate Slow Network Speeds in Firefox - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide on how to simulate slow 3G, 4G, and offline network conditions in the Mozilla Firefox web browser. By utilizing the built-in Developer Tools and the network throttling dropdown menu, you can easily evaluate how w">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-simulate-slow-network-speeds-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Simulate Slow Network Speeds in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-simulate-slow-network-speeds-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide on how to simulate slow 3G, 4G, and offline network conditions in the Mozilla Firefox web browser. By utilizing the built-in Developer Tools and the network throttling dropdown menu, you can easily evaluate how w" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-simulate-slow-network-speeds-in-firefox">How to Simulate
+Slow Network Speeds in Firefox</h1>
+<p>This article provides a step-by-step guide on how to simulate slow
+3G, 4G, and offline network conditions in the Mozilla Firefox web
+browser. By utilizing the built-in Developer Tools and the network
+throttling dropdown menu, you can easily evaluate how websites load and
+perform under various connection constraints without altering your
+actual internet bandwidth.</p>
+<h2 id="step-1-open-the-firefox-developer-tools">Step 1: Open the
+Firefox Developer Tools</h2>
+<p>To access the network throttling feature, you first need to open the
+Developer Tools panel on the webpage you want to test. You can do this
+in one of three ways:</p>
+<ul>
+<li><strong>Keyboard Shortcut (Windows/Linux):</strong> Press
+<code>Ctrl + Shift + I</code> or simply press <code>F12</code>.</li>
+<li><strong>Keyboard Shortcut (Mac):</strong> Press
+<code>Cmd + Option + I</code>.</li>
+<li><strong>Mouse:</strong> Right-click anywhere on the webpage and
+select <strong>Inspect</strong> from the context menu.</li>
+</ul>
+<h2 id="step-2-navigate-to-the-network-tab">Step 2: Navigate to the
+Network Tab</h2>
+<p>Once the Developer Tools panel opens at the bottom or side of your
+browser window, look at the top toolbar of the panel. Click on the
+<strong>Network</strong> tab. If you do not see it immediately, click
+the <code>&gt;&gt;</code> (More Tools) icon to reveal hidden tabs and
+select <strong>Network</strong> from the list.</p>
+<h2 id="step-3-locate-the-network-throttling-dropdown">Step 3: Locate
+the Network Throttling Dropdown</h2>
+<p>Inside the Network panel, look at the far right side of the secondary
+toolbar (just below the main Developer Tools tabs). You will see a
+dropdown menu that is set to <strong>No Throttling</strong> by
+default.</p>
+<p>If your browser window is narrow, this option might be tucked away or
+require you to expand the Developer Tools area to make it visible.</p>
+<h2 id="step-4-select-a-network-speed-profile">Step 4: Select a Network
+Speed Profile</h2>
+<p>Click on the <strong>No Throttling</strong> dropdown menu to reveal a
+list of preset network conditions. Each preset simulates specific
+download speeds, upload speeds, and minimum latency. Select the profile
+that matches your testing needs:</p>
+<ul>
+<li><strong>Offline:</strong> Cuts off all network access to the tab,
+allowing you to test service workers and offline capabilities.</li>
+<li><strong>GPRS:</strong> Simulates an extremely slow mobile connection
+(50 Kbps download).</li>
+<li><strong>Regular 2G / Good 2G:</strong> Simulates legacy mobile data
+networks (250 Kbps to 450 Kbps download).</li>
+<li><strong>Regular 3G / Good 3G:</strong> Simulates standard 3G mobile
+networks (750 Kbps to 1.5 Mbps download).</li>
+<li><strong>Regular 4G / LTE:</strong> Simulates a standard 4G mobile
+connection (4 Mbps download).</li>
+<li><strong>DSL:</strong> Simulates a basic wired broadband connection
+(2 Mbps download).</li>
+<li><strong>WiFi:</strong> Simulates a standard wireless home or office
+network (30 Mbps download).</li>
+</ul>
+<h2 id="step-5-reload-the-webpage-to-test">Step 5: Reload the Webpage to
+Test</h2>
+<p>Selecting a profile from the dropdown menu immediately applies the
+constraint to the current tab. To see how the webpage loads under the
+newly selected condition, refresh the page by pressing <code>F5</code>
+(or <code>Cmd + R</code> on Mac).</p>
+<p>For the most accurate results, perform a hard refresh by pressing
+<code>Ctrl + Shift + R</code> (or <code>Cmd + Shift + R</code> on Mac).
+This bypasses your browser cache and forces the page to download all
+assets from scratch using the throttled connection speed.</p>
+<h2 id="alternative-method-responsive-design-mode">Alternative Method:
+Responsive Design Mode</h2>
+<p>You can also access the network throttling dropdown while testing
+mobile screen sizes.</p>
+<ol type="1">
+<li>Press <code>Ctrl + Shift + M</code> (or
+<code>Cmd + Option + M</code> on Mac) to open <strong>Responsive Design
+Mode</strong>.</li>
+<li>Look at the toolbar directly above the simulated mobile screen.</li>
+<li>Click the <strong>No Throttling</strong> dropdown menu on the right
+side of that toolbar.</li>
+<li>Select your desired 3G, 4G, or Offline preset and refresh the
+page.</li>
+</ol>
+<h2 id="returning-to-normal-speeds">Returning to Normal Speeds</h2>
+<p>Your network speeds will remain throttled as long as the Developer
+Tools panel is open and a profile is selected. To return your browser
+tab to its normal internet speed, either change the dropdown menu back
+to <strong>No Throttling</strong> or simply close the Developer Tools
+panel entirely.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-simulate-slow-network-speeds-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

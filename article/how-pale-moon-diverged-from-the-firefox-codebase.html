@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Pale Moon Diverged from the Firefox Codebase - firefox</title>
+    <meta name="description" content="Pale Moon began in 2009 as a simple, performance-optimized rebuild of Mozilla Firefox, created by developer M.C. Straver (known as Moonchild). Initially, it shared the exact same source code as Firefox, differing only in how it was compiled for Windows ha">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-pale-moon-diverged-from-the-firefox-codebase">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Pale Moon Diverged from the Firefox Codebase - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-pale-moon-diverged-from-the-firefox-codebase" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Pale Moon began in 2009 as a simple, performance-optimized rebuild of Mozilla Firefox, created by developer M.C. Straver (known as Moonchild). Initially, it shared the exact same source code as Firefox, differing only in how it was compiled for Windows ha" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-pale-moon-diverged-from-the-firefox-codebase">How Pale Moon
+Diverged from the Firefox Codebase</h1>
+<p>Pale Moon began in 2009 as a simple, performance-optimized rebuild of
+Mozilla Firefox, created by developer M.C. Straver (known as Moonchild).
+Initially, it shared the exact same source code as Firefox, differing
+only in how it was compiled for Windows hardware. However, fundamental
+disagreements over user interface design, browser architecture, and
+extension support gradually pushed the two projects apart. Over time,
+Pale Moon transitioned from a basic Firefox rebuild into a completely
+independent hard fork, culminating in the creation of its own rendering
+engine, Goanna, and the Unified XUL Platform (UXP).</p>
+<h2 id="the-early-years-optimized-rebuilds">The Early Years: Optimized
+Rebuilds</h2>
+<p>From 2009 to 2013, Pale Moon was not a true fork in the modern sense.
+Mozilla provided open-source code built to run on the widest possible
+variety of computers, including very old hardware. Moonchild took this
+exact code and compiled it specifically for modern processors using
+advanced instruction sets (like SSE2).</p>
+<p>To further increase speed and reduce memory usage, Pale Moon stripped
+out Firefox features deemed unnecessary for the average user, such as
+accessibility features, parental controls, and crash reporters. Aside
+from these under-the-hood tweaks, Pale Moon functioned identically to
+Firefox and maintained full compatibility with its extensions.</p>
+<h2 id="the-turning-point-firefox-24-esr-and-the-australis-ui">The
+Turning Point: Firefox 24 ESR and the Australis UI</h2>
+<p>The first major divergence occurred in 2014 with the release of
+Firefox 29. Mozilla introduced a radical new user interface called
+"Australis," which made Firefox look and behave much like Google Chrome.
+Australis removed the customizable add-on bar, rounded the tabs, and
+restricted how much users could alter the browser's appearance.</p>
+<p>Moonchild and the Pale Moon community rejected this change, favoring
+the classic, highly customizable interface. Instead of following
+Mozilla's updates, Pale Moon froze its codebase at Firefox 24 Extended
+Support Release (ESR). From this point onward, Pale Moon maintained its
+own version of the old interface while selectively backporting security
+patches from newer versions of Firefox.</p>
+<h2 id="the-hard-fork-introducing-the-goanna-engine">The Hard Fork:
+Introducing the Goanna Engine</h2>
+<p>By 2015, simply patching the aging Firefox 24 ESR code was no longer
+sustainable for modern web compatibility. With the release of Pale Moon
+26 in 2016, the project severed ties with Mozilla's Gecko rendering
+engine and introduced <strong>Goanna</strong>.</p>
+<p>Goanna was a hard fork of the Gecko engine. While it originated from
+Mozilla's code, Goanna was heavily modified regarding how it handled
+memory, rendered graphics, and processed web standards. This change
+officially separated Pale Moon from Firefox, meaning Pale Moon was now
+recognized by websites as an entirely different browser rather than a
+variant of Firefox.</p>
+<h2 id="the-unified-xul-platform-uxp">The Unified XUL Platform
+(UXP)</h2>
+<p>As the web evolved, Pale Moon needed a more modern foundation without
+adopting the features Mozilla was forcing upon Firefox users. In 2017,
+Mozilla released Firefox 57 (Quantum), which completely overhauled the
+browser by integrating the Rust programming language, enforcing a
+multi-process architecture (Electrolysis), and killing off classic
+extensions in favor of Chrome-style WebExtensions.</p>
+<p>To modernize Pale Moon while avoiding the Quantum overhaul, Moonchild
+forked the Mozilla codebase one final time, using Firefox 52 ESR—the
+absolute last version of Firefox to support legacy technologies.</p>
+<p>Moonchild stripped out Mozilla's multi-process code, Rust components,
+and telemetry, using the remaining code to build the <strong>Unified XUL
+Platform (UXP)</strong>. Released in 2018 with Pale Moon 28, UXP became
+the permanent, independent foundation for the browser.</p>
+<h2 id="key-technical-differences-today">Key Technical Differences
+Today</h2>
+<p>Because of how Pale Moon diverged, its current codebase differs
+drastically from modern Firefox in several specific ways:</p>
+<ul>
+<li><strong>XUL and XPCOM Retention:</strong> Pale Moon still uses the
+XML User Interface Language (XUL) and XPCOM. This allows extensions and
+themes to modify the browser entirely, a capability Firefox abandoned in
+2017.</li>
+<li><strong>Single-Process Architecture:</strong> While Firefox splits
+tabs and extensions into multiple background processes to prevent
+crashes, Pale Moon intentionally remains a single-process application to
+keep memory consumption low and code complexity manageable.</li>
+<li><strong>NPAPI Plugin Support:</strong> Firefox removed support for
+NPAPI plugins (such as Java, Silverlight, and Adobe Flash) years ago.
+Pale Moon retains this code for users and enterprises that still rely on
+legacy web applications.</li>
+<li><strong>Zero Rust Code:</strong> Modern Firefox relies heavily on
+the Rust programming language for its core components (Servo). Pale
+Moon's codebase remains strictly C, C++, and JavaScript.</li>
+<li><strong>Absence of Mozilla Services:</strong> All code relating to
+Mozilla's Pocket integration, WebRTC, telemetry data collection, and DRM
+(Digital Rights Management) has been completely excised from the Pale
+Moon codebase.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-pale-moon-diverged-from-the-firefox-codebase';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

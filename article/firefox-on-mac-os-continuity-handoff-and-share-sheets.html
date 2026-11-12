@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox on macOS: Continuity, Handoff, and Share Sheets - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how the Mozilla Firefox web browser integrates with core Apple ecosystem features on macOS. It covers how Firefox handles Continuity and Handoff for cross-device workflows, how it utilizes the native macOS shar">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-on-mac-os-continuity-handoff-and-share-sheets">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox on macOS: Continuity, Handoff, and Share Sheets - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-on-mac-os-continuity-handoff-and-share-sheets" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how the Mozilla Firefox web browser integrates with core Apple ecosystem features on macOS. It covers how Firefox handles Continuity and Handoff for cross-device workflows, how it utilizes the native macOS shar" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-on-macos-continuity-handoff-and-share-sheets">Firefox on
+macOS: Continuity, Handoff, and Share Sheets</h1>
+<p>This article provides a complete overview of how the Mozilla Firefox
+web browser integrates with core Apple ecosystem features on macOS. It
+covers how Firefox handles Continuity and Handoff for cross-device
+workflows, how it utilizes the native macOS share sheet for content
+distribution, and how Mozilla’s built-in tools complement these native
+Apple features.</p>
+<h2 id="handoff-integration">Handoff Integration</h2>
+<p>Apple’s Handoff feature allows you to start a task on one Apple
+device and pick it up on another. Firefox supports Handoff, allowing you
+to pass web pages between your Mac, iPhone, and iPad.</p>
+<p>To use Handoff with Firefox, both your Mac and iOS devices must be
+signed into the same Apple ID, have Bluetooth and Wi-Fi enabled, and
+have Handoff turned on in system settings.</p>
+<ul>
+<li><strong>From iOS to Mac:</strong> If you are browsing in Firefox on
+your iPhone, a Firefox icon (or your default Mac browser icon) will
+appear on the far left of your Mac's Dock. Clicking this icon opens the
+exact webpage on your Mac.</li>
+<li><strong>From Mac to iOS:</strong> If you are using Firefox on your
+Mac, you can swipe up to open the App Switcher on your iPhone or iPad. A
+banner will appear at the bottom of the screen allowing you to open the
+webpage on your mobile device.</li>
+<li><strong>Default Browser Requirement:</strong> Handoff passes the
+URL, not the specific browser state. For the smoothest experience,
+Firefox must be set as your default web browser on both macOS and iOS.
+Otherwise, Handoff may try to open your Firefox link in Safari.</li>
+</ul>
+<h2 id="continuity-features">Continuity Features</h2>
+<p>macOS Continuity encompasses several features beyond Handoff, and
+Firefox supports the most essential ones for daily browsing.</p>
+<ul>
+<li><strong>Universal Clipboard:</strong> This feature works seamlessly
+in Firefox with zero configuration. You can copy text, links, or images
+inside Firefox on your Mac and immediately paste them into any app on
+your iPhone or iPad, and vice versa.</li>
+<li><strong>SMS and Verification Codes:</strong> Unlike Safari, Firefox
+cannot natively auto-fill two-factor authentication (2FA) codes received
+via Apple Messages directly from the macOS notification banner. You must
+copy and paste the code manually or use a dedicated password manager
+extension.</li>
+<li><strong>Continuity Camera:</strong> Firefox does not support the
+native "Import from iPhone or iPad" right-click context menu inside web
+pages. However, when uploading a file to a website in Firefox, you can
+use the Finder pop-up window to access Continuity Camera functions if
+you select the desktop or another system folder first.</li>
+</ul>
+<h2 id="native-macos-share-sheets">Native macOS Share Sheets</h2>
+<p>Firefox integrates directly with the native macOS Share menu. This
+allows you to send links to other Apple apps and nearby devices without
+copying and pasting URLs manually.</p>
+<p>You can access the native Share Sheet in Firefox in two ways:</p>
+<ol type="1">
+<li>Click <strong>File</strong> in the top macOS menu bar and select
+<strong>Share</strong>.</li>
+<li>Right-click (or Control-click) on any open browser tab, hover over
+<strong>Share</strong>, and select your destination.</li>
+</ol>
+<p>Using the native share sheet in Firefox gives you direct access
+to:</p>
+<ul>
+<li><strong>AirDrop:</strong> Instantly beam the current webpage to a
+nearby Mac, iPhone, or iPad.</li>
+<li><strong>Messages and Mail:</strong> Generate a new iMessage or Apple
+Mail draft with the webpage URL automatically inserted.</li>
+<li><strong>Notes and Reminders:</strong> Save the active Firefox link
+directly to an Apple Note or attach it to a specific Reminder to read
+later.</li>
+<li><strong>Third-Party Apps:</strong> Any macOS application installed
+on your system that registers a share extension (such as Things, Bear,
+or Pocket) will also appear in Firefox's share menu.</li>
+</ul>
+<h2 id="firefox-sync-as-an-alternative">Firefox Sync as an
+Alternative</h2>
+<p>To bridge the gaps where Apple restricts third-party browser access,
+Mozilla provides its own cross-device ecosystem called Firefox Sync.</p>
+<p>If you are signed into a Mozilla account on both your Mac and mobile
+devices, you can bypass Apple's Handoff entirely. By right-clicking a
+tab or a link on your Mac and selecting <strong>Send Tab to
+Device</strong>, Firefox will push that webpage directly to Firefox on
+your iPhone or iPad. Unlike Apple's Handoff, this method does not
+require the devices to be near each other or on the same Wi-Fi network,
+and it works even if Firefox is not set as your default system
+browser.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-on-mac-os-continuity-handoff-and-share-sheets';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

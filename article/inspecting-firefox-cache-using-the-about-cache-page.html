@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspecting Firefox Cache Using the about:cache Page - firefox</title>
+    <meta name="description" content="This article provides a straightforward guide on how to use the built-in about:cache diagnostic page in the Mozilla Firefox web browser. By following the steps below, you will learn how to view the current storage sizes of your disk and memory caches, fin">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/inspecting-firefox-cache-using-the-about-cache-page">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Inspecting Firefox Cache Using the about:cache Page - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/inspecting-firefox-cache-using-the-about-cache-page" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a straightforward guide on how to use the built-in about:cache diagnostic page in the Mozilla Firefox web browser. By following the steps below, you will learn how to view the current storage sizes of your disk and memory caches, fin" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="inspecting-firefox-cache-using-the-aboutcache-page">Inspecting
+Firefox Cache Using the about:cache Page</h1>
+<p>This article provides a straightforward guide on how to use the
+built-in <code>about:cache</code> diagnostic page in the Mozilla Firefox
+web browser. By following the steps below, you will learn how to view
+the current storage sizes of your disk and memory caches, find the exact
+local file paths where cached data is saved, and inspect the detailed
+metadata of individual cached web files.</p>
+<h3 id="accessing-the-cache-information-page">Accessing the Cache
+Information Page</h3>
+<p>To begin inspecting your cache, you need to access Firefox's internal
+network storage page:</p>
+<ol type="1">
+<li>Open the Firefox web browser.</li>
+<li>Click the address bar at the top of the window.</li>
+<li>Type <code>about:cache</code> and press <strong>Enter</strong>.</li>
+</ol>
+<p>You will be presented with a page titled "Information about the
+Network Cache Storage Service." This page is primarily divided into two
+main sections: <strong>memory</strong> (data stored temporarily in your
+system's RAM) and <strong>disk</strong> (data stored on your computer's
+hard drive).</p>
+<h3 id="checking-cache-sizes-and-file-locations">Checking Cache Sizes
+and File Locations</h3>
+<p>The main <code>about:cache</code> screen immediately displays the
+size and location details for both your memory and disk caches. Looking
+at either section, you can interpret the data using the following
+fields:</p>
+<ul>
+<li><strong>Number of entries:</strong> This shows the total amount of
+individual files (images, scripts, stylesheets) currently held in that
+specific cache.</li>
+<li><strong>Maximum storage size:</strong> This indicates the maximum
+amount of space (in KiB) that Firefox is permitted to use for this cache
+type.</li>
+<li><strong>Storage in use:</strong> This displays the exact amount of
+space (in KiB) currently occupied by the cached files.</li>
+<li><strong>Storage disk location:</strong> This tells you where the
+files live. Under the <strong>memory</strong> section, this will read
+"none, only stored in memory" because the data is held in your RAM.
+Under the <strong>disk</strong> section, this displays the exact folder
+path on your computer's operating system where the physical cache files
+are saved. You can copy and paste this path into your system's file
+explorer to view the raw cache folders on your hard drive.</li>
+</ul>
+<h3 id="inspecting-individual-cache-entries">Inspecting Individual Cache
+Entries</h3>
+<p>If you want to see the actual files Firefox has stored, you can drill
+down into the specific entries for either the disk or memory cache.</p>
+<ol type="1">
+<li>Locate either the <strong>memory</strong> or <strong>disk</strong>
+section on the <code>about:cache</code> page.</li>
+<li>Click the blue <strong>List Cache Entries</strong> link at the
+bottom of your chosen section.</li>
+</ol>
+<p>A new page will load containing a massive table of every single item
+currently stored in that cache. The table provides several columns of
+data for each entry:</p>
+<ul>
+<li><strong>Key:</strong> The direct URL of the cached file (e.g., an
+image link or a website script).</li>
+<li><strong>Data size:</strong> The file size of that specific entry in
+bytes.</li>
+<li><strong>Fetch count:</strong> How many times Firefox has loaded this
+file from the cache instead of redownloading it.</li>
+<li><strong>Last Mod:</strong> The date and time the file was last
+modified.</li>
+<li><strong>Expires:</strong> The date and time when Firefox will
+consider this cached file outdated and delete or replace it.</li>
+</ul>
+<h3 id="viewing-entry-metadata">Viewing Entry Metadata</h3>
+<p>To inspect a specific file in detail, click on its URL under the
+<strong>Key</strong> column in the cache entries list.</p>
+<p>This opens the "Cache entry information" page for that specific item.
+Here, you can verify the exact storage location, see the security
+details of the connection used to download the file, read the raw HTTP
+response headers sent by the web server, and view a hexadecimal
+representation of the file's data at the very bottom of the page.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/inspecting-firefox-cache-using-the-about-cache-page';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

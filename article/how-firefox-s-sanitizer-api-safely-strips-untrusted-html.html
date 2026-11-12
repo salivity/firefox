@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s Sanitizer API Safely Strips Untrusted HTML - firefox</title>
+    <meta name="description" content="This article explores how the Sanitizer API implementation in the Firefox web browser empowers developers to securely handle untrusted HTML strings. By providing a native, browser-level mechanism to parse and strip malicious code before it reaches the Doc">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-sanitizer-api-safely-strips-untrusted-html">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s Sanitizer API Safely Strips Untrusted HTML - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-sanitizer-api-safely-strips-untrusted-html" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how the Sanitizer API implementation in the Firefox web browser empowers developers to securely handle untrusted HTML strings. By providing a native, browser-level mechanism to parse and strip malicious code before it reaches the Doc" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-sanitizer-api-safely-strips-untrusted-html">How
+Firefox's Sanitizer API Safely Strips Untrusted HTML</h1>
+<p>This article explores how the Sanitizer API implementation in the
+Firefox web browser empowers developers to securely handle untrusted
+HTML strings. By providing a native, browser-level mechanism to parse
+and strip malicious code before it reaches the Document Object Model
+(DOM), Firefox helps eliminate Cross-Site Scripting (XSS)
+vulnerabilities. Below is a breakdown of the dangers of traditional HTML
+insertion, how the Sanitizer API functions in Firefox, ways to customize
+its filtering rules, and the security advantages of using a built-in
+browser API over third-party libraries.</p>
+<h3 id="eliminating-the-risks-of-innerhtml">Eliminating the Risks of
+innerHTML</h3>
+<p>Web developers frequently need to render user-generated content, such
+as comments, forum posts, or rich text, directly into a webpage.
+Traditionally, using properties like <code>Element.innerHTML</code> to
+insert this content exposed applications to DOM-based Cross-Site
+Scripting (XSS) attacks. If an untrusted string contained hidden
+JavaScript, the browser would execute it immediately upon insertion.
+Firefox's implementation of the Sanitizer API solves this by providing a
+safe-by-default method to parse and inject HTML without executing
+underlying scripts.</p>
+<h3 id="native-sanitization-with-sethtml">Native Sanitization with
+setHTML</h3>
+<p>At the core of the Sanitizer API in Firefox is the
+<code>Element.setHTML()</code> method. This method acts as a direct,
+secure replacement for <code>innerHTML</code>.</p>
+<p>When a developer passes an untrusted HTML string into
+<code>setHTML()</code>, Firefox intercepts the string and parses it into
+an inert document fragment. Before the fragment is inserted into the
+active DOM, the browser automatically strips out dangerous elements and
+attributes. By default, Firefox removes executable tags such as
+<code>&lt;script&gt;</code>, <code>&lt;object&gt;</code>, and
+<code>&lt;embed&gt;</code>, as well as malicious inline event handlers
+like <code>onerror</code>, <code>onload</code>, and
+<code>onclick</code>. Only safe, clean HTML is rendered on the page.</p>
+<h3 id="protecting-against-mutation-xss-mxss">Protecting Against
+Mutation XSS (mXSS)</h3>
+<p>One of the greatest challenges in web security is preventing mutation
+XSS (mXSS). This vulnerability occurs when an HTML string passes through
+a third-party sanitizer looking completely safe, but is subsequently
+altered by the browser's parser during DOM insertion—inadvertently
+mutating it into executable code.</p>
+<p>Because Firefox's Sanitizer API is built directly into its Gecko
+rendering engine, the sanitizer and the HTML parser are one and the
+same. The sanitization occurs at the exact moment of parsing. Because
+there is no discrepancy between how the HTML is sanitized and how the
+browser understands it, mXSS vectors are effectively neutralized.</p>
+<h3 id="customizing-sanitization-rules">Customizing Sanitization
+Rules</h3>
+<p>While the default configuration in Firefox is strictly secure and
+sufficient for most applications, developers often need to adjust rules
+for specific use cases. Firefox allows developers to instantiate a
+<code>new Sanitizer()</code> object with custom configurations, which
+can then be passed into the <code>setHTML()</code> method. Developers
+can control the output using several straightforward parameters:</p>
+<ul>
+<li><strong>allowElements:</strong> Defines a strict allowlist of the
+only HTML tags permitted to render. Any tag not on this list is
+stripped.</li>
+<li><strong>blockElements:</strong> Specifies tags that should be
+removed while keeping their inner text or child elements intact (for
+example, removing a <code>&lt;div&gt;</code> wrapper but keeping the
+text inside it).</li>
+<li><strong>dropElements:</strong> Specifies tags that must be
+completely eradicated, including all of their inner text and child
+elements.</li>
+<li><strong>allowAttributes and dropAttributes:</strong> Provides
+granular control over which attributes (such as <code>class</code>,
+<code>id</code>, or <code>href</code>) can exist on specific elements or
+globally across the HTML string.</li>
+</ul>
+<h3 id="performance-and-dependency-benefits">Performance and Dependency
+Benefits</h3>
+<p>Before the introduction of the Sanitizer API, developers had to rely
+on external JavaScript libraries to clean HTML strings on the client
+side. By moving this logic into Firefox's native codebase, web
+applications benefit from significantly faster execution speeds and
+reduced JavaScript bundle sizes. Furthermore, developers no longer need
+to manually audit and update third-party sanitization dependencies, as
+Firefox automatically updates its native sanitization logic alongside
+routine browser security patches.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-sanitizer-api-safely-strips-untrusted-html';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

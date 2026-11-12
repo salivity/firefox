@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the Glean SDK Manages Cross-Platform Firefox Telemetry - firefox</title>
+    <meta name="description" content="This article provides an overview of how Mozilla&#39;s Glean SDK standardizes and manages structured telemetry collection across both desktop and mobile versions of the Firefox web browser. By utilizing a unified cross-platform architecture, strict schema def">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-the-glean-sdk-manages-cross-platform-firefox-telemetry">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How the Glean SDK Manages Cross-Platform Firefox Telemetry - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-the-glean-sdk-manages-cross-platform-firefox-telemetry" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how Mozilla&#39;s Glean SDK standardizes and manages structured telemetry collection across both desktop and mobile versions of the Firefox web browser. By utilizing a unified cross-platform architecture, strict schema def" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-the-glean-sdk-manages-cross-platform-firefox-telemetry">How
+the Glean SDK Manages Cross-Platform Firefox Telemetry</h1>
+<p>This article provides an overview of how Mozilla's Glean SDK
+standardizes and manages structured telemetry collection across both
+desktop and mobile versions of the Firefox web browser. By utilizing a
+unified cross-platform architecture, strict schema definitions,
+multi-process communication layers, and reliable local database storage,
+Glean ensures consistent and privacy-preserving data collection
+regardless of the underlying operating system.</p>
+<h2 id="a-unified-rust-core">A Unified Rust Core</h2>
+<p>The Glean SDK achieves cross-platform consistency through a shared
+core library written in Rust, known as <code>glean-core</code>. Rather
+than maintaining separate telemetry implementations and logic for
+Android, iOS, Windows, macOS, and Linux, Mozilla uses this single Rust
+library to handle data validation, storage, and serialization.</p>
+<p>Language-specific bindings act as thin wrappers over this Rust core.
+On mobile, Firefox uses Kotlin bindings for Android and Swift bindings
+for iOS. On desktop, Firefox utilizes C++, JavaScript, and Rust
+bindings. Because the underlying logic is identical across all
+platforms, a metric recorded on an iPhone behaves the exact same way as
+a metric recorded on a Windows PC.</p>
+<h2 id="declarative-metric-definitions">Declarative Metric
+Definitions</h2>
+<p>To ensure telemetry is strictly structured, Glean requires developers
+to define all data points in YAML registry files
+(<code>metrics.yaml</code> and <code>pings.yaml</code>) before writing
+any data collection code.</p>
+<p>During the browser's build process, a tool called
+<code>glean_parser</code> reads these YAML files, validates them against
+strict schemas, and automatically generates type-safe API code for the
+target platform. Glean enforces the use of specific, predefined metric
+types—such as counters, timing distributions, booleans, and events. This
+strict typing prevents developers from collecting unstructured data and
+ensures that data analysts know the exact shape and behavior of the
+incoming telemetry.</p>
+<h2 id="multi-process-handling-on-desktop">Multi-Process Handling on
+Desktop</h2>
+<p>While mobile browsers operate within tightly controlled OS
+application lifecycles, Firefox Desktop uses a complex multi-process
+architecture (Project Fission) that isolates web content into numerous
+sandboxed child processes.</p>
+<p>To manage this, Mozilla uses an integration layer called "Firefox on
+Glean" (FOG). Because child processes do not have direct access to the
+local disk for security reasons, FOG provides Inter-Process
+Communication (IPC) mechanisms. When a metric is recorded in a content
+or GPU process on desktop, FOG safely batches and funnels that data back
+to the main parent process, which then passes the data into the Glean
+Rust core.</p>
+<h2 id="local-storage-and-ping-assembly">Local Storage and Ping
+Assembly</h2>
+<p>When Firefox records a metric on either desktop or mobile, the Glean
+SDK validates the input and immediately writes it to a local key-value
+database (using LMDB) on the user's device. Persisting data directly to
+the disk ensures that telemetry is not lost if the browser crashes or
+the mobile operating system abruptly terminates the app.</p>
+<p>Glean organizes these stored metrics into structured payloads called
+"pings." Rather than sending data continuously, Glean batches metrics
+into specific pings that serve different purposes:</p>
+<ul>
+<li><strong>Baseline Ping:</strong> Captures basic session duration and
+activity, triggered when the browser goes to the background or
+closes.</li>
+<li><strong>Metrics Ping:</strong> A comprehensive daily snapshot of all
+collected metrics.</li>
+<li><strong>Events Ping:</strong> Tracks specific user interactions in
+chronological order.</li>
+<li><strong>Custom Pings:</strong> Defined by engineers for specialized
+browser features.</li>
+</ul>
+<p>When a trigger condition is met—such as a daily timer expiring on
+desktop or a user minimizing the app on mobile—Glean reads the local
+database, assembles the relevant metrics into a standardized JSON
+payload, attaches common metadata (like OS version and locale), and
+queues the ping for upload.</p>
+<h2 id="network-transmission-and-privacy-controls">Network Transmission
+and Privacy Controls</h2>
+<p>The Glean SDK does not handle network requests inside its Rust core.
+Instead, it hands the serialized JSON ping back to the host
+application's native networking stack (such as Viaduct/Necko on desktop
+and Android, or URLSession on iOS). This allows the browser to respect
+platform-specific constraints, such as mobile battery-saving modes and
+background data limits.</p>
+<p>Finally, the Glean SDK centrally manages user privacy choices. If a
+user opts out of telemetry in the Firefox settings on any device, Glean
+immediately halts all metric recording, wipes the local LMDB storage,
+and generates a specialized <code>deletion-request</code> ping. This
+final ping instructs Mozilla's ingestion servers to purge all previously
+collected data associated with that installation's client ID.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-the-glean-sdk-manages-cross-platform-firefox-telemetry';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

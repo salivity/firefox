@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox browser.storage.sync API Quota Limits - firefox</title>
+    <meta name="description" content="This article provides a breakdown of the storage quota limits imposed on web extensions using the browser.storage.sync API in the Firefox Web Browser. Developers must adhere to specific constraints regarding total storage capacity, individual item sizes,">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-browser-storage-sync-api-quota-limits">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox browser.storage.sync API Quota Limits - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-browser-storage-sync-api-quota-limits" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a breakdown of the storage quota limits imposed on web extensions using the browser.storage.sync API in the Firefox Web Browser. Developers must adhere to specific constraints regarding total storage capacity, individual item sizes," />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-browserstoragesync-api-quota-limits">Firefox
+browser.storage.sync API Quota Limits</h1>
+<p>This article provides a breakdown of the storage quota limits imposed
+on web extensions using the <code>browser.storage.sync</code> API in the
+Firefox Web Browser. Developers must adhere to specific constraints
+regarding total storage capacity, individual item sizes, maximum item
+counts, and the frequency of write operations to ensure their extensions
+sync data reliably across a user's devices without triggering quota
+errors.</p>
+<p>When developing a Firefox extension that synchronizes user settings
+or data via a Firefox Account, the <code>browser.storage.sync</code> API
+enforces strict limits. If an extension exceeds any of these quotas, the
+API call will fail, and the returned Promise will be rejected with an
+error.</p>
+<p>Here are the exact storage and operational limits for
+<code>browser.storage.sync</code> in Firefox:</p>
+<h3 id="1-total-storage-capacity">1. Total Storage Capacity</h3>
+<ul>
+<li><strong>Property:</strong>
+<code>browser.storage.sync.QUOTA_BYTES</code></li>
+<li><strong>Limit:</strong> 102,400 bytes (100 KB)</li>
+<li><strong>Details:</strong> This is the maximum total amount of data
+that an extension can store in the sync storage area. This calculation
+includes the size of the keys plus the JSON-stringified size of the
+values.</li>
+</ul>
+<h3 id="2-individual-item-size">2. Individual Item Size</h3>
+<ul>
+<li><strong>Property:</strong>
+<code>browser.storage.sync.QUOTA_BYTES_PER_ITEM</code></li>
+<li><strong>Limit:</strong> 8,192 bytes (8 KB)</li>
+<li><strong>Details:</strong> No single item (a key-value pair) can
+exceed 8 KB. If you attempt to save an object or string that, combined
+with its key name, is larger than 8,192 bytes, the operation will be
+rejected even if you have plenty of total storage space remaining.</li>
+</ul>
+<h3 id="3-maximum-number-of-items">3. Maximum Number of Items</h3>
+<ul>
+<li><strong>Property:</strong>
+<code>browser.storage.sync.MAX_ITEMS</code></li>
+<li><strong>Limit:</strong> 512 items</li>
+<li><strong>Details:</strong> An extension can store a maximum of 512
+separate key-value pairs in the sync storage area. To store more data
+points, developers must group multiple values into a single object under
+one key, while remaining mindful of the 8 KB per-item limit.</li>
+</ul>
+<h3 id="4-write-operations-per-hour">4. Write Operations Per Hour</h3>
+<ul>
+<li><strong>Property:</strong>
+<code>browser.storage.sync.MAX_WRITE_OPERATIONS_PER_HOUR</code></li>
+<li><strong>Limit:</strong> 1,800 operations</li>
+<li><strong>Details:</strong> An extension can perform up to 1,800
+<code>set()</code>, <code>remove()</code>, or <code>clear()</code>
+operations within a single rolling hour.</li>
+</ul>
+<h3 id="5-write-operations-per-minute">5. Write Operations Per
+Minute</h3>
+<ul>
+<li><strong>Property:</strong>
+<code>browser.storage.sync.MAX_WRITE_OPERATIONS_PER_MINUTE</code></li>
+<li><strong>Limit:</strong> 120 operations</li>
+<li><strong>Details:</strong> To prevent extensions from overwhelming
+the sync server with rapid updates, Firefox limits extensions to 120
+write operations per minute (an average of 2 operations per
+second).</li>
+</ul>
+<h3 id="best-practices-for-managing-quotas">Best Practices for Managing
+Quotas</h3>
+<p>Because <code>browser.storage.sync</code> is intended only for small
+amounts of data like user preferences, you should never use it for
+caching large datasets. If you need to store larger files, complex
+states, or make frequent write operations, use
+<code>browser.storage.local</code> instead, which offers a much larger
+default quota of 10 MB (and can be made unlimited with the
+<code>unlimitedStorage</code> permission) without rate-limiting write
+operations.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-browser-storage-sync-api-quota-limits';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

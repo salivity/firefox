@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Electrolysis: Bringing Multi-Process to Firefox - firefox</title>
+    <meta name="description" content="Project Electrolysis, commonly abbreviated as e10s, was Mozilla&#39;s monumental engineering initiative to transition the Firefox web browser from a legacy single-process architecture to a modern multi-process model. This article provides an overview of what">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/project-electrolysis-bringing-multi-process-to-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Project Electrolysis: Bringing Multi-Process to Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/project-electrolysis-bringing-multi-process-to-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Project Electrolysis, commonly abbreviated as e10s, was Mozilla&#39;s monumental engineering initiative to transition the Firefox web browser from a legacy single-process architecture to a modern multi-process model. This article provides an overview of what" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="project-electrolysis-bringing-multi-process-to-firefox">Project
+Electrolysis: Bringing Multi-Process to Firefox</h1>
+<p>Project Electrolysis, commonly abbreviated as e10s, was Mozilla's
+monumental engineering initiative to transition the Firefox web browser
+from a legacy single-process architecture to a modern multi-process
+model. This article provides an overview of what Project Electrolysis
+was, why the old browser model failed to keep up with the modern web,
+and how splitting browser tasks into separate processes revolutionized
+Firefox's stability, performance, and security.</p>
+<h2 id="the-problem-with-a-single-process-browser">The Problem with a
+Single-Process Browser</h2>
+<p>For the first decade of its existence, Firefox ran entirely inside a
+single operating system process. This meant the browser's user interface
+(the tabs, toolbars, and menus) and the web pages you visited shared the
+exact same computing thread.</p>
+<p>As websites evolved from static documents into complex applications
+heavy with JavaScript and media, this single-process model became a
+major bottleneck. It resulted in two critical flaws:</p>
+<ul>
+<li><strong>Browser Freezes:</strong> If a web page executed a heavy
+script, the main thread was blocked. The entire browser would become
+unresponsive, preventing you from scrolling, switching tabs, or even
+closing the offending tab until the script finished.</li>
+<li><strong>Total Crashes:</strong> If a single web page encountered a
+fatal error, it took the entire browser process down with it, crashing
+all open tabs simultaneously.</li>
+</ul>
+<h2 id="what-was-project-electrolysis-e10s">What was Project
+Electrolysis (e10s)?</h2>
+<p>Named after the chemical process of using electricity to split water
+into hydrogen and oxygen, Project Electrolysis was designed to split
+Firefox's monolithic structure into distinct, independent processes. In
+developer shorthand, the project became known as "e10s"—a numeronym
+standing for the letter "e", the ten letters in the middle of the word,
+and the final "s".</p>
+<h2 id="how-e10s-changed-firefoxs-architecture">How e10s Changed
+Firefox's Architecture</h2>
+<p>To bring multi-process architecture to Firefox, e10s separated the
+browser into two primary types of processes that communicate with each
+other asynchronously:</p>
+<ol type="1">
+<li><strong>The Parent (UI) Process:</strong> Also known as the "chrome"
+process, this single process is strictly responsible for managing the
+browser's user interface, such as rendering tabs, the address bar, and
+bookmarks. It also handles system-level operations like network requests
+and disk access.</li>
+<li><strong>The Child (Content) Processes:</strong> These processes are
+exclusively dedicated to loading and rendering web content, including
+parsing HTML, applying CSS, and executing JavaScript.</li>
+<li><strong>Inter-Process Communication (IPC):</strong> Because the UI
+and the web content no longer lived in the same place, Mozilla built a
+fast message-passing system. This allowed the parent and child processes
+to share data without ever blocking or slowing each other down.</li>
+</ol>
+<h2 id="the-three-pillars-of-multi-process">The Three Pillars of
+Multi-Process</h2>
+<p>By isolating web content from the core browser, Project Electrolysis
+delivered three immediate benefits to Firefox users:</p>
+<ul>
+<li><strong>Unmatched Stability:</strong> When a web page crashes under
+the e10s architecture, only the specific content process handling that
+page dies. The parent process remains unaffected. Instead of the whole
+browser closing, Firefox simply displays a "Gah. Your tab just crashed"
+screen, leaving all other tabs intact.</li>
+<li><strong>Fluid Responsiveness:</strong> Because the UI operates on
+its own dedicated thread, a frozen or infinitely looping script on a web
+page can no longer lock up the browser. Users can effortlessly switch
+tabs or close a hung page instantly.</li>
+<li><strong>Security Sandboxing:</strong> Multi-process architecture
+laid the groundwork for strict security sandboxing. Content processes
+are locked in a restricted environment where they are forbidden from
+directly accessing your computer's file system, memory, or hardware.
+Even if malicious website code exploits a content process, it is trapped
+inside the sandbox and must go through the heavily guarded parent
+process to do any real harm.</li>
+</ul>
+<h2 id="the-add-on-challenge-and-rollout">The Add-on Challenge and
+Rollout</h2>
+<p>While competing browsers like Google Chrome launched with
+multi-process architecture from day one, retrofitting it into Firefox
+was the largest change to Firefox's code in its history. The primary
+hurdle was Firefox's massive ecosystem of legacy add-ons. Traditional
+Firefox extensions had unrestricted, direct access to both the UI and
+web content, assuming everything existed in one process.</p>
+<p>To prevent breaking thousands of extensions overnight, Mozilla
+engineered temporary compatibility layers called "shims" that allowed
+old add-ons to function across processes, though at a performance cost.
+Eventually, Mozilla used the e10s transition to phase out legacy
+extensions in favor of the modern, multi-process-friendly WebExtensions
+API.</p>
+<p>Mozilla began the phased rollout of e10s in August 2016 with Firefox
+48. Initially, it separated the browser into just two processes: one for
+the UI and one for all web content. By June 2017, with the release of
+Firefox 54, e10s expanded to use up to four separate content processes
+simultaneously. This successful transition completed the foundational
+architecture required for the critically acclaimed Firefox Quantum
+(Firefox 57) update in late 2017.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/project-electrolysis-bringing-multi-process-to-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

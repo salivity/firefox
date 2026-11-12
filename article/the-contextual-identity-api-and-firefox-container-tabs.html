@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Contextual Identity API and Firefox Container Tabs - firefox</title>
+    <meta name="description" content="This article explores the Contextual Identity WebExtensions API, a powerful feature unique to the Mozilla Firefox web browser. It covers the fundamental architecture of the API, how it isolates user data to power the &quot;Container Tabs&quot; feature, and the core">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/the-contextual-identity-api-and-firefox-container-tabs">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Contextual Identity API and Firefox Container Tabs - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/the-contextual-identity-api-and-firefox-container-tabs" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the Contextual Identity WebExtensions API, a powerful feature unique to the Mozilla Firefox web browser. It covers the fundamental architecture of the API, how it isolates user data to power the &quot;Container Tabs&quot; feature, and the core" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="the-contextual-identity-api-and-firefox-container-tabs">The
+Contextual Identity API and Firefox Container Tabs</h1>
+<p>This article explores the Contextual Identity WebExtensions API, a
+powerful feature unique to the Mozilla Firefox web browser. It covers
+the fundamental architecture of the API, how it isolates user data to
+power the "Container Tabs" feature, and the core programmatic functions
+developers use to build privacy-focused and session-management
+extensions. By understanding this API, you will see how Firefox allows
+users to maintain multiple, separate digital identities within a single
+browser window.</p>
+<h3 id="what-is-the-contextual-identity-webextensions-api">What is the
+Contextual Identity WebExtensions API?</h3>
+<p>The Contextual Identity API
+(<code>browser.contextualIdentities</code>) is a Firefox-specific
+WebExtensions API that allows extension developers to manage different
+browsing contexts within the same browser profile.</p>
+<p>In standard web browsing, all open tabs share the same storage space.
+If you log into a website in one tab, you are logged into that same
+website in every other tab. The Contextual Identity API breaks this rule
+by allowing the browser to create isolated storage environments, known
+as contextual identities. Each identity acts as a separate "cookie jar"
+with its own unique identifier.</p>
+<h3 id="how-the-api-powers-container-tabs">How the API Powers Container
+Tabs</h3>
+<p>To the end-user, a contextual identity is known as a Container Tab.
+Mozilla’s popular extensions, such as "Firefox Multi-Account Containers"
+and "Facebook Container," are built directly on top of this API.</p>
+<p>Here is how the API powers the container mechanism under the
+hood:</p>
+<ul>
+<li><strong>The <code>cookieStoreId</code> Property:</strong> Every tab
+in Firefox is assigned a <code>cookieStoreId</code>. Standard tabs use
+the default ID, and private browsing tabs use a private ID. When a new
+contextual identity is created via the API, Firefox generates a new,
+unique <code>cookieStoreId</code> (e.g.,
+<code>firefox-container-1</code>).</li>
+<li><strong>Storage Isolation:</strong> When a tab is opened with a
+specific <code>cookieStoreId</code>, Firefox isolates all site data for
+that tab. Cookies, <code>localStorage</code>, <code>indexedDB</code>,
+and HTTP cache data are strictly bound to that specific ID. One
+container cannot read or access the cookies or storage of another
+container.</li>
+<li><strong>Shared Browser Profile:</strong> Unlike full browser
+profiles, which separate everything, Contextual Identities only isolate
+site data. Container tabs still share the user's global bookmarks,
+browsing history, saved passwords, and installed extensions. This makes
+switching between contexts seamless without needing to open a new
+browser window or configure a new profile.</li>
+<li><strong>Visual Indicators:</strong> The API allows developers to
+assign a specific name, color, and icon to each
+<code>cookieStoreId</code>. Firefox uses these properties to render a
+colored stripe along the top of the tab and an icon in the address bar,
+visually informing the user which container is currently active.</li>
+</ul>
+<h3 id="core-capabilities-for-developers">Core Capabilities for
+Developers</h3>
+<p>To use the Contextual Identity API, an extension must explicitly
+request the <code>contextualIdentities</code> and <code>cookies</code>
+permissions in its <code>manifest.json</code> file. Once granted, the
+extension can control containers using several straightforward
+methods:</p>
+<ul>
+<li><strong><code>browser.contextualIdentities.create()</code></strong>:
+Creates a new container with a specified name, color, and icon,
+returning an object containing the newly generated
+<code>cookieStoreId</code>.</li>
+<li><strong><code>browser.contextualIdentities.query()</code></strong>:
+Retrieves information about all existing containers, or filters them by
+specific properties like name.</li>
+<li><strong><code>browser.contextualIdentities.update()</code></strong>:
+Modifies the name, color, or icon of an existing container using its
+<code>cookieStoreId</code>.</li>
+<li><strong><code>browser.contextualIdentities.remove()</code></strong>:
+Deletes a container and wipes all cookies and site data associated with
+its <code>cookieStoreId</code>.</li>
+</ul>
+<p>To actually open a tab inside a container, developers combine the
+Contextual Identity API with the Tabs API. By calling
+<code>browser.tabs.create()</code> and passing the container's
+<code>cookieStoreId</code> as a parameter, the browser opens the
+requested URL inside that isolated environment.</p>
+<h3 id="practical-use-cases">Practical Use Cases</h3>
+<p>By leveraging the Contextual Identity API, developers have solved two
+major modern web browsing problems:</p>
+<ol type="1">
+<li><strong>Multi-Account Management:</strong> Users can log into
+multiple accounts on the same platform simultaneously. For example, a
+user can open their work email in a "Work" container and their personal
+email in a "Personal" container right next to it, without the sessions
+conflicting.</li>
+<li><strong>Anti-Tracking and Privacy:</strong> Extensions can
+automatically route specific websites into dedicated containers. If a
+social media site is locked into its own container, the tracking cookies
+it places on your browser are trapped in that
+<code>cookieStoreId</code>. When you visit other websites in your
+default tabs, the social media platform cannot use its cookies to track
+your browsing activity across the web.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/the-contextual-identity-api-and-firefox-container-tabs';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

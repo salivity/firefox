@@ -1,0 +1,2162 @@
+[
+  [
+    360,
+    "How to Improve Firefox Using the Mozilla Connect Platform",
+    "This article provides a straightforward guide on how Firefox users can actively shape the future of the web browser using the Mozilla Connect platform. You will learn the exact steps to submit your own feature ideas, vote on product improvements suggested",
+    false
+  ],
+  [
+    359,
+    "How Firefox Hides HTTPS with browser.urlbar.trimHttps",
+    "In newer releases of the Mozilla Firefox web browser, the browser.urlbar.trimHttps preference changes how secure web addresses are visually presented to users. When activated, this setting removes the \"https://\" prefix from the address bar, leaving only t",
+    false
+  ],
+  [
+    358,
+    "Blocking Website Clipboard Hijacking in Firefox",
+    "This article explores the dom.event.clipboardevents.enabled preference in the Mozilla Firefox web browser and how it protects user control and privacy. By modifying this single configuration setting, users can prevent websites from detecting, blocking, or",
+    false
+  ],
+  [
+    357,
+    "How network.IDN_show_punycode Forces Raw Punycode in Firefox",
+    "This article provides a complete overview of how the network.IDNshowpunycode preference alters the way Mozilla Firefox displays Internationalized Domain Names (IDNs). You will learn the fundamental relationship between Unicode domains and the Domain Name",
+    false
+  ],
+  [
+    356,
+    "How Firefox Preferences Prevent Accidental Tab Closure",
+    "This article provides an overview of how the browser.tabs.warnOnClose and browser.warnOnQuitShortcut preferences in the Mozilla Firefox web browser protect users from accidentally losing their work. By enabling these hidden configuration settings, Firefox",
+    false
+  ],
+  [
+    355,
+    "How Firefox's Ctrl+Tab Recently Used Order Setting Works",
+    "This article explains the functionality of the \"Ctrl+Tab cycles through tabs in recently used order\" setting in the Mozilla Firefox web browser. It covers how enabling this option changes the default sequential tab-switching behavior into a chronological",
+    false
+  ],
+  [
+    354,
+    "Why Firefox Redo Shortcuts Vary by Operating System",
+    "The Mozilla Firefox web browser uses Ctrl+Y as the default \"Redo\" keyboard shortcut on Windows, while defaulting to Ctrl+Shift+Z on Linux and Cmd+Shift+Z on macOS. This discrepancy exists because Firefox is designed to follow the native Human Interface Gu",
+    false
+  ],
+  [
+    353,
+    "Mastering Firefox Print Preview Formatting Options",
+    "This article provides a quick overview of how the unified Print Preview modal in the Firefox Web Browser allows users to customize and clean up web pages before printing. By accessing the hidden controls within the print menu, you can easily convert clutt",
+    false
+  ],
+  [
+    352,
+    "How Clearing the Firefox Startup Cache Fixes UI Glitches",
+    "This article explains how the \"Clear startup cache...\" button on Firefox's about:support page resolves user interface (UI) glitches following a browser update. It covers what the startup cache is, why updates cause it to break the browser's appearance, an",
+    false
+  ],
+  [
+    351,
+    "How to Always Show the Full URL in the Firefox Address Bar",
+    "By default, the Mozilla Firefox web browser simplifies the address bar by hiding the URL protocol (such as https://) and trimming trailing slashes from web addresses. While this creates a cleaner look, many users and developers prefer to see the exact, fu",
+    false
+  ],
+  [
+    350,
+    "Stop Firefox from Selecting Trailing Spaces on Double-Click",
+    "This article explains the mechanics behind the layout.wordselect.eatspacetonextword preference in the Mozilla Firefox web browser. Specifically, it details how changing this hidden configuration setting to false alters the browser's text-selection algorit",
+    false
+  ],
+  [
+    349,
+    "Firefox middlemouse.paste on Linux and Windows Explained",
+    "This article provides a complete overview of the middlemouse.paste preference found within the Firefox web browser's advanced configuration settings. It details how this specific setting interacts with the X11 and Wayland display protocols on Linux system",
+    false
+  ],
+  [
+    348,
+    "Why Firefox Disabled Backspace and How to Restore It",
+    "In Firefox 86, Mozilla officially disabled the ability to use the Backspace key as a shortcut to navigate to the previous web page. This article explains that the change was made to prevent users from accidentally losing data while filling out online form",
+    false
+  ],
+  [
+    347,
+    "Disable Fullscreen Video Transition Delay in Firefox",
+    "This article provides a quick guide on how to eliminate the default fade-to-black animation delay when entering and exiting fullscreen HTML5 videos in the Mozilla Firefox web browser. By accessing Firefox's advanced configuration settings and modifying th",
+    false
+  ],
+  [
+    346,
+    "How layout.css.devPixelsPerPx Scales the Firefox UI",
+    "This article explains how modifying the layout.css.devPixelsPerPx preference in Firefox's about:config overrides the browser's default pixel-to-screen ratio to achieve custom fractional scaling. You will learn the technical mechanism behind CSS pixel rend",
+    false
+  ],
+  [
+    345,
+    "Disabling vs Hiding Pocket in the Firefox Web Browser",
+    "This article explains the technical and functional differences between completely disabling the Pocket integration in Mozilla Firefox via the extensions.pocket.enabled configuration setting and simply removing the Pocket icon from the browser's toolbar. W",
+    false
+  ],
+  [
+    344,
+    "How Firefox Preferences Prevent WebRTC VPN IP Leaks",
+    "This article provides an overview of how specific Firefox configuration preferences prevent WebRTC from leaking your local and real IP addresses while connected to a VPN. By modifying settings like media.peerconnection.ice.defaultaddressonly and related p",
+    false
+  ],
+  [
+    343,
+    "Disable DNS and HTML5 Link Prefetching in Firefox",
+    "Mozilla Firefox uses prefetching technologies to speed up your browsing experience by loading web pages and resolving domain names in the background before you actually click on a link. While this reduces loading times, it also generates unsolicited netwo",
+    false
+  ],
+  [
+    342,
+    "Disabling Firefox Speculative Pre-Connections",
+    "This article provides a comprehensive overview of the network.http.speculative-parallel-limit configuration in the Mozilla Firefox web browser. It explains how Firefox uses background pre-connections to speed up browsing and details how setting this speci",
+    false
+  ],
+  [
+    341,
+    "How Firefox Uses HTTP/3 and QUIC to Reduce Latency",
+    "Mozilla Firefox leverages the modern HTTP/3 protocol, built on the UDP-based QUIC transport layer, to significantly accelerate web browsing. This article explains how Firefox implements these technologies to bypass traditional TCP bottlenecks, combine cry",
+    false
+  ],
+  [
+    340,
+    "Firefox bfcache: Controlling Instant Page Navigation",
+    "This article explains the Back/Forward Cache (bfcache) in the Mozilla Firefox web browser and how it enables instant page loading when navigating through your browsing history. Additionally, it covers how you can directly control this memory-caching behav",
+    false
+  ],
+  [
+    339,
+    "How to Move Firefox Disk Cache Into System RAM",
+    "This article provides a step-by-step guide on how to move the Mozilla Firefox disk cache directly into your system RAM. By adjusting advanced configuration settings—specifically by disabling browser.cache.disk.enable and configuring browser.cache.memory.c",
+    false
+  ],
+  [
+    338,
+    "Firefox Hardware Acceleration: Impact on Video and Fonts",
+    "This article provides a quick overview of what happens when you uncheck \"Use recommended performance settings\" and disable hardware acceleration in the Firefox web browser. Specifically, turning off this feature forces Firefox to stop using your computer'",
+    false
+  ],
+  [
+    337,
+    "Guide to Unloading Tabs on Firefox's about:unloads Page",
+    "This article provides a quick and clear walkthrough on how to use the built-in about:unloads page in the Mozilla Firefox web browser. You will learn how to access this hidden system page, understand the exact priority order Firefox uses to discard inactiv",
+    false
+  ],
+  [
+    336,
+    "How Firefox Tab Unloading Frees Up Critical System RAM",
+    "Mozilla Firefox includes an automatic Tab Unloading feature designed to prevent browser crashes and system slowdowns when your computer runs out of physical memory. This article provides a complete breakdown of how Firefox monitors your operating system's",
+    false
+  ],
+  [
+    335,
+    "Decoding the Firefox about:buildconfig Page",
+    "This article provides a complete overview of the internal about:buildconfig page in the Mozilla Firefox web browser. By typing about:buildconfig into the Firefox address bar, users and developers can inspect the exact parameters used to compile their spec",
+    false
+  ],
+  [
+    334,
+    "The Book of Mozilla: Firefox's Hidden Apocalyptic Verses",
+    "\"The Book of Mozilla\" is a famous software Easter egg found in the Netscape and Mozilla series of web browsers, most notably Mozilla Firefox. This article provides a complete breakdown of what this hidden feature is, the real-world browser history conceal",
+    false
+  ],
+  [
+    333,
+    "The Humorous Firefox about:robots Easter Egg Explained",
+    "This article provides a complete breakdown of the hidden about:robots Easter egg in the Mozilla Firefox web browser. It covers the humorous, science-fiction-themed message that greets users who navigate to this secret internal page, as well as the specifi",
+    false
+  ],
+  [
+    332,
+    "Firefox Privacy: The about:protections Weekly Summary",
+    "The Firefox web browser features a built-in privacy dashboard accessible by typing about:protections into the address bar. This article provides a straightforward breakdown of the dashboard's weekly summary, detailing how Firefox visualizes and reports bl",
+    false
+  ],
+  [
+    331,
+    "How to Check Enforced Enterprise Policies in Firefox",
+    "This article provides a straightforward guide for enterprise users on how to view the organizational restrictions and configurations currently applied to their Mozilla Firefox browser. By accessing the built-in about:policies page, you can quickly identif",
+    false
+  ],
+  [
+    330,
+    "How to Manage Firefox Experiments Using about:studies",
+    "This article provides a quick overview of the about:studies page in the Mozilla Firefox web browser, a built-in dashboard used to manage Shield and Normandy experiments. You will learn what these studies are, why Mozilla uses them, how to view the active",
+    false
+  ],
+  [
+    329,
+    "Diagnosing Network Issues with Firefox about:webrtc",
+    "Firefox’s built-in about:webrtc page is an essential diagnostic utility that provides network engineers with deep, real-time visibility into active and historical WebRTC sessions. This article explains how engineers can leverage this internal interface to",
+    false
+  ],
+  [
+    328,
+    "Inspecting Firefox Data with the about:telemetry Page",
+    "This article explores how the about:telemetry page in the Firefox Web Browser empowers users with complete transparency over their browser's data collection. By accessing this built-in diagnostic tool, you can easily inspect every single metric, histogram",
+    false
+  ],
+  [
+    327,
+    "Inspecting Firefox Cache Using the about:cache Page",
+    "This article provides a straightforward guide on how to use the built-in about:cache diagnostic page in the Mozilla Firefox web browser. By following the steps below, you will learn how to view the current storage sizes of your disk and memory caches, fin",
+    false
+  ],
+  [
+    326,
+    "Firefox Network Diagnostics: HTTP/3, DNS, and WebSockets",
+    "This article provides a quick overview of the live network diagnostics available on the about:networking page in the Firefox Web Browser. It specifically covers how to monitor and analyze real-time data for HTTP/3 connections, DNS cache entries, and WebSo",
+    false
+  ],
+  [
+    325,
+    "How Firefox's Process Manager Tracks CPU and RAM Usage",
+    "This article explains the underlying mechanisms of the Firefox Process Manager and how it tracks and displays real-time system resource usage. By utilizing the about:processes page or the Shift+Esc keyboard shortcut, users can monitor the exact CPU percen",
+    false
+  ],
+  [
+    324,
+    "How Firefox's \"Minimize Memory Usage\" Triggers the GC",
+    "Clicking the \"Minimize memory usage\" button in Firefox's about:memory page forces the browser to immediately reclaim as much system RAM as possible. This article provides a direct breakdown of the internal actions triggered by this button, explaining how",
+    false
+  ],
+  [
+    323,
+    "How to Read Firefox about:memory Explicit and Heap Trees",
+    "This article explains how to access and interpret the memory usage tree on the about:memory page in the Firefox web browser. Specifically, it covers how to navigate the hierarchical structure of the \"explicit\" memory allocation section and understand the",
+    false
+  ],
+  [
+    322,
+    "Guide to Firefox about:support Diagnostic Details",
+    "The about:support page in the Mozilla Firefox web browser, officially titled the Troubleshooting Information page, provides a comprehensive summary of the browser's internal configuration and environment. This article examines three critical diagnostic se",
+    false
+  ],
+  [
+    321,
+    "What \"Show Only Modified Preferences\" Does in Firefox",
+    "This article explains the function of the \"Show only modified preferences\" checkbox located within the about:config advanced configuration editor of the Mozilla Firefox web browser. You will learn how this feature filters customized settings from default",
+    false
+  ],
+  [
+    320,
+    "Make Firefox Your Default Custom Tab Provider on Android",
+    "This article provides a complete guide on configuring the Firefox browser on your Android device to act as the system-wide default Custom Tab provider. By following the steps outlined below, you will ensure that web links opened inside third-party mobile",
+    false
+  ],
+  [
+    319,
+    "Firefox on macOS: Continuity, Handoff, and Share Sheets",
+    "This article provides a complete overview of how the Mozilla Firefox web browser integrates with core Apple ecosystem features on macOS. It covers how Firefox handles Continuity and Handoff for cross-device workflows, how it utilizes the native macOS shar",
+    false
+  ],
+  [
+    318,
+    "Firefox -no-remote Flag: Purpose and Modern Changes",
+    "This article provides a quick overview of the Firefox -no-remote command-line flag, explaining its original purpose for running multiple browser instances and why Mozilla altered its behavior in modern versions. Historically used by developers and power u",
+    false
+  ],
+  [
+    317,
+    "Using \"Open Previous Windows and Tabs\" in Firefox",
+    "Enabling the \"Open previous windows and tabs\" setting in the Firefox Web Browser allows you to seamlessly resume your browsing sessions right where you left off. This article provides a straightforward breakdown of what happens behind the scenes when you",
+    false
+  ],
+  [
+    316,
+    "How Firefox Uses sessionstore.jsonlz4 for Crash Recovery",
+    "This article provides a technical breakdown of how the Mozilla Firefox web browser prevents data loss during unexpected crashes using the sessionstore.jsonlz4 file architecture. It covers the file's compression format, the continuous background saving mec",
+    false
+  ],
+  [
+    315,
+    "How Firefox Compresses Bookmark Backups into .jsonlz4 Files",
+    "Firefox automatically protects user bookmarks by periodically backing them up into the bookmarkbackups directory using a specialized .jsonlz4 file format. This article explains the automated process behind how the browser extracts bookmark data from its c",
+    false
+  ],
+  [
+    314,
+    "Import and Export CSV Passwords via Firefox about:logins",
+    "This article provides a step-by-step guide on how to manage your saved credentials in the Firefox web browser using plaintext CSV files. You will learn how to access the built-in about:logins menu to export your existing passwords for backup or migration,",
+    false
+  ],
+  [
+    313,
+    "Understanding and Disabling Firefox's Default Browser Agent",
+    "This article explains the purpose of the Mozilla Firefox Default Browser Agent in Windows and provides step-by-step instructions on how to disable it. You will learn why Mozilla introduced this background scheduled task, what data it collects, and the mul",
+    false
+  ],
+  [
+    312,
+    "What Is the Mozilla Maintenance Service on Windows?",
+    "This article provides a clear explanation of the Mozilla Maintenance Service on Windows and its role in keeping the Firefox web browser up to date. It covers what the service is, why it is necessary for seamless browser functionality, and the exact techni",
+    false
+  ],
+  [
+    311,
+    "How Firefox Updates in the Background on Windows",
+    "This article explains how the Mozilla Firefox web browser remains fully updated on Windows operating systems, even when the application has not been launched for weeks. By utilizing the native Windows Task Scheduler, a stripped-down headless mode, and the",
+    false
+  ],
+  [
+    310,
+    "Firefox: Stub Installer vs. Full Offline Installer",
+    "This article provides a direct comparison between the Mozilla Firefox Stub Installer and the Full Offline Installers (.exe and .msi). It covers the core differences in file size, internet connectivity requirements, system architecture detection, and enter",
+    false
+  ],
+  [
+    309,
+    "How Firefox Portable Runs From a USB Without Leaving Traces",
+    "This article explains the technical mechanics behind Mozilla Firefox, Portable Edition, developed by PortableApps.com. It details how the software packages the browser application and user profile together using a specialized directory structure, a custom",
+    false
+  ],
+  [
+    308,
+    "Why Mozilla Extended Firefox ESR 115 for Legacy OS Users",
+    "Mozilla's decision to extend security updates for the Firefox Extended Support Release (ESR) 115 branch provides a critical lifeline for users still running Windows 7, Windows 8.1, and macOS 10.12 through 10.14. This article provides an overview of the dr",
+    false
+  ],
+  [
+    307,
+    "How Firefox Runs Natively on Apple M-Series Processors",
+    "This article explains the technical mechanics behind how the Mozilla Firefox web browser achieves native execution on Apple Silicon M-series processors using Apple's Universal Binary format. By packaging both Intel and ARM64 code into a single application",
+    false
+  ],
+  [
+    306,
+    "Native ARM64 Firefox Boosts Snapdragon Laptop Performance",
+    "The release of a native Windows ARM64 build for the Mozilla Firefox web browser marked a significant milestone for Snapdragon-powered laptops. By eliminating the need for x86 software emulation, this native version drastically improved browser responsiven",
+    false
+  ],
+  [
+    305,
+    "Enable VA-API Hardware Acceleration in Firefox on Linux",
+    "Streaming high-definition video in the Firefox web browser on Linux often results in high CPU usage, loud fan noise, and rapid battery drain because the browser frequently defaults to software decoding. This article provides a direct, step-by-step guide t",
+    false
+  ],
+  [
+    304,
+    "How to Verify if Firefox is Running on Wayland in Linux",
+    "This article provides a quick and straightforward guide on how to check whether your Firefox web browser is running natively under the Wayland display protocol or falling back to the XWayland compatibility layer on Linux. You will learn how to verify the",
+    false
+  ],
+  [
+    303,
+    "Why Ubuntu Uses Firefox Snap and How to Switch to APT",
+    "This article explores the reasons behind Canonical and Mozilla's decision to transition Ubuntu's default Firefox web browser from a traditional Debian (.deb) package to a universal Snap package. Additionally, it provides a straightforward, step-by-step gu",
+    false
+  ],
+  [
+    302,
+    "Firefox Flatpak Sandbox Permissions and Portal Limitations",
+    "Running the Firefox Web Browser as a Flatpak on Linux enhances system security by isolating the browser from the rest of the operating system. This article provides a straightforward breakdown of the default sandbox permissions granted to the Firefox Flat",
+    false
+  ],
+  [
+    301,
+    "Managing Enterprise Firefox with ADMX and macOS Profiles",
+    "This article provides a comprehensive overview of how IT administrators centrally manage and secure the Mozilla Firefox web browser across enterprise environments. By leveraging Windows Group Policy Administrative Templates (ADMX) and macOS Configuration",
+    false
+  ],
+  [
+    300,
+    "Locking Firefox Preferences with Autoconfig (mozilla.cfg)",
+    "System administrators often need to enforce specific browser settings across an organization to maintain security and compliance. This article provides a direct guide on how to use Firefox's Autoconfig feature—specifically utilizing the autoconfig.js and",
+    false
+  ],
+  [
+    299,
+    "How Firefox's user.js Overrides prefs.js on Startup",
+    "This article explains the mechanics behind how the Mozilla Firefox web browser processes configuration files during initialization. Specifically, it details the relationship between the prefs.js and user.js files located in the user profile folder, illust",
+    false
+  ],
+  [
+    298,
+    "What Firefox Troubleshoot Mode Temporarily Disables",
+    "Firefox Troubleshoot Mode, formerly known as Safe Mode, is a built-in diagnostic environment designed to help users isolate and fix browser problems. When you launch the browser in this mode, Firefox temporarily deactivates specific features, add-ons, and",
+    false
+  ],
+  [
+    297,
+    "Refresh Firefox: Preserved vs. Discarded User Data",
+    "The \"Refresh Firefox\" feature is a built-in troubleshooting tool designed to fix browser issues like slowness or crashing by restoring the browser to its default state. This article provides a direct breakdown of the exact user data that Firefox safely pr",
+    false
+  ],
+  [
+    296,
+    "Default Firefox User Profile Paths on macOS and Linux",
+    "This article provides a direct guide to locating the default file system paths for Mozilla Firefox user profile data on both macOS and Linux operating systems. Whether you are backing up bookmarks, transferring settings, or troubleshooting browser issues,",
+    false
+  ],
+  [
+    295,
+    "Firefox Roaming and Local Profile Locations on Windows",
+    "This article provides a quick overview and the exact file paths for locating Mozilla Firefox's Roaming and Local profile folders on Microsoft Windows. By using the %APPDATA% and %LOCALAPPDATA% environment variables, you can easily find where Firefox store",
+    false
+  ],
+  [
+    294,
+    "How to Manage Firefox Profiles with about:profiles",
+    "Firefox's about:profiles page is a built-in management tool that enables users to control multiple, isolated browser environments without closing their current browsing session. Each profile acts as a separate container with its own bookmarks, history, ex",
+    false
+  ],
+  [
+    293,
+    "Launch Firefox Profile Manager Using Command-Line Arguments",
+    "This article provides a quick and comprehensive guide on how to open the Firefox Profile Manager using the -P or --ProfileManager command-line arguments. By utilizing these specific flags, you can easily create, delete, rename, or switch between different",
+    false
+  ],
+  [
+    292,
+    "Firefox Mobile vs. Firefox Focus: Key Differences Explained",
+    "This article explores the core differences between the standard Firefox Web Browser for mobile and its lightweight counterpart, Firefox Focus (known as Firefox Klar in some regions). While both browsers are developed by Mozilla with a strong emphasis on u",
+    false
+  ],
+  [
+    291,
+    "Firefox on iOS: The WebKit Mandate and EU DMA Impact",
+    "For years, Apple’s strict App Store policies have forced all third-party web browsers on iOS, including Mozilla's Firefox, to run on Apple’s own WebKit rendering engine rather than their native engines. While Apple claims this restriction protects user se",
+    false
+  ],
+  [
+    290,
+    "Install Any Firefox Android Extension via Custom Collections",
+    "This article provides a complete guide for Android developers and advanced users on how to bypass the default extension limitations in the mobile Firefox web browser. By creating a custom Add-ons Mozilla Org (AMO) collection and unlocking a hidden debug m",
+    false
+  ],
+  [
+    289,
+    "How Firefox Android Brought Desktop Extensions to Mobile",
+    "This article explores how Mozilla’s Firefox for Android became the only major mobile web browser to support an open ecosystem of hundreds of desktop-grade WebExtensions. By completely rebuilding its mobile browser architecture with the custom GeckoView en",
+    false
+  ],
+  [
+    288,
+    "Using Collections in the Firefox for Android Browser",
+    "This article explores the Collections feature in the Firefox web browser for Android, detailing how it allows users to effortlessly group, organize, and revisit related web pages. You will learn how to create and manage Collections, how to restore your br",
+    false
+  ],
+  [
+    287,
+    "GeckoView: Rebuilding Firefox for Android from Scratch",
+    "This article explores GeckoView, Mozilla's standalone Android library that encapsulates the Gecko web rendering engine, and explains how this foundational technology enabled developers to completely rebuild the Firefox for Android browser from the ground",
+    false
+  ],
+  [
+    286,
+    "How to Self-Host Firefox Sync Using syncstorage-rs",
+    "This article provides a step-by-step guide for privacy-conscious users on how to self-host Mozilla's syncstorage-rs server and configure the Firefox Web Browser to use this private infrastructure. By deploying your own sync server using Docker and MariaDB",
+    false
+  ],
+  [
+    285,
+    "How TOTP 2FA Secures Your Mozilla Account and Firefox",
+    "Enabling Two-Step Authentication (2FA) using a Time-based One-Time Password (TOTP) authenticator app provides a critical layer of security for a Mozilla Account linked to the Firefox Web Browser. This article explains the mechanics of TOTP authentication,",
+    false
+  ],
+  [
+    284,
+    "Why a Firefox Sync Account Recovery Key is Critical",
+    "This article explains the critical importance of generating and saving your 32-character Account Recovery Key when using the Sync feature in the Firefox web browser. Because Firefox uses strict end-to-end encryption tied directly to your account password,",
+    false
+  ],
+  [
+    283,
+    "Data Categories You Can Toggle in Firefox Sync Settings",
+    "This article provides a quick overview of the specific data categories that users can selectively enable or disable within the Sync settings of the Mozilla Firefox web browser. By customizing these synchronization options, users can maintain precise contr",
+    false
+  ],
+  [
+    282,
+    "How Firefox Send Tab Uses Encrypted Push Notifications",
+    "This article provides a complete overview of the technical mechanics behind the Firefox Web Browser's \"Send Tab to Device\" feature. It explains how Firefox uses a Mozilla Account to establish cryptographic keys between your devices, encrypts the webpage U",
+    false
+  ],
+  [
+    281,
+    "How Firefox Derives Encryption Keys From Your Password",
+    "This article provides a complete overview of how a Mozilla Account (formerly Firefox Account) uses your password to secure your browser data. By utilizing client-side cryptographic hashing and key stretching, Firefox generates separate keys for server aut",
+    false
+  ],
+  [
+    280,
+    "Using Firefox Console's :screenshot with Custom Pixel Ratios",
+    "This article provides a quick guide for web developers on how to capture high-resolution screenshots directly from the Firefox Web Console. By utilizing the built-in :screenshot helper command alongside the device pixel ratio parameter, developers can eas",
+    false
+  ],
+  [
+    279,
+    "Inspecting JS Properties with Firefox DOM Property Viewer",
+    "This article provides a comprehensive overview of how the DOM Property Viewer in the Firefox Developer Tools inspects JavaScript properties attached to a selected HTML element. You will learn how the tool bridges the gap between static HTML markup and dyn",
+    false
+  ],
+  [
+    278,
+    "Exploring the Firefox Page Info Window (Ctrl+I)",
+    "This article provides a comprehensive breakdown of the Page Info window in the Mozilla Firefox web browser, accessible by pressing Ctrl+I on Windows and Linux or Cmd+I on macOS. By exploring the four distinct tabs of this utility—General, Media, Permissio",
+    false
+  ],
+  [
+    277,
+    "How Firefox Maps Minified Code to TypeScript and JSX",
+    "This article explains the mechanics behind the Firefox JavaScript Debugger and how it utilizes source maps to translate unreadable, minified production code back into original TypeScript or JSX files. It covers the initial detection of the source map, the",
+    false
+  ],
+  [
+    276,
+    "Why Firefox CORS Errors Link Directly to MDN Articles",
+    "Cross-Origin Resource Sharing (CORS) errors are notoriously frustrating for web developers to debug because browser security policies intentionally hide the details of failed cross-origin network requests from the application code. To bridge the gap betwe",
+    false
+  ],
+  [
+    275,
+    "Inspecting WebSockets and SSE in Firefox Network Monitor",
+    "This article provides a comprehensive overview of how the Firefox Network Monitor captures, processes, and displays real-time data frames for WebSockets and Server-Sent Events (SSE). It covers the underlying browser architecture that intercepts these pers",
+    false
+  ],
+  [
+    274,
+    "Native MathML Rendering in the Firefox Web Browser",
+    "This article provides an overview of the built-in capabilities of the Mozilla Firefox web browser for rendering Mathematical Markup Language (MathML) directly within web pages. It examines how Firefox's layout engine natively processes complex mathematica",
+    false
+  ],
+  [
+    273,
+    "How Firefox's JSON Viewer Formats Raw API Responses",
+    "This article explains the underlying mechanisms of the built-in JSON Viewer in the Mozilla Firefox web browser. It covers how Firefox intercepts raw JSON API responses based on MIME types, parses the text payload into an interactive and searchable Documen",
+    false
+  ],
+  [
+    272,
+    "Testing the CSS Masonry Grid Layout in Firefox",
+    "This article provides a step-by-step guide for web developers on how to enable and test the experimental CSS Masonry grid layout in the Firefox web browser. It covers how to activate the necessary hidden configuration flag inside Firefox and demonstrates",
+    false
+  ],
+  [
+    271,
+    "How Firefox Pioneered the Implementation of CSS Subgrid",
+    "This article explores how the Firefox web browser successfully implemented the CSS Subgrid specification years ahead of its competitors. By examining Mozilla’s active role in the W3C CSS Working Group, the technical advantages of its Gecko layout engine a",
+    false
+  ],
+  [
+    270,
+    "Running Firefox in Headless Mode on CI Servers",
+    "This article explains how developers can execute the Firefox Web Browser in headless mode on Continuous Integration (CI) servers that lack a graphical display. It covers the essential system dependencies, the required command-line flags, how to configure",
+    false
+  ],
+  [
+    269,
+    "How Geckodriver and Marionette Automate Firefox",
+    "This article provides a comprehensive overview of how the Firefox web browser is automated using Geckodriver and Marionette. It explains the core functionality of Marionette, Mozilla's built-in automation driver, and details the step-by-step process of ho",
+    false
+  ],
+  [
+    268,
+    "Firefox WebDriver BiDi Implementation for Test Frameworks",
+    "This article provides an overview of how the WebDriver BiDi (Bidirectional) automation protocol is architected and implemented within the Mozilla Firefox browser. It explains how Firefox handles low-latency, two-way communication using its internal Remote",
+    false
+  ],
+  [
+    267,
+    "How to Remotely Debug Firefox for Android Over USB",
+    "This article provides a step-by-step guide on how to connect the desktop version of the Firefox Web Browser to Firefox for Android using a USB cable for remote debugging. It covers enabling the necessary developer settings on your Android device, configur",
+    false
+  ],
+  [
+    266,
+    "Firefox Application Panel: Manifests and Service Workers",
+    "This article provides a concise guide on how web developers can use the Application panel in Firefox Developer Tools to build and maintain Progressive Web Apps (PWAs). Specifically, it covers how this built-in tool simplifies debugging Web App Manifests b",
+    false
+  ],
+  [
+    265,
+    "Screenshot a Single DOM Node in Firefox Inspector",
+    "This article explains how to capture a pixel-perfect screenshot of an individual HTML element using the built-in developer tools in the Firefox web browser. By utilizing the Inspector tool, you can bypass the need for external screen capture software and",
+    false
+  ],
+  [
+    264,
+    "How Firefox Responsive Design Mode Emulates Mobile Devices",
+    "This article provides a concise overview of how the Firefox Web Browser's Responsive Design Mode (accessible via Ctrl+Shift+M on Windows/Linux or Cmd+Opt+M on macOS) simulates mobile environments. It explains the underlying mechanisms Firefox uses to help",
+    false
+  ],
+  [
+    263,
+    "Simulating Vision Deficiencies in Firefox Developer Tools",
+    "Web developers can ensure their applications are accessible to users with visual impairments by utilizing the built-in simulation tools within the Firefox Web Browser. This article provides a direct, step-by-step guide on how to access the Firefox Accessi",
+    false
+  ],
+  [
+    262,
+    "How the Firefox Accessibility Inspector Audits Web Pages",
+    "This article provides a direct overview of how the Firefox Accessibility Inspector evaluates web page inclusivity. It explains the specific mechanisms the tool uses to expose and audit the underlying accessibility tree for assistive technologies, visualiz",
+    false
+  ],
+  [
+    261,
+    "How to View and Edit Web Data in Firefox Storage Inspector",
+    "The Firefox Storage Inspector is a built-in developer tool that allows you to inspect, modify, and delete various types of client-side web data stored by a webpage. This article provides a comprehensive overview of how to access the Storage Inspector and",
+    false
+  ],
+  [
+    260,
+    "Firefox Memory Tool: Heap Snapshots and Dominator Trees",
+    "This article explains how the Memory tool in the Firefox Web Browser captures heap snapshots and utilizes dominator trees to detect JavaScript memory leaks. It provides a technical breakdown of how Firefox's engine records memory allocation states, how th",
+    false
+  ],
+  [
+    259,
+    "How Firefox Measures Approximate Power in Milliwatts",
+    "This article explains the technical mechanisms the Firefox Web Browser uses to estimate power consumption in milliwatts (mW) during performance profiling. It covers the hardware sensors, operating system APIs, and mathematical calculations Firefox utilize",
+    false
+  ],
+  [
+    258,
+    "Inside the Firefox Profiler and Browser Integration",
+    "This article provides a quick overview of how the Firefox Profiler (profiler.firefox.com) integrates directly with the Firefox Web Browser to capture essential performance data. It covers the underlying architecture of the built-in Gecko Profiler, explain",
+    false
+  ],
+  [
+    257,
+    "How Firefox Debugger Ignores Third-Party Framework Code",
+    "This article explores the technical mechanics behind the Ignore List feature—formerly known as Blackboxing—in the Firefox Web Browser Debugger. It explains how the browser identifies third-party frameworks like React and Angular, alters the JavaScript eng",
+    false
+  ],
+  [
+    256,
+    "How to Set XHR/Fetch Breakpoints in Firefox",
+    "This article provides a step-by-step guide on how developers can debug network requests in the Firefox Web Browser using XHR and Fetch breakpoints. By filtering for specific URL substrings within the Firefox Developer Tools, you can automatically pause Ja",
+    false
+  ],
+  [
+    255,
+    "Firefox Debugger: Conditional Breakpoints and Logpoints",
+    "This article provides a quick overview and guide to understanding and utilizing conditional breakpoints and logpoints within the Firefox JavaScript Debugger. By mastering these two advanced debugging features, developers can pause code execution only when",
+    false
+  ],
+  [
+    254,
+    "How to Simulate Slow Network Speeds in Firefox",
+    "This article provides a step-by-step guide on how to simulate slow 3G, 4G, and offline network conditions in the Mozilla Firefox web browser. By utilizing the built-in Developer Tools and the network throttling dropdown menu, you can easily evaluate how w",
+    false
+  ],
+  [
+    253,
+    "Modifying HTTP Requests in Firefox Network Monitor",
+    "This article explores the Edit and Resend feature within the Firefox Web Browser's Network Monitor, detailing how it empowers developers to intercept, modify, and replay HTTP requests directly from the browser. You will learn the step-by-step process for",
+    false
+  ],
+  [
+    252,
+    "Blocking URL Patterns in Firefox Network Monitor",
+    "This article provides a straightforward guide for developers on how to block specific URL patterns using the Network Monitor in the Firefox Web Browser. By intentionally failing network requests for scripts, stylesheets, API endpoints, or images, you can",
+    false
+  ],
+  [
+    251,
+    "Firefox Network Monitor: Waterfall Chart Timings Explained",
+    "This article provides a breakdown of how the Firefox Network Monitor visualizes network request lifecycles using its waterfall chart. It covers the four critical phases of a web request—DNS lookup, TLS handshake, waiting (Time to First Byte), and content",
+    false
+  ],
+  [
+    250,
+    "Using Firefox Multi-line Editor as a JavaScript Scratchpad",
+    "This article explores how the Multi-line Editor mode in the Firefox Web Console functions as an interactive scratchpad for web developers. By providing a dedicated side-by-side workspace for drafting, modifying, and executing complex JavaScript code block",
+    false
+  ],
+  [
+    249,
+    "Scrubbing Timelines in the Firefox Animations Panel",
+    "This article provides a complete guide on how web developers can use the Firefox Developer Tools Animations panel to inspect and manually scrub through CSS transitions and Web Animations API (WAAPI) timelines. It covers how to access the tool, how the uni",
+    false
+  ],
+  [
+    248,
+    "How Firefox Uses MDN Data to Warn About Unsupported CSS",
+    "This article provides a technical overview of how the Firefox Developer Tools Compatibility panel identifies cross-browser CSS issues. By leveraging MDN Web Docs' open-source Browser Compatibility Data (BCD), Firefox automatically scans a webpage's active",
+    false
+  ],
+  [
+    247,
+    "How Firefox DevTools Tracks and Exports Live CSS Changes",
+    "This article explains how the Changes panel in Firefox Developer Tools automatically monitors, records, and exports live CSS modifications made during a web debugging session. It covers the real-time tracking mechanisms within the Page Inspector, how visu",
+    false
+  ],
+  [
+    246,
+    "How Firefox's Font Editor Manipulates Variable Fonts",
+    "This article explains how the Font Editor panel within Firefox Developer Tools enabled web developers and designers to manipulate variable font axes in real-time. By automatically detecting a font's built-in capabilities, the tool provided interactive sli",
+    false
+  ],
+  [
+    245,
+    "Visualizing Flex Item Sizing in Firefox Flexbox Inspector",
+    "This article provides a concise overview of how the Firefox DevTools Flexbox Inspector visually deconstructs CSS Flexbox layouts. It explains the specific visual cues, on-page overlays, and sidebar diagrams that Firefox uses to illustrate how flex items c",
+    false
+  ],
+  [
+    244,
+    "Firefox CSS Grid Inspector Overlays and Line Numbers",
+    "This article provides a comprehensive overview of the visual overlays and line numbering features built into the Firefox CSS Grid Inspector. It explains how developers can utilize these specific DevTools features to visualize tracks, gutters, named areas,",
+    false
+  ],
+  [
+    243,
+    "Tracing Overridden CSS Styles in Firefox Developer Tools",
+    "This article provides a comprehensive overview of how web developers can use the CSS Rules view and the Computed view in the Firefox Web Browser to track down and debug overridden styles. By understanding how these two panels work together within Firefox",
+    false
+  ],
+  [
+    242,
+    "Understanding Firefox Page Inspector HTML Tree Badges",
+    "This article provides a quick overview of how the Firefox Page Inspector visually identifies specific element properties directly within the HTML tree. By utilizing interactive inline badges and specialized tree nodes, Firefox allows developers to instant",
+    false
+  ],
+  [
+    241,
+    "Firefox Developer Edition vs Standard: Settings and Themes",
+    "Firefox Developer Edition is a specialized version of the standard Mozilla Firefox browser built specifically for web developers. While both browsers share the same core Gecko engine, the Developer Edition comes out of the box with a distinct visual ident",
+    false
+  ],
+  [
+    240,
+    "How to Build and Share Themes Using Firefox Color",
+    "This article explores how the Firefox Color extension empowers users to effortlessly design and distribute personalized themes for the Firefox Web Browser. It covers the tool's interactive interface, detailing how users can manipulate color palettes for s",
+    false
+  ],
+  [
+    239,
+    "How to Report Extensions in the Firefox Add-ons Manager",
+    "This article provides a quick, step-by-step guide on how to report broken, malicious, or policy-violating browser extensions directly through the Mozilla Firefox Add-ons Manager. By following these simple instructions, you can alert Mozilla to problematic",
+    false
+  ],
+  [
+    238,
+    "Firefox DNS Lookups with the browser.dns.resolve() API",
+    "This article provides an overview of how the browser.dns.resolve() API functions within the Mozilla Firefox web browser to empower privacy and security extensions. By granting extensions the ability to perform direct Domain Name System (DNS) lookups, this",
+    false
+  ],
+  [
+    237,
+    "Hiding Tabs in Firefox with the browser.tabs.hide() API",
+    "This article provides a comprehensive overview of how the browser.tabs.hide() WebExtensions API allows developers to hide inactive tabs from the top tab bar in the Firefox Web Browser. It covers the required manifest permissions, the programmatic process",
+    false
+  ],
+  [
+    236,
+    "How Firefox's userScripts API Sandboxes Third-Party Scripts",
+    "The Firefox userScripts API enables browser extensions, such as user script managers, to safely execute untrusted, third-party JavaScript code on web pages. This article provides a technical breakdown of how Firefox achieves this security model. It covers",
+    false
+  ],
+  [
+    235,
+    "DeclarativeNetRequest and webRequest in Firefox",
+    "This article explains how Mozilla Firefox uniquely supports both the declarativeNetRequest (DNR) API and the dynamic webRequest blocking API within its Manifest V3 (MV3) implementation. It covers why Firefox maintains both APIs, how the browser's network",
+    false
+  ],
+  [
+    234,
+    "Firefox Cookies API: Handling Private and Container Tabs",
+    "This article provides a quick overview of how the browser.cookies API in the Firefox Web Browser manages cookie isolation using specific Cookie Store IDs. It explains the distinct identifiers assigned to standard windows, Private Browsing modes, and Conta",
+    false
+  ],
+  [
+    233,
+    "Per-Tab Proxy Routing with Firefox's proxy.onRequest API",
+    "This article explores the fundamental architectural differences between Firefox and Chromium regarding network proxy management. Specifically, it examines how Firefox’s browser.proxy.onRequest API intercepts network requests dynamically to enable granular",
+    false
+  ],
+  [
+    232,
+    "Resolving Extension Shortcut Conflicts in Firefox",
+    "This article provides a direct, step-by-step guide on how to view, customize, and resolve conflicting keyboard shortcuts assigned by multiple installed extensions in the Mozilla Firefox web browser. By accessing Firefox's built-in add-on management settin",
+    false
+  ],
+  [
+    231,
+    "Customizing Firefox Context Menus with browser.menus API",
+    "This article explains how the browser.menus API enables developers to add custom actions to the Firefox right-click context menu. By declaring the correct permissions in the extension's manifest file, defining menu items in a background script, and regist",
+    false
+  ],
+  [
+    230,
+    "Inspect and Modify Firefox Extension Local Storage",
+    "This article provides a step-by-step guide on how to view and edit the local storage data of any installed extension in the Firefox web browser. By utilizing Firefox's built-in Add-on Debugger, developers and advanced users can access the Storage Inspecto",
+    false
+  ],
+  [
+    229,
+    "How Firefox Implemented Manifest V3 Background Scripts",
+    "This article explores how Mozilla’s Firefox browser implemented Manifest V3 (MV3) background scripts by utilizing Event Pages alongside Service Workers. Unlike Chromium-based browsers, which strictly mandated ephemeral Service Workers for MV3, Firefox ado",
+    false
+  ],
+  [
+    228,
+    "Load Unpacked Extensions in Firefox via about:debugging",
+    "This article provides a step-by-step guide for developers on how to load an unpacked browser extension directly from a local folder in the Mozilla Firefox web browser. By utilizing the built-in about:debugging interface, you can quickly install temporary",
+    false
+  ],
+  [
+    227,
+    "Prototyping APIs with Firefox WebExtensions Experiments",
+    "This article provides a comprehensive overview of Firefox WebExtensions Experiments, a powerful toolkit that enables developers to design, build, and test new browser extension APIs directly within Firefox Nightly. It explains the core purpose of these ex",
+    false
+  ],
+  [
+    226,
+    "Firefox Add-on History: Bootstrap.js and Jetpack SDK",
+    "This article explores the pivotal transitional technologies in the history of the Firefox web browser: bootstrap.js restartless add-ons and the Jetpack Add-on SDK. Before Mozilla adopted the modern WebExtensions API, these two frameworks modernized how de",
+    false
+  ],
+  [
+    225,
+    "Why Firefox 57 Replaced XUL and XPCOM with WebExtensions",
+    "In November 2017, Mozilla released Firefox 57, codenamed Firefox Quantum, which permanently dropped support for legacy XUL and XPCOM extensions in favor of the new WebExtensions API. This monumental shift was driven by the urgent need to modernize the bro",
+    false
+  ],
+  [
+    224,
+    "How Firefox's Blocklist Disables Malicious Extensions",
+    "Mozilla protects Firefox users from harmful add-ons through a built-in security mechanism known as the remote Add-on Blocklist. When a previously safe extension becomes compromised or a malicious extension bypasses initial review, Mozilla can remotely dea",
+    false
+  ],
+  [
+    223,
+    "Why Firefox Restricts Extensions with Quarantined Domains",
+    "This article provides a quick overview of Mozilla Firefox’s Quarantined Domains feature and explains why the browser restricts extensions on sensitive websites by default. Introduced in Firefox 115, this security measure blocks third-party add-ons from ru",
+    false
+  ],
+  [
+    222,
+    "Firefox: Language Packs vs. Spellcheck Dictionaries",
+    "Customizing language settings in the Mozilla Firefox web browser involves two distinct tools: Language Packs and Spellcheck Dictionaries. While both features deal with language, they serve entirely different functions within the browser. This article expl",
+    false
+  ],
+  [
+    221,
+    "Add a Custom Search Engine to Firefox via OpenSearch XML",
+    "This article provides a step-by-step guide on how to add a custom search engine to the Mozilla Firefox web browser using a website's OpenSearch XML description file. By leveraging Firefox's built-in detection for the OpenSearch standard, you can quickly i",
+    false
+  ],
+  [
+    220,
+    "How the WebExtensions Theme API Dynamically Colors Firefox",
+    "This article explores how the WebExtensions Theme API empowers developers to create dynamic themes that alter the visual appearance of the Mozilla Firefox browser in real time. By leveraging JavaScript alongside specific browser permissions, extensions ca",
+    false
+  ],
+  [
+    219,
+    "Firefox browser.storage.sync API Quota Limits",
+    "This article provides a breakdown of the storage quota limits imposed on web extensions using the browser.storage.sync API in the Firefox Web Browser. Developers must adhere to specific constraints regarding total storage capacity, individual item sizes,",
+    false
+  ],
+  [
+    218,
+    "How Firefox Extensions Communicate with Local Applications",
+    "This article explains how the Native Messaging API enables sandboxed Firefox extensions to securely communicate with local binary applications, such as password managers and download managers. By leveraging standard input and output streams, strict config",
+    false
+  ],
+  [
+    217,
+    "Managing Firefox Extensions with policies.json",
+    "This article provides a comprehensive overview for enterprise system administrators on how to manage browser add-ons in Mozilla Firefox using the policies.json configuration file. You will learn where to place the configuration file across different opera",
+    false
+  ],
+  [
+    216,
+    "Firefox XPI File Structure and Manifest Guide",
+    "This article provides a comprehensive breakdown of the .xpi file format used for Firefox browser extensions. It covers the fundamental ZIP-based architecture of the package, the standard internal directory structure, the critical role and syntax of the ma",
+    false
+  ],
+  [
+    215,
+    "Firefox Extension Signing: Release vs. Developer Builds",
+    "This article provides a quick overview of how extension signing enforcement differs between the standard Firefox Release build and the specialized Nightly and Developer Edition builds. While the standard Release version strictly requires all extensions to",
+    false
+  ],
+  [
+    214,
+    "How to Stop Auto-Updates for Specific Firefox Extensions",
+    "Firefox allows users to manage extension updates both globally and individually. While keeping add-ons updated is generally recommended for security and stability, there are times when a new update breaks functionality, removes a feature you rely on, or i",
+    false
+  ],
+  [
+    213,
+    "Why Firefox Blocks Extensions in Private Browsing",
+    "This article explains the security and privacy reasons behind Mozilla Firefox's decision to disable browser extensions in Private Browsing mode by default. It covers the inherent risks of third-party add-ons, how extensions can intentionally or accidental",
+    false
+  ],
+  [
+    212,
+    "How to Manage Extension Permissions in Firefox",
+    "Managing what your browser extensions can access is crucial for maintaining your online privacy and security. This article provides a straightforward guide on how to view, grant, and revoke optional permissions and website host permissions for any install",
+    false
+  ],
+  [
+    211,
+    "How to Check Firefox Add-on Permissions Before Installing",
+    "This article explains how to review the security permissions requested by a Mozilla Firefox add-on before you install it. You will learn how to find permission details directly on the Firefox Add-ons store page, how to read the pre-installation pop-up pro",
+    false
+  ],
+  [
+    210,
+    "How Vertical Tab Extensions Use the Firefox Sidebar API",
+    "This article provides a quick overview of the technical relationship between popular vertical tab extensions, such as Tree Style Tab and Sidebery, and the Firefox Web Browser's Sidebar API. It covers how these extensions allocate user interface space, syn",
+    false
+  ],
+  [
+    209,
+    "How to Auto-Open Websites in Firefox Container Tabs",
+    "This article provides a step-by-step guide on how to configure the Mozilla Firefox web browser to automatically open specific domains inside designated Container tabs. By installing Mozilla's official Multi-Account Containers extension, you can easily ass",
+    false
+  ],
+  [
+    208,
+    "How Firefox's Facebook Container Blocks Meta Tracking",
+    "This article provides a comprehensive breakdown of how the official Facebook Container extension for Mozilla Firefox stops Meta from tracking your browsing habits across the web. By isolating your Facebook identity into a dedicated digital sandbox, blocki",
+    false
+  ],
+  [
+    207,
+    "The Contextual Identity API and Firefox Container Tabs",
+    "This article explores the Contextual Identity WebExtensions API, a powerful feature unique to the Mozilla Firefox web browser. It covers the fundamental architecture of the API, how it isolates user data to power the \"Container Tabs\" feature, and the core",
+    false
+  ],
+  [
+    206,
+    "How Firefox Multi-Account Containers Isolate Browser Data",
+    "This article explains the underlying architecture of Firefox's Multi-Account Containers and how it achieves strict data isolation within a single browser window. By leveraging an internal mechanism known as OriginAttributes, Firefox partitions cookies, lo",
+    false
+  ],
+  [
+    205,
+    "Why Firefox Exclusively Powers Advanced uBlock Features",
+    "Content blockers like uBlock Origin are significantly more powerful on Mozilla Firefox than on Chromium-based browsers like Google Chrome or Microsoft Edge. This article provides an overview of why two critical privacy and ad-blocking features—CNAME unclo",
+    false
+  ],
+  [
+    204,
+    "Why Mozilla Maintains Manifest V2 WebRequest in Firefox",
+    "This article explores Mozilla’s strategic decision to retain support for the Manifest V2 blocking webRequest API alongside its implementation of Manifest V3 in the Firefox web browser. While Google’s transition to Manifest V3 replaces this powerful API wi",
+    false
+  ],
+  [
+    203,
+    "How Extensions Earn the Firefox Recommended Badge",
+    "This article outlines the strict security and usability standards an extension must meet to receive the \"Recommended\" badge in the Firefox Add-ons store. Mozilla's curation team evaluates potential extensions through rigorous manual code reviews and user",
+    false
+  ],
+  [
+    202,
+    "Inside the Mozilla Add-ons Review Process for Firefox",
+    "Ensuring the safety of browser extensions is a critical priority for Mozilla. This article provides a comprehensive breakdown of how the Mozilla Add-ons (AMO) platform vets extensions submitted for the Firefox web browser. By combining rapid automated sca",
+    false
+  ],
+  [
+    201,
+    "Understanding the Firefox Add-ons Manager (about:addons)",
+    "This article provides a quick overview of the Firefox Add-ons Manager, accessible via the internal address about:addons, and explains how it serves as the central hub for browser customization. You will learn what the Add-ons Manager is, how to access it,",
+    false
+  ],
+  [
+    200,
+    "Multilingual Spell Checking in the Firefox Browser",
+    "This article explains how the Mozilla Firefox web browser supports simultaneous multilingual spell checking within text areas. It covers the underlying mechanics of how the browser validates text against multiple active dictionaries at once, how it genera",
+    false
+  ],
+  [
+    199,
+    "Configure Firefox to Always Ask Where to Save Downloads",
+    "By default, Mozilla Firefox automatically saves all downloaded files directly to your computer's \"Downloads\" folder. While convenient for some, this default behavior can quickly lead to a cluttered folder and make it difficult to organize important docume",
+    false
+  ],
+  [
+    198,
+    "Firefox Downloads Panel Behavior During File Transfers",
+    "This article explains how the Mozilla Firefox Downloads panel operates when it automatically opens at the start of a file transfer. It covers the panel's visual indicators, real-time progress tracking, user interaction options, focus behavior, and how to",
+    false
+  ],
+  [
+    197,
+    "Firefox Address Bar Symbols for Bookmarks and History",
+    "This article explains how to quickly filter your search results in the Mozilla Firefox address bar using specific keyboard symbols. By typing an asterisk () or a caret (^) alongside your search terms, you can bypass standard web searches and exclusively s",
+    false
+  ],
+  [
+    196,
+    "How to Search Open Firefox Tabs Using the % Symbol",
+    "Managing dozens of open tabs in the Mozilla Firefox web browser can quickly become overwhelming, making it difficult to find the specific webpage you need. Fortunately, Firefox features a built-in address bar function that allows you to filter and search",
+    false
+  ],
+  [
+    195,
+    "Sampling Hex Colors with the Firefox Eyedropper Tool",
+    "This article provides a straightforward guide on how the built-in Eyedropper tool in the Mozilla Firefox web browser allows users to extract color data from websites. You will learn how to access this native feature, how its magnification interface functi",
+    false
+  ],
+  [
+    194,
+    "How the Firefox --kiosk Flag Locks Down Public Displays",
+    "This article provides an overview of how launching the Mozilla Firefox web browser with the --kiosk command-line flag secures the user interface for public displays and interactive terminals. By stripping away navigation controls, enforcing full-screen mo",
+    false
+  ],
+  [
+    193,
+    "Firefox Touchpad Gestures: Back, Forward, and Pinch-to-Zoom",
+    "This article provides a quick overview of the native two-finger touchpad gestures supported in the Mozilla Firefox web browser. It covers how to execute back and forward page navigation using horizontal swipes, how to use the two-finger pinch-to-zoom feat",
+    false
+  ],
+  [
+    192,
+    "Customizing Smooth Scrolling Physics and Speed in Firefox",
+    "This article provides a complete guide on how to customize the smooth scrolling speed and physics in the Mozilla Firefox web browser. While Firefox offers a basic toggle for smooth scrolling in its standard settings menu, users can unlock full control ove",
+    false
+  ],
+  [
+    191,
+    "Middle-Click Autoscrolling in Firefox on Linux and macOS",
+    "This article explains the mechanics of the middle-click autoscrolling feature in the Firefox web browser and provides step-by-step instructions on how to enable it on Linux and macOS systems. While this feature is enabled by default on Windows, Firefox di",
+    false
+  ],
+  [
+    190,
+    "Firefox Find Bar vs. Quick Find: What is the Difference?",
+    "This article explains the key differences between the standard Find Bar and the Quick Find feature in the Mozilla Firefox web browser. While both tools allow you to search for specific text on a webpage, the standard Find Bar offers persistent search cont",
+    false
+  ],
+  [
+    189,
+    "Pressing F7 in Firefox: A Guide to Caret Browsing Mode",
+    "Pressing the F7 key in the Mozilla Firefox web browser activates Caret Browsing mode, a built-in accessibility feature that places a movable text cursor directly onto a webpage. This article provides a straightforward breakdown of what happens the moment",
+    false
+  ],
+  [
+    188,
+    "Full-Page Zoom vs. Zoom Text Only in Firefox",
+    "This article provides a complete comparison between the standard full-page zoom and the Zoom Text Only feature in the Mozilla Firefox web browser. It covers the mechanics of how each setting scales webpage elements, the resulting impacts on website layout",
+    false
+  ],
+  [
+    187,
+    "How Firefox Remembers Custom Zoom Levels Per Domain",
+    "This article explains the underlying mechanism the Mozilla Firefox web browser uses to remember custom zoom levels for individual websites across browsing sessions. By utilizing a dedicated local SQLite database within the user's profile folder, Firefox m",
+    false
+  ],
+  [
+    186,
+    "How Firefox New Tab Wallpapers and Color Options Work",
+    "This article provides a complete overview of how background wallpapers and color customization options function on the Firefox New Tab dashboard. It covers the built-in personalization menu for selecting preset themes, solid colors, and curated photograph",
+    false
+  ],
+  [
+    185,
+    "Disable Sponsored Content and Stories on Firefox New Tab",
+    "This article provides a quick and easy guide on how to customize the Firefox New Tab page by disabling sponsored shortcuts and recommended stories. By following the straightforward steps outlined below, you will learn how to access your browser's customiz",
+    false
+  ],
+  [
+    184,
+    "How to Customize Shortcut Rows on the Firefox New Tab Page",
+    "This article explains how to change the number of shortcut rows displayed on the Mozilla Firefox New Tab page. You will learn how to adjust this layout using the standard Firefox settings menu to display between one and four rows, as well as an advanced c",
+    false
+  ],
+  [
+    183,
+    "How to Open Firefox Browser Toolbox to Inspect the UI",
+    "This article provides a step-by-step guide on how to enable and open the Browser Toolbox in Mozilla Firefox. Unlike the standard Web Developer Tools used for inspecting regular websites, the Browser Toolbox allows users to inspect and modify the DOM eleme",
+    false
+  ],
+  [
+    182,
+    "Why Firefox Disables Custom CSS Stylesheets by Default",
+    "In Mozilla Firefox, customizing the browser's interface or web page appearances using userChrome.css and userContent.css requires manually setting the toolkit.legacyUserProfileCustomizations.stylesheets preference to true. Introduced in Firefox 69, this r",
+    false
+  ],
+  [
+    181,
+    "Overriding Styles in Firefox Using userContent.css",
+    "This article provides a complete overview of how the userContent.css file in the Mozilla Firefox browser allows users to override the default styling of both external websites and internal about: pages. By enabling a hidden configuration preference, creat",
+    false
+  ],
+  [
+    180,
+    "Mastering Firefox Customization with userChrome.css",
+    "This article explores the userChrome.css file, a powerful customization tool built into the Mozilla Firefox web browser. It explains what the file is, how to enable and locate it, and the specific techniques advanced users employ to completely overhaul Fi",
+    false
+  ],
+  [
+    179,
+    "How the Firefox Migration Wizard Imports Browser Data",
+    "Moving to a new web browser can seem daunting, especially when years of personal data are stored in your old one. This article provides a quick overview and breakdown of the technical process behind the Firefox Migration Wizard. It covers exactly how Fire",
+    false
+  ],
+  [
+    178,
+    "Firefox Bookmarks Toolbar Visibility States Explained",
+    "This article provides a quick overview and breakdown of the three visibility states available for the Bookmarks Toolbar in the Mozilla Firefox web browser: Always Show, Never Show, and Only on New Tab. Understanding these three options allows you to custo",
+    false
+  ],
+  [
+    177,
+    "The Firefox Library: Unifying Your Browsing Data",
+    "This article provides a comprehensive look at the Mozilla Firefox Library window, a centralized hub designed to manage your personal browsing data. By using simple keyboard shortcuts like Ctrl+Shift+O and Ctrl+Shift+H, users can access this powerful tool",
+    false
+  ],
+  [
+    176,
+    "Organizing URLs in Multiple Categories with Firefox Tags",
+    "This article explains how the Firefox Web Browser uses bookmark tagging to assign a single URL to multiple organizational categories simultaneously. By utilizing metadata keywords instead of rigid folder hierarchies, Firefox allows users to categorize, fi",
+    false
+  ],
+  [
+    175,
+    "How to Do Math and Conversions in Firefox's Address Bar",
+    "This article explains how to transform the Mozilla Firefox address bar into an instant calculator and unit converter. By enabling two built-in hidden features in Firefox's advanced configuration settings, or by activating search engine suggestions, you ca",
+    false
+  ],
+  [
+    174,
+    "Firefox Quick Actions: Address Bar Commands Explained",
+    "This article explores the Quick Actions feature in the Mozilla Firefox address bar, explaining how it works and detailing the specific text commands you can use to instantly trigger built-in browser tools like taking a screenshot or clearing your history.",
+    false
+  ],
+  [
+    173,
+    "How Firefox One-Off Search Engine Buttons Work",
+    "This article explains the functionality and customization of the one-off search engine buttons located at the bottom of the Firefox address bar dropdown. You will learn how to use these shortcuts to quickly search specific websites, filter your local brow",
+    false
+  ],
+  [
+    172,
+    "Assign Custom Keywords to Bookmarks and Search in Firefox",
+    "This article provides a quick overview and step-by-step instructions on how to assign custom keywords, such as @wiki, to search engines and bookmarks in the Firefox Web Browser. By configuring these shortcuts, you can bypass navigating to a website's home",
+    false
+  ],
+  [
+    171,
+    "How the Firefox Address Bar Ranks Search Suggestions",
+    "This article provides a comprehensive overview of how the Firefox address bar, commonly known as the Awesome Bar, ranks suggestions as you type. By utilizing a specialized algorithm called \"Frecency,\" Firefox evaluates your browsing history, bookmarks, an",
+    false
+  ],
+  [
+    170,
+    "How Firefox's Screenshot Tool Detects HTML DOM Elements",
+    "This article explains the underlying mechanisms of the Firefox Screenshot tool and how it leverages the browser's rendering engine to detect individual HTML DOM elements. By utilizing mouse event listeners, coordinate-to-element mapping, and bounding box",
+    false
+  ],
+  [
+    169,
+    "How to Add a Transparent Image to a PDF in Firefox",
+    "This article provides a step-by-step guide on how to insert an image with a transparent background, such as a digital signature or a logo, directly into a PDF document using the Mozilla Firefox web browser. By utilizing the native editing tools found in F",
+    false
+  ],
+  [
+    168,
+    "How to Annotate and Edit PDFs in Firefox",
+    "The Mozilla Firefox web browser features a built-in PDF viewer that allows users to edit and annotate documents directly without needing third-party software. This article provides a straightforward walkthrough on how to open a PDF in Firefox and use its",
+    false
+  ],
+  [
+    167,
+    "How Firefox Translations Works Locally Without the Cloud",
+    "Firefox Translations provides completely private web page translation by running advanced machine learning models directly on a user's device rather than relying on third-party cloud servers. This article explains the specific technologies behind this fea",
+    false
+  ],
+  [
+    166,
+    "How Firefox's Narrate Feature Uses Speech Synthesis",
+    "This article explains the technical process behind the Narrate feature in the Mozilla Firefox Reader View. By combining content extraction algorithms with the Web Speech API, Firefox translates written web content into spoken audio. The browser relies on",
+    false
+  ],
+  [
+    165,
+    "How Firefox Reader View Works to Clean Up Web Pages",
+    "Firefox’s Reader View transforms cluttered web pages into clean, readable text by using an open-source JavaScript library called Readability.js. When activated, this tool analyzes the underlying structure of a webpage, assigns scores to different sections",
+    false
+  ],
+  [
+    164,
+    "Streaming Platforms with Firefox PiP Subtitle Support",
+    "This article provides a quick overview of the video streaming platforms that support subtitles and closed captions inside the Picture-in-Picture (PiP) window of the Mozilla Firefox web browser. While standard browser PiP modes historically stripped away t",
+    false
+  ],
+  [
+    163,
+    "How to Use Multiple Picture-in-Picture Windows in Firefox",
+    "This article explains how the Mozilla Firefox web browser enables users to open and manage multiple Picture-in-Picture (PiP) floating video windows simultaneously. You will learn the technical approach Firefox uses to bypass single-video limitations, the",
+    false
+  ],
+  [
+    162,
+    "Quickly Identify and Mute Audio Tabs in Firefox",
+    "This article provides a quick and easy guide on how to locate and silence noisy tabs in the Mozilla Firefox web browser. You will learn how to spot the visual indicators Firefox uses to flag tabs that are actively playing sound, and how to mute or unmute",
+    false
+  ],
+  [
+    161,
+    "What Happens When You Pin a Tab in Firefox?",
+    "This article provides a quick overview of how pinning a tab in the Mozilla Firefox web browser changes its appearance and behavior. Specifically, it covers the immediate modifications made to the tab's size, its position on the browser's tab bar, and the",
+    false
+  ],
+  [
+    160,
+    "How Firefox Displays Tab Hover Previews and Domain Info",
+    "This article explains the mechanics behind the tab hover preview feature in the Mozilla Firefox web browser. It covers how Firefox captures and caches visual snapshots of web pages to display as thumbnails, how it extracts the full page title and domain i",
+    false
+  ],
+  [
+    159,
+    "Accessing Third-Party AI Models in the Firefox Sidebar",
+    "This article provides a complete overview of how the Mozilla Firefox web browser integrates third-party artificial intelligence language models directly into its interface. By utilizing a built-in sidebar feature, Firefox allows users to seamlessly intera",
+    false
+  ],
+  [
+    158,
+    "Tools and Panels You Can Pin to the Firefox Sidebar",
+    "This article provides a quick overview of the built-in tools and third-party extension panels that can be pinned to the expandable Sidebar in the Mozilla Firefox web browser. By utilizing these panels, users can streamline their workflow, manage browsing",
+    false
+  ],
+  [
+    157,
+    "How Firefox Native Vertical Tabs Organize Your Sidebar",
+    "This article provides a complete overview of how the native Vertical Tabs feature in the Firefox web browser structures and manages open tabs. It covers the layout mechanics of the sidebar, including the separation of pinned and regular tabs, collapsible",
+    false
+  ],
+  [
+    156,
+    "Managing Tabs and History with the Firefox View Page",
+    "This article provides a comprehensive overview of the Firefox View feature in the Firefox Web Browser and how it centralizes your digital workflow. It covers the exact methods for using this built-in tool to recover recently closed tabs, access tabs synce",
+    false
+  ],
+  [
+    155,
+    "Firefox Colorways: Curated Seasonal Browser Themes",
+    "Firefox Colorways was a personalization feature introduced by Mozilla to offer users curated, seasonal browser themes. Launched in late 2021, the feature moved away from standard static themes by providing expertly crafted color palettes designed to evoke",
+    false
+  ],
+  [
+    154,
+    "How Firefox System Theme Adapts to OS Day and Night Modes",
+    "This article explains how the System Theme setting in the Mozilla Firefox web browser automatically synchronizes its appearance with your operating system's day and night schedule. We will cover the underlying mechanism that allows Firefox to detect syste",
+    false
+  ],
+  [
+    153,
+    "Firefox Alpenglow Theme: Light and Dark Mode Color Palettes",
+    "This article provides a complete breakdown of the Firefox Alpenglow theme and explains how its vibrant color palette dynamically shifts between light and dark modes. You will learn what the Alpenglow theme is, the inspiration behind its design, and the sp",
+    false
+  ],
+  [
+    152,
+    "Why Firefox Hid the Compact Mode Behind About:Config",
+    "In 2021, Mozilla released Firefox 89, introducing a major visual overhaul known as the Proton redesign that hid the popular \"Compact\" UI density option behind the advanced about:config menu. This article explains why Mozilla made the controversial decisio",
+    false
+  ],
+  [
+    151,
+    "How to Customize the Toolbar in Firefox",
+    "This article provides a quick and easy guide on how to access the Customize Toolbar screen in the Mozilla Firefox web browser. By learning how to enter this customization mode through two different methods, you will be able to effortlessly add, remove, an",
+    false
+  ],
+  [
+    150,
+    "How Firefox's Sanitizer API Safely Strips Untrusted HTML",
+    "This article explores how the Sanitizer API implementation in the Firefox web browser empowers developers to securely handle untrusted HTML strings. By providing a native, browser-level mechanism to parse and strip malicious code before it reaches the Doc",
+    false
+  ],
+  [
+    149,
+    "How Firefox Stops IDN Homograph Phishing Attacks",
+    "This article explains how the Mozilla Firefox web browser defends users against Internationalized Domain Name (IDN) homograph phishing attacks. It briefly covers the mechanics of Punycode spoofing, details Firefox's built-in algorithmic defenses that dete",
+    false
+  ],
+  [
+    148,
+    "How Firefox Identifies and Purges Bounce Trackers",
+    "This article explores how Mozilla Firefox's Bounce Tracking Protection mechanism detects and eliminates covert redirect trackers. By examining the heuristics Firefox uses to monitor navigation chains, user interactions, and data storage access, you will l",
+    false
+  ],
+  [
+    147,
+    "Firefox Sanitize on Shutdown: Dialog and Wiped Data Types",
+    "This article provides a comprehensive overview of the \"Sanitize on Shutdown\" dialog in the Mozilla Firefox web browser. It explains the purpose of this built-in privacy feature, how it functions when you close the browser, and details the exact types of u",
+    false
+  ],
+  [
+    146,
+    "How Firefox's Pop-Up Blocker Detects User Interaction",
+    "This article explains the underlying mechanisms the Firefox Web Browser uses to distinguish between unwanted, automated pop-up advertisements and legitimate new windows requested by a user. By monitoring specific user-driven events, utilizing a temporary",
+    false
+  ],
+  [
+    145,
+    "Firefox Autoplay Blocking: Muted vs. Audible Media",
+    "This article explains the technical processes used by the Mozilla Firefox web browser to distinguish between muted videos and audible media within its autoplay blocking system. By inspecting HTML media element properties, analyzing underlying audio tracks",
+    false
+  ],
+  [
+    144,
+    "How to Manage Persistent Site Permissions in Firefox",
+    "This article provides a straightforward guide on how to control persistent website permissions in the Mozilla Firefox web browser. You will learn how to grant, modify, and revoke continuous access to your geolocation, camera, and microphone using both the",
+    false
+  ],
+  [
+    143,
+    "How Firefox Implements Post-Quantum TLS Key Exchange",
+    "This article provides an overview of how Mozilla implemented post-quantum hybrid key exchange algorithms within the Firefox web browser to secure TLS 1.3 connections against future quantum computer attacks. It covers the concept of hybrid cryptography, th",
+    false
+  ],
+  [
+    142,
+    "How Encrypted Client Hello Hides SNI in TLS 1.3 and Firefox",
+    "This article provides a comprehensive overview of Encrypted Client Hello (ECH) within the TLS 1.3 protocol and explains how it enhances user privacy by concealing the Server Name Indication (SNI). Historically, even during secure HTTPS connections, the SN",
+    false
+  ],
+  [
+    141,
+    "How Firefox Updates and Maintains the HSTS Preload List",
+    "This article provides a complete overview of how the Mozilla Firefox web browser maintains and updates its HTTP Strict Transport Security (HSTS) preload list. It explains how Mozilla sources the initial domain data from the Chromium project, the automated",
+    false
+  ],
+  [
+    140,
+    "How Firefox Handles Cookies Without a SameSite Attribute",
+    "This article provides an overview of how the Mozilla Firefox web browser processes HTTP cookies that do not explicitly declare a SameSite attribute. It explains the browser's transition from permissive default behaviors to stricter security standards, det",
+    false
+  ],
+  [
+    139,
+    "How Firefox SRI Protects Against Tampered CDN Scripts",
+    "This article explains how the Mozilla Firefox web browser utilizes Subresource Integrity (SRI) to protect users from malicious code injected into third-party Content Delivery Networks (CDNs). It covers the security risks of external scripts, the mechanics",
+    false
+  ],
+  [
+    138,
+    "How Firefox Enforces CSP Headers to Prevent XSS Attacks",
+    "This article provides a complete overview of how the Mozilla Firefox web browser enforces Content Security Policy (CSP) headers to stop Cross-Site Scripting (XSS) attacks. By intercepting HTTP responses from web servers, parsing security directives, and s",
+    false
+  ],
+  [
+    137,
+    "How CORB Protects Sensitive Cross-Origin Data in Firefox",
+    "This article provides a comprehensive explanation of Cross-Origin Read Blocking (CORB) and details how it safeguards user information within the Mozilla Firefox web browser. It covers the fundamental definition of CORB, the side-channel security vulnerabi",
+    false
+  ],
+  [
+    136,
+    "Controlling Cross-Origin Referers in Firefox",
+    "This article provides a complete breakdown of the network.http.referer.XOriginTrimmingPolicy setting in the Mozilla Firefox web browser. You will learn what the HTTP Referer header does, how this specific preference enhances user privacy by stripping sens",
+    false
+  ],
+  [
+    135,
+    "How Firefox Restricts Local Fonts to Prevent Fingerprinting",
+    "This article provides an overview of how the Mozilla Firefox web browser combats browser fingerprinting by restricting website access to locally installed, non-standard fonts. By limiting font visibility to a standardized list of base operating system fon",
+    false
+  ],
+  [
+    134,
+    "How Firefox Mitigates AudioContext Fingerprinting",
+    "This article provides an overview of how the Mozilla Firefox web browser protects users from AudioContext fingerprinting, a covert tracking technique that identifies devices based on how they process audio signals. To combat this invasive tracking method,",
+    false
+  ],
+  [
+    133,
+    "Hiding WebGL Vendor and Renderer Strings in Firefox",
+    "WebGL is a JavaScript API that renders interactive 2D and 3D graphics in your browser, but it also exposes your graphics card's specific vendor and renderer strings to websites. Trackers use this hardware information to create a unique fingerprint of your",
+    false
+  ],
+  [
+    132,
+    "Understanding the Firefox HTML5 Canvas Permission Prompt",
+    "The Firefox web browser displays a permission prompt regarding HTML5 canvas data extraction to protect users from a covert tracking technique known as canvas fingerprinting. While the HTML5 canvas element is legitimately used by websites to draw graphics,",
+    false
+  ],
+  [
+    131,
+    "How Firefox Letterboxing Hides Your True Screen Size",
+    "This article explores how the Firefox web browser uses a privacy technique called Letterboxing to protect users from browser fingerprinting. By dynamically adding margins around a webpage, Letterboxing masks a user's exact window and screen dimensions. Th",
+    false
+  ],
+  [
+    130,
+    "Effects of privacy.resistFingerprinting in Firefox",
+    "Enabling the privacy.resistFingerprinting preference in Firefox's about:config menu activates a comprehensive suite of defenses designed to make your browser appear identical to everyone else's. Originally developed as part of the Tor Uplift project, this",
+    false
+  ],
+  [
+    129,
+    "First-Party Isolation vs Total Cookie Protection in Firefox",
+    "This article explains the key differences between First-Party Isolation (privacy.firstparty.isolate) and Total Cookie Protection in the Firefox web browser. While both features are designed to stop cross-site tracking by compartmentalizing your browsing d",
+    false
+  ],
+  [
+    128,
+    "How Firefox Strips Tracking Parameters From URLs",
+    "This article explains how the Mozilla Firefox web browser protects user privacy through its Query Parameter Stripping feature. It covers the function of tracking parameters like fbclid and utmsource, the technical mechanics of how Firefox intercepts and c",
+    false
+  ],
+  [
+    127,
+    "How Firefox Cookie Clearing Site Exceptions Work",
+    "This article explains the mechanics of site exceptions when using the automatic cookie and site data clearing feature in the Mozilla Firefox web browser. By understanding how Firefox prioritizes user-defined rules over global privacy settings, you can mai",
+    false
+  ],
+  [
+    126,
+    "Automatically Clear Firefox Cookies and Site Data on Exit",
+    "This article provides a quick, step-by-step guide on how to configure the Mozilla Firefox web browser to automatically delete all cookies and site data every time you close the application. By enabling this built-in privacy feature, you can prevent websit",
+    false
+  ],
+  [
+    125,
+    "Data Firefox Private Browsing Stores in RAM and Discards",
+    "This article provides a quick overview of the specific types of data that the Mozilla Firefox web browser temporarily holds in your computer's system RAM during a Private Browsing session. By routing this session information to volatile memory instead of",
+    false
+  ],
+  [
+    124,
+    "Why Firefox Requires Your OS Password to View Saved Logins",
+    "This article explains why the Mozilla Firefox web browser requires you to enter your operating system login password before allowing you to view or copy your saved plaintext passwords. It covers the security risks of unattended devices, how operating syst",
+    false
+  ],
+  [
+    123,
+    "Firefox Autofill Security for Credit Cards and Addresses",
+    "This article provides an overview of the security measures Mozilla Firefox uses to protect your saved credit card numbers and billing addresses. It covers how Firefox utilizes device-level authentication, local encryption, the Primary Password feature, th",
+    false
+  ],
+  [
+    122,
+    "Using Firefox Relay to Generate Email Masks in Browser Forms",
+    "This article explains how the Firefox Relay integration works within the Firefox web browser to protect user privacy by generating disposable email masks directly inside online forms. It covers the initial account synchronization, how the browser automati",
+    false
+  ],
+  [
+    121,
+    "How Firefox Alerts Users of Breached Passwords",
+    "This article provides a comprehensive overview of how the Firefox web browser protects your online accounts by integrating its built-in password manager with Mozilla Monitor. Below, you will learn the exact mechanics of how Firefox detects if your saved c",
+    false
+  ],
+  [
+    120,
+    "How Firefox Generates Strong Random Passwords",
+    "This article provides a complete overview of how the built-in password manager (about:logins) inside the Mozilla Firefox web browser generates strong, random passwords. It covers the cryptographic functions used to create true randomness, the specific cha",
+    false
+  ],
+  [
+    119,
+    "How the Firefox Primary Password Encrypts Local Login Data",
+    "This article explains the cryptographic process behind the Firefox Primary Password and how it secures your saved credentials on your local machine. Specifically, it details the relationship between the logins.json and key4.db files, how Firefox handles e",
+    false
+  ],
+  [
+    118,
+    "What Happens When Firefox Detects a Malicious Download",
+    "When you download a file using the Firefox Web Browser, built-in security features actively scan the file to protect your computer from harm. This article provides a complete overview of how Firefox utilizes threat databases to identify malicious executab",
+    false
+  ],
+  [
+    117,
+    "How Firefox Checks URLs Locally with Google Safe Browsing",
+    "This article explains how the Mozilla Firefox web browser protects users from malicious websites using the Google Safe Browsing API without compromising user privacy. Instead of sending every visited website address to Google for verification, Firefox dow",
+    false
+  ],
+  [
+    116,
+    "How Firefox Handles Passive and Active Mixed Content",
+    "This article explains how the Mozilla Firefox web browser manages security risks when a secure HTTPS webpage attempts to load insecure HTTP subresources, a scenario known as mixed content. It breaks down the fundamental differences between passive and act",
+    false
+  ],
+  [
+    115,
+    "OCSP Stapling and Firefox Soft-Fail vs. Hard-Fail Checks",
+    "This article provides a direct overview of Online Certificate Status Protocol (OCSP) stapling and how the Firefox web browser manages certificate revocation checks. It covers the mechanics of OCSP stapling, why it was created to improve upon traditional c",
+    false
+  ],
+  [
+    114,
+    "How Firefox's CRLite Verifies Certificates Privately",
+    "This article explains how Mozilla Firefox's CRLite technology verifies the revocation status of SSL/TLS certificates locally on your device, completely eliminating the privacy risks associated with traditional verification methods. By compressing global c",
+    false
+  ],
+  [
+    113,
+    "Understanding network.trr.mode Values in Firefox",
+    "This article provides a complete breakdown of the numerical values associated with the network.trr.mode preference in the Mozilla Firefox web browser. By modifying these numbers in the browser's advanced configuration page, users can precisely control how",
+    false
+  ],
+  [
+    112,
+    "Understanding ODoH and How to Configure It in Firefox",
+    "This article provides a quick overview and a straightforward guide to Oblivious DNS over HTTPS (ODoH), a privacy protocol designed to enhance your online anonymity. First, it explains what ODoH is and how it improves upon standard encrypted DNS by separat",
+    false
+  ],
+  [
+    111,
+    "Why Firefox Partnered with Cloudflare and NextDNS for DoH",
+    "This article explores Mozilla's decision to partner with Cloudflare and NextDNS to implement DNS over HTTPS (DoH) by default in the Firefox browser for specific regions. It examines the privacy vulnerabilities of traditional DNS, how DoH solves these issu",
+    false
+  ],
+  [
+    110,
+    "How Firefox HTTPS-Only Mode Upgrades HTTP and Alerts Users",
+    "This article provides a complete overview of how HTTPS-Only Mode functions within the Mozilla Firefox web browser. You will learn how the browser intercepts insecure web traffic to automatically upgrade connections to encrypted HTTPS, how it handles insec",
+    false
+  ],
+  [
+    109,
+    "Why Do Not Track Failed Despite Early Firefox Support",
+    "The Do Not Track (DNT) HTTP header, first implemented by the Mozilla Firefox web browser in 2011, was designed to give internet users a simple way to opt out of third-party online tracking. Despite rapid adoption by other major web browsers and strong adv",
+    false
+  ],
+  [
+    108,
+    "Understanding and Enabling Global Privacy Control in Firefox",
+    "This article provides a comprehensive overview of the Global Privacy Control (GPC) HTTP signal and explains how you can use it to protect your online data. You will learn what the GPC signal is, how it legally compels websites to respect your privacy, and",
+    false
+  ],
+  [
+    107,
+    "How the Firefox Browser Stops Cryptomining Scripts",
+    "This article explains how the Mozilla Firefox web browser protects users from unauthorized cryptomining, a practice commonly known as cryptojacking. By utilizing its built-in Enhanced Tracking Protection and relying on an updated blocklist from the privac",
+    false
+  ],
+  [
+    106,
+    "How Firefox Blocks Fingerprinting Using Disconnect Lists",
+    "This article explains how the Mozilla Firefox web browser protects user privacy by detecting and blocking known browser fingerprinting scripts. By integrating the open-source Disconnect tracking protection list into its Enhanced Tracking Protection (ETP)",
+    false
+  ],
+  [
+    105,
+    "How Firefox SmartBlock Uses Script Shims to Fix Websites",
+    "This article provides a comprehensive overview of Mozilla Firefox’s SmartBlock feature and how it resolves the conflict between user privacy and website functionality. We will explore why aggressive tracker blocking often breaks web pages, define what Sma",
+    false
+  ],
+  [
+    104,
+    "How Firefox Total Cookie Protection Isolates Cookies",
+    "This article explains the technical mechanism behind Mozilla Firefox’s Total Cookie Protection feature. It covers the traditional problem of cross-site tracking, how Firefox implements state partitioning to create isolated \"cookie jars\" for every website,",
+    false
+  ],
+  [
+    103,
+    "Firefox Custom Privacy Settings: Cookie and Tracker Toggles",
+    "This article provides a comprehensive breakdown of the specific cookie and tracker categories that users can manually toggle within the Custom Enhanced Tracking Protection settings of the Mozilla Firefox web browser. By choosing the Custom option over the",
+    false
+  ],
+  [
+    102,
+    "What Firefox Strict Tracking Protection Blocks",
+    "This article provides a comprehensive overview of the additional trackers and scripts blocked when switching Mozilla Firefox’s Enhanced Tracking Protection (ETP) from Standard to Strict mode. While Firefox's default Standard mode blocks basic cross-site c",
+    false
+  ],
+  [
+    101,
+    "Firefox ETP: Balancing Privacy and Site Compatibility",
+    "This article examines how the Firefox Web Browser uses Enhanced Tracking Protection (ETP) in Standard mode to balance robust user privacy with reliable website compatibility. It covers the core mechanisms Firefox employs—such as Total Cookie Protection, s",
+    false
+  ],
+  [
+    100,
+    "Firefox Integration with Windows DirectComposition APIs",
+    "This article explores how the Mozilla Firefox web browser integrates with the DirectComposition API in Windows 10 and Windows 11 to utilize hardware overlays. It covers the architectural role of Firefox's WebRender engine, the mechanics of delegating vide",
+    false
+  ],
+  [
+    99,
+    "Firefox Benchmarking: Cold vs. Warm Startup Explained",
+    "Benchmarking the Firefox web browser requires measuring how quickly the application launches under different system conditions, primarily categorized as cold and warm startups. This article explains the fundamental differences between these two testing sc",
+    false
+  ],
+  [
+    98,
+    "Firefox Startup Cache: Accelerating UI Scripts and Styles",
+    "This article explains how the Mozilla Firefox web browser utilizes its Startup Cache to significantly reduce launch times. By storing pre-compiled versions of essential user interface (UI) scripts and stylesheets on the local disk, Firefox bypasses resour",
+    false
+  ],
+  [
+    97,
+    "The Role of libpref in Firefox Runtime Configuration",
+    "This article explores the architecture and function of the libpref module within the Firefox web browser. It covers how libpref serves as the central source of truth for runtime configuration states, managing thousands of settings known as preferences. Th",
+    false
+  ],
+  [
+    96,
+    "Firefox Font Fallback and Enumeration Across Platforms",
+    "This article explains the technical processes the Firefox web browser uses to enumerate system fonts and execute font fallback across Windows, macOS, and Linux. It covers how Firefox's Gecko layout engine interacts with native operating system APIs to dis",
+    false
+  ],
+  [
+    95,
+    "How Firefox Implements OffscreenCanvas for Web Workers",
+    "This article provides a technical breakdown of how the Mozilla Firefox web browser implements the OffscreenCanvas API to enable multithreaded graphics rendering inside Web Workers. It explores the decoupling of the Document Object Model (DOM) from canvas",
+    false
+  ],
+  [
+    94,
+    "SpiderMonkey's Generational and Incremental GC Strategy",
+    "This article provides a comprehensive overview of the memory management techniques used by SpiderMonkey, the JavaScript engine powering the Firefox web browser. It explains how SpiderMonkey utilizes a combination of generational and incremental garbage co",
+    false
+  ],
+  [
+    93,
+    "Firefox Shared Memory Buffers and the GPU Compositor",
+    "This article provides a technical overview of how the Firefox web browser manages shared memory (Shmem) buffers between isolated content processes and the GPU compositor. It covers the creation of shared memory via Firefox's Inter-Process Communication (I",
+    false
+  ],
+  [
+    92,
+    "Firefox IPC: How Processes Communicate via IPDL",
+    "This article provides a quick overview of Inter-Process Communication (IPC) in the Firefox web browser. It covers the fundamentals of Firefox's multi-process architecture, defines the IPC Protocol Definition Language (IPDL), and explains the exact mechani",
+    false
+  ],
+  [
+    91,
+    "Firefox's Preallocated Process Manager and Tab Latency",
+    "This article explains how the Mozilla Firefox web browser minimizes delays when you open a new tab. By examining the challenges of modern multi-process browser architectures, this overview highlights how Firefox's Preallocated Process Manager works behind",
+    false
+  ],
+  [
+    90,
+    "Securing Audio Decoding with the Firefox Utility Process",
+    "This article explores how the Mozilla Firefox web browser utilizes its dedicated Utility Process to enhance security when decoding untrusted audio streams. By isolating complex media processing tasks into heavily sandboxed, single-purpose environments, Fi",
+    false
+  ],
+  [
+    89,
+    "Why Firefox Runs a Separate Socket Process",
+    "This article explains why the Mozilla Firefox web browser isolates its networking operations into a dedicated Socket Process rather than running them inside the main parent process. By exploring the core concepts of modern browser architecture, this overv",
+    false
+  ],
+  [
+    88,
+    "How the Glean SDK Manages Cross-Platform Firefox Telemetry",
+    "This article provides an overview of how Mozilla's Glean SDK standardizes and manages structured telemetry collection across both desktop and mobile versions of the Firefox web browser. By utilizing a unified cross-platform architecture, strict schema def",
+    false
+  ],
+  [
+    87,
+    "How the Socorro Platform Aggregates Firefox Crash Reports",
+    "This article provides a comprehensive explanation of the Socorro server platform and the exact mechanisms it uses to collect, process, and aggregate crash reports submitted by the Firefox web browser. You will learn what Socorro is, how Firefox captures c",
+    false
+  ],
+  [
+    86,
+    "How Breakpad and minidump-writer Capture Firefox Crashes",
+    "This article explains the technical mechanisms behind how the Firefox Web Browser captures vital diagnostic data during an unexpected crash. It covers the role of the legacy C++ Breakpad library and Mozilla's newer Rust-based minidump-writer tool. You wil",
+    false
+  ],
+  [
+    85,
+    "How Balrog Delivers Differential MAR Updates to Firefox",
+    "This article provides a complete overview of how Mozilla's Balrog update server infrastructure delivers differential Mozilla Archive (MAR) patches to the Firefox web browser. It covers the entire lifecycle of an update, starting from the initial client re",
+    false
+  ],
+  [
+    84,
+    "How Mozilla's Normandy System Updates Firefox Remotely",
+    "This article explores Mozilla's Normandy system, the backend infrastructure that allows the Firefox web browser to receive configuration changes, feature toggles, and critical hotfixes without requiring a full software update. It breaks down what Normandy",
+    false
+  ],
+  [
+    83,
+    "How Firefox Renders PDFs Using PDF.js and HTML5 Canvas",
+    "This article explains the technical process of how the Mozilla Firefox web browser natively renders Portable Document Format (PDF) files without external plugins. It covers the architecture of the built-in PDF.js viewer, detailing how it fetches, parses,",
+    false
+  ],
+  [
+    82,
+    "Why Cisco Gave Mozilla the Free OpenH264 Plugin for Firefox",
+    "In 2013, Cisco partnered with Mozilla to provide a free, downloadable OpenH264 binary plugin for the Firefox browser to bypass a costly patent licensing roadblock. This strategic move allowed Mozilla to support the industry-standard H.264 video codec for",
+    false
+  ],
+  [
+    81,
+    "How Firefox Isolates the Google Widevine DRM Module",
+    "This article explains how the Mozilla Firefox web browser securely isolates the proprietary Google Widevine Content Decryption Module (CDM) used for streaming DRM-protected video. By utilizing a specialized multi-layered sandboxing architecture, dedicated",
+    false
+  ],
+  [
+    80,
+    "How the dav1d Decoder Powers Fast AV1 Playback in Firefox",
+    "This article provides an overview of how the Mozilla Firefox web browser achieves smooth, efficient AV1 video playback using the dav1d decoder. AV1 is a modern, royalty-free video format that offers superior compression, but it originally required immense",
+    false
+  ],
+  [
+    79,
+    "Architecture of the Firefox WebRTC Media Stack",
+    "This article provides a comprehensive overview of the WebRTC media stack architecture in the Mozilla Firefox web browser, detailing how it processes real-time, peer-to-peer audio and video. It covers Firefox’s multi-process security model, the media captu",
+    false
+  ],
+  [
+    78,
+    "How Cubeb Handles Low-Latency Audio in the Firefox Browser",
+    "Cubeb is Mozilla’s open-source, cross-platform audio library responsible for handling real-time sound output and input in the Firefox web browser. This article provides a straightforward breakdown of how Cubeb achieves ultra-low-latency audio playback. It",
+    false
+  ],
+  [
+    77,
+    "HarfBuzz: Powering Complex Typography in Firefox",
+    "This article provides an overview of the critical role the HarfBuzz text shaping engine plays within the Mozilla Firefox web browser. It explains the concept of text shaping, how HarfBuzz translates raw Unicode text into correctly positioned visual glyphs",
+    false
+  ],
+  [
+    76,
+    "How Firefox Uses Skia and Cairo as Rendering Fallbacks",
+    "This article explores how the Mozilla Firefox web browser utilizes the Skia and Cairo 2D graphics libraries as fallback rendering engines. While modern Firefox relies heavily on its GPU-accelerated WebRender engine for primary page display, hardware limit",
+    false
+  ],
+  [
+    75,
+    "The Architecture of WebGPU in the Firefox Browser",
+    "This article explores the current architecture powering the WebGPU graphics standard within the Mozilla Firefox web browser. It breaks down how Firefox processes modern web graphics and compute tasks by detailing its multi-process security model, the Rust",
+    false
+  ],
+  [
+    74,
+    "How ANGLE Helps Firefox Render WebGL on Windows Direct3D",
+    "This article explains how the Almost Native Graphics Layer Engine (ANGLE) enables the Mozilla Firefox web browser to seamlessly render WebGL content on Windows operating systems. Because WebGL is based on OpenGL ES and Windows primarily relies on Microsof",
+    false
+  ],
+  [
+    73,
+    "Service Worker Management and Isolation in Firefox",
+    "This article provides a comprehensive overview of how the Firefox web browser manages and isolates background Service Workers within its multi-process architecture. It details how Firefox utilizes Project Fission (Site Isolation) to confine Service Worker",
+    false
+  ],
+  [
+    72,
+    "How Firefox Implements IndexedDB for Client-Side Storage",
+    "This article explores the internal architecture of the Mozilla Firefox web browser and how it implements the IndexedDB standard for client-side storage. It covers the underlying SQLite database engine used to power the NoSQL API, the inter-process communi",
+    false
+  ],
+  [
+    71,
+    "Structure of the Firefox places.sqlite Database",
+    "This article provides a comprehensive breakdown of the places.sqlite file found within a Mozilla Firefox user profile. It explores the internal SQLite database schema, detailing the specific tables and columns responsible for storing a user's browsing his",
+    false
+  ],
+  [
+    70,
+    "How Firefox Uses SQLite for History, Bookmarks, and Cookies",
+    "This article explores how the Mozilla Firefox web browser utilizes SQLite, a lightweight and serverless relational database engine, to manage and store essential user data locally. Specifically, it examines the architecture of the places.sqlite and cookie",
+    false
+  ],
+  [
+    69,
+    "What is the Firefox omni.ja Archive File?",
+    "This article provides a comprehensive explanation of the omni.ja file found in the Mozilla Firefox installation directory. It covers the fundamental nature of the file, the specific reasons Mozilla uses it to boost browser performance, the types of core d",
+    false
+  ],
+  [
+    68,
+    "Project Fluent: Localization and Pluralization in Firefox",
+    "This article explores how Mozilla’s Project Fluent revolutionizes software localization in the Firefox Web Browser. It examines the limitations of traditional translation systems and details how Fluent utilizes asymmetric localization, selectors, and isol",
+    false
+  ],
+  [
+    67,
+    "Why Firefox Removed XBL From Its Internal Architecture",
+    "This article explores the reasons behind Mozilla's decision to completely remove XBL (XML Binding Language) from the internal architecture of the Firefox web browser. Originally designed in the early 2000s to create reusable user interface widgets, XBL ev",
+    false
+  ],
+  [
+    66,
+    "Why Firefox Replaced XUL with HTML and Web Components",
+    "Mozilla has systematically phased out its proprietary XML User Interface Language (XUL) in favor of standard HTML, CSS, and Web Components to build the Firefox user interface. This massive architectural transition was driven by the need to improve browser",
+    false
+  ],
+  [
+    65,
+    "What is XPCOM and How Does Firefox Use It Internally?",
+    "This article provides a comprehensive look at the Cross-Platform Component Object Model (XPCOM) and its vital role inside the Mozilla Firefox web browser. It covers the fundamental definition of XPCOM, how it enables different programming languages to com",
+    false
+  ],
+  [
+    64,
+    "TraceMonkey: Firefox's First JavaScript JIT Compiler",
+    "This article explores how Mozilla revolutionized web browser performance by introducing TraceMonkey, the very first Just-In-Time (JIT) compiler for JavaScript, in Firefox 3.5. It covers the performance bottlenecks of traditional JavaScript interpreters, t",
+    false
+  ],
+  [
+    63,
+    "How OdinMonkey Optimized asm.js Execution in Firefox",
+    "This article provides a comprehensive look at OdinMonkey, the specialized optimization module built for Mozilla's Firefox web browser, and explains the technical mechanisms it used to execute asm.js code at near-native speeds. By exploring the nature of t",
+    false
+  ],
+  [
+    62,
+    "How Cranelift Optimizes WebAssembly in Firefox",
+    "This article explores how the Cranelift code generator optimizes WebAssembly (Wasm) compilation within the Firefox web browser. By integrating into Firefox's SpiderMonkey engine, Cranelift balances rapid compilation speeds with highly optimized machine co",
+    false
+  ],
+  [
+    61,
+    "How RLBox Sandboxes Third-Party Libraries in Firefox",
+    "This article provides a comprehensive breakdown of the RLBox sandboxing framework and its implementation in the Mozilla Firefox web browser. It covers the inherent security risks of using third-party C and C++ libraries, defines the core architecture of t",
+    false
+  ],
+  [
+    60,
+    "How Project Fission Implements Site Isolation in Firefox",
+    "Project Fission is a major architectural overhaul of the Mozilla Firefox web browser designed to enforce strict site isolation. This article provides an overview of how Fission secures user data and improves browser stability by separating different websi",
+    false
+  ],
+  [
+    59,
+    "How the Necko Library Manages Networking in Firefox",
+    "This article provides a comprehensive overview of Necko, the core networking library inside the Mozilla Firefox web browser. It explains the foundational architecture of Necko and details how this modular library efficiently processes HTTP requests, manag",
+    false
+  ],
+  [
+    58,
+    "How Firefox's Quantum Compositor Prevents Graphics Crashes",
+    "This article explains how Mozilla Firefox utilizes the Quantum Compositor to maintain browser stability during graphics driver failures. By isolating graphics rendering into a dedicated process separate from the main browser engine, Firefox ensures that u",
+    false
+  ],
+  [
+    57,
+    "How Quantum CSS (Stylo) Parallelized Styling in Firefox",
+    "This article explores Quantum CSS, codenamed Stylo, the revolutionary style engine integrated into the Firefox web browser. It covers the origins of Stylo within Mozilla's Project Quantum, the limitations of traditional single-threaded CSS processing, and",
+    false
+  ],
+  [
+    56,
+    "How Firefox's WebRender Uses Your GPU to Draw Web Pages",
+    "This article explains how Mozilla Firefox's WebRender engine revolutionizes web page rendering by shifting the drawing workload from the CPU to the GPU. By treating web pages much like 3D video games, WebRender translates standard HTML and CSS elements in",
+    false
+  ],
+  [
+    55,
+    "How the Baseline Interpreter Speeds Up Firefox Page Loads",
+    "This article explores how the Baseline Interpreter in Firefox's SpiderMonkey JavaScript engine accelerates initial web page loads. By bridging the gap between slow, traditional interpretation and resource-heavy Just-In-Time (JIT) compilation, the Baseline",
+    false
+  ],
+  [
+    54,
+    "How Firefox's IonMonkey Compiler Handled Type Inference",
+    "This article examines the legacy Type Inference (TI) system previously utilized by the IonMonkey optimizing compiler in the Firefox web browser. It explains how Firefox's JavaScript engine, SpiderMonkey, tracked variable types globally, combined static an",
+    false
+  ],
+  [
+    53,
+    "Firefox WarpBuilder JIT Compiler Performance Improvements",
+    "In late 2020, Mozilla introduced a major update to Firefox’s JavaScript engine, SpiderMonkey, known as WarpBuilder (or simply Warp). Deployed in Firefox 83, WarpBuilder replaced the legacy IonMonkey optimizing compiler frontend to streamline how JavaScrip",
+    false
+  ],
+  [
+    52,
+    "How SpiderMonkey Executes JS and WebAssembly in Firefox",
+    "This article provides a comprehensive overview of how Mozilla’s SpiderMonkey engine processes and executes JavaScript and WebAssembly code inside the Firefox web browser. It breaks down the multi-tiered Just-In-Time (JIT) compilation pipeline used to spee",
+    false
+  ],
+  [
+    51,
+    "Gecko's Role in Parsing HTML and CSS in Firefox",
+    "This article provides a comprehensive overview of the critical role the Gecko layout engine plays within the Mozilla Firefox web browser. Specifically, it explains how Gecko takes raw HTML and CSS code from web servers and parses it into a visual, interac",
+    false
+  ],
+  [
+    50,
+    "The Significance of OSU's 2006 Firefox Community Monument",
+    "This article provides an overview of the historical and cultural significance of the 2006 Firefox monument created by the Oregon State University (OSU) community. It covers how the installation celebrated a major milestone in the browser wars, honored the",
+    false
+  ],
+  [
+    49,
+    "The Impact of Firefox Dropping Windows XP and Vista Support",
+    "In 2018, Mozilla officially ended Firefox support for Windows XP and Windows Vista, marking the final chapter for two of Microsoft's legacy operating systems. Although Mozilla supported these platforms much longer than competitors like Google Chrome and M",
+    false
+  ],
+  [
+    48,
+    "Why Firefox Dropped Support for NPAPI Plugins Like Flash",
+    "Mozilla’s decision to phase out support for Netscape Plugin API (NPAPI) plugins—most notably Adobe Flash, Java, and Microsoft Silverlight—marked the end of an era for the Firefox web browser. This transition was driven by four primary factors: severe secu",
+    false
+  ],
+  [
+    47,
+    "Chatzilla: Firefox's Classic IRC Client Integration",
+    "This article explores Chatzilla, a historic Internet Relay Chat (IRC) client built entirely on Mozilla technologies, and examines its deep integration with the Firefox web browser ecosystem. Originally developed as a core component of the Mozilla Applicat",
+    false
+  ],
+  [
+    46,
+    "How Firefox Marketplace Built a Web App Ecosystem",
+    "In the early 2010s, Mozilla launched the Firefox Marketplace in an ambitious effort to challenge the dominance of proprietary mobile and desktop app stores. This article examines how Mozilla attempted to build an open, cross-platform ecosystem of installa",
+    false
+  ],
+  [
+    45,
+    "The Firefox Social API: Integrating Third-Party Sidebars",
+    "This article explores the Firefox Social API, a defunct browser feature introduced by Mozilla that allowed users to integrate third-party social networks directly into their browsing experience. It provides an overview of how the API's core component—the",
+    false
+  ],
+  [
+    44,
+    "Why Mozilla Cancelled Firefox for Windows 8 Metro",
+    "In March 2014, Mozilla officially discontinued the development of its touch-friendly, Metro-style Firefox browser for Windows 8. Despite spending nearly two years building the application from the ground up to match Microsoft's modern tile interface, the",
+    false
+  ],
+  [
+    43,
+    "What Was Mozilla's Persona Authentication System?",
+    "This article explores Mozilla Persona, originally known as BrowserID, a decentralized and privacy-focused web authentication system tested in the Firefox browser. It covers the core purpose of the technology, how the underlying cryptographic protocol func",
+    false
+  ],
+  [
+    42,
+    "How Brendan Eich Shaped the Technical Direction of Firefox",
+    "Brendan Eich, the creator of JavaScript and co-founder of the Mozilla project, served as Mozilla’s Chief Technology Officer for nearly a decade before briefly becoming CEO in 2014. During his tenure, Eich was the primary architect of the Firefox web brows",
+    false
+  ],
+  [
+    41,
+    "How Netscape Navigator's Codebase Led to Mozilla Firefox",
+    "The modern Firefox web browser owes its existence directly to the fall of Netscape Navigator in the late 1990s. Facing fierce competition from Microsoft's Internet Explorer, Netscape Communications made the historic decision to release its proprietary bro",
+    false
+  ],
+  [
+    40,
+    "TenFourFox: Keeping Firefox Alive on PowerPC Macs",
+    "This article explores the TenFourFox project, an ambitious open-source initiative that extended the lifespan of Apple's PowerPC Macintosh computers for over a decade. Following Apple and Mozilla's abandonment of the PowerPC architecture, TenFourFox provid",
+    false
+  ],
+  [
+    39,
+    "Why the Tor Browser Uses Firefox Extended Support Release",
+    "The Tor Browser relies on Mozilla's Firefox Extended Support Release (ESR) as its foundational code to maximize user security, privacy, and development stability. By choosing Firefox ESR over standard browser releases or competing engines like Chromium, t",
+    false
+  ],
+  [
+    38,
+    "Why Waterfox Was Created Before 64-Bit Windows Firefox",
+    "Waterfox was created in 2011 by a 16-year-old developer named Alex Kontos to provide a stable, high-performance 64-bit version of the Firefox browser for Windows users at a time when Mozilla only offered an official 32-bit release. This article explores t",
+    false
+  ],
+  [
+    37,
+    "How Pale Moon Diverged from the Firefox Codebase",
+    "Pale Moon began in 2009 as a simple, performance-optimized rebuild of Mozilla Firefox, created by developer M.C. Straver (known as Moonchild). Initially, it shared the exact same source code as Firefox, differing only in how it was compiled for Windows ha",
+    false
+  ],
+  [
+    36,
+    "Why Debian Temporarily Rebranded Firefox as Iceweasel",
+    "For a decade, users of the Debian Linux distribution did not browse the web with Mozilla Firefox, but rather with an identical application named Iceweasel. This temporary rebranding, which lasted from 2006 to 2016, was the result of a dispute between the",
+    false
+  ],
+  [
+    35,
+    "How the Mozilla Manifesto Shapes Firefox Browser Features",
+    "This article explores how the ten core principles of the Mozilla Manifesto directly guide the development and feature integration of the Firefox web browser. By examining each principle, we can see how Mozilla translates its ideological commitment to an o",
+    false
+  ],
+  [
+    34,
+    "Firefox Reality: Adapting the Web for Virtual Reality",
+    "Firefox Reality was an open-source, cross-platform web browser developed by Mozilla specifically for standalone virtual reality (VR) and augmented reality (AR) headsets. Launched in September 2018, the project aimed to bring the fast, private, and open na",
+    false
+  ],
+  [
+    33,
+    "Why Firefox Lockwise Merged Back Into the Core Browser",
+    "In late 2021, Mozilla officially discontinued the standalone Firefox Lockwise password manager app, merging its functionalities directly into the core Firefox web browser across desktop and mobile platforms. This strategic consolidation was driven by the",
+    false
+  ],
+  [
+    32,
+    "What the Firefox Notes Sidebar Brought to the Browser",
+    "The experimental Firefox Notes sidebar, originally introduced through Mozilla's Test Pilot program, provided users with a built-in notepad directly inside the Firefox web browser. This article explores the core functionalities of the Firefox Notes extensi",
+    false
+  ],
+  [
+    31,
+    "How Firefox Send Integrated with the Firefox Web Browser",
+    "This article explores how Mozilla’s discontinued Firefox Send service integrated with the Firefox Web Browser to provide seamless, end-to-end encrypted file sharing. It covers the transition from an experimental browser extension to a web-based tool, the",
+    false
+  ],
+  [
+    30,
+    "The Purpose of the Firefox Test Pilot Program",
+    "The Firefox Test Pilot program was an experimental platform created by Mozilla that allowed everyday web users to test, evaluate, and provide feedback on unreleased features before they were officially integrated into the standard Firefox browser. This ar",
+    false
+  ],
+  [
+    29,
+    "Organizing Workspaces with Firefox Panorama Tab Groups",
+    "This article explores how the Panorama feature, officially known as Tab Groups, organized open workspaces in earlier versions of the Mozilla Firefox web browser. Introduced in Firefox 4, Panorama provided users with a visual, spatial canvas to group, mana",
+    false
+  ],
+  [
+    28,
+    "What Was Firefox Hello? WebRTC Video Calling Explained",
+    "This article provides a complete breakdown of Firefox Hello, a defunct communication feature once built directly into the Mozilla Firefox web browser. It covers how the tool utilized WebRTC technology to enable plugin-free video and voice calling, its evo",
+    false
+  ],
+  [
+    27,
+    "How Firefox OS Shared the Firefox Browser Architecture",
+    "This article explores the technical relationship between the discontinued Firefox OS mobile operating system and the desktop Firefox web browser. By examining the core layers of Firefox OS, we will uncover how Mozilla used its existing browser engine to p",
+    false
+  ],
+  [
+    26,
+    "Why Firefox Switched Its Default Search to Yahoo in 2014",
+    "In late 2014, Mozilla ended its decade-long global partnership with Google and made Yahoo the default search engine for the Firefox web browser in the United States. This temporary shift was driven by rising competition from Google's own browser, Mozilla'",
+    false
+  ],
+  [
+    25,
+    "How Google Search Royalties Funded the Firefox Browser",
+    "For nearly two decades, the development of the open-source Firefox web browser has been overwhelmingly funded by its biggest competitor: Google. Through lucrative search engine default royalty agreements, Google has paid the Mozilla Corporation hundreds o",
+    false
+  ],
+  [
+    24,
+    "How the EU Windows 7 Browser Ballot Impacted Firefox",
+    "This article provides an overview of how the European Union’s 2010 browser ballot mandate in Windows 7 affected the adoption rates of the Mozilla Firefox web browser. While the ballot screen initially triggered a massive surge in Firefox downloads and hel",
+    false
+  ],
+  [
+    23,
+    "Firefox's Peak Desktop Market Share Around 2010",
+    "This article examines the historical peak of the Mozilla Firefox web browser's global desktop market share around the year 2010. It details the exact market share percentages Firefox achieved during its most dominant era, the primary factors that drove it",
+    false
+  ],
+  [
+    22,
+    "The Open-Source Licenses of the Firefox Web Browser",
+    "This article provides a straightforward breakdown of the open-source software licenses governing the Mozilla Firefox web browser. It covers the primary license used for the core source code, the historical shift from a tri-license model, the compatibility",
+    false
+  ],
+  [
+    21,
+    "How the Mozilla Foundation and Corporation Govern Firefox",
+    "This article explores the unique governance model behind the Firefox web browser, which relies on a symbiotic relationship between the non-profit Mozilla Foundation and its wholly-owned taxable subsidiary, the Mozilla Corporation. By dividing responsibili",
+    false
+  ],
+  [
+    20,
+    "Why Mozilla Rewrote Critical Firefox Components in Rust",
+    "Mozilla began rewriting critical components of the Firefox web browser in the Rust programming language primarily to solve long-standing issues with security, stability, and performance. For decades, Firefox relied heavily on C++, a fast and powerful lang",
+    false
+  ],
+  [
+    19,
+    "Integrating Servo Technologies into the Firefox Browser",
+    "This article explores how Mozilla successfully migrated experimental technologies from its Servo research engine into the commercial Firefox web browser. By leveraging the Rust programming language and an initiative known as Project Quantum, Mozilla repla",
+    false
+  ],
+  [
+    18,
+    "Project Electrolysis: Bringing Multi-Process to Firefox",
+    "Project Electrolysis, commonly abbreviated as e10s, was Mozilla's monumental engineering initiative to transition the Firefox web browser from a legacy single-process architecture to a modern multi-process model. This article provides an overview of what",
+    false
+  ],
+  [
+    17,
+    "Why Firefox Version 57 Was Named Firefox Quantum",
+    "In November 2017, Mozilla released version 57 of its flagship web browser, choosing to market it under the distinct name \"Firefox Quantum.\" This article explains the reasons behind this major rebranding, detailing how the name represented a massive overha",
+    false
+  ],
+  [
+    16,
+    "Visual Changes in the Firefox 89 Proton User Interface",
+    "In June 2021, Mozilla released version 89 of the Firefox web browser, introducing a major visual overhaul known as the \"Proton\" user interface. This article outlines the specific visual modifications implemented with the Proton update, covering the transi",
+    false
+  ],
+  [
+    15,
+    "How the Photon Design System Overhauled Firefox 57",
+    "In November 2017, Mozilla released Firefox 57, marketed as \"Firefox Quantum,\" which introduced a massive visual redesign powered by the Photon design system. This article provides an overview of how Photon modernized the browser's interface by replacing c",
+    false
+  ],
+  [
+    14,
+    "The Firefox 29 Australis Redesign: Major UI Changes",
+    "Released in April 2014, Firefox 29 introduced the \"Australis\" redesign, representing one of the most significant visual overhauls in the browser's history. This article provides a direct breakdown of the major user interface changes implemented during thi",
+    false
+  ],
+  [
+    13,
+    "Firefox ESR vs. Standard Release: Key Differences",
+    "This article explores the primary differences between the Mozilla Firefox Extended Support Release (ESR) and the standard consumer version, known as the Rapid Release. By examining update cycles, target audiences, feature availability, and security mainte",
+    false
+  ],
+  [
+    12,
+    "The Purpose of the Retired Firefox Aurora Release Channel",
+    "This article explores the history and purpose of the retired Aurora release channel in the Mozilla Firefox update pipeline. Introduced in 2011 as part of Firefox's shift to a rapid release cycle, Aurora served as a crucial intermediary stage between the e",
+    false
+  ],
+  [
+    11,
+    "Why Firefox Switched to a Rapid Release Cycle in 2011",
+    "In 2011, Mozilla fundamentally changed how it developed and updated the Firefox web browser, transitioning to a six-week rapid release cycle starting with version 5.0. This article provides an overview of the primary reasons behind this major shift, inclu",
+    false
+  ],
+  [
+    10,
+    "How Firefox Challenged Internet Explorer 6 in the 2000s",
+    "In the mid-2000s, Mozilla Firefox successfully challenged the overwhelming market dominance of Microsoft's Internet Explorer 6 (IE6) by addressing critical user frustrations and introducing modern browsing features. While Microsoft allowed IE6 to stagnate",
+    false
+  ],
+  [
+    9,
+    "The Guinness World Record Set by Firefox 3.0 in 2008",
+    "In June 2008, Mozilla made history with the launch of its Firefox 3.0 web browser by setting the Guinness World Record for the largest number of software downloads in 24 hours. This article covers the exact details of the record, the global community camp",
+    false
+  ],
+  [
+    8,
+    "How Jon Hicks Created the Original Firefox Browser Icon",
+    "In 2004, the Mozilla Foundation needed a new visual identity for their web browser after trademark issues forced a name change from Firebird to Firefox. This article explores how designer Jon Hicks, in collaboration with the Mozilla visual identity team,",
+    false
+  ],
+  [
+    7,
+    "What Biological Animal Is the Firefox Browser Mascot?",
+    "This article explores the true biological identity of the animal featured in the Mozilla Firefox web browser logo and mascot. While most internet users naturally assume the famous fiery icon depicts a common red fox, the official animal behind the brand i",
+    false
+  ],
+  [
+    6,
+    "How Much Money Was Raised for the 2004 Firefox NYT Ad?",
+    "This article explores the historic 2004 crowdfunding campaign organized by the Mozilla Foundation to promote the launch of the Firefox 1.0 web browser. In just ten days, approximately 10,000 community members banded together and raised roughly $250,000 to",
+    false
+  ],
+  [
+    5,
+    "How the Mozilla Foundation Funded Early Firefox Development",
+    "The Mozilla Foundation played a critical role in the survival and launch of the Firefox web browser by providing essential financial stability after the collapse of Netscape. Established in July 2003, the non-profit organization secured millions of dollar",
+    false
+  ],
+  [
+    4,
+    "How Blake Ross and Dave Hyatt Created the Firefox Browser",
+    "In the early 2000s, software engineers Blake Ross and Dave Hyatt initiated the creation of the Firefox web browser by starting an experimental, stripped-down branch of the bloated Mozilla Application Suite. Frustrated by the main suite's slow performance,",
+    false
+  ],
+  [
+    3,
+    "The Trademark Dispute That Changed Firebird into Firefox",
+    "Before becoming the globally recognized Firefox web browser, Mozilla's flagship project underwent two major name changes due to trademark conflicts. Initially called Phoenix, the browser was renamed to Firebird in 2003, which immediately sparked a heated",
+    false
+  ],
+  [
+    2,
+    "Why the Firefox Browser Was Initially Named Phoenix",
+    "Before becoming the globally recognized Firefox web browser, the project began its life under the name Phoenix in 2002. This initial name was chosen to symbolize the mythical bird rising from the ashes of its predecessor, Netscape Navigator, which had bee",
+    false
+  ],
+  [
+    1,
+    "The Release Year of Mozilla Firefox Version 1.0",
+    "This article provides a concise look at the official public release of the Mozilla Firefox web browser under version 1.0. It covers the exact year the browser launched, the development history and name changes that preceded it, and how this landmark relea",
+    false
+  ]
+]

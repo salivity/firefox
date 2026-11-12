@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Firefox Troubleshoot Mode Temporarily Disables - firefox</title>
+    <meta name="description" content="Firefox Troubleshoot Mode, formerly known as Safe Mode, is a built-in diagnostic environment designed to help users isolate and fix browser problems. When you launch the browser in this mode, Firefox temporarily deactivates specific features, add-ons, and">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/what-firefox-troubleshoot-mode-temporarily-disables">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Firefox Troubleshoot Mode Temporarily Disables - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/what-firefox-troubleshoot-mode-temporarily-disables" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox Troubleshoot Mode, formerly known as Safe Mode, is a built-in diagnostic environment designed to help users isolate and fix browser problems. When you launch the browser in this mode, Firefox temporarily deactivates specific features, add-ons, and" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-firefox-troubleshoot-mode-temporarily-disables">What
+Firefox Troubleshoot Mode Temporarily Disables</h1>
+<p>Firefox Troubleshoot Mode, formerly known as Safe Mode, is a built-in
+diagnostic environment designed to help users isolate and fix browser
+problems. When you launch the browser in this mode, Firefox temporarily
+deactivates specific features, add-ons, and performance optimizations
+that commonly cause crashes, rendering glitches, or slow performance.
+This article provides a straightforward breakdown of the exact
+extensions, hardware acceleration settings, Just-In-Time (JIT)
+compilers, and interface customizations that are suspended during a
+troubleshooting session.</p>
+<h3 id="extensions-and-themes">Extensions and Themes</h3>
+<p>Add-ons are the most common cause of browser instability. In
+Troubleshoot Mode, Firefox makes the following adjustments to your
+add-ons:</p>
+<ul>
+<li><strong>Extensions:</strong> All third-party and user-installed
+extensions are completely disabled. They cannot run background scripts,
+block content, or modify web pages.</li>
+<li><strong>Themes:</strong> Any custom visual themes are turned off,
+and the browser temporarily reverts to the default system theme.</li>
+</ul>
+<h3 id="hardware-acceleration-settings">Hardware Acceleration
+Settings</h3>
+<p>Hardware acceleration uses your computer's Graphics Processing Unit
+(GPU) to render text, images, and videos more efficiently than the
+Central Processing Unit (CPU). In Troubleshoot Mode:</p>
+<ul>
+<li><strong>GPU Rendering:</strong> Hardware acceleration is switched
+off entirely.</li>
+<li><strong>Software Fallback:</strong> Firefox forces the CPU to handle
+all graphical rendering via software fallback. This helps you determine
+if visual glitches, black screens, or browser crashes are being caused
+by outdated or incompatible graphics card drivers.</li>
+<li><strong>WebGL:</strong> Hardware-accelerated WebGL is disabled,
+restricting 3D graphics rendering to software-based emulation or
+disabling it where software rendering is unsupported.</li>
+</ul>
+<h3 id="javascript-jit-compilers">JavaScript JIT Compilers</h3>
+<p>Firefox uses Just-In-Time (JIT) compilers to translate JavaScript
+into machine code on the fly, which drastically speeds up interactive
+websites and web applications. Because aggressive code optimization can
+occasionally trigger memory errors or crashes, Troubleshoot Mode
+disables the entire JIT pipeline:</p>
+<ul>
+<li><strong>Baseline Interpreter and Compiler:</strong> Disabled.</li>
+<li><strong>WarpBuilder (IonMonkey):</strong> The optimizing JIT
+compiler is turned off.</li>
+<li><strong>RegExp JIT:</strong> The regular expression compiler is
+deactivated.</li>
+<li><strong>Standard Execution:</strong> With JIT compilers disabled,
+Firefox processes all JavaScript using its standard, unoptimized C++
+interpreter. Websites will run noticeably slower, but stability is
+maximized.</li>
+</ul>
+<h3 id="other-browser-features-and-customizations">Other Browser
+Features and Customizations</h3>
+<p>Beyond add-ons, graphics, and compilers, Troubleshoot Mode also
+suspends several interface and configuration features:</p>
+<ul>
+<li><strong>Custom Style Sheets:</strong> Firefox ignores
+<code>userChrome.css</code> (used to customize the browser's user
+interface) and <code>userContent.css</code> (used to alter the
+appearance of websites). This resolves issues where a browser update
+breaks custom user code, resulting in invisible menus or broken
+layouts.</li>
+<li><strong>Toolbar and Window Layouts:</strong> Any changes made to the
+position of toolbar buttons, address bars, or default window dimensions
+(stored in the <code>xulstore.json</code> file) are temporarily ignored,
+reverting the interface to its factory layout.</li>
+</ul>
+<p>Once you exit Troubleshoot Mode and restart Firefox normally, all of
+your extensions, themes, hardware acceleration settings, JIT compilers,
+and custom layouts are automatically restored to their previous
+states.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/what-firefox-troubleshoot-mode-temporarily-disables';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

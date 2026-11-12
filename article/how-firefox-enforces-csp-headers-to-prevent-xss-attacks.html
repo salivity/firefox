@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Enforces CSP Headers to Prevent XSS Attacks - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how the Mozilla Firefox web browser enforces Content Security Policy (CSP) headers to stop Cross-Site Scripting (XSS) attacks. By intercepting HTTP responses from web servers, parsing security directives, and s">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-enforces-csp-headers-to-prevent-xss-attacks">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Enforces CSP Headers to Prevent XSS Attacks - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-enforces-csp-headers-to-prevent-xss-attacks" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how the Mozilla Firefox web browser enforces Content Security Policy (CSP) headers to stop Cross-Site Scripting (XSS) attacks. By intercepting HTTP responses from web servers, parsing security directives, and s" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-enforces-csp-headers-to-prevent-xss-attacks">How
+Firefox Enforces CSP Headers to Prevent XSS Attacks</h1>
+<p>This article provides a complete overview of how the Mozilla Firefox
+web browser enforces Content Security Policy (CSP) headers to stop
+Cross-Site Scripting (XSS) attacks. By intercepting HTTP responses from
+web servers, parsing security directives, and strictly controlling where
+scripts can be loaded from and executed, Firefox neutralizes malicious
+code injections before they can harm the user. The following sections
+break down the exact mechanisms Firefox uses—from header reception and
+directive parsing to script blocking and violation reporting—to secure
+web applications.</p>
+<h3 id="header-interception-and-parsing">Header Interception and
+Parsing</h3>
+<p>When a user navigates to a webpage, the web server responds with HTTP
+headers before sending the HTML content. If the server includes the
+<code>Content-Security-Policy</code> header, Firefox’s rendering engine,
+Gecko, intercepts it immediately.</p>
+<p>Before parsing the HTML document, Gecko reads the CSP string and
+breaks it down into individual directives (such as
+<code>default-src</code>, <code>script-src</code>, and
+<code>object-src</code>). Firefox then compiles these rules into an
+active security policy object and attaches it to the document's security
+context, known internally as the document principal. This ensures that
+the rules are in place before a single line of HTML or JavaScript is
+processed.</p>
+<h3 id="blocking-unauthorized-external-scripts">Blocking Unauthorized
+External Scripts</h3>
+<p>Attackers often attempt to execute XSS by injecting a
+<code>&lt;script&gt;</code> tag that loads malicious JavaScript from an
+external, attacker-controlled server. Firefox prevents this by policing
+all outbound network requests made by the webpage.</p>
+<p>When the HTML parser encounters a script tag with a <code>src</code>
+attribute, Firefox does not immediately fetch the file. Instead, the
+browser's internal content policy mechanism intercepts the request and
+compares the target URL against the allowlist defined in the CSP's
+<code>script-src</code> directive (or <code>default-src</code> if
+<code>script-src</code> is not present). If the domain does not match
+the approved list of sources, Firefox aborts the network request at the
+browser level, preventing the malicious file from ever downloading.</p>
+<h3 id="neutralizing-inline-scripts">Neutralizing Inline Scripts</h3>
+<p>The most common vector for XSS is the injection of inline scripts
+directly into the HTML document. Whenever a CSP header with a
+<code>script-src</code> or <code>default-src</code> directive is
+present, Firefox automatically activates its primary XSS defense: it
+blocks all inline JavaScript execution by default unless explicitly
+permitted by the policy.</p>
+<p>Firefox enforces this by instructing its HTML parser and its
+JavaScript engine, SpiderMonkey, to ignore code in the following
+locations:</p>
+<ul>
+<li>Code written directly inside
+<code>&lt;script&gt;...&lt;/script&gt;</code> tags.</li>
+<li>Inline HTML event handlers, such as <code>onload</code>,
+<code>onerror</code>, and <code>onclick</code>.</li>
+<li>Scripts executed via <code>javascript:</code> URLs inside anchor
+tags or form actions.</li>
+</ul>
+<p>If an attacker manages to inject
+<code>&lt;script&gt;stealCookies()&lt;/script&gt;</code> into a
+webpage's HTML, Firefox will parse the tag into the Document Object
+Model (DOM), but it will refuse to pass the code inside the tag to
+SpiderMonkey for execution.</p>
+<h3 id="validating-nonces-and-hashes">Validating Nonces and Hashes</h3>
+<p>Because modern web applications often require legitimate inline
+scripts to function, CSP allows servers to authorize specific inline
+code using cryptographic nonces (numbers used once) or hashes. Firefox
+enforces these exceptions strictly:</p>
+<ul>
+<li><strong>Nonces:</strong> The server generates a random string for
+every page load and includes it in both the CSP header (e.g.,
+<code>script-src 'nonce-rAnd0m'</code>) and the HTML script tag
+(<code>&lt;script nonce="rAnd0m"&gt;</code>). When Firefox encounters an
+inline script, it compares the tag's nonce attribute to the header's
+nonce directive. Execution is only allowed if they match character for
+character.</li>
+<li><strong>Hashes:</strong> The server calculates a cryptographic hash
+(using SHA-256, SHA-384, or SHA-512) of the legitimate script's exact
+text and puts it in the CSP header. When Firefox parses an inline
+script, it hashes the contents of the script tag in real-time. If the
+calculated hash matches the hash in the CSP header, the script runs. If
+an attacker alters even a single character of the script, the hashes
+will not match, and Firefox will block execution.</li>
+</ul>
+<h3 id="restricting-dynamic-code-evaluation">Restricting Dynamic Code
+Evaluation</h3>
+<p>XSS attacks can also occur when legitimate JavaScript already on the
+page is tricked into converting untrusted text strings into executable
+code. When a CSP header is active, Firefox instructs the SpiderMonkey
+engine to disable all APIs that evaluate strings as code.</p>
+<p>Unless the server explicitly weakens its policy by including the
+<code>'unsafe-eval'</code> keyword, Firefox will throw a security
+exception and halt execution whenever a script attempts to use:</p>
+<ul>
+<li>The <code>eval()</code> function.</li>
+<li>The <code>Function()</code> constructor.</li>
+<li>The <code>setTimeout()</code> or <code>setInterval()</code>
+functions when passed a string instead of a function reference.</li>
+</ul>
+<h3 id="violation-logging-and-reporting">Violation Logging and
+Reporting</h3>
+<p>When Firefox blocks a resource load or script execution due to a CSP
+rule, it silently neutralizes the threat for the user while actively
+alerting the developer.</p>
+<p>First, Firefox dispatches a <code>SecurityPolicyViolationEvent</code>
+on the document and logs a detailed error message in the browser's Web
+Developer Console, specifying the exact directive that was violated and
+the line of code responsible.</p>
+<p>Second, if the server configured a reporting endpoint using the
+<code>report-uri</code> or <code>report-to</code> directive, Firefox
+generates a JSON report containing metadata about the violation (such as
+the blocked URI, the violated directive, and the page URL). The browser
+then sends this JSON payload asynchronously via an HTTP POST request to
+the server's specified endpoint, allowing website administrators to
+monitor and patch potential XSS vulnerabilities in real-time.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-enforces-csp-headers-to-prevent-xss-attacks';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

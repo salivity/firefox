@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inside the Firefox Profiler and Browser Integration - firefox</title>
+    <meta name="description" content="This article provides a quick overview of how the Firefox Profiler (profiler.firefox.com) integrates directly with the Firefox Web Browser to capture essential performance data. It covers the underlying architecture of the built-in Gecko Profiler, explain">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/inside-the-firefox-profiler-and-browser-integration">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Inside the Firefox Profiler and Browser Integration - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/inside-the-firefox-profiler-and-browser-integration" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of how the Firefox Profiler (profiler.firefox.com) integrates directly with the Firefox Web Browser to capture essential performance data. It covers the underlying architecture of the built-in Gecko Profiler, explain" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="inside-the-firefox-profiler-and-browser-integration">Inside the
+Firefox Profiler and Browser Integration</h1>
+<p>This article provides a quick overview of how the Firefox Profiler
+(<a href="https://profiler.firefox.com">profiler.firefox.com</a>)
+integrates directly with the Firefox Web Browser to capture essential
+performance data. It covers the underlying architecture of the built-in
+Gecko Profiler, explaining the specific mechanisms used to sample CPU
+call stacks, instrument internal browser markers, and monitor network
+activity, before transferring this data to the web-based front-end for
+analysis.</p>
+<h2 id="the-dual-part-architecture">The Dual-Part Architecture</h2>
+<p>The Firefox Profiler is split into two distinct components: the Gecko
+Profiler (the back-end recording engine built directly into the Firefox
+source code) and the analysis front-end hosted at <a
+href="https://profiler.firefox.com">profiler.firefox.com</a>.</p>
+<p>Because the recording engine is compiled directly into the browser,
+it has low-level access to Firefox’s internal threads and memory. When a
+user starts a recording via the browser toolbar or keyboard shortcuts,
+the Gecko Profiler allocates a fixed-size circular buffer in the system
+memory. All performance data is written to this buffer to ensure minimal
+runtime overhead and to prevent the profiler from consuming all
+available RAM.</p>
+<h2 id="recording-cpu-call-stacks-via-statistical-sampling">Recording
+CPU Call Stacks via Statistical Sampling</h2>
+<p>To capture CPU activity, the Gecko Profiler relies on statistical
+sampling rather than logging every single function call, which would
+severely slow down the browser.</p>
+<ol type="1">
+<li><strong>Thread Registration:</strong> Critical browser threads—such
+as the Main thread, Compositor, and DOM Workers—register themselves with
+the profiler at startup.</li>
+<li><strong>Periodic Pausing:</strong> At a user-defined interval
+(typically every 1 millisecond), a dedicated sampler thread interrupts
+and pauses the registered threads using operating system signals.</li>
+<li><strong>Stack Walking:</strong> While a thread is paused, the
+profiler inspects the CPU registers and walks the call stack. It reads
+the memory addresses of native C++ and Rust functions. Simultaneously,
+it queries Firefox's JavaScript engine (SpiderMonkey) to read the
+current JavaScript frames, including Just-In-Time (JIT) compiled
+code.</li>
+<li><strong>Unified Stacks:</strong> The profiler merges the native C++,
+Rust, and JavaScript frames into a single, unified call stack, writes
+the raw memory addresses into the circular buffer, and immediately
+resumes the paused thread.</li>
+</ol>
+<h2 id="capturing-browser-markers-via-instrumentation">Capturing Browser
+Markers via Instrumentation</h2>
+<p>Statistical sampling is effective for measuring CPU load, but it can
+miss instantaneous events that occur between sampling intervals. To
+capture these, the profiler uses deterministic code instrumentation
+known as "markers."</p>
+<p>Firefox developers manually place profiler marker macros directly
+into the C++, Rust, and JavaScript source code of the browser. Whenever
+Firefox executes a specific, notable operation—such as a Garbage
+Collection pass, a DOM event, a layout reflow, or a CSS animation
+frame—the thread actively pushes a marker directly into the profiler's
+circular buffer. Unlike samples, markers are never missed. They record
+the exact start and end timestamps of an event along with a JSON payload
+containing contextual metadata.</p>
+<h2 id="monitoring-network-activity">Monitoring Network Activity</h2>
+<p>Network activity is recorded as a specialized extension of the marker
+system, integrated directly into Necko, Firefox’s internal networking
+library.</p>
+<p>Rather than inspecting packets externally, Necko emits network
+markers at every stage of a resource request. When a network request is
+initiated, a start marker is logged. As the request progresses through
+the browser's networking pipeline, Necko logs precise timestamps for
+intermediate phases, including:</p>
+<ul>
+<li>DNS lookup start and end</li>
+<li>TCP connection establishment</li>
+<li>TLS handshake completion</li>
+<li>HTTP request transmission and response waiting times</li>
+</ul>
+<p>When the request finishes or fails, a final marker is recorded
+containing the status code, MIME type, caching status, and transfer
+size. The profiler later correlates the start and end markers using a
+shared internal ID to build a complete network waterfall.</p>
+<h2 id="data-serialization-and-webchannel-transfer">Data Serialization
+and WebChannel Transfer</h2>
+<p>Once the user chooses to capture the profile, the Gecko Profiler
+halts the sampler thread and extracts the raw data from the circular
+buffer. It serializes the collected stack memory addresses, markers, and
+network events into a compressed JSON format.</p>
+<p>Firefox then opens a new tab pointed at <a
+href="https://profiler.firefox.com">profiler.firefox.com</a>. Because a
+standard webpage cannot access internal browser data for security
+reasons, Firefox uses an internal, privileged communication mechanism
+called a <code>WebChannel</code>. Through the <code>WebChannel</code>,
+the browser injects the serialized JSON profile directly into the web
+application.</p>
+<p>Finally, because the captured CPU stacks only contain raw memory
+addresses for native code, the web front-end uses an asynchronous
+browser API to ask Firefox (and Mozilla's remote symbol servers) to
+translate those hexadecimal addresses into human-readable C++ and Rust
+function names—a process called symbolication. Once complete, the data
+is rendered into the interactive timeline and call tree.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/inside-the-firefox-profiler-and-browser-integration';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

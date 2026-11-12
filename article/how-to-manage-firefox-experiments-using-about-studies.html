@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Manage Firefox Experiments Using about:studies - firefox</title>
+    <meta name="description" content="This article provides a quick overview of the about:studies page in the Mozilla Firefox web browser, a built-in dashboard used to manage Shield and Normandy experiments. You will learn what these studies are, why Mozilla uses them, how to view the active">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-manage-firefox-experiments-using-about-studies">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Manage Firefox Experiments Using about:studies - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-manage-firefox-experiments-using-about-studies" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of the about:studies page in the Mozilla Firefox web browser, a built-in dashboard used to manage Shield and Normandy experiments. You will learn what these studies are, why Mozilla uses them, how to view the active" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-manage-firefox-experiments-using-aboutstudies">How to
+Manage Firefox Experiments Using about:studies</h1>
+<p>This article provides a quick overview of the
+<code>about:studies</code> page in the Mozilla Firefox web browser, a
+built-in dashboard used to manage Shield and Normandy experiments. You
+will learn what these studies are, why Mozilla uses them, how to view
+the active and completed experiments running on your browser, and the
+exact steps to disable individual tests or completely opt out of future
+participation.</p>
+<h3 id="what-are-aboutstudies-shield-and-normandy">What are
+about:studies, Shield, and Normandy?</h3>
+<p>Mozilla regularly tests new features, performance improvements, and
+bug fixes on a small percentage of Firefox users before releasing them
+to the general public.</p>
+<ul>
+<li><strong>Shield:</strong> This is the framework Mozilla uses to run
+studies, gather telemetry data, and test new features in the wild.
+Shield allows Mozilla to measure how changes affect browser stability
+and user experience.</li>
+<li><strong>Normandy:</strong> This is the backend delivery system that
+pushes Shield studies, heartbeat surveys, and urgent configuration
+changes (like hotfixes) directly to your browser without requiring a
+full Firefox update.</li>
+<li><strong>about:studies:</strong> This is an internal page built into
+Firefox that provides transparency and control over the Shield and
+Normandy systems. It acts as a log showing every experiment your browser
+has participated in.</li>
+</ul>
+<h3 id="how-to-view-active-and-past-experiments">How to View Active and
+Past Experiments</h3>
+<p>You can check which experiments are currently running on your system
+at any time by accessing the studies dashboard.</p>
+<ol type="1">
+<li>Open the Firefox web browser.</li>
+<li>Type <code>about:studies</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Review the page. You will see two distinct sections: <strong>Active
+studies</strong> (experiments currently modifying your browser) and
+<strong>Completed studies</strong> (expired tests that are no longer
+active).</li>
+</ol>
+<p>Each entry includes a brief description of what the study does and
+its current status.</p>
+<h3 id="how-to-opt-out-of-a-single-study">How to Opt Out of a Single
+Study</h3>
+<p>If a specific active experiment is causing issues or changes a
+feature in a way you dislike, you can disable it without turning off the
+entire system.</p>
+<ol type="1">
+<li>Navigate to <code>about:studies</code> in your address bar.</li>
+<li>Under the <strong>Active studies</strong> section, locate the
+experiment you wish to stop.</li>
+<li>Click the <strong>Remove</strong> button located to the right of the
+study's description.</li>
+</ol>
+<p>Firefox will immediately revert any changes made by that specific
+experiment, and the study will move to the <strong>Completed
+studies</strong> list.</p>
+<h3 id="how-to-permanently-opt-out-of-all-studies">How to Permanently
+Opt Out of All Studies</h3>
+<p>If you do not want Mozilla to enroll your browser in any future
+Shield or Normandy experiments, you can disable the feature entirely in
+your privacy settings.</p>
+<ol type="1">
+<li>Open the <code>about:studies</code> page and click the
+<strong>Update preferences</strong> button at the top, or open the
+Firefox menu and select <strong>Settings</strong>.</li>
+<li>Click on <strong>Privacy &amp; Security</strong> in the left-hand
+menu.</li>
+<li>Scroll down to the <strong>Firefox Data Collection and Use</strong>
+section.</li>
+<li>Uncheck the box next to <strong>Allow Firefox to install and run
+studies</strong>.</li>
+</ol>
+<p>Note: Disabling studies will also prevent you from receiving urgent
+out-of-band hotfixes delivered via the Normandy system, meaning you will
+have to wait for standard browser updates to receive certain
+patches.</p>
+<h3 id="advanced-disabling-normandy-via-aboutconfig">Advanced: Disabling
+Normandy via about:config</h3>
+<p>For advanced users who want to ensure the Normandy client is
+completely deactivated at the configuration level, you can modify the
+preferences directly.</p>
+<ol type="1">
+<li>Type <code>about:config</code> into the Firefox address bar and
+press <strong>Enter</strong>.</li>
+<li>Click <strong>Accept the Risk and Continue</strong>.</li>
+<li>In the search bar at the top, type
+<code>app.normandy.enabled</code>.</li>
+<li>Double-click the <code>app.normandy.enabled</code> preference to
+change its value from <strong>true</strong> to
+<strong>false</strong>.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-manage-firefox-experiments-using-about-studies';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

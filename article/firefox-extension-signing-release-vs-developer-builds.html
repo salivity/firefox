@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Extension Signing: Release vs. Developer Builds - firefox</title>
+    <meta name="description" content="This article provides a quick overview of how extension signing enforcement differs between the standard Firefox Release build and the specialized Nightly and Developer Edition builds. While the standard Release version strictly requires all extensions to">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-extension-signing-release-vs-developer-builds">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Extension Signing: Release vs. Developer Builds - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-extension-signing-release-vs-developer-builds" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of how extension signing enforcement differs between the standard Firefox Release build and the specialized Nightly and Developer Edition builds. While the standard Release version strictly requires all extensions to" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-extension-signing-release-vs-developer-builds">Firefox
+Extension Signing: Release vs. Developer Builds</h1>
+<p>This article provides a quick overview of how extension signing
+enforcement differs between the standard Firefox Release build and the
+specialized Nightly and Developer Edition builds. While the standard
+Release version strictly requires all extensions to be cryptographically
+signed by Mozilla for user security, the Nightly and Developer Editions
+allow users to disable this enforcement completely to facilitate add-on
+creation, testing, and advanced customization.</p>
+<h3 id="the-purpose-of-extension-signing">The Purpose of Extension
+Signing</h3>
+<p>Mozilla requires extensions to be signed to protect users from
+malicious software, data theft, and unauthorized browser modifications.
+When a developer submits an add-on to Mozilla, it undergoes an automated
+and sometimes manual review process. Once approved, Mozilla
+cryptographically signs the extension package, allowing the browser to
+verify its authenticity before installation.</p>
+<h3 id="standard-firefox-release-build-strict-enforcement">Standard
+Firefox Release Build: Strict Enforcement</h3>
+<p>In the standard Firefox Release build (as well as the Beta build),
+extension signing enforcement is mandatory and locked.</p>
+<ul>
+<li><strong>Permanent Installation:</strong> You can only permanently
+install extensions that have been officially signed by Mozilla. If you
+attempt to install an unsigned add-on file (an XPI file), Firefox will
+block the installation and display an error message stating that the
+add-on could not be verified.</li>
+<li><strong>No Override Setting:</strong> The internal configuration
+setting used to bypass signing enforcement is completely disabled in the
+code of the Release build. Toggling it has no effect.</li>
+<li><strong>Temporary Exception:</strong> The only way to run an
+unsigned extension in the Release build is by loading it temporarily.
+Users must navigate to the <code>about:debugging</code> page, select
+"This Firefox," and click "Load Temporary Add-on." However, any
+extension loaded this way is immediately removed as soon as the browser
+is closed.</li>
+</ul>
+<h3
+id="firefox-nightly-and-developer-edition-flexible-enforcement">Firefox
+Nightly and Developer Edition: Flexible Enforcement</h3>
+<p>Firefox Nightly and Developer Edition are built specifically for web
+developers, extension creators, and power users. Because developers need
+to test their unverified code over multiple browser sessions, Mozilla
+relaxes the signing enforcement in these specific builds.</p>
+<ul>
+<li><strong>The Configuration Override:</strong> Unlike the Release
+build, Nightly and Developer Editions obey a hidden preference in the
+browser's advanced configuration.</li>
+<li><strong>Permanent Unsigned Installation:</strong> Users can
+permanently install unsigned extensions by navigating to
+<code>about:config</code> in the address bar, searching for the
+preference named <code>xpinstall.signatures.required</code>, and setting
+its value to <code>false</code>.</li>
+<li><strong>Security Warnings:</strong> Once this setting is disabled,
+Firefox will allow the permanent installation of any unsigned extension.
+The browser will still display a warning on the add-ons management page
+(<code>about:addons</code>) indicating that the extension is unverified,
+but it will not block the functionality or remove the extension upon
+restarting the browser.</li>
+</ul>
+<h3 id="summary-of-differences">Summary of Differences</h3>
+<ol type="1">
+<li><strong>Firefox Release:</strong> Enforces signing strictly. The
+<code>xpinstall.signatures.required</code> preference is ignored.
+Unsigned extensions can only be loaded temporarily for a single session
+via <code>about:debugging</code>.</li>
+<li><strong>Firefox Developer Edition &amp; Nightly:</strong> Enforces
+signing by default, but allows users to bypass it. Changing
+<code>xpinstall.signatures.required</code> to <code>false</code> in
+<code>about:config</code> permits the permanent installation and use of
+unsigned extensions.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-extension-signing-release-vs-developer-builds';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

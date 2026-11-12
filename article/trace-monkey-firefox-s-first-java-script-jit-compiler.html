@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TraceMonkey: Firefox&#39;s First JavaScript JIT Compiler - firefox</title>
+    <meta name="description" content="This article explores how Mozilla revolutionized web browser performance by introducing TraceMonkey, the very first Just-In-Time (JIT) compiler for JavaScript, in Firefox 3.5. It covers the performance bottlenecks of traditional JavaScript interpreters, t">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/trace-monkey-firefox-s-first-java-script-jit-compiler">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="TraceMonkey: Firefox&#39;s First JavaScript JIT Compiler - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/trace-monkey-firefox-s-first-java-script-jit-compiler" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how Mozilla revolutionized web browser performance by introducing TraceMonkey, the very first Just-In-Time (JIT) compiler for JavaScript, in Firefox 3.5. It covers the performance bottlenecks of traditional JavaScript interpreters, t" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="tracemonkey-firefoxs-first-javascript-jit-compiler">TraceMonkey:
+Firefox's First JavaScript JIT Compiler</h1>
+<p>This article explores how Mozilla revolutionized web browser
+performance by introducing TraceMonkey, the very first Just-In-Time
+(JIT) compiler for JavaScript, in Firefox 3.5. It covers the performance
+bottlenecks of traditional JavaScript interpreters, the innovative
+"trace tree" compilation method TraceMonkey used to bypass dynamic
+typing slowdowns, the step-by-step process of how the engine converted
+web scripts into native machine code, and how its eventual limitations
+paved the way for modern browser engines.</p>
+<h2 id="the-bottleneck-of-traditional-interpreters">The Bottleneck of
+Traditional Interpreters</h2>
+<p>Before 2008, Firefox relied solely on the classic SpiderMonkey
+engine, which was a basic bytecode interpreter. When a user visited a
+website, SpiderMonkey read the JavaScript code, translated it into an
+intermediate format called bytecode, and executed it line by line.</p>
+<p>This method was slow for two main reasons:</p>
+<ol type="1">
+<li><strong>Translation Overhead:</strong> The browser had to repeatedly
+translate instructions every time a loop ran.</li>
+<li><strong>Dynamic Typing:</strong> In JavaScript, a variable can hold
+a number in one moment and a text string the next. Because the
+interpreter never knew what data type to expect, it had to waste CPU
+cycles checking data types before performing basic operations like
+addition.</li>
+</ol>
+<p>As complex web applications like Gmail and Google Maps emerged,
+line-by-line interpretation could no longer keep up. Mozilla needed a
+way to compile JavaScript directly into native machine code that the
+computer’s processor could run instantly.</p>
+<h2 id="the-breakthrough-trace-tree-compilation">The Breakthrough: Trace
+Tree Compilation</h2>
+<p>Traditional Just-In-Time (JIT) compilers used by languages like Java
+compiled entire functions at once. However, JavaScript’s dynamic typing
+made compiling whole functions inefficient, as the compiler would have
+to generate massive amounts of code just to handle every possible data
+type a variable might become.</p>
+<p>To solve this, Mozilla partnered with researchers Andreas Gal and
+Michael Franz from the University of California, Irvine, to implement
+<strong>Trace Tree Compilation</strong>.</p>
+<p>TraceMonkey operated on two fundamental assumptions about how
+programs run:</p>
+<ul>
+<li>Programs spend most of their time inside loops.</li>
+<li>Even in a dynamically typed language, variables inside a specific
+loop usually stay the same data type.</li>
+</ul>
+<p>Instead of compiling entire functions, TraceMonkey observed the
+program while it ran and only compiled the exact path—or "trace"—that
+the code took through frequently executed loops.</p>
+<h2 id="how-tracemonkey-worked-step-by-step">How TraceMonkey Worked
+Step-by-Step</h2>
+<p>TraceMonkey added a JIT layer directly on top of the existing
+SpiderMonkey interpreter. It executed JavaScript in four distinct
+phases:</p>
+<h3 id="1-interpretation-and-profiling">1. Interpretation and
+Profiling</h3>
+<p>All JavaScript initially ran in the standard, slow SpiderMonkey
+interpreter. As the code ran, TraceMonkey acted as a profiler, counting
+how many times each loop was executed.</p>
+<h3 id="2-recording-a-hot-trace">2. Recording a "Hot" Trace</h3>
+<p>Once a loop ran a specific number of times, TraceMonkey flagged it as
+"hot." On the next run of that loop, TraceMonkey turned on a recorder.
+As the interpreter executed the loop, the recorder wrote down every
+single operation performed and the exact data types of the variables
+used during that specific pass.</p>
+<p>If the loop contained an <code>if/else</code> statement, TraceMonkey
+ignored the path not taken and only recorded the path actually executed.
+Furthermore, if the loop called a separate function, TraceMonkey simply
+followed the execution right into that function and back out, flattening
+the whole journey into one linear list of instructions.</p>
+<h3 id="3-compiling-to-machine-code">3. Compiling to Machine Code</h3>
+<p>Once the loop finished its pass and returned to its starting point,
+the recording stopped. TraceMonkey took this linear recording—where all
+the data types were now known and fixed—and fed it into a tiny, fast
+compiler backend called <strong>Nanojit</strong> (co-developed with
+Adobe). Nanojit translated this trace into highly optimized, native CPU
+machine code.</p>
+<h3 id="4-execution-guards-and-trace-trees">4. Execution, Guards, and
+Trace Trees</h3>
+<p>The next time the program hit that loop, Firefox bypassed the
+interpreter entirely and ran the fast machine code.</p>
+<p>However, because JavaScript allows types to change unexpectedly,
+TraceMonkey had to be careful. It inserted small checks called
+<strong>guards</strong> into the machine code. A guard verified that the
+assumptions made during the recording were still true (for example,
+checking that a variable <code>x</code> was still an integer and had not
+become a string).</p>
+<ul>
+<li><strong>If the guard passed:</strong> The fast machine code
+continued to run.</li>
+<li><strong>If the guard failed:</strong> The engine immediately exited
+the machine code (a process called a "bailout") and returned to the
+safe, slow interpreter at the exact point where the failure
+occurred.</li>
+</ul>
+<p>If a bailout happened repeatedly at the same guard—perhaps because an
+<code>if/else</code> statement inside the loop started taking the
+<code>else</code> branch—TraceMonkey would record a new trace starting
+from that failed guard. This new trace was attached to the original
+trace, branching out like a tree. Over time, complex loops formed
+<strong>Trace Trees</strong>, covering multiple execution paths in
+native machine code.</p>
+<h2 id="impact-and-legacy">Impact and Legacy</h2>
+<p>First announced in August 2008 and officially shipped in Firefox 3.5
+in June 2009, TraceMonkey delivered massive performance gains, running
+certain algorithms and benchmarks 3 to 40 times faster than Firefox 3.0.
+Its release, alongside Google's V8 engine and Apple's SquirrelFish
+Extreme, ignited the "Browser Speed Wars," proving that JavaScript could
+be used for heavy-duty computing, browser gaming, and complex web
+applications.</p>
+<p>Despite its historic success, TraceMonkey had an inherent flaw: it
+struggled with code that jumped around unpredictably without tight
+loops, as the engine spent too much time bailing out of traces and
+returning to the interpreter. Mozilla eventually replaced TraceMonkey
+with hybrid engines like JägerMonkey and IonMonkey, which combined
+method-based compilation with the profiling techniques pioneered by
+TraceMonkey.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/trace-monkey-firefox-s-first-java-script-jit-compiler';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

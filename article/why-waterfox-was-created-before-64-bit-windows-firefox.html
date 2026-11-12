@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Waterfox Was Created Before 64-Bit Windows Firefox - firefox</title>
+    <meta name="description" content="Waterfox was created in 2011 by a 16-year-old developer named Alex Kontos to provide a stable, high-performance 64-bit version of the Firefox browser for Windows users at a time when Mozilla only offered an official 32-bit release. This article explores t">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-waterfox-was-created-before-64-bit-windows-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Waterfox Was Created Before 64-Bit Windows Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-waterfox-was-created-before-64-bit-windows-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Waterfox was created in 2011 by a 16-year-old developer named Alex Kontos to provide a stable, high-performance 64-bit version of the Firefox browser for Windows users at a time when Mozilla only offered an official 32-bit release. This article explores t" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-waterfox-was-created-before-64-bit-windows-firefox">Why
+Waterfox Was Created Before 64-Bit Windows Firefox</h1>
+<p>Waterfox was created in 2011 by a 16-year-old developer named Alex
+Kontos to provide a stable, high-performance 64-bit version of the
+Firefox browser for Windows users at a time when Mozilla only offered an
+official 32-bit release. This article explores the hardware shifts of
+the early 2010s, the technical reasons behind Mozilla's delayed
+transition to 64-bit architecture on Windows, and how Waterfox
+successfully bridged the gap for users who needed better speed and
+memory management.</p>
+<h3 id="the-shift-to-64-bit-hardware">The Shift to 64-Bit Hardware</h3>
+<p>By 2011, 64-bit processors and operating systems—most notably Windows
+7—had become the standard for consumer computers. The primary advantage
+of a 64-bit system was its ability to utilize more than 4 gigabytes (GB)
+of RAM.</p>
+<p>However, 32-bit applications running on 64-bit systems were still
+restricted by a hard memory limit, usually capping out at 2GB to 4GB of
+RAM usage. As websites became more complex and users began opening
+dozens of tabs simultaneously, 32-bit web browsers frequently crashed
+due to running out of available memory.</p>
+<h3 id="mozillas-delay-on-a-64-bit-windows-build">Mozilla's Delay on a
+64-Bit Windows Build</h3>
+<p>Despite the widespread adoption of 64-bit Windows, Mozilla was
+hesitant to release an official 64-bit version of Firefox for the
+operating system. While Mozilla provided 64-bit builds for Linux and
+macOS, the Windows version remained restricted to unstable, experimental
+"Nightly" testing builds.</p>
+<p>Mozilla delayed the official 64-bit Windows release for several
+direct reasons:</p>
+<ul>
+<li><strong>Plugin Incompatibility:</strong> At the time, the web relied
+heavily on third-party plugins like Adobe Flash, Java, and Microsoft
+Silverlight. Most of these plugins only existed in 32-bit versions,
+which could not easily run inside a 64-bit browser without complex
+workarounds.</li>
+<li><strong>Resource Allocation:</strong> Maintaining and testing both
+32-bit and 64-bit versions for Windows required significant engineering
+resources that Mozilla wanted to focus elsewhere.</li>
+<li><strong>Crash Reporting:</strong> Mozilla's crash-reporting
+infrastructure was not yet fully optimized to handle the volume of data
+a mainstream 64-bit Windows release would generate.</li>
+</ul>
+<h3 id="how-waterfox-solved-the-problem">How Waterfox Solved the
+Problem</h3>
+<p>Frustrated by the lack of an official 64-bit Windows build, Alex
+Kontos took advantage of Firefox’s open-source nature. In March 2011, he
+took Mozilla's source code and compiled it specifically for 64-bit
+Windows architectures, releasing it as Waterfox.</p>
+<p>Waterfox was not just a simple recompile; it was built with
+performance in mind:</p>
+<ul>
+<li><strong>Unrestricted Memory:</strong> Waterfox could access all the
+RAM installed on a user's 64-bit machine, eliminating the memory-related
+crashes common in the 32-bit Firefox browser.</li>
+<li><strong>Processor Optimizations:</strong> Kontos compiled Waterfox
+using Intel’s C++ compiler and enabled advanced processor instruction
+sets (such as SSE3 and AVX), making the browser noticeably faster on
+modern Intel and AMD processors.</li>
+<li><strong>64-Bit Plugin Support:</strong> Waterfox was configured to
+automatically detect and use the emerging 64-bit versions of Adobe
+Flash, Java, and Silverlight.</li>
+<li><strong>Seamless Transition:</strong> Waterfox shared the same user
+profile folder as Firefox. Users could install Waterfox and immediately
+have access to all their existing Firefox bookmarks, passwords, history,
+and 32-bit browser extensions without any manual migration.</li>
+</ul>
+<h3 id="the-legacy-of-the-project">The Legacy of the Project</h3>
+<p>Waterfox quickly gained a massive following among power users,
+gamers, and IT professionals who had high-end PCs and wanted a browser
+that matched their hardware capabilities.</p>
+<p>Mozilla eventually resolved the plugin and stability hurdles,
+releasing the first official 64-bit version of Firefox for Windows in
+November 2015 (Firefox 42)—more than four years after Waterfox was
+launched. By the time Mozilla caught up, Waterfox had already
+established a dedicated user base, allowing the project to survive and
+eventually pivot its focus toward user privacy, customization, and
+support for legacy Firefox extensions.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-waterfox-was-created-before-64-bit-windows-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

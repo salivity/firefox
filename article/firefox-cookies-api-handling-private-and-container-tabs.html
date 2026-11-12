@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Cookies API: Handling Private and Container Tabs - firefox</title>
+    <meta name="description" content="This article provides a quick overview of how the browser.cookies API in the Firefox Web Browser manages cookie isolation using specific Cookie Store IDs. It explains the distinct identifiers assigned to standard windows, Private Browsing modes, and Conta">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-cookies-api-handling-private-and-container-tabs">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Cookies API: Handling Private and Container Tabs - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-cookies-api-handling-private-and-container-tabs" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of how the browser.cookies API in the Firefox Web Browser manages cookie isolation using specific Cookie Store IDs. It explains the distinct identifiers assigned to standard windows, Private Browsing modes, and Conta" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-cookies-api-handling-private-and-container-tabs">Firefox
+Cookies API: Handling Private and Container Tabs</h1>
+<p>This article provides a quick overview of how the
+<code>browser.cookies</code> API in the Firefox Web Browser manages
+cookie isolation using specific Cookie Store IDs. It explains the
+distinct identifiers assigned to standard windows, Private Browsing
+modes, and Container tabs, detailing how developers can use these IDs to
+read, modify, and manage cookies across isolated browsing contexts.</p>
+<h3 id="what-is-a-cookie-store-id">What is a Cookie Store ID?</h3>
+<p>In Firefox, cookies are not stored in a single global database.
+Instead, they are segregated into different storage areas known as
+cookie stores. The <code>browser.cookies</code> API uses the
+<code>CookieStore</code> object to represent these isolated storage
+contexts. Every cookie store is identified by a unique string called a
+<code>storeId</code>.</p>
+<p>When a web extension interacts with cookies using methods like
+<code>cookies.get()</code>, <code>cookies.getAll()</code>,
+<code>cookies.set()</code>, or <code>cookies.remove()</code>, it can
+specify the <code>storeId</code> property to target a specific browsing
+context. If the <code>storeId</code> is omitted, the API defaults to the
+store of the current execution context.</p>
+<h3 id="the-default-cookie-store">The Default Cookie Store</h3>
+<p>For standard browsing windows and tabs that do not use any special
+isolation features, Firefox assigns a default cookie store.</p>
+<ul>
+<li><strong>Store ID:</strong> <code>"firefox-default"</code></li>
+</ul>
+<p>All standard tabs share this single store. Any cookie set with the
+<code>"firefox-default"</code> ID is accessible across all normal
+windows and persists across browser sessions unless it is a session
+cookie or explicitly deleted.</p>
+<h3 id="private-browsing-cookie-store">Private Browsing Cookie
+Store</h3>
+<p>Firefox isolates Private Browsing sessions from standard sessions to
+ensure that tracking data and login states do not leak between the two
+modes.</p>
+<ul>
+<li><strong>Store ID:</strong> <code>"firefox-private"</code></li>
+</ul>
+<p>All open Private Browsing windows and tabs share the
+<code>"firefox-private"</code> cookie store. Cookies placed in this
+store are held exclusively in memory, are never written to the disk, and
+are permanently purged the moment the user closes the last Private
+Browsing window.</p>
+<p>For an extension to access the <code>"firefox-private"</code> store
+via the <code>browser.cookies</code> API, the user must explicitly grant
+the extension permission to run in Private Windows. If the extension
+does not have this permission, attempts to query or modify
+<code>"firefox-private"</code> will fail.</p>
+<h3 id="container-tabs-contextual-identities">Container Tabs (Contextual
+Identities)</h3>
+<p>Firefox features "Container Tabs" (managed programmatically via the
+<code>browser.contextualIdentities</code> API), which allow users to
+separate their browsing into color-coded contexts like Personal, Work,
+Banking, and Shopping. Each container has its own completely isolated
+cookie jar.</p>
+<ul>
+<li><strong>Store ID:</strong> <code>"firefox-container-N"</code> (where
+<code>N</code> is a unique integer, such as
+<code>"firefox-container-1"</code>, <code>"firefox-container-2"</code>,
+etc.)</li>
+</ul>
+<p>When a new container is created, Firefox increments the integer to
+generate a new <code>storeId</code>. Cookies set in
+<code>"firefox-container-1"</code> cannot be read by tabs open in
+<code>"firefox-container-2"</code> or <code>"firefox-default"</code>.
+Unlike Private Browsing cookies, Container cookies are persistent and
+remain saved even after the browser is closed.</p>
+<h3 id="how-to-retrieve-cookie-store-ids-in-practice">How to Retrieve
+Cookie Store IDs in Practice</h3>
+<p>Hardcoding <code>storeId</code> values is generally discouraged,
+especially for containers, as users can create and delete them
+dynamically. Developers can dynamically retrieve the correct
+<code>storeId</code> using the following approaches:</p>
+<ol type="1">
+<li><strong>Via the Tabs API:</strong> Every <code>tabs.Tab</code>
+object includes a <code>cookieStoreId</code> property. If you query the
+active tab using <code>browser.tabs.query()</code>, you can read
+<code>tab.cookieStoreId</code> and pass that exact string directly into
+your <code>browser.cookies</code> API calls.</li>
+<li><strong>Via the Cookies API:</strong> Calling
+<code>browser.cookies.getAllCookieStores()</code> returns an array of
+<code>CookieStore</code> objects currently active in the browser. Each
+object contains the <code>id</code> (the <code>storeId</code>) and an
+array of tab IDs that are currently using that store.</li>
+<li><strong>Via the Contextual Identities API:</strong> Calling
+<code>browser.contextualIdentities.query({})</code> returns all user
+containers, each containing a <code>cookieStoreId</code> property
+corresponding to its <code>"firefox-container-N"</code> value. Requires
+the <code>"contextualIdentities"</code> permission.</li>
+</ol>
+<h3 id="example-getting-cookies-from-a-specific-context">Example:
+Getting Cookies from a Specific Context</h3>
+<p>To retrieve cookies from a specific context, pass the
+<code>storeId</code> into the details object of the API call:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Retrieve all cookies for a specific container tab</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> cookies <span class="op">=</span> <span class="cf">await</span> browser<span class="op">.</span><span class="at">cookies</span><span class="op">.</span><span class="fu">getAll</span>({</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">storeId</span><span class="op">:</span> <span class="st">&quot;firefox-container-1&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Set a cookie specifically in Private Browsing</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">cookies</span><span class="op">.</span><span class="fu">set</span>({</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">url</span><span class="op">:</span> <span class="st">&quot;https://example.com&quot;</span><span class="op">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">name</span><span class="op">:</span> <span class="st">&quot;session_type&quot;</span><span class="op">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">value</span><span class="op">:</span> <span class="st">&quot;private&quot;</span><span class="op">,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">storeId</span><span class="op">:</span> <span class="st">&quot;firefox-private&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>By leveraging these specific <code>storeId</code> strings, extensions
+can accurately respect user privacy boundaries and manage data
+seamlessly across Firefox's multi-context architecture.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-cookies-api-handling-private-and-container-tabs';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

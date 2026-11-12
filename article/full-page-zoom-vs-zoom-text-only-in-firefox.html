@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Page Zoom vs. Zoom Text Only in Firefox - firefox</title>
+    <meta name="description" content="This article provides a complete comparison between the standard full-page zoom and the Zoom Text Only feature in the Mozilla Firefox web browser. It covers the mechanics of how each setting scales webpage elements, the resulting impacts on website layout">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/full-page-zoom-vs-zoom-text-only-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Full-Page Zoom vs. Zoom Text Only in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/full-page-zoom-vs-zoom-text-only-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete comparison between the standard full-page zoom and the Zoom Text Only feature in the Mozilla Firefox web browser. It covers the mechanics of how each setting scales webpage elements, the resulting impacts on website layout" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="full-page-zoom-vs-zoom-text-only-in-firefox">Full-Page Zoom vs.
+Zoom Text Only in Firefox</h1>
+<p>This article provides a complete comparison between the standard
+full-page zoom and the Zoom Text Only feature in the Mozilla Firefox web
+browser. It covers the mechanics of how each setting scales webpage
+elements, the resulting impacts on website layouts, and the specific
+accessibility benefits of choosing one method over the other.</p>
+<h2 id="standard-full-page-zoom">Standard Full-Page Zoom</h2>
+<p>Standard full-page zoom is the default magnification method in
+Firefox. When you zoom in or out using this mode, the browser scales
+every element on the webpage proportionally.</p>
+<ul>
+<li><strong>What scales:</strong> Text, images, video players, buttons,
+margins, and structural layout containers all increase or decrease in
+size together.</li>
+<li><strong>Layout behavior:</strong> Because the entire page scales
+uniformly, the original design proportions remain intact. However,
+zooming in significantly tricks the browser into thinking your screen
+has a lower resolution. This often triggers a website's responsive
+design, causing the desktop layout to shift into a tablet or mobile
+layout, which may hide navigation bars behind menus.</li>
+<li><strong>Best for:</strong> Users who want to see everything on the
+screen larger, including media and interface icons, while maintaining
+the visual harmony of the webpage.</li>
+</ul>
+<h2 id="zoom-text-only">Zoom Text Only</h2>
+<p>The Zoom Text Only setting isolates the typography of a webpage from
+its structural and media elements. When enabled, adjusting the zoom
+level strictly alters the font size.</p>
+<ul>
+<li><strong>What scales:</strong> Only the HTML text elements increase
+or decrease in size.</li>
+<li><strong>What stays the same:</strong> Images, videos, icons, and the
+structural boxes (containers) that hold the content remain at their
+original 100% pixel dimensions.</li>
+<li><strong>Layout behavior:</strong> Because the structural containers
+do not grow to accommodate the larger text, text wraps more frequently.
+On well-coded websites, boxes will expand vertically to fit the larger
+text. On poorly coded websites with fixed-size containers, the enlarged
+text may overflow out of its designated box, overlap with other text, or
+get cut off entirely.</li>
+<li><strong>Best for:</strong> Users who only struggle to read small
+fonts and do not want giant images taking up valuable screen space, or
+those who want to avoid triggering a website's mobile view on a desktop
+monitor.</li>
+</ul>
+<h2 id="key-functional-differences">Key Functional Differences</h2>
+<p>To understand how these two settings behave in daily use, consider
+how they handle screen real estate and website code:</p>
+<ol type="1">
+<li><strong>Screen Real Estate:</strong> Full-page zoom quickly consumes
+screen space, often forcing you to scroll more frequently to view large
+images. Zoom Text Only preserves screen real estate by keeping graphic
+elements compact while making the reading material legible.</li>
+<li><strong>Horizontal Scrolling:</strong> Full-page zoom can
+occasionally force horizontal scrolling if a website does not have a
+responsive design. Zoom Text Only almost never causes horizontal
+scrolling because the width of the page containers does not change.</li>
+<li><strong>Visual Sharpness:</strong> When using full-page zoom, raster
+images (like JPEGs and PNGs) are stretched beyond their native
+resolution, which can make them look blurry or pixelated. Zoom Text Only
+leaves images at their native resolution, keeping them sharp while
+rendering the enlarged vector-based text cleanly.</li>
+</ol>
+<h2 id="how-to-enable-zoom-text-only-in-firefox">How to Enable Zoom Text
+Only in Firefox</h2>
+<p>By default, Firefox uses full-page zoom. You can switch to the
+text-only mode in two ways:</p>
+<p><strong>Via the Menu Bar:</strong></p>
+<ol type="1">
+<li>Press the <code>Alt</code> key on your keyboard to temporarily
+reveal the top Menu Bar.</li>
+<li>Click on <strong>View</strong> in the top menu.</li>
+<li>Hover over <strong>Zoom</strong>.</li>
+<li>Click <strong>Zoom Text Only</strong> to place a checkmark next to
+it.</li>
+</ol>
+<p><strong>Via the Settings Page:</strong></p>
+<ol type="1">
+<li>Click the application menu (three horizontal lines) in the top-right
+corner and select <strong>Settings</strong>.</li>
+<li>In the <strong>General</strong> tab, scroll down to the
+<strong>Language and Appearance</strong> section.</li>
+<li>Under the Zoom heading, check the box next to <strong>Zoom text
+only</strong>.</li>
+</ol>
+<p>Once enabled, standard keyboard shortcuts (<code>Ctrl</code> +
+<code>+</code> or <code>Cmd</code> + <code>+</code>) and mouse wheel
+zoom actions will exclusively scale the text until you uncheck the
+setting.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/full-page-zoom-vs-zoom-text-only-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

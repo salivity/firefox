@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Uses HTTP/3 and QUIC to Reduce Latency - firefox</title>
+    <meta name="description" content="Mozilla Firefox leverages the modern HTTP/3 protocol, built on the UDP-based QUIC transport layer, to significantly accelerate web browsing. This article explains how Firefox implements these technologies to bypass traditional TCP bottlenecks, combine cry">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-uses-http-3-and-quic-to-reduce-latency">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Uses HTTP/3 and QUIC to Reduce Latency - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-uses-http-3-and-quic-to-reduce-latency" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Mozilla Firefox leverages the modern HTTP/3 protocol, built on the UDP-based QUIC transport layer, to significantly accelerate web browsing. This article explains how Firefox implements these technologies to bypass traditional TCP bottlenecks, combine cry" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-uses-http3-and-quic-to-reduce-latency">How Firefox
+Uses HTTP/3 and QUIC to Reduce Latency</h1>
+<p>Mozilla Firefox leverages the modern HTTP/3 protocol, built on the
+UDP-based QUIC transport layer, to significantly accelerate web
+browsing. This article explains how Firefox implements these
+technologies to bypass traditional TCP bottlenecks, combine
+cryptographic and transport handshakes, eliminate head-of-line blocking,
+and ultimately reduce connection latency when communicating with modern
+web servers.</p>
+<h3 id="replacing-tcp-with-udp-and-quic">Replacing TCP with UDP and
+QUIC</h3>
+<p>Historically, web traffic relied on TCP (Transmission Control
+Protocol). While reliable, TCP requires a strict, time-consuming
+sequence of back-and-forth messages before any actual webpage data can
+be transferred.</p>
+<p>Firefox utilizes HTTP/3, which discards TCP in favor of QUIC—a
+transport protocol running on top of UDP (User Datagram Protocol).
+Because UDP is connectionless and lightweight, it does not enforce
+strict delivery rules at the network level. Instead, QUIC handles packet
+reliability, ordering, and congestion control directly within the
+browser's application layer. Firefox implements this using "Neqo,"
+Mozilla's custom, memory-safe QUIC engine written in Rust, which allows
+the browser to establish connections much faster than traditional
+operating system-level TCP stacks.</p>
+<h3 id="streamlined-handshakes-and-0-rtt">Streamlined Handshakes and
+0-RTT</h3>
+<p>In older HTTP/2 connections over TCP, Firefox had to perform two
+separate handshakes with a web server: one to establish the TCP
+connection and another to negotiate TLS encryption. This required
+multiple round-trips between the browser and the server before the first
+byte of webpage data could be requested.</p>
+<p>With QUIC, TLS 1.3 encryption is built directly into the transport
+layer rather than bolted on top of it. Firefox merges the connection
+setup and the encryption negotiation into a single handshake. This
+reduces the initial connection latency to a single round-trip (1-RTT).
+Furthermore, when connecting to a modern web server that Firefox has
+visited previously, the browser can utilize Zero Round Trip Time
+Resumption (0-RTT). This allows Firefox to send encrypted HTTP/3 website
+requests in the very first packet, effectively reducing connection setup
+latency to zero.</p>
+<h3 id="eliminating-head-of-line-blocking">Eliminating Head-of-Line
+Blocking</h3>
+<p>Webpages are made of dozens of individual files, including HTML, CSS,
+JavaScript, and images. HTTP/2 allowed Firefox to download these files
+simultaneously over a single TCP connection through a process called
+multiplexing. However, TCP treats all these files as one single stream
+of data. If a single network packet was lost in transit, TCP forced the
+entire connection to pause and wait for that one packet to be
+retransmitted, stalling the download of all other files. This bottleneck
+is known as head-of-line blocking.</p>
+<p>Firefox’s HTTP/3 implementation eliminates transport-layer
+head-of-line blocking by using QUIC's native multiplexing. Because QUIC
+operates over UDP, Firefox can treat every file request as a completely
+independent stream of data. packets are still encrypted and numbered,
+but they do not depend on one another across different streams. If a
+packet containing data for a webpage image is dropped, Firefox only
+pauses the assembly of that specific image. The browser continues to
+download and render the rest of the webpage's scripts and stylesheets
+without any delay.</p>
+<h3 id="seamless-connection-upgrades">Seamless Connection Upgrades</h3>
+<p>Firefox does not blindly guess whether a web server supports HTTP/3,
+as a failed attempt would increase latency. Instead, the browser uses a
+fast discovery mechanism to upgrade connections seamlessly.</p>
+<p>When you type a URL into Firefox, it checks for specific DNS records
+(HTTPS/SVCB) that indicate HTTP/3 support. If those are not present,
+Firefox initiates a standard HTTP/2 connection while simultaneously
+listening for an <code>Alt-Svc</code> (Alternative Service) header in
+the server's first response. Modern web servers use this header to
+inform Firefox that HTTP/3 is available on a specific UDP port. Once
+notified, Firefox opens a QUIC connection in the background. As soon as
+the UDP handshake succeeds, Firefox routes all subsequent traffic over
+HTTP/3 and caches this capability, ensuring future visits to that server
+benefit from immediate, low-latency connections.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-uses-http-3-and-quic-to-reduce-latency';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

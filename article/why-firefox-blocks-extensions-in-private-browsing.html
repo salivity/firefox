@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Blocks Extensions in Private Browsing - firefox</title>
+    <meta name="description" content="This article explains the security and privacy reasons behind Mozilla Firefox&#39;s decision to disable browser extensions in Private Browsing mode by default. It covers the inherent risks of third-party add-ons, how extensions can intentionally or accidental">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-blocks-extensions-in-private-browsing">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Blocks Extensions in Private Browsing - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-blocks-extensions-in-private-browsing" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the security and privacy reasons behind Mozilla Firefox&#39;s decision to disable browser extensions in Private Browsing mode by default. It covers the inherent risks of third-party add-ons, how extensions can intentionally or accidental" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-blocks-extensions-in-private-browsing">Why Firefox
+Blocks Extensions in Private Browsing</h1>
+<p>This article explains the security and privacy reasons behind Mozilla
+Firefox's decision to disable browser extensions in Private Browsing
+mode by default. It covers the inherent risks of third-party add-ons,
+how extensions can intentionally or accidentally record your private
+browsing activity, and why requiring explicit user permission is
+necessary to maintain a truly private session.</p>
+<h2 id="the-purpose-of-private-browsing">The Purpose of Private
+Browsing</h2>
+<p>Firefox’s Private Browsing mode is designed to erase your digital
+footprint on your local device. When you use a private window, Firefox
+does not save your visited pages, search history, cookies, or temporary
+files. However, this built-in protection only controls what the browser
+itself does, not what third-party software installed inside the browser
+might do.</p>
+<h2 id="extensions-have-deep-access-to-your-data">Extensions Have Deep
+Access to Your Data</h2>
+<p>For most browser extensions to work correctly, they require
+significant permissions. Depending on the extension, it may have the
+ability to:</p>
+<ul>
+<li>Read and modify all data on the websites you visit.</li>
+<li>Monitor your network traffic and web requests.</li>
+<li>Access your browsing tabs and activity.</li>
+<li>Store data locally on your hard drive or sync it to an external
+server.</li>
+</ul>
+<p>If an extension runs during a Private Browsing session, it retains
+all of these capabilities, effectively bypassing the privacy barriers
+Firefox puts in place.</p>
+<h2 id="preventing-accidental-data-leaks">Preventing Accidental Data
+Leaks</h2>
+<p>Many extensions are not malicious, but they are poorly coded when it
+comes to respecting privacy modes. An extension designed to improve
+productivity, check grammar, or manage tabs might automatically log the
+URLs you visit or cache website data to function properly.</p>
+<p>If allowed to run in Private Browsing by default, these extensions
+could accidentally write your private activity to your computer's hard
+drive or sync it to a cloud account. This completely defeats the purpose
+of opening a private window.</p>
+<h2 id="stopping-malicious-tracking">Stopping Malicious Tracking</h2>
+<p>While Mozilla vets extensions on its official store, some add-ons
+still engage in data harvesting. Developers may collect your browsing
+habits to sell to data brokers or advertising networks.</p>
+<p>When you open a Private Browsing window, you likely have a higher
+expectation of anonymity. By blocking extensions by default, Firefox
+ensures that a rogue or invasive add-on cannot secretly monitor your
+most sensitive browsing sessions.</p>
+<h2 id="reducing-browser-fingerprinting">Reducing Browser
+Fingerprinting</h2>
+<p>Websites can track you without cookies by using a technique called
+browser fingerprinting. This method identifies you by looking at your
+browser's unique configuration, including your screen resolution,
+operating system, and installed extensions.</p>
+<p>Many extensions alter the code of the web pages you visit. Websites
+can detect these alterations to figure out which extensions you are
+using, making it easier to identify and track you across the web.
+Disabling extensions in Private Browsing makes your browser look more
+generic, protecting you from this type of tracking.</p>
+<h2 id="putting-the-user-in-control">Putting the User in Control</h2>
+<p>Mozilla recognizes that some extensions—such as password managers and
+ad blockers—are essential even in Private Browsing. Instead of banning
+them outright, Firefox uses an opt-in system.</p>
+<p>When you install an extension, Firefox explicitly asks if you want to
+allow it to run in Private Windows. This forces you to evaluate how much
+you trust the developer of that specific extension before granting them
+access to your private sessions.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-blocks-extensions-in-private-browsing';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

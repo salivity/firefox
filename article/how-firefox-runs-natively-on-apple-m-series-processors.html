@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Runs Natively on Apple M-Series Processors - firefox</title>
+    <meta name="description" content="This article explains the technical mechanics behind how the Mozilla Firefox web browser achieves native execution on Apple Silicon M-series processors using Apple&#39;s Universal Binary format. By packaging both Intel and ARM64 code into a single application">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-runs-natively-on-apple-m-series-processors">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Runs Natively on Apple M-Series Processors - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-runs-natively-on-apple-m-series-processors" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical mechanics behind how the Mozilla Firefox web browser achieves native execution on Apple Silicon M-series processors using Apple&#39;s Universal Binary format. By packaging both Intel and ARM64 code into a single application" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-runs-natively-on-apple-m-series-processors">How
+Firefox Runs Natively on Apple M-Series Processors</h1>
+<p>This article explains the technical mechanics behind how the Mozilla
+Firefox web browser achieves native execution on Apple Silicon M-series
+processors using Apple's Universal Binary format. By packaging both
+Intel and ARM64 code into a single application bundle, Firefox allows
+the macOS operating system to automatically select and execute the
+native instruction set for M-series chips. Below is a straightforward
+breakdown of how the Universal Binary is constructed, how the operating
+system handles the execution, and how Firefox's internal engines are
+optimized for Apple's custom silicon.</p>
+<h3 id="the-universal-2-binary-format">The Universal 2 Binary
+Format</h3>
+<p>To support both legacy Intel-based Macs and modern Apple Silicon Macs
+without forcing users to download specific versions, Mozilla distributes
+Firefox as a Universal 2 Binary.</p>
+<p>During the build process, Mozilla’s compilers translate the Firefox
+source code into two entirely separate sets of machine code:</p>
+<ol type="1">
+<li><strong>x86_64:</strong> The instruction set for Intel
+processors.</li>
+<li><strong>ARM64 (AArch64):</strong> The instruction set for Apple
+M-series processors.</li>
+</ol>
+<p>Once both versions are compiled, a macOS development tool merges
+these two executables into a single "fat" binary file (specifically, a
+multi-architecture Mach-O file). Despite containing code for two
+different processor architectures, this appears to the user as a single
+Firefox application icon.</p>
+<h3 id="how-macos-executes-the-native-code">How macOS Executes the
+Native Code</h3>
+<p>When you double-click the Firefox icon on a Mac with an M1, M2, or M3
+processor, the macOS kernel reads the header of the Universal Binary
+file. This header acts as a directory, listing the different
+architectures supported by the application.</p>
+<p>Recognizing that it is running on an M-series chip, macOS completely
+ignores the x86_64 Intel code path and loads only the ARM64 code into
+the system's memory. Because the ARM64 instructions match the native
+language of the M-series processor, the CPU can execute the code
+directly. This bypasses Rosetta 2, Apple's translation layer,
+eliminating the performance overhead and battery drain associated with
+real-time code translation.</p>
+<h3 id="native-javascript-compilation-spidermonkey">Native JavaScript
+Compilation (SpiderMonkey)</h3>
+<p>Running the browser interface natively is only half the battle; a web
+browser must also compile and run code from the websites you visit.
+Firefox uses an engine called SpiderMonkey to process JavaScript.</p>
+<p>To run natively on Apple Silicon, Mozilla engineered SpiderMonkey’s
+Just-In-Time (JIT) compiler to understand the ARM64 architecture. When
+you load a complex webpage, SpiderMonkey translates the website's
+JavaScript directly into native ARM64 machine code on the fly. It also
+utilizes Apple Silicon's hardware-enforced security features, such as
+Pointer Authentication and W^X (Write XOR Execute) memory protection,
+ensuring that dynamically generated web code runs both rapidly and
+securely on the M-series CPU cores.</p>
+<h3 id="hardware-acceleration-and-core-management">Hardware Acceleration
+and Core Management</h3>
+<p>Firefox's native execution also relies heavily on how it interacts
+with the specific hardware layout of M-series chips:</p>
+<ul>
+<li><strong>CPU Core Scheduling:</strong> Apple Silicon uses a hybrid
+architectureconsisting of high-performance cores and high-efficiency
+cores. The native ARM64 build of Firefox communicates with macOS to
+route heavy tasks (like page rendering and video decoding) to the
+performance cores, while pushing background tasks (like tab unloading
+and telemetry) to the efficiency cores to save battery.</li>
+<li><strong>WebRender and the GPU:</strong> Firefox uses a graphics
+engine called WebRender, written in the Rust programming language. On
+M-series chips, this engine compiles natively to interface directly with
+Apple's Metal graphics API. Because Apple Silicon uses a Unified Memory
+Architecture—where the CPU and GPU share the same pool of RAM—Firefox
+can pass visual data from the processor to the graphics cores instantly
+without copying data across different memory pools.</li>
+</ul>
+<p>By combining a dual-architecture file format with a fully rewritten
+ARM64 JavaScript engine and Metal-optimized graphics rendering, the
+Universal Binary of Firefox operates with maximum efficiency on Apple
+Silicon hardware.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-runs-natively-on-apple-m-series-processors';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

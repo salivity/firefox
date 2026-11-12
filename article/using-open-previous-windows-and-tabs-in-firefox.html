@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using &quot;Open Previous Windows and Tabs&quot; in Firefox - firefox</title>
+    <meta name="description" content="Enabling the &quot;Open previous windows and tabs&quot; setting in the Firefox Web Browser allows you to seamlessly resume your browsing sessions right where you left off. This article provides a straightforward breakdown of what happens behind the scenes when you">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/using-open-previous-windows-and-tabs-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Using &quot;Open Previous Windows and Tabs&quot; in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/using-open-previous-windows-and-tabs-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Enabling the &quot;Open previous windows and tabs&quot; setting in the Firefox Web Browser allows you to seamlessly resume your browsing sessions right where you left off. This article provides a straightforward breakdown of what happens behind the scenes when you" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="using-open-previous-windows-and-tabs-in-firefox">Using "Open
+Previous Windows and Tabs" in Firefox</h1>
+<p>Enabling the "Open previous windows and tabs" setting in the Firefox
+Web Browser allows you to seamlessly resume your browsing sessions right
+where you left off. This article provides a straightforward breakdown of
+what happens behind the scenes when you check this box in the General
+settings, including how Firefox restores your workspace, manages system
+memory upon startup, handles active logins, and treats private browsing
+data.</p>
+<h3 id="automatic-session-restoration">Automatic Session
+Restoration</h3>
+<p>The primary function of this setting is automatic session recovery.
+When you close Firefox and reopen it later, the browser will
+automatically recreate the exact workspace you had before closing. This
+includes:</p>
+<ul>
+<li><strong>All Open Tabs:</strong> Every webpage you had open will
+reappear in the exact order you left them.</li>
+<li><strong>Multiple Windows:</strong> If you had multiple Firefox
+windows open across different monitors or virtual desktops, Firefox will
+restore all of them, provided you exited the browser properly.</li>
+<li><strong>Tab History:</strong> Each restored tab retains its specific
+"Back" and "Forward" navigation history, allowing you to return to
+previously visited pages within that tab.</li>
+<li><strong>Scroll Position and Form Data:</strong> Firefox remembers
+how far down the page you were scrolled. In many cases, it will also
+restore unsubmitted text you typed into web forms or text boxes.</li>
+</ul>
+<h3 id="smart-memory-management-on-demand-loading">Smart Memory
+Management (On-Demand Loading)</h3>
+<p>Restoring dozens of tabs at once could easily overwhelm your
+computer's memory (RAM) and slow down your internet connection. To
+prevent this, Firefox uses a technique called "lazy loading" when this
+setting is enabled.</p>
+<p>When you launch Firefox, it only loads the web content for the
+currently selected, active tab. All other background tabs remain in a
+suspended state—displaying their titles and icons, but not actually
+connecting to the internet or using significant RAM until you click on
+them.</p>
+<h3 id="impact-on-cookies-and-active-logins">Impact on Cookies and
+Active Logins</h3>
+<p>Normally, websites use "session cookies" that are deleted the moment
+you close your browser, which automatically logs you out of accounts
+like banks or webmail.</p>
+<p>When "Open previous windows and tabs" is enabled, Firefox preserves
+these session cookies so your tabs can be restored accurately. As a
+result, you may remain logged into websites that would otherwise log you
+out when you close the browser. For security, high-risk websites (like
+financial institutions) will still log you out based on server-side
+timers, regardless of this setting.</p>
+<h3 id="exceptions-to-the-rule">Exceptions to the Rule</h3>
+<p>Firefox applies specific limitations to this feature to protect your
+privacy and prevent errors:</p>
+<ul>
+<li><strong>Private Browsing Windows:</strong> Firefox will never save
+or restore Private Windows or the tabs inside them. Once a Private
+Window is closed, that session data is permanently erased.</li>
+<li><strong>Closing Multiple Windows Individually:</strong> If you have
+three Firefox windows open and you close them one by one using the "X"
+button at the top corner of the screen, Firefox will only restore the
+very last window you closed. To restore all three windows at once, you
+must close Firefox by clicking the main application menu (three
+horizontal lines) and selecting <strong>Exit</strong> (on Windows/Linux)
+or <strong>Quit</strong> (on macOS).</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/using-open-previous-windows-and-tabs-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

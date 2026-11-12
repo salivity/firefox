@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeclarativeNetRequest and webRequest in Firefox - firefox</title>
+    <meta name="description" content="This article explains how Mozilla Firefox uniquely supports both the declarativeNetRequest (DNR) API and the dynamic webRequest blocking API within its Manifest V3 (MV3) implementation. It covers why Firefox maintains both APIs, how the browser&#39;s network">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/declarative-net-request-and-web-request-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DeclarativeNetRequest and webRequest in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/declarative-net-request-and-web-request-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how Mozilla Firefox uniquely supports both the declarativeNetRequest (DNR) API and the dynamic webRequest blocking API within its Manifest V3 (MV3) implementation. It covers why Firefox maintains both APIs, how the browser&#39;s network" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="declarativenetrequest-and-webrequest-in-firefox">DeclarativeNetRequest
+and webRequest in Firefox</h1>
+<p>This article explains how Mozilla Firefox uniquely supports both the
+<code>declarativeNetRequest</code> (DNR) API and the dynamic
+<code>webRequest</code> blocking API within its Manifest V3 (MV3)
+implementation. It covers why Firefox maintains both APIs, how the
+browser's network pipeline processes them simultaneously, how conflicts
+between competing rules are resolved, and how developers can combine
+both APIs to build high-performance extensions.</p>
+<h2 id="the-dual-api-strategy-in-manifest-v3">The Dual-API Strategy in
+Manifest V3</h2>
+<p>When Manifest V3 was introduced, Google Chrome deprecated the
+blocking capabilities of the <code>webRequest</code> API in favor of the
+more restrictive, privacy-focused <code>declarativeNetRequest</code>
+API. Mozilla took a different path for Firefox.</p>
+<p>To ensure cross-browser compatibility, Firefox implemented the DNR
+API so developers could easily port MV3 extensions built for Chrome.
+However, Firefox also retained full support for the blocking
+<code>webRequest</code> API (via the <code>webRequestBlocking</code>
+permission). This decision allows advanced privacy and content-blocking
+extensions to maintain full access to dynamic, programmatic request
+modification while still offering the performance benefits of DNR.</p>
+<h2 id="architectural-integration-and-execution">Architectural
+Integration and Execution</h2>
+<p>In Firefox, the <code>declarativeNetRequest</code> API does not
+operate as a completely separate network engine. Instead, it is built on
+top of the same underlying browser network interception architecture
+that powers <code>webRequest</code>.</p>
+<p>Despite sharing this foundation, the two APIs execute differently in
+relation to the extension's lifecycle:</p>
+<ul>
+<li><strong>DeclarativeNetRequest:</strong> The extension registers
+structured JSON rulesets with the browser. The browser engine evaluates
+and enforces these rules natively. Because the browser handles the
+logic, the extension’s background script (or event page) remains
+dormant, saving system memory and CPU cycles.</li>
+<li><strong>webRequest:</strong> The extension registers JavaScript
+event listeners (such as <code>onBeforeRequest</code> or
+<code>onBeforeSendHeaders</code>). When a matching network request
+occurs, Firefox must wake up the extension's background page, pass the
+request details to the JavaScript environment, and wait for the
+extension to return a blocking response before the network request can
+proceed.</li>
+</ul>
+<h2 id="precedence-and-conflict-resolution">Precedence and Conflict
+Resolution</h2>
+<p>Because both APIs can be used simultaneously—either by different
+extensions installed in the same browser or within a single
+extension—Firefox follows strict precedence rules to resolve conflicts
+when both APIs attempt to act on the same network request:</p>
+<ol type="1">
+<li><strong>Blocking Always Wins:</strong> A block or cancel action is
+the highest-priority outcome. If a DNR rule dictates that a request
+should be blocked, and a <code>webRequest</code> listener attempts to
+allow or redirect it, the request is blocked. Conversely, if a
+<code>webRequest</code> listener returns <code>{ cancel: true }</code>,
+the request is terminated regardless of any DNR rules.</li>
+<li><strong>Isolation of Allow Rules:</strong> In the DNR API,
+<code>allow</code> and <code>allowAllRequests</code> rules are used to
+bypass other DNR blocking rules. However, these DNR allow rules only
+apply to the DNR engine. A DNR <code>allow</code> rule cannot override a
+block issued by a <code>webRequest</code> listener.</li>
+<li><strong>Redirects and Upgrades:</strong> If neither API blocks the
+request, redirect actions are evaluated next. Scheme upgrades (such as
+upgrading HTTP to HTTPS via DNR) and URL redirects from both APIs are
+processed at the <code>onBeforeRequest</code> stage. If a conflict
+occurs between two different extensions, Firefox resolves it based on
+the extension installation order (more recently installed extensions
+generally take precedence).</li>
+<li><strong>Header Modifications:</strong> Both APIs can modify HTTP
+request and response headers. DNR <code>modifyHeaders</code> actions and
+<code>webRequest</code> listeners (<code>onBeforeSendHeaders</code> and
+<code>onHeadersReceived</code>) are merged. If both APIs attempt to
+modify the exact same header in conflicting ways, the browser applies
+conflict resolution based on rule priority and extension load
+order.</li>
+</ol>
+<h2 id="combining-both-apis-in-a-single-extension">Combining Both APIs
+in a Single Extension</h2>
+<p>Firefox allows a single Manifest V3 extension to declare both
+<code>declarativeNetRequest</code> and <code>webRequestBlocking</code>
+permissions in its <code>manifest.json</code> file. This hybrid approach
+allows developers to optimize their extensions for both performance and
+capability:</p>
+<ul>
+<li><strong>Baseline Filtering with DNR:</strong> Developers can offload
+tens of thousands of simple, static URL-blocking rules to the DNR API.
+The browser handles the bulk of standard ad and tracker blocking
+natively without waking up the extension's background script.</li>
+<li><strong>Advanced Filtering with webRequest:</strong> Developers can
+scope their <code>webRequest</code> listeners narrowly to specific URLs
+or resource types that require dynamic programmatic logic. This includes
+dynamically stripping tracking parameters using complex regular
+expressions, computing cryptographic tokens on the fly, or using
+Firefox's <code>webRequest.filterResponseData</code> API to directly
+inspect and modify the payload of an incoming HTTP response body—a
+capability that DNR cannot replicate.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/declarative-net-request-and-web-request-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

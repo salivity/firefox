@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Hides HTTPS with browser.urlbar.trimHttps - firefox</title>
+    <meta name="description" content="In newer releases of the Mozilla Firefox web browser, the browser.urlbar.trimHttps preference changes how secure web addresses are visually presented to users. When activated, this setting removes the &quot;https://&quot; prefix from the address bar, leaving only t">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-hides-https-with-browser-urlbar-trim-https">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Hides HTTPS with browser.urlbar.trimHttps - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-hides-https-with-browser-urlbar-trim-https" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In newer releases of the Mozilla Firefox web browser, the browser.urlbar.trimHttps preference changes how secure web addresses are visually presented to users. When activated, this setting removes the &quot;https://&quot; prefix from the address bar, leaving only t" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-hides-https-with-browserurlbartrimhttps">How Firefox
+Hides HTTPS with browser.urlbar.trimHttps</h1>
+<p>In newer releases of the Mozilla Firefox web browser, the
+<code>browser.urlbar.trimHttps</code> preference changes how secure web
+addresses are visually presented to users. When activated, this setting
+removes the "https://" prefix from the address bar, leaving only the
+website's domain name and page path visible. This article explains the
+exact visual changes caused by this preference, how the address bar
+behaves when interacted with, and how you can manually toggle this
+setting in Firefox.</p>
+<h3 id="the-visual-change-in-the-address-bar">The Visual Change in the
+Address Bar</h3>
+<p>Traditionally, Firefox trimmed the insecure "http://" protocol from
+the address bar while keeping the secure "https://" protocol visible.
+The <code>browser.urlbar.trimHttps</code> preference reverses this
+standard by hiding the secure protocol as well.</p>
+<p>When <code>browser.urlbar.trimHttps</code> is set to
+<strong>false</strong>:</p>
+<ul>
+<li>A secure website displays as
+<code>https://www.example.com</code>.</li>
+</ul>
+<p>When <code>browser.urlbar.trimHttps</code> is set to
+<strong>true</strong>:</p>
+<ul>
+<li>The same secure website displays simply as
+<code>www.example.com</code> or <code>example.com</code>.</li>
+</ul>
+<p>Despite the removal of the text, the security status of the website
+is still communicated to the user. Firefox retains the padlock icon on
+the left side of the address bar, which serves as the primary visual
+indicator that the connection is encrypted and secure.</p>
+<h3 id="address-bar-behavior-on-interaction">Address Bar Behavior on
+Interaction</h3>
+<p>The trimming of the HTTPS protocol is strictly a visual change for
+when you are passively viewing a webpage. The full URL structure remains
+intact behind the scenes.</p>
+<p>If you click inside the address bar to edit the URL or view the full
+path, Firefox immediately restores the <code>https://</code> prefix to
+the display. Furthermore, if you highlight the trimmed URL and copy it
+to your clipboard, the pasted text will automatically include the full
+<code>https://</code> protocol.</p>
+<h3 id="why-firefox-trims-the-secure-protocol">Why Firefox Trims the
+Secure Protocol</h3>
+<p>Mozilla introduced this preference to modernize the browser's user
+interface and align it with other major web browsers that already hide
+the HTTPS prefix. Because the vast majority of the modern web is
+encrypted, constantly displaying "https://" has become redundant.</p>
+<p>Hiding the protocol declutters the address bar and places immediate
+visual emphasis on the actual domain name. This helps users quickly
+identify the website they are on, which can reduce the effectiveness of
+phishing attacks that rely on confusing, lengthy URLs.</p>
+<h3 id="how-to-change-the-preference">How to Change the Preference</h3>
+<p>Users who prefer to always see the full protocol can easily modify
+this behavior through Firefox's advanced configuration page.</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press <strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button to
+proceed.</li>
+<li>In the search box at the top, type
+<code>browser.urlbar.trimHttps</code>.</li>
+<li>Locate the preference in the results list.</li>
+<li>Double-click the preference (or click the toggle icon on the right)
+to change its value.
+<ul>
+<li>Setting it to <strong>true</strong> hides the <code>https://</code>
+prefix.</li>
+<li>Setting it to <strong>false</strong> forces Firefox to always
+display the <code>https://</code> prefix.</li>
+</ul></li>
+</ol>
+<p>The visual change takes effect immediately in all open tabs without
+requiring a browser restart. Note that for this preference to work, the
+master preference <code>browser.urlbar.trimURLs</code> must also be set
+to <strong>true</strong> (which is the Firefox default).</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-hides-https-with-browser-urlbar-trim-https';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

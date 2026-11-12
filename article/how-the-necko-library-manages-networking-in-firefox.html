@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the Necko Library Manages Networking in Firefox - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of Necko, the core networking library inside the Mozilla Firefox web browser. It explains the foundational architecture of Necko and details how this modular library efficiently processes HTTP requests, manag">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-the-necko-library-manages-networking-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How the Necko Library Manages Networking in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-the-necko-library-manages-networking-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of Necko, the core networking library inside the Mozilla Firefox web browser. It explains the foundational architecture of Necko and details how this modular library efficiently processes HTTP requests, manag" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-the-necko-library-manages-networking-in-firefox">How the
+Necko Library Manages Networking in Firefox</h1>
+<p>This article provides a comprehensive overview of Necko, the core
+networking library inside the Mozilla Firefox web browser. It explains
+the foundational architecture of Necko and details how this modular
+library efficiently processes HTTP requests, manages Domain Name System
+(DNS) resolution, and maintains low-level socket connections to deliver
+web content quickly and securely.</p>
+<h2 id="what-is-the-necko-library">What is the Necko Library?</h2>
+<p>Necko is the network library used by Gecko, the layout engine that
+powers the Firefox web browser. Written primarily in C++ and Rust, Necko
+provides a platform-independent Application Programming Interface (API)
+for all network-related operations. It abstracts the complexities of
+network protocols and operating system differences, allowing the rest of
+the browser to request data using a unified system of "channels" and
+"streams."</p>
+<p>When a user clicks a link or a webpage requests an asset, Firefox
+creates a Necko channel. This channel manages the entire lifecycle of
+the data request, from parsing the Uniform Resource Identifier (URI) to
+delivering the final bytes of data back to the rendering engine.</p>
+<h2 id="managing-http-connections">Managing HTTP Connections</h2>
+<p>HTTP is the primary protocol of the web, and Necko's HTTP handler is
+one of its most complex components. Necko supports HTTP/1.1, HTTP/2, and
+HTTP/3 (QUIC).</p>
+<p>When Firefox initiates an HTTP request, Necko manages it through the
+following steps:</p>
+<ul>
+<li><strong>Channel Creation:</strong> Necko creates an
+<code>nsIHttpChannel</code> object, which represents the specific HTTP
+transaction.</li>
+<li><strong>Cache Lookup:</strong> Before reaching out to the network,
+Necko checks the browser's local disk and memory cache. If a valid
+cached response exists, Necko serves it immediately, bypassing the
+network entirely.</li>
+<li><strong>Connection Pooling and Multiplexing:</strong> If a network
+request is required, Necko's <code>nsHttpConnectionMgr</code> steps in.
+Instead of opening a new connection for every request, it maintains a
+pool of active connections. For HTTP/2 and HTTP/3, Necko multiplexes
+multiple requests over a single connection to reduce latency.</li>
+<li><strong>Speculative Connect:</strong> Necko anticipates user
+actions. When a user hovers over a link, Necko can open a speculative
+connection in the background so the handshake is already complete if the
+user clicks the link.</li>
+</ul>
+<h2 id="managing-dns-resolution">Managing DNS Resolution</h2>
+<p>Before Necko can establish a connection to a server, it must
+translate the website's domain name into an IP address. Necko handles
+this through its asynchronous DNS service, ensuring that slow DNS
+lookups never freeze the browser's user interface.</p>
+<p>Necko manages DNS through two primary mechanisms:</p>
+<ul>
+<li><strong>OS-Level Resolution:</strong> Traditionally, Necko uses a
+pool of dedicated threads to call the operating system's native resolver
+functions (like <code>getaddrinfo</code>). Because these OS calls are
+blocking, running them on separate threads keeps the main browser thread
+responsive.</li>
+<li><strong>DNS over HTTPS (DoH):</strong> Necko includes a built-in
+Trusted Recursive Resolver (TRR). When DoH is enabled, Necko bypasses
+the operating system's local DNS provider. Instead, it encrypts DNS
+queries and sends them directly to a secure DNS server using standard
+HTTPS connections managed by Necko's own HTTP stack.</li>
+</ul>
+<p>To further optimize speed, Necko maintains an internal DNS cache in
+memory and utilizes DNS prefetching. It scans the links on a currently
+loaded webpage and resolves their domain names in the background before
+the user even clicks on them.</p>
+<h2 id="managing-socket-connections">Managing Socket Connections</h2>
+<p>At the lowest level of Necko is the Socket Transport Service (STS),
+which is responsible for moving raw data across the network using TCP
+and UDP sockets.</p>
+<p>The STS operates on a dedicated background thread—known as the Socket
+Thread—to ensure high performance and prevent network I/O from slowing
+down the browser. Here is how Necko manages sockets:</p>
+<ul>
+<li><strong>Platform Abstraction:</strong> Necko relies on the Netscape
+Portable Runtime (NSPR) to create and manage sockets. NSPR provides a
+consistent API that translates Necko's socket requests into the specific
+system calls required by Windows, macOS, Linux, or Android.</li>
+<li><strong>Non-Blocking I/O and Polling:</strong> The Socket Thread
+uses non-blocking sockets. It continuously runs a poll loop (checking
+which sockets are ready to read or write data). When data arrives on a
+socket, the STS reads it into memory buffers and asynchronously streams
+it to the waiting HTTP channel on the main thread.</li>
+<li><strong>Security Integration:</strong> For secure connections
+(HTTPS), Necko wraps the raw NSPR sockets with Network Security Services
+(NSS). This layer handles the TLS/SSL handshakes, certificate
+verification, and encryption/decryption seamlessly as data passes
+through the socket.</li>
+<li><strong>Connection Limits and Timeouts:</strong> The STS strictly
+enforces limits on how many sockets can be open simultaneously (both
+globally and per-host) to prevent Firefox from overwhelming the user's
+router or the destination server. It also monitors idle sockets and
+closes them when they are no longer needed to free up system
+resources.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-the-necko-library-manages-networking-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

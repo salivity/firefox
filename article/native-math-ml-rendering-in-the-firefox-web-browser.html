@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Native MathML Rendering in the Firefox Web Browser - firefox</title>
+    <meta name="description" content="This article provides an overview of the built-in capabilities of the Mozilla Firefox web browser for rendering Mathematical Markup Language (MathML) directly within web pages. It examines how Firefox&#39;s layout engine natively processes complex mathematica">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/native-math-ml-rendering-in-the-firefox-web-browser">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Native MathML Rendering in the Firefox Web Browser - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/native-math-ml-rendering-in-the-firefox-web-browser" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of the built-in capabilities of the Mozilla Firefox web browser for rendering Mathematical Markup Language (MathML) directly within web pages. It examines how Firefox&#39;s layout engine natively processes complex mathematica" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="native-mathml-rendering-in-the-firefox-web-browser">Native
+MathML Rendering in the Firefox Web Browser</h1>
+<p>This article provides an overview of the built-in capabilities of the
+Mozilla Firefox web browser for rendering Mathematical Markup Language
+(MathML) directly within web pages. It examines how Firefox's layout
+engine natively processes complex mathematical notations without relying
+on external JavaScript libraries, the specific structural elements
+supported, the role of specialized fonts, and the performance and
+accessibility advantages of native rendering.</p>
+<h3 id="the-gecko-engine-and-presentation-mathml">The Gecko Engine and
+Presentation MathML</h3>
+<p>Firefox natively supports MathML through its Gecko layout engine,
+eliminating the need for third-party JavaScript libraries like MathJax
+or KaTeX. When a webpage includes the <code>&lt;math&gt;</code> element,
+Firefox parses and renders the mathematical notation directly alongside
+standard HTML and CSS.</p>
+<p>Firefox focuses on Presentation MathML, which dictates the visual
+layout of mathematical equations. Its implementation aligns with the W3C
+MathML 3 specification and the modern MathML Core web standard. Because
+the rendering happens at the browser engine level, equations are drawn
+immediately during the initial page load without waiting for scripts to
+download, parse, and modify the Document Object Model (DOM).</p>
+<h3 id="support-for-complex-mathematical-structures">Support for Complex
+Mathematical Structures</h3>
+<p>Firefox’s native implementation handles a comprehensive range of
+complex mathematical structures through specific MathML tags:</p>
+<ul>
+<li><strong>Fractions and Radicals:</strong> The browser accurately
+stacks numerators and denominators using <code>&lt;mfrac&gt;</code>
+(including nested fractions) and dynamically scales square roots and
+arbitrary roots using <code>&lt;msqrt&gt;</code> and
+<code>&lt;mroot&gt;</code>.</li>
+<li><strong>Scripts and Limits:</strong> Subscripts
+(<code>&lt;msub&gt;</code>), superscripts (<code>&lt;msup&gt;</code>),
+and combined sub-superscripts (<code>&lt;msubsup&gt;</code>) are
+positioned precisely. For complex calculus and summation notations,
+Firefox supports <code>&lt;munder&gt;</code>,
+<code>&lt;mover&gt;</code>, and <code>&lt;munderover&gt;</code> to place
+limits directly above and below operators.</li>
+<li><strong>Matrices and Tabular Math:</strong> Using
+<code>&lt;mtable&gt;</code>, <code>&lt;mtr&gt;</code>, and
+<code>&lt;mtd&gt;</code>, Firefox renders complex matrices, systems of
+equations, and multiline formulas with proper column and row
+alignment.</li>
+<li><strong>Stretchy Operators and Delimiters:</strong> Through the
+<code>&lt;mo&gt;</code> (operator) tag, Firefox automatically stretches
+parentheses, brackets, braces, integral signs, and arrows vertically or
+horizontally to match the height or width of the adjacent mathematical
+expressions.</li>
+<li><strong>Multiscripts:</strong> For advanced tensor notation or
+chemical isotopes, Firefox supports the
+<code>&lt;mmultiscripts&gt;</code> element, allowing both pre-scripts
+and post-scripts on a single base element.</li>
+</ul>
+<h3 id="opentype-math-font-integration">OpenType MATH Font
+Integration</h3>
+<p>To render complex equations with professional typesetting quality,
+Firefox utilizes the OpenType <code>MATH</code> table found in
+specialized mathematical fonts. This table provides the browser with
+exact metrics for positioning glyphs, scaling delimiters, and kerning
+mathematical symbols.</p>
+<p>When rendering MathML, Firefox automatically searches the system or
+web page for compatible fonts, such as Latin Modern Math, STIX Two Math,
+Cambria Math, or DejaVu Math TeX Gyre. If a user or web developer
+provides one of these fonts via CSS <code>@font-face</code> rules or
+local installation, Firefox uses the internal font data to seamlessly
+assemble multi-part glyphs, such as extremely tall integral signs or
+wide horizontal curly braces, ensuring there are no visual gaps in the
+rendered symbols.</p>
+<h3 id="css-integration">CSS Integration</h3>
+<p>Because MathML is treated as a native citizen of the DOM in Firefox,
+mathematical equations naturally inherit CSS properties from their
+surrounding HTML elements. Text color, background color, and font sizes
+applied to a parent paragraph automatically apply to the MathML equation
+inside it. Developers can also target specific MathML tags directly
+using standard CSS selectors to highlight variables, adjust spacing, or
+dynamically change the appearance of an equation on hover.</p>
+<h3 id="performance-and-accessibility-advantages">Performance and
+Accessibility Advantages</h3>
+<p>Relying on Firefox's native MathML support rather than JavaScript
+libraries provides two major benefits:</p>
+<ol type="1">
+<li><strong>High Performance:</strong> Pages containing hundreds of
+complex equations load rapidly and consume minimal CPU and memory
+resources. There is no layout shift or "flash of unstyled content" that
+typically occurs while waiting for JavaScript rendering engines to
+process the page.</li>
+<li><strong>Built-in Accessibility:</strong> Firefox exposes native
+MathML directly to the operating system's accessibility APIs. Assistive
+technologies, such as screen readers, can traverse the mathematical
+structure natively, allowing visually impaired users to navigate through
+complex fractions, matrices, and exponents step-by-step and have the
+equations read aloud accurately.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/native-math-ml-rendering-in-the-firefox-web-browser';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

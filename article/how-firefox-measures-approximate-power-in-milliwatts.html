@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Measures Approximate Power in Milliwatts - firefox</title>
+    <meta name="description" content="This article explains the technical mechanisms the Firefox Web Browser uses to estimate power consumption in milliwatts (mW) during performance profiling. It covers the hardware sensors, operating system APIs, and mathematical calculations Firefox utilize">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-measures-approximate-power-in-milliwatts">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Measures Approximate Power in Milliwatts - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-measures-approximate-power-in-milliwatts" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical mechanisms the Firefox Web Browser uses to estimate power consumption in milliwatts (mW) during performance profiling. It covers the hardware sensors, operating system APIs, and mathematical calculations Firefox utilize" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-measures-approximate-power-in-milliwatts">How
+Firefox Measures Approximate Power in Milliwatts</h1>
+<p>This article explains the technical mechanisms the Firefox Web
+Browser uses to estimate power consumption in milliwatts (mW) during
+performance profiling. It covers the hardware sensors, operating system
+APIs, and mathematical calculations Firefox utilizes across Windows,
+macOS, and Linux to translate raw energy data into actionable power
+metrics for web developers.</p>
+<h3 id="from-energy-counters-to-milliwatts">From Energy Counters to
+Milliwatts</h3>
+<p>Computer hardware does not typically report instantaneous power draw
+in watts directly to software. Instead, modern processors track
+cumulative energy consumption over time—usually measured in Joules or
+watt-hours.</p>
+<p>To display power in milliwatts (mW), the Firefox Profiler samples
+these hardware energy counters at regular intervals (typically every few
+milliseconds). Firefox takes the difference in energy between two
+samples, normalizes that value into picowatt-hours (pWh), and divides it
+by the time elapsed between the samples. Because power is the rate of
+energy transfer over time, this calculation yields the average power in
+milliwatts for that specific timeframe.</p>
+<h3 id="hardware-level-estimation">Hardware-Level Estimation</h3>
+<p>Firefox relies on internal processor modeling rather than physical
+inline power meters.</p>
+<ul>
+<li><strong>Intel and AMD Processors:</strong> These chips use an
+interface called Running Average Power Limit (RAPL). RAPL estimates
+energy usage based on a complex mathematical model that factors in CPU
+frequency, voltage, temperature, and instruction activity.</li>
+<li><strong>Apple Silicon:</strong> Apple's M-series chips use
+proprietary onboard sensors and performance counters managed by the
+System Management Controller (SMC) to track energy usage across CPU,
+GPU, and Neural Engine cores.</li>
+</ul>
+<h3 id="operating-system-apis">Operating System APIs</h3>
+<p>Because a web browser cannot bypass the operating system to read
+hardware registers directly, Firefox queries OS-specific APIs to gather
+energy data.</p>
+<p><strong>Windows</strong> On Windows 11 (and newer builds of Windows
+10), Firefox uses the Energy Metering Interface (EMI). EMI exposes
+hardware RAPL counters to user-space applications. Through EMI, Firefox
+reads the total energy consumed by the CPU package, cores, and
+integrated graphics, converting the reported picowatt-hours into
+milliwatts.</p>
+<p><strong>macOS</strong> On macOS, Firefox utilizes the
+<code>proc_pid_rusage</code> system call.</p>
+<ul>
+<li><strong>On Apple Silicon:</strong> The operating system attributes
+energy usage directly to individual processes. Firefox requests the
+energy data for its own specific process IDs (main process, content
+processes, GPU process), resulting in highly accurate per-tab or
+per-process power profiling.</li>
+<li><strong>On Intel Macs:</strong> The API returns system-wide
+processor energy usage in nanojoules, which Firefox converts to
+milliwatts.</li>
+</ul>
+<p><strong>Linux</strong> On Linux, Firefox accesses RAPL counters
+through the kernel's <code>perf_event_open</code> system call or by
+reading files directly from the <code>powercap</code> sysfs interface
+(<code>/sys/class/powercap/intel-rapl/</code>). Due to security
+restrictions regarding side-channel attacks, reading these counters on
+Linux requires the user to grant elevated permissions before
+profiling.</p>
+<h3 id="why-the-measurement-is-approximate">Why the Measurement is
+Approximate</h3>
+<p>Firefox characterizes these measurements as "approximate" due to
+several hardware and OS limitations:</p>
+<ol type="1">
+<li><strong>System-Wide vs. Process-Specific Data:</strong> On Windows,
+Linux, and Intel-based Macs, RAPL only reports the power usage of the
+entire CPU package. If a background application spikes the CPU while
+Firefox is profiling, that energy is included in the Firefox Profiler's
+power tracks. Only Apple Silicon currently isolates power data strictly
+to the Firefox process.</li>
+<li><strong>Unmeasured Components:</strong> The power values mostly
+reflect CPU, integrated GPU, and sometimes RAM usage. They do not
+account for display backlight brightness, discrete GPUs, cooling fans,
+or network card activity (such as Wi-Fi antennas), all of which drain
+battery life.</li>
+<li><strong>Model-Based Hardware:</strong> Because mechanisms like Intel
+RAPL calculate energy using activity algorithms rather than physical
+current sensors, the baseline numbers provided to the OS are inherently
+estimates.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-measures-approximate-power-in-milliwatts';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

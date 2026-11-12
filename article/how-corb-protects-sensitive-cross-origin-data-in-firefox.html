@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How CORB Protects Sensitive Cross-Origin Data in Firefox - firefox</title>
+    <meta name="description" content="This article provides a comprehensive explanation of Cross-Origin Read Blocking (CORB) and details how it safeguards user information within the Mozilla Firefox web browser. It covers the fundamental definition of CORB, the side-channel security vulnerabi">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-corb-protects-sensitive-cross-origin-data-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How CORB Protects Sensitive Cross-Origin Data in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-corb-protects-sensitive-cross-origin-data-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive explanation of Cross-Origin Read Blocking (CORB) and details how it safeguards user information within the Mozilla Firefox web browser. It covers the fundamental definition of CORB, the side-channel security vulnerabi" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-corb-protects-sensitive-cross-origin-data-in-firefox">How
+CORB Protects Sensitive Cross-Origin Data in Firefox</h1>
+<p>This article provides a comprehensive explanation of Cross-Origin
+Read Blocking (CORB) and details how it safeguards user information
+within the Mozilla Firefox web browser. It covers the fundamental
+definition of CORB, the side-channel security vulnerabilities it
+mitigates, how its content-filtering algorithm operates, and how Firefox
+specifically integrates this feature alongside site isolation to block
+unauthorized access to sensitive cross-origin data.</p>
+<h2 id="what-is-cross-origin-read-blocking-corb">What is Cross-Origin
+Read Blocking (CORB)?</h2>
+<p>Cross-Origin Read Blocking (CORB) is a web platform security
+algorithm designed to prevent malicious websites from accessing
+sensitive data from other origins (domains).</p>
+<p>Normally, the browser's Same-Origin Policy (SOP) restricts a website
+from reading data fetched from a different domain unless explicitly
+allowed by Cross-Origin Resource Sharing (CORS) headers. However,
+exceptions exist for certain HTML tags like <code>&lt;img&gt;</code> and
+<code>&lt;script&gt;</code>, which are permitted to request resources
+across origins. Historically, the browser would download the requested
+cross-origin resource into the web page's memory space before the
+Same-Origin Policy blocked the page from actually reading it. CORB
+upgrades this security by stopping dubious cross-origin loads from ever
+entering the web page's memory space in the first place.</p>
+<h2 id="the-threat-why-corb-is-necessary">The Threat: Why CORB is
+Necessary</h2>
+<p>The primary reason CORB was developed is to mitigate speculative
+execution side-channel attacks, most notably Spectre.</p>
+<p>When a web page loads, it operates inside a specific operating system
+process called a renderer or content process. If a malicious website
+uses an <code>&lt;img&gt;</code> tag to request a sensitive file from
+another website (such as a user's private banking data formatted in
+JSON), the browser fetches that file. Without CORB, the file is placed
+into the memory of the malicious website's content process, even though
+the browser ultimately refuses to display it as an image.</p>
+<p>Because the sensitive data is now sitting in the same memory space as
+the attacker's code, the attacker can use a Spectre attack to read the
+memory directly, completely bypassing the Same-Origin Policy. CORB
+prevents the sensitive data from ever entering that memory space.</p>
+<h2 id="how-corb-protects-sensitive-data">How CORB Protects Sensitive
+Data</h2>
+<p>CORB targets three specific types of data that frequently contain
+sensitive user information and have no legitimate reason to be loaded
+into tags like <code>&lt;img&gt;</code> or <code>&lt;script&gt;</code>
+without CORS permissions:</p>
+<ul>
+<li><strong>HTML</strong> (<code>text/html</code>)</li>
+<li><strong>XML</strong> (<code>application/xml</code> and
+<code>text/xml</code>)</li>
+<li><strong>JSON</strong> (<code>application/json</code>)</li>
+</ul>
+<p>When a cross-origin request is made without CORS, CORB intercepts the
+incoming response and performs the following steps:</p>
+<ol type="1">
+<li><strong>MIME Type Check:</strong> It checks the
+<code>Content-Type</code> header of the response to see if it claims to
+be HTML, XML, or JSON.</li>
+<li><strong>Content Sniffing:</strong> Because web servers sometimes
+mislabel files (for example, labeling a JavaScript file as
+<code>text/html</code>), CORB inspects the first few bytes of the
+response body. It confirms whether the file actually matches the
+formatting of HTML, XML, or JSON. (If the server sends a
+<code>X-Content-Type-Options: nosniff</code> header, CORB skips sniffing
+and trusts the MIME type).</li>
+<li><strong>Blocking:</strong> If the resource is confirmed to be one of
+the protected data types, CORB intercepts the data, strips the response
+body and headers, and hands the webpage an empty response instead.</li>
+</ol>
+<p>Because this happens before the data reaches the web page, a
+side-channel attack has nothing to steal.</p>
+<h2 id="how-corb-works-in-the-firefox-web-browser">How CORB Works in the
+Firefox Web Browser</h2>
+<p>Mozilla Firefox implements CORB as a critical layer of its
+multi-process security architecture, working directly alongside
+<strong>Project Fission</strong> (Firefox's implementation of Site
+Isolation).</p>
+<p>In Firefox, the browser is split into different processes: a
+privileged Parent Process that handles networking and system tasks, and
+multiple unprivileged Content Processes that render individual
+websites.</p>
+<p>Here is how Firefox executes CORB to protect your data:</p>
+<ol type="1">
+<li><strong>Network Interception:</strong> When a website in a Firefox
+Content Process requests a cross-origin file, the request is handled by
+the Parent Process.</li>
+<li><strong>Parent Process Filtering:</strong> As the external server
+sends the data back to Firefox, the CORB algorithm runs inside the
+secure Parent Process. The Content Process has zero access to the data
+at this stage.</li>
+<li><strong>Sanitization:</strong> If the Parent Process detects that
+the cross-origin request is attempting to load HTML, XML, or JSON into
+an incompatible context (like an image or script tag), it drops the
+payload immediately.</li>
+<li><strong>Safe Delivery:</strong> The Parent Process sends an empty
+byte stream to the Content Process. The sensitive data is discarded in
+the Parent Process and never crosses the boundary into the unprivileged
+memory space where the website's code is running.</li>
+</ol>
+<p>By combining CORB with Project Fission—which ensures that different
+websites are always placed into entirely separate Content
+Processes—Firefox provides a defense-in-depth approach. Even if an
+attacker attempts to exploit complex CPU vulnerabilities, CORB ensures
+that sensitive cross-origin text data is filtered out at the network
+layer, keeping user data secure.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-corb-protects-sensitive-cross-origin-data-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

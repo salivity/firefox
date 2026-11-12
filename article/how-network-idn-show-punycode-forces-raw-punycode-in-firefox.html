@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How network.IDN_show_punycode Forces Raw Punycode in Firefox - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how the network.IDNshowpunycode preference alters the way Mozilla Firefox displays Internationalized Domain Names (IDNs). You will learn the fundamental relationship between Unicode domains and the Domain Name">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-network-idn-show-punycode-forces-raw-punycode-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How network.IDN_show_punycode Forces Raw Punycode in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-network-idn-show-punycode-forces-raw-punycode-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how the network.IDNshowpunycode preference alters the way Mozilla Firefox displays Internationalized Domain Names (IDNs). You will learn the fundamental relationship between Unicode domains and the Domain Name" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-networkidn_show_punycode-forces-raw-punycode-in-firefox">How
+network.IDN_show_punycode Forces Raw Punycode in Firefox</h1>
+<p>This article provides a complete overview of how the
+<code>network.IDN_show_punycode</code> preference alters the way Mozilla
+Firefox displays Internationalized Domain Names (IDNs). You will learn
+the fundamental relationship between Unicode domains and the Domain Name
+System (DNS), how Firefox normally processes these addresses for user
+readability, and the exact mechanism by which enabling this preference
+bypasses standard decoding to expose raw <code>xn--</code> ASCII strings
+in the address bar to prevent phishing attacks.</p>
+<h3 id="the-relationship-between-idns-and-punycode">The Relationship
+Between IDNs and Punycode</h3>
+<p>The Domain Name System (DNS) is historically restricted to standard
+ASCII characters (letters A–Z, digits 0–9, and hyphens). To accommodate
+Internationalized Domain Names—which contain non-ASCII characters such
+as Arabic, Cyrillic, Chinese, or accented Latin letters—the internet
+relies on a translation system called Punycode.</p>
+<p>Punycode converts Unicode strings into an ASCII-Compatible Encoding
+(ACE) format. Every Punycode domain segment begins with the prefix
+<code>xn--</code>, followed by the ASCII representation of the non-ASCII
+characters. For example, the German domain <code>münchen.de</code> is
+translated at the network level into <code>xn--mnchen-3ya.de</code>.</p>
+<h3 id="firefoxs-default-rendering-process">Firefox’s Default Rendering
+Process</h3>
+<p>By default, Firefox aims to provide a seamless user experience for
+international users. When you navigate to an IDN, the following process
+occurs:</p>
+<ol type="1">
+<li><strong>Input and Conversion:</strong> A user clicks a link or types
+a Unicode domain into the address bar.</li>
+<li><strong>Network Resolution:</strong> Firefox converts the Unicode
+into its <code>xn--</code> Punycode equivalent to query the DNS server,
+because the DNS server only understands the ASCII version.</li>
+<li><strong>UI Decoding:</strong> Once the connection is being
+established, Firefox's User Interface (UI) layer translates the
+<code>xn--</code> string back into the readable Unicode characters to
+display in the address bar.</li>
+</ol>
+<p>While Firefox uses a complex set of rules and whitelists to detect
+malicious look-alike characters during this third step, some spoofing
+attempts can still slip through.</p>
+<h3 id="how-networkidn_show_punycode-alters-the-process">How
+<code>network.IDN_show_punycode</code> Alters the Process</h3>
+<p>The <code>network.IDN_show_punycode</code> setting is a boolean
+preference located within Firefox’s advanced configuration
+(<code>about:config</code>). By default, its value is set to
+<code>false</code>.</p>
+<p>When you change the value of <code>network.IDN_show_punycode</code>
+to <code>true</code>, you directly modify step three of Firefox's
+rendering process. The preference acts as a strict override switch for
+the browser's UI layer. Instead of passing the domain name through the
+Punycode-to-Unicode decoder for display purposes, Firefox completely
+bypasses the decoding algorithm and renders the exact network-level
+ASCII string in the address bar.</p>
+<p>Because the browser already has to generate the <code>xn--</code>
+string to communicate with the DNS resolver, forcing this preference
+simply instructs the address bar, status bar, and tab titles to display
+the raw network data rather than the localized human-readable
+translation.</p>
+<h3 id="why-users-force-raw-punycode-display">Why Users Force Raw
+Punycode Display</h3>
+<p>The primary reason to force <code>xn--</code> strings is to defend
+against IDN homograph attacks. In a homograph attack, a malicious actor
+registers a domain using foreign characters that look identical to
+standard Latin characters. For example, the Cyrillic small letter "а"
+looks identical to the Latin small letter "a" in many fonts.</p>
+<p>An attacker could register <code>apple.com</code> using Cyrillic
+characters. By default, Firefox might display this in the address bar as
+<code>apple.com</code>, tricking the user into believing they are on the
+legitimate website. However, with <code>network.IDN_show_punycode</code>
+set to <code>true</code>, Firefox skips the visual translation and
+immediately displays <code>xn--pple-43d.com</code> in the address bar,
+instantly exposing the deception.</p>
+<h3 id="how-to-enable-the-preference">How to Enable the Preference</h3>
+<p>To force Firefox to display raw Punycode strings for all
+internationalized domains, follow these steps:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press <strong>Enter</strong>.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>In the search bar at the top, type
+<code>network.IDN_show_punycode</code>.</li>
+<li>Locate the preference in the results list. Its default state will be
+<code>false</code>.</li>
+<li>Double-click the row (or click the toggle icon on the far right) to
+change its value to <code>true</code>.</li>
+</ol>
+<p>The change takes effect immediately without requiring a browser
+restart. All non-ASCII domains will now exclusively display their
+<code>xn--</code> prefixes in the address bar.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-network-idn-show-punycode-forces-raw-punycode-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox SRI Protects Against Tampered CDN Scripts - firefox</title>
+    <meta name="description" content="This article explains how the Mozilla Firefox web browser utilizes Subresource Integrity (SRI) to protect users from malicious code injected into third-party Content Delivery Networks (CDNs). It covers the security risks of external scripts, the mechanics">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-sri-protects-against-tampered-cdn-scripts">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox SRI Protects Against Tampered CDN Scripts - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-sri-protects-against-tampered-cdn-scripts" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Mozilla Firefox web browser utilizes Subresource Integrity (SRI) to protect users from malicious code injected into third-party Content Delivery Networks (CDNs). It covers the security risks of external scripts, the mechanics" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-sri-protects-against-tampered-cdn-scripts">How
+Firefox SRI Protects Against Tampered CDN Scripts</h1>
+<p>This article explains how the Mozilla Firefox web browser utilizes
+Subresource Integrity (SRI) to protect users from malicious code
+injected into third-party Content Delivery Networks (CDNs). It covers
+the security risks of external scripts, the mechanics of cryptographic
+hash verification, the role of the HTML integrity attribute, and the
+exact step-by-step process Firefox executes to block tampered files from
+running on a webpage.</p>
+<h2 id="the-risk-of-third-party-cdns">The Risk of Third-Party CDNs</h2>
+<p>Web developers frequently use Content Delivery Networks (CDNs) to
+host common JavaScript libraries. While this improves website loading
+speeds, it introduces a major security risk. If an attacker compromises
+a CDN and alters a popular script, every website fetching that script
+will unknowingly serve malicious code to its visitors. Subresource
+Integrity (SRI) is a security feature implemented in Firefox to
+eliminate this specific threat.</p>
+<h2 id="the-core-mechanism-cryptographic-hashes">The Core Mechanism:
+Cryptographic Hashes</h2>
+<p>SRI relies on cryptographic hash functions—specifically SHA-256,
+SHA-384, or SHA-512. A cryptographic hash function takes a file (like a
+JavaScript script) and generates a unique, fixed-length string of
+characters based on the file's exact contents. This string acts as a
+digital fingerprint. If even a single comma or space in the original
+script is changed, the resulting hash will be completely different.</p>
+<p>When a developer adds a third-party script to their website, they
+generate a hash of the known, safe version of that file. They then
+include this hash directly inside the HTML <code>&lt;script&gt;</code>
+tag using the <code>integrity</code> attribute.</p>
+<p>An example of an SRI-protected script tag looks like this:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ot">  src</span><span class="op">=</span><span class="st">&quot;https://example-cdn.com/framework.js&quot;</span><span class="ot"> </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ot">  integrity</span><span class="op">=</span><span class="st">&quot;sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC&quot;</span><span class="ot"> </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">  crossorigin</span><span class="op">=</span><span class="st">&quot;anonymous&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+<h2 id="how-firefox-verifies-the-script">How Firefox Verifies the
+Script</h2>
+<p>When a user visits a webpage, the Firefox browser follows a strict,
+automated verification process before it allows any external script with
+an <code>integrity</code> attribute to run:</p>
+<ol type="1">
+<li><strong>Parsing the HTML:</strong> Firefox reads the webpage's HTML
+and identifies the <code>&lt;script&gt;</code> tag. It notes both the
+source URL of the CDN and the expected hash value defined in the
+<code>integrity</code> attribute.</li>
+<li><strong>Enforcing CORS:</strong> Firefox checks for the
+<code>crossorigin="anonymous"</code> attribute. This ensures the browser
+fetches the script using Cross-Origin Resource Sharing (CORS),
+preventing sensitive user data (like cookies) from being sent to the
+third-party CDN during the request.</li>
+<li><strong>Downloading the Resource:</strong> Firefox downloads the
+script file from the third-party CDN into its memory, holding it in
+quarantine before passing it to the JavaScript engine
+(SpiderMonkey).</li>
+<li><strong>Calculating the Hash:</strong> Firefox reads the prefix of
+the <code>integrity</code> attribute (such as <code>sha384-</code>) to
+determine which hashing algorithm to use. The browser then applies this
+exact algorithm to the downloaded CDN file to calculate its current
+hash.</li>
+<li><strong>Comparing the Fingerprints:</strong> Firefox compares the
+hash it just calculated from the downloaded file against the expected
+hash written in the website's HTML.</li>
+</ol>
+<h2 id="execution-or-termination">Execution or Termination</h2>
+<p>The final step in the Firefox SRI process depends entirely on the
+outcome of the hash comparison:</p>
+<ul>
+<li><strong>If the hashes match:</strong> Firefox confirms the file is
+identical to the one the web developer approved. The script is
+immediately passed to the JavaScript engine and executed normally.</li>
+<li><strong>If the hashes do not match:</strong> Firefox assumes the
+file has been tampered with or corrupted in transit. The browser
+immediately blocks the script from executing, protecting the user from
+potential malware or data theft. Firefox then logs a security error in
+the Developer Tools Web Console, alerting the developer that the
+subresource failed its integrity check.</li>
+</ul>
+<h2 id="multiple-hashes-and-algorithm-strength">Multiple Hashes and
+Algorithm Strength</h2>
+<p>Firefox also supports multiple hashes within a single
+<code>integrity</code> attribute. If a developer provides both a SHA-256
+and a SHA-512 hash for the same file, Firefox is programmed to
+automatically select the strongest cryptographic algorithm it supports
+(in this case, SHA-512) to perform the verification. Furthermore, if a
+CDN uses multiple servers that might serve slightly different, yet safe,
+versions of a file, the developer can list multiple valid hashes of the
+same strength. Firefox will allow the script to run as long as the
+downloaded file matches at least one of the listed hashes.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-sri-protects-against-tampered-cdn-scripts';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

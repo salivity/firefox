@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Uses sessionstore.jsonlz4 for Crash Recovery - firefox</title>
+    <meta name="description" content="This article provides a technical breakdown of how the Mozilla Firefox web browser prevents data loss during unexpected crashes using the sessionstore.jsonlz4 file architecture. It covers the file&#39;s compression format, the continuous background saving mec">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-uses-sessionstore-jsonlz-4-for-crash-recovery">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Uses sessionstore.jsonlz4 for Crash Recovery - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-uses-sessionstore-jsonlz-4-for-crash-recovery" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a technical breakdown of how the Mozilla Firefox web browser prevents data loss during unexpected crashes using the sessionstore.jsonlz4 file architecture. It covers the file&#39;s compression format, the continuous background saving mec" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-uses-sessionstorejsonlz4-for-crash-recovery">How
+Firefox Uses sessionstore.jsonlz4 for Crash Recovery</h1>
+<p>This article provides a technical breakdown of how the Mozilla
+Firefox web browser prevents data loss during unexpected crashes using
+the <code>sessionstore.jsonlz4</code> file architecture. It covers the
+file's compression format, the continuous background saving mechanism,
+and the exact methods Firefox uses to record and restore open windows,
+tab histories, page scroll positions, and unsubmitted text in web
+forms.</p>
+<h2 id="the-file-format-and-continuous-backup-system">The File Format
+and Continuous Backup System</h2>
+<p>The <code>sessionstore.jsonlz4</code> file is a compressed data file
+located in the user's Firefox profile directory. It consists of a
+standard JSON (JavaScript Object Notation) text structure that has been
+compressed using Mozilla's custom implementation of the LZ4 algorithm,
+which prioritizes fast decompression speeds during browser startup.</p>
+<p><code>sessionstore.jsonlz4</code> only exists in the main profile
+folder when Firefox is closed normally. While the browser is actively
+running, the session management system operates inside the
+<code>sessionstore-backups</code> folder. As you browse, Firefox
+continuously writes your current state to a temporary working file named
+<code>recovery.jsonlz4</code> every 15 seconds. If Firefox crashes, it
+detects that the main <code>sessionstore.jsonlz4</code> file was never
+generated at shutdown and automatically falls back to the latest
+<code>recovery.jsonlz4</code> file to rebuild the session.</p>
+<h2 id="restoring-open-windows-and-tabs">Restoring Open Windows and
+Tabs</h2>
+<p>The core structure of the session file is a hierarchical JSON tree.
+At the top level, the file contains a <code>windows</code> array, which
+holds separate objects for every browser window that was open prior to
+the crash.</p>
+<p>To restore the visual layout and navigation state, Firefox records
+the following parameters inside each window object:</p>
+<ul>
+<li><strong>Window State:</strong> The exact screen coordinates, height,
+width, and whether the window was maximized, minimized, or in
+full-screen mode.</li>
+<li><strong>The Tabs Array:</strong> Each window object contains a
+<code>tabs</code> array. Every tab is represented as an individual
+object containing its current state, such as whether it is pinned,
+muted, or hidden.</li>
+<li><strong>Tab History (<code>entries</code>):</strong> Firefox does
+not just save the final URL you were looking at. It saves an
+<code>entries</code> array for every tab, which logs the chronological
+browsing history of that specific tab. This allows the browser's "Back"
+and "Forward" buttons to function normally even after a crash
+restoration.</li>
+</ul>
+<h2 id="restoring-scroll-positions">Restoring Scroll Positions</h2>
+<p>When a webpage reloads after a crash, losing your place on a long
+article or document is prevented by the <code>scroll</code> property
+stored within each tab's data object.</p>
+<p>Whenever you scroll a webpage, Firefox's internal rendering engine
+tracks the viewport's exact position. During the 15-second backup
+interval, Firefox records the horizontal (X) and vertical (Y) pixel
+offsets of the page. This data is saved as a simple coordinate string
+(for example, <code>"0,1450"</code>). If a webpage contains nested
+scrollable elements, such as internal frames
+(<code>&lt;iframe&gt;</code>), the JSON structure maps the scroll
+coordinates for those individual child frames as well. Upon restoration,
+once the page layout finishes rendering, Firefox automatically instructs
+the viewport to jump to those exact pixel coordinates.</p>
+<h2 id="recovering-unsubmitted-form-text">Recovering Unsubmitted Form
+Text</h2>
+<p>To prevent users from losing typed data in comment boxes, emails, or
+applications, Firefox actively monitors the Document Object Model (DOM)
+of loaded webpages for user input.</p>
+<p>When you type into standard HTML <code>&lt;input&gt;</code> or
+<code>&lt;textarea&gt;</code> fields, or interact with
+<code>&lt;select&gt;</code> dropdowns and checkboxes, Firefox records
+these changes under the <code>formdata</code> object within the active
+tab's JSON entry. It accomplishes this safely and accurately through
+three mechanisms:</p>
+<ul>
+<li><strong>ID Mapping:</strong> If the HTML form element has a unique
+<code>id</code> or <code>name</code> attribute, Firefox pairs that
+identifier directly with the text string you typed.</li>
+<li><strong>XPath Mapping:</strong> If a web developer did not assign an
+ID to a text box, Firefox generates an XPath (XML Path Language)
+expression. This acts as a structural map (e.g.,
+<code>/xhtml:html/xhtml:body/xhtml:div[2]/xhtml:form/xhtml:textarea[1]</code>)
+so the browser knows the exact location of the text box within the
+webpage's code.</li>
+<li><strong>Security Exclusions:</strong> To protect user privacy,
+Firefox's session store engine explicitly ignores any input field marked
+as <code>type="password"</code> or fields where the website has strictly
+disabled autocomplete for security reasons.</li>
+</ul>
+<h2 id="the-crash-recovery-execution-process">The Crash Recovery
+Execution Process</h2>
+<p>When you launch Firefox after an unexpected crash, the recovery
+process executes in a strict sequence:</p>
+<ol type="1">
+<li><strong>Detection:</strong> Firefox checks the profile lock files,
+realizes the previous session terminated abnormally, and locates the
+most recent <code>lz4</code> session file.</li>
+<li><strong>Decompression and Parsing:</strong> The browser decompresses
+the LZ4 binary data directly in memory and parses the raw JSON text into
+a JavaScript object.</li>
+<li><strong>UI Reconstruction:</strong> Firefox reads the
+<code>windows</code> and <code>tabs</code> arrays, opens the required
+number of browser windows at their saved screen coordinates, and
+populates the tab bar. To save memory, background tabs are often placed
+in a pending state, meaning their titles and icons are displayed, but
+the webpage will not fully load until you click on the tab.</li>
+<li><strong>DOM Injection:</strong> For the active tab, Firefox fetches
+the webpage over the network (or from the local cache). As soon as the
+HTML DOM finishes building, the browser iterates through the saved
+<code>formdata</code> object, locates the matching IDs and XPaths on the
+page, and injects the saved text strings back into the input
+fields.</li>
+<li><strong>Viewport Adjustment:</strong> Finally, the browser reads the
+<code>scroll</code> coordinate values and moves the page viewport to the
+exact pixel offset recorded before the crash.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-uses-sessionstore-jsonlz-4-for-crash-recovery';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

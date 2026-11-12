@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox IPC: How Processes Communicate via IPDL - firefox</title>
+    <meta name="description" content="This article provides a quick overview of Inter-Process Communication (IPC) in the Firefox web browser. It covers the fundamentals of Firefox&#39;s multi-process architecture, defines the IPC Protocol Definition Language (IPDL), and explains the exact mechani">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-ipc-how-processes-communicate-via-ipdl">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox IPC: How Processes Communicate via IPDL - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-ipc-how-processes-communicate-via-ipdl" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of Inter-Process Communication (IPC) in the Firefox web browser. It covers the fundamentals of Firefox&#39;s multi-process architecture, defines the IPC Protocol Definition Language (IPDL), and explains the exact mechani" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-ipc-how-processes-communicate-via-ipdl">Firefox IPC: How
+Processes Communicate via IPDL</h1>
+<p>This article provides a quick overview of Inter-Process Communication
+(IPC) in the Firefox web browser. It covers the fundamentals of
+Firefox's multi-process architecture, defines the IPC Protocol
+Definition Language (IPDL), and explains the exact mechanisms child
+processes use to securely and efficiently communicate with the parent
+process.</p>
+<h3 id="the-firefox-multi-process-architecture">The Firefox
+Multi-Process Architecture</h3>
+<p>Modern Firefox uses a multi-process architecture to separate the core
+browser interface from untrusted web content. This separation ensures
+stability and security.</p>
+<p>The architecture relies on two main types of processes:</p>
+<ul>
+<li><strong>The Parent Process:</strong> Also known as the main or
+broker process. It runs with high privileges, manages the browser’s user
+interface, and has direct access to operating system resources like the
+file system and network.</li>
+<li><strong>Child Processes:</strong> These run in restricted
+environments called sandboxes. Different child processes handle specific
+tasks, such as rendering web content, decoding media, or managing GPU
+operations.</li>
+</ul>
+<p>Because child processes are locked inside a security sandbox, they
+cannot directly access the hard drive, display graphics, or fetch
+network data. Instead, they must use Inter-Process Communication (IPC)
+to ask the parent process to perform these privileged actions on their
+behalf.</p>
+<h3 id="what-is-ipdl">What is IPDL?</h3>
+<p>To manage IPC safely and efficiently, Mozilla created IPDL (IPC
+Protocol Definition Language). IPDL is a domain-specific language used
+strictly in Firefox to declare the exact messages and data structures
+that processes are allowed to send to one another.</p>
+<p>During the Firefox build process, an IPDL compiler translates
+<code>.ipdl</code> files into standard C++ code. Using IPDL instead of
+writing raw C++ communication code provides two major benefits:</p>
+<ol type="1">
+<li><strong>Boilerplate Reduction:</strong> It automatically generates
+the complex code required to pack and unpack data for transport across
+process boundaries.</li>
+<li><strong>Security:</strong> It enforces strict type checking. If a
+compromised child process sends corrupted or unexpected data, the
+generated IPDL code detects the anomaly and immediately terminates the
+child process before it can exploit the parent process.</li>
+</ol>
+<h3 id="the-actor-model">The Actor Model</h3>
+<p>Communication in IPDL is structured around the "Actor" model. Every
+IPDL protocol defines a pair of communicating endpoints: a Parent Actor
+and a Child Actor.</p>
+<ul>
+<li><strong>The Child Actor</strong> lives in the child process.</li>
+<li><strong>The Parent Actor</strong> lives in the parent process.</li>
+</ul>
+<p>For every protocol defined in an <code>.ipdl</code> file (for
+example, <code>PContent</code>), the IPDL compiler generates two C++
+classes: <code>ContentParent</code> and <code>ContentChild</code>. These
+two actors form a dedicated communication bridge. A child process talks
+to the parent process by calling methods on its <code>Child</code>
+actor, which are seamlessly routed to the corresponding
+<code>Parent</code> actor.</p>
+<h3 id="how-child-processes-talk-to-the-parent-process">How Child
+Processes Talk to the Parent Process</h3>
+<p>The actual communication between a child process and the parent
+process happens through a structured, step-by-step lifecycle:</p>
+<p><strong>1. Protocol Declaration</strong> Developers define the rules
+of communication in an <code>.ipdl</code> file. They specify the message
+names, the data types being passed (parameters), and the direction of
+the message (from child to parent, parent to child, or both).</p>
+<p><strong>2. Calling the Send Method</strong> When a child process
+needs to talk to the parent—for example, to request cookie data—the C++
+code in the child process calls a generated <code>Send</code> method on
+its Child Actor (e.g., <code>SendGetCookieString()</code>).</p>
+<p><strong>3. Serialization</strong> The IPDL-generated C++ code takes
+the arguments passed into the <code>Send</code> method and serializes
+them. Serialization is the process of converting complex C++ data
+structures (like strings, arrays, or structs) into a flat stream of raw
+bytes.</p>
+<p><strong>4. OS-Level Transport</strong> Once the message is converted
+into bytes, it must physically cross the process boundary. Firefox uses
+the Chromium IPC library under the hood to handle the low-level
+transport. The byte stream is pushed through an
+operating-system-specific data pipe (Named Pipes on Windows,
+<code>socketpair</code> on Linux, and Mach ports on macOS).</p>
+<p><strong>5. Deserialization and Validation</strong> The parent process
+constantly listens to its end of the OS pipe. When the byte stream
+arrives, the IPDL-generated code in the parent process intercepts it and
+deserializes the bytes back into standard C++ data structures. If the
+bytes do not match the exact format declared in the <code>.ipdl</code>
+file, the message is rejected, and the child process is crashed for
+security reasons.</p>
+<p><strong>6. Executing the Receive Method</strong> Once the data is
+validated, the Parent Actor triggers a corresponding <code>Recv</code>
+method in the parent process (e.g., <code>RecvGetCookieString()</code>).
+The parent process executes the requested privileged operation and, if
+necessary, sends a response back down the pipe using the exact same
+serialization process.</p>
+<h3 id="asynchronous-vs-synchronous-messages">Asynchronous vs.
+Synchronous Messages</h3>
+<p>IPDL supports two primary modes of communication for child-to-parent
+messages:</p>
+<ul>
+<li><strong>Asynchronous (<code>async</code>):</strong> This is the
+default and preferred method. The child process sends a message to the
+parent and immediately continues doing other work without waiting for an
+answer. When the parent finishes processing the request, it sends an
+asynchronous reply back, which the child handles via a callback or a
+Promise. This prevents processes from freezing.</li>
+<li><strong>Synchronous (<code>sync</code>):</strong> The child process
+sends a message and completely halts its own execution until the parent
+process replies. Because this blocks the child process from rendering
+web pages or responding to user input, synchronous messages are heavily
+discouraged and used only when absolutely necessary.</li>
+</ul>
+<p>To keep the browser responsive, IPDL enforces a strict directional
+rule for synchronous messages: a child can block while waiting for the
+parent, but the parent process is almost never allowed to block while
+waiting for a child. This ensures that even if a web page freezes in a
+child process, the main Firefox user interface remains fast and
+responsive.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-ipc-how-processes-communicate-via-ipdl';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

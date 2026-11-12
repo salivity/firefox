@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Uses MDN Data to Warn About Unsupported CSS - firefox</title>
+    <meta name="description" content="This article provides a technical overview of how the Firefox Developer Tools Compatibility panel identifies cross-browser CSS issues. By leveraging MDN Web Docs&#39; open-source Browser Compatibility Data (BCD), Firefox automatically scans a webpage&#39;s active">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-uses-mdn-data-to-warn-about-unsupported-css">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Uses MDN Data to Warn About Unsupported CSS - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-uses-mdn-data-to-warn-about-unsupported-css" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a technical overview of how the Firefox Developer Tools Compatibility panel identifies cross-browser CSS issues. By leveraging MDN Web Docs&#39; open-source Browser Compatibility Data (BCD), Firefox automatically scans a webpage&#39;s active" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-uses-mdn-data-to-warn-about-unsupported-css">How
+Firefox Uses MDN Data to Warn About Unsupported CSS</h1>
+<p>This article provides a technical overview of how the Firefox
+Developer Tools Compatibility panel identifies cross-browser CSS issues.
+By leveraging MDN Web Docs' open-source Browser Compatibility Data
+(BCD), Firefox automatically scans a webpage's active stylesheets,
+cross-references the used CSS properties against a customizable list of
+target browsers, and generates real-time warnings for unsupported,
+deprecated, or experimental styles.</p>
+<h3 id="1-the-data-source-mdn-browser-compatibility-data-bcd">1. The
+Data Source: MDN Browser Compatibility Data (BCD)</h3>
+<p>The backbone of the Compatibility panel is the
+<code>@mdn/browser-compat-data</code> repository. Instead of scraping
+MDN web pages in real time, Mozilla maintains a machine-readable
+collection of JSON files that record exact browser support versions for
+web technologies.</p>
+<p>Mozilla bundles a snapshot of this BCD JSON database directly into
+the Firefox browser's source code. Whenever Firefox is updated, this
+local database is refreshed to reflect the latest browser compatibility
+metrics across the web ecosystem.</p>
+<h3 id="2-extracting-css-from-the-page">2. Extracting CSS from the
+Page</h3>
+<p>When a developer opens the Firefox Inspector and navigates to the
+Compatibility panel, the browser's internal inspection engine goes to
+work. Using the CSS Object Model (CSSOM), Firefox scans the document in
+two ways:</p>
+<ul>
+<li><strong>Selected Element:</strong> It reads the CSS declarations
+applied directly to the currently highlighted DOM node.</li>
+<li><strong>All Elements:</strong> It parses the stylesheets across the
+entire page to aggregate every unique CSS property and value currently
+in use.</li>
+</ul>
+<p>The parser strips these styles down into identifiable
+tokens—specifically looking at property names (like
+<code>backdrop-filter</code>), specific property values (like
+<code>display: subgrid</code>), and vendor prefixes (like
+<code>-webkit-</code>).</p>
+<h3 id="3-defining-the-target-browser-matrix">3. Defining the Target
+Browser Matrix</h3>
+<p>To know what constitutes a "warning," Firefox needs a baseline of
+browsers to test against. By default, the Compatibility panel targets
+the current release, beta, and nightly versions of major desktop and
+mobile browsers, including Firefox, Google Chrome, Microsoft Edge, and
+Safari. Developers can access the panel's settings to manually check or
+uncheck specific browsers and versions to match their project's target
+audience.</p>
+<h3 id="4-the-cross-referencing-process">4. The Cross-Referencing
+Process</h3>
+<p>Once the active CSS is extracted and the target browsers are set, the
+Compatibility panel's logic engine queries the bundled BCD JSON files.
+For every CSS declaration found on the page, Firefox executes the
+following checks:</p>
+<ul>
+<li><strong>Property Lookup:</strong> It navigates the JSON tree (e.g.,
+<code>css.properties.gap</code>) to find the compatibility data for that
+specific property.</li>
+<li><strong>Value Context Lookup:</strong> Some CSS properties are
+universally supported, but newer values for them are not. Firefox checks
+sub-features in the JSON data to see if a specific value (such as
+<code>position: sticky</code>) has different support metrics than the
+parent property (<code>position</code>).</li>
+<li><strong>Version Comparison:</strong> The engine looks at the
+<code>version_added</code> and <code>version_removed</code> data points
+in the JSON for each target browser. If a target browser's version is
+older than the <code>version_added</code> value, or if the value is
+<code>false</code> (meaning completely unsupported), a mismatch is
+recorded.</li>
+<li><strong>Prefix and Alias Checks:</strong> If a property is used with
+a vendor prefix, Firefox checks the BCD to see if the standard,
+unprefixed version is required by other browsers, or if the prefix is
+obsolete.</li>
+<li><strong>Status Evaluation:</strong> The engine reads the
+<code>status</code> object in the BCD to determine if the CSS feature is
+marked as <code>experimental</code> or <code>deprecated</code>.</li>
+</ul>
+<h3 id="5-generating-the-warnings">5. Generating the Warnings</h3>
+<p>When the cross-referencing engine detects a discrepancy between the
+page's CSS and the target browser matrix, it populates the Compatibility
+panel UI with actionable warnings.</p>
+<p>The panel outputs the problematic CSS property and displays the icons
+of the specific browsers that will fail to render it. Hovering over the
+browser icon reveals the exact versions affected. Finally, Firefox
+extracts the <code>mdn_url</code> string from that property's BCD JSON
+block, turning the CSS property name in the panel into a direct
+hyperlink to the corresponding MDN Web Docs article so the developer can
+quickly research workarounds or fallbacks.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-uses-mdn-data-to-warn-about-unsupported-css';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

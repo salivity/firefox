@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Mozilla Maintains Manifest V2 WebRequest in Firefox - firefox</title>
+    <meta name="description" content="This article explores Mozilla’s strategic decision to retain support for the Manifest V2 blocking webRequest API alongside its implementation of Manifest V3 in the Firefox web browser. While Google’s transition to Manifest V3 replaces this powerful API wi">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-mozilla-maintains-manifest-v-2-web-request-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Mozilla Maintains Manifest V2 WebRequest in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-mozilla-maintains-manifest-v-2-web-request-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Mozilla’s strategic decision to retain support for the Manifest V2 blocking webRequest API alongside its implementation of Manifest V3 in the Firefox web browser. While Google’s transition to Manifest V3 replaces this powerful API wi" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-mozilla-maintains-manifest-v2-webrequest-in-firefox">Why
+Mozilla Maintains Manifest V2 WebRequest in Firefox</h1>
+<p>This article explores Mozilla’s strategic decision to retain support
+for the Manifest V2 blocking <code>webRequest</code> API alongside its
+implementation of Manifest V3 in the Firefox web browser. While Google’s
+transition to Manifest V3 replaces this powerful API with the more
+restrictive <code>declarativeNetRequest</code>, Mozilla chose a hybrid
+approach. By supporting both standards, Firefox preserves the
+functionality of advanced privacy and content-blocking extensions,
+upholds user autonomy, and maintains cross-browser compatibility for
+developers.</p>
+<h3 id="the-core-conflict-webrequest-vs-declarativenetrequest">The Core
+Conflict: webRequest vs. declarativeNetRequest</h3>
+<p>To understand Mozilla's decision, it is necessary to look at how
+extension architectures work. Google introduced Manifest V3 (MV3) to
+improve security, privacy, and performance. A major part of Google's
+update was deprecating the Manifest V2 (MV2) blocking
+<code>webRequest</code> API and replacing it with
+<code>declarativeNetRequest</code> (DNR).</p>
+<ul>
+<li><strong>Blocking webRequest (MV2):</strong> Allows extensions to
+intercept, inspect, and modify network requests in real-time before the
+browser processes them.</li>
+<li><strong>declarativeNetRequest (MV3):</strong> Forces extensions to
+hand over a predefined, static list of rules to the browser. The browser
+then handles the blocking, which severely limits the total number of
+rules and eliminates dynamic filtering capabilities.</li>
+</ul>
+<p>Mozilla disagreed with the idea that the <code>webRequest</code> API
+needed to be removed to achieve the benefits of MV3.</p>
+<h3 id="preserving-advanced-content-blockers">Preserving Advanced
+Content Blockers</h3>
+<p>The primary reason Mozilla retained blocking <code>webRequest</code>
+is to protect the capabilities of advanced ad blockers and privacy
+tools, such as uBlock Origin and NoScript.</p>
+<p>These extensions rely on dynamic filtering and complex algorithms
+that DNR cannot replicate. With <code>webRequest</code>, extensions can
+parse data on the fly, block novel tracking methods, and update their
+blocklists instantly. Under strict MV3 DNR limits, these extensions are
+forced to downgrade their features. By keeping <code>webRequest</code>,
+Firefox ensures that top-tier content blockers remain fully
+functional.</p>
+<h3 id="prioritizing-privacy-and-user-agency">Prioritizing Privacy and
+User Agency</h3>
+<p>Mozilla’s core philosophy revolves around user privacy and an open
+web. Privacy extensions do much more than just block visual ads; they
+strip tracking parameters from URLs, block malicious scripts, prevent
+browser fingerprinting, and modify HTTP headers dynamically.</p>
+<p>The restrictive nature of Google's DNR handicaps these specific
+privacy features. Maintaining <code>webRequest</code> aligns with
+Mozilla's commitment to giving users complete control over their
+browsing experience and the data they share with websites.</p>
+<h3 id="addressing-performance-and-security-differently">Addressing
+Performance and Security Differently</h3>
+<p>Google cited two main reasons for deprecating blocking
+<code>webRequest</code>: performance bottlenecks (extensions slowing
+down page loads) and security risks (malicious extensions reading
+sensitive user data).</p>
+<p>Mozilla acknowledged these concerns but chose to mitigate them
+without destroying the API:</p>
+<ul>
+<li><strong>Performance:</strong> Firefox implemented MV3’s "Event
+Pages." This allows background scripts to go to sleep when not in use,
+capturing the memory and performance benefits of MV3 while leaving
+<code>webRequest</code> intact for the moments it is actually
+needed.</li>
+<li><strong>Security:</strong> Instead of restricting what all
+extensions can do, Mozilla relies on a combination of granular user
+permissions and a rigorous human and automated review process on its
+Add-ons store to catch malicious actors.</li>
+</ul>
+<h3 id="ensuring-cross-browser-compatibility">Ensuring Cross-Browser
+Compatibility</h3>
+<p>Mozilla could not ignore Manifest V3 entirely. Because Google Chrome
+holds the majority of the browser market share, its architecture
+dictates the standard for extension developers.</p>
+<p>By adopting the overarching MV3 framework—including support for
+DNR—while simultaneously retaining the MV2 blocking
+<code>webRequest</code> API, Mozilla achieved the best of both worlds.
+Developers can easily port their Chrome MV3 extensions to Firefox with
+minimal code changes. Meanwhile, developers who build complex privacy
+tools can continue utilizing the blocking <code>webRequest</code> API
+specifically for Firefox users.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-mozilla-maintains-manifest-v-2-web-request-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

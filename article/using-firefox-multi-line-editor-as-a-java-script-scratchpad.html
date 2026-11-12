@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Firefox Multi-line Editor as a JavaScript Scratchpad - firefox</title>
+    <meta name="description" content="This article explores how the Multi-line Editor mode in the Firefox Web Console functions as an interactive scratchpad for web developers. By providing a dedicated side-by-side workspace for drafting, modifying, and executing complex JavaScript code block">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/using-firefox-multi-line-editor-as-a-java-script-scratchpad">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Using Firefox Multi-line Editor as a JavaScript Scratchpad - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/using-firefox-multi-line-editor-as-a-java-script-scratchpad" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how the Multi-line Editor mode in the Firefox Web Console functions as an interactive scratchpad for web developers. By providing a dedicated side-by-side workspace for drafting, modifying, and executing complex JavaScript code block" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="using-firefox-multi-line-editor-as-a-javascript-scratchpad">Using
+Firefox Multi-line Editor as a JavaScript Scratchpad</h1>
+<p>This article explores how the Multi-line Editor mode in the Firefox
+Web Console functions as an interactive scratchpad for web developers.
+By providing a dedicated side-by-side workspace for drafting, modifying,
+and executing complex JavaScript code blocks without immediate
+evaluation, this feature streamlines live prototyping, DOM manipulation,
+and debugging directly within the browser.</p>
+<h3 id="preventing-premature-execution">Preventing Premature
+Execution</h3>
+<p>In the standard single-line Web Console, pressing the
+<code>Enter</code> key immediately executes the typed JavaScript. While
+useful for quick one-liners, it makes writing functions, loops, or
+multi-step logic tedious. Switching to the Multi-line Editor mode (via
+<code>Ctrl + B</code> on Windows/Linux or <code>Cmd + B</code> on macOS)
+changes the <code>Enter</code> key behavior to insert a standard line
+break, allowing you to structure code naturally as you would in a
+dedicated text editor.</p>
+<h3 id="persistent-code-for-iterative-testing">Persistent Code for
+Iterative Testing</h3>
+<p>When you execute code in the standard console, the input field
+clears, forcing you to press the Up arrow key to recall and edit your
+previous snippet. The Multi-line Editor acts as a true scratchpad by
+keeping your code fixed in the left pane while displaying the output in
+the right pane. You can run the script using <code>Ctrl + Enter</code>
+(or <code>Cmd + Enter</code>), observe the console output, tweak a
+variable in the editor, and run it again immediately. Additionally, your
+code remains in the editor across page reloads and browser restarts
+until you manually clear it.</p>
+<h3 id="built-in-ide-features">Built-in IDE Features</h3>
+<p>The Multi-line Editor incorporates several features found in
+full-scale Integrated Development Environments (IDEs) to speed up
+snippet writing:</p>
+<ul>
+<li><strong>Auto-completion:</strong> As you type, Firefox suggests
+standard JavaScript methods, as well as variables and DOM elements
+currently present on the active page.</li>
+<li><strong>Syntax Highlighting:</strong> Code is color-coded to help
+you quickly spot syntax errors, unclosed strings, or missing
+brackets.</li>
+<li><strong>Code Formatting:</strong> A built-in "Pretty Print" button
+located at the top of the editor pane automatically formats messy or
+minified JavaScript into clean, readable code with proper
+indentation.</li>
+</ul>
+<h3 id="direct-access-to-the-page-context">Direct Access to the Page
+Context</h3>
+<p>Code written in the Multi-line Editor executes directly within the
+context of the currently active browser tab. This allows you to use the
+editor as a sandbox to interact with the live Document Object Model
+(DOM), test API calls using the page's existing authentication cookies,
+or manipulate global JavaScript variables and frameworks already loaded
+by the website.</p>
+<h3 id="file-system-integration">File System Integration</h3>
+<p>To support reusable code snippets, the Multi-line Editor allows you
+to save your work directly to your computer and load existing
+scripts.</p>
+<ul>
+<li><strong>Saving Snippets:</strong> Pressing <code>Ctrl + S</code> (or
+<code>Cmd + S</code>) prompts you to save the contents of the editor as
+a <code>.js</code> file on your local drive.</li>
+<li><strong>Opening Snippets:</strong> Pressing <code>Ctrl + O</code>
+(or <code>Cmd + O</code>) opens a file browser, allowing you to import a
+local JavaScript file directly into the scratchpad for immediate
+execution.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/using-firefox-multi-line-editor-as-a-java-script-scratchpad';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

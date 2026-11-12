@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Android Brought Desktop Extensions to Mobile - firefox</title>
+    <meta name="description" content="This article explores how Mozilla’s Firefox for Android became the only major mobile web browser to support an open ecosystem of hundreds of desktop-grade WebExtensions. By completely rebuilding its mobile browser architecture with the custom GeckoView en">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-android-brought-desktop-extensions-to-mobile">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Android Brought Desktop Extensions to Mobile - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-android-brought-desktop-extensions-to-mobile" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how Mozilla’s Firefox for Android became the only major mobile web browser to support an open ecosystem of hundreds of desktop-grade WebExtensions. By completely rebuilding its mobile browser architecture with the custom GeckoView en" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-android-brought-desktop-extensions-to-mobile">How
+Firefox Android Brought Desktop Extensions to Mobile</h1>
+<p>This article explores how Mozilla’s Firefox for Android became the
+only major mobile web browser to support an open ecosystem of hundreds
+of desktop-grade WebExtensions. By completely rebuilding its mobile
+browser architecture with the custom GeckoView engine, implementing
+advanced multiprocess memory management, and adapting desktop APIs for
+mobile interfaces, Mozilla successfully bridged the gap between desktop
+and mobile browsing—a feat that competitors like Google Chrome and Apple
+Safari have either avoided or heavily restricted.</p>
+<h3 id="the-competitor-landscape">The Competitor Landscape</h3>
+<p>To understand Firefox's achievement, it is necessary to look at why
+other major mobile browsers lack open extension ecosystems. Google
+Chrome for Android does not support extensions at all. Because most
+mobile browsers (such as Brave, Vivaldi, and Microsoft Edge) are built
+on Google's open-source Chromium engine, they inherit this limitation.
+Only a few niche Chromium browsers have hacked extension support into
+their mobile apps, as Google provides no official upstream support for
+it. Meanwhile, Apple’s Safari on iOS allows extensions, but forces
+developers to package them as native apps and pay to distribute them
+through the heavily gated Apple App Store.</p>
+<p>Mozilla recognized that maintaining its own independent browser
+engine, Gecko, was the key to bypassing these industry roadblocks and
+offering true user customization on mobile.</p>
+<h3 id="the-painful-transition-to-geckoview">The Painful Transition to
+GeckoView</h3>
+<p>Prior to 2020, the legacy version of Firefox for Android (codenamed
+Fennec) supported extensions, but the browser was monolithic, slow, and
+difficult to maintain. In August 2020, Mozilla replaced it with a
+completely rewritten browser (codenamed Fenix).</p>
+<p>This new browser was built using GeckoView, a modular framework that
+decoupled the Gecko rendering engine from the Android user interface.
+While this made the browser drastically faster and more secure, it broke
+the existing extension infrastructure. Rather than delaying the new
+browser, Mozilla launched it with support for only a tiny, curated list
+of about a dozen "Recommended Extensions" (like uBlock Origin and Dark
+Reader). For the next three years, Mozilla engineers worked behind the
+scenes to rebuild the open ecosystem from scratch.</p>
+<h3 id="solving-the-mobile-memory-problem">Solving the Mobile Memory
+Problem</h3>
+<p>The biggest hurdle in bringing desktop WebExtensions to mobile is
+hardware limitations. Desktop extensions are not always optimized for
+low-memory environments. On Android, the operating system aggressively
+shuts down apps that consume too much RAM. If a user installed five
+heavy desktop extensions on a mobile browser, the browser would
+constantly crash.</p>
+<p>To solve this, Mozilla had to re-architect how Firefox for Android
+handles processes. Engineers brought a multiprocess architecture to the
+mobile browser, isolating the processes that run extensions from the
+main browser engine and the user interface. This ensured that even if a
+poorly optimized desktop extension crashed or ran out of memory, the
+browser itself would remain stable and responsive.</p>
+<h3 id="unifying-the-webextensions-api">Unifying the WebExtensions
+API</h3>
+<p>Desktop browsers and mobile browsers operate very differently. A
+desktop browser relies on multiple windows, tab strips, and mouse hover
+states, whereas a mobile browser uses a single-screen touch
+interface.</p>
+<p>Mozilla’s engineering team had to bridge this gap within their
+"Android Components" library. They mapped standard desktop WebExtension
+APIs to function logically on a smartphone. For example, when a desktop
+extension wants to open a small toolbar pop-up, Firefox for Android
+intercepts that API call and renders the pop-up as a mobile-friendly
+bottom sheet or a dedicated full-screen tab. Because Mozilla adapted the
+browser to the extensions rather than forcing developers to rewrite
+their code for mobile, existing desktop extensions could work on Android
+with little to no modification.</p>
+<h3 id="reopening-the-ecosystem">Reopening the Ecosystem</h3>
+<p>By late 2023, the GeckoView engine, the multiprocess stability
+updates, and the API translations were complete. In December 2023,
+Mozilla officially flipped the switch on its Add-ons portal
+(addons.mozilla.org), reopening the ecosystem for Android users.</p>
+<p>Because Mozilla adhered strictly to the standardized WebExtensions
+API, developers only had to check a box to mark their existing desktop
+add-ons as compatible with Android. Over 400 extensions were made
+available on launch day, and the library has continued to grow into the
+thousands. By owning its engine and committing to years of foundational
+mobile engineering, Mozilla successfully made Firefox the only major
+mobile browser with a truly open extension platform.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-android-brought-desktop-extensions-to-mobile';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

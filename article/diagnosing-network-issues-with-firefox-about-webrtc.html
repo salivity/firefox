@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosing Network Issues with Firefox about:webrtc - firefox</title>
+    <meta name="description" content="Firefox’s built-in about:webrtc page is an essential diagnostic utility that provides network engineers with deep, real-time visibility into active and historical WebRTC sessions. This article explains how engineers can leverage this internal interface to">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/diagnosing-network-issues-with-firefox-about-webrtc">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Diagnosing Network Issues with Firefox about:webrtc - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/diagnosing-network-issues-with-firefox-about-webrtc" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox’s built-in about:webrtc page is an essential diagnostic utility that provides network engineers with deep, real-time visibility into active and historical WebRTC sessions. This article explains how engineers can leverage this internal interface to" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="diagnosing-network-issues-with-firefox-aboutwebrtc">Diagnosing
+Network Issues with Firefox about:webrtc</h1>
+<p>Firefox’s built-in <code>about:webrtc</code> page is an essential
+diagnostic utility that provides network engineers with deep, real-time
+visibility into active and historical WebRTC sessions. This article
+explains how engineers can leverage this internal interface to rapidly
+troubleshoot real-time communication bottlenecks, focusing specifically
+on diagnosing Interactive Connectivity Establishment (ICE) candidate
+failures, verifying STUN and TURN server connectivity, and pinpointing
+Real-time Transport Protocol (RTP) packet loss.</p>
+<h2 id="diagnosing-ice-candidate-failures">Diagnosing ICE Candidate
+Failures</h2>
+<p>The ICE framework is responsible for finding the best path to connect
+peers through NATs and firewalls. When a WebRTC call fails to connect,
+the "ICE Stats" section within a session's log on the
+<code>about:webrtc</code> page is the primary troubleshooting tool.</p>
+<p>Network engineers can use the ICE table to view every candidate pair
+generated during the session. The table breaks down the connection
+attempts into specific columns:</p>
+<ul>
+<li><strong>Local and Remote Candidates:</strong> Displays the IP
+addresses, ports, and transport protocols (UDP/TCP) being tested by both
+peers.</li>
+<li><strong>ICE State:</strong> Indicates the exact status of each
+candidate pair, such as <code>Succeeded</code>,
+<code>In-Progress</code>, <code>Frozen</code>, or
+<code>Failed</code>.</li>
+<li><strong>Priority and Nominated:</strong> Shows which path the
+browser prefers and which pair was ultimately selected for media
+transmission.</li>
+</ul>
+<p>If all candidate pairs show a <code>Failed</code> state, engineers
+can immediately deduce that bidirectional communication is blocked. By
+inspecting the IP addresses and ports of the failed pairs, an engineer
+can identify if a specific subnet, port range, or protocol is being
+dropped by a corporate firewall or an improperly configured Access
+Control List (ACL).</p>
+<h2 id="verifying-stun-and-turn-server-connectivity">Verifying STUN and
+TURN Server Connectivity</h2>
+<p>STUN and TURN servers are critical for traversing strict NAT
+architectures. The <code>about:webrtc</code> page allows engineers to
+verify if the browser can successfully reach and authenticate with these
+servers by analyzing the candidate types generated in the ICE table.</p>
+<ul>
+<li><strong>Host Candidates (<code>host</code>):</strong> Represent the
+local network interface. If only host candidates are present, the
+browser cannot reach outside its local network to query STUN or TURN
+servers.</li>
+<li><strong>Server Reflexive Candidates (<code>srflx</code>):</strong>
+Generated via STUN. If <code>srflx</code> candidates are missing from
+the Local Candidate column, the STUN server is unreachable. This
+typically points to outbound UDP traffic being blocked on port 3478 (or
+the configured STUN port) or a DNS resolution failure for the STUN
+server hostname.</li>
+<li><strong>Relayed Candidates (<code>relay</code>):</strong> Generated
+via TURN. If a peer-to-peer connection fails and no <code>relay</code>
+candidates are gathered, the TURN server is failing. Engineers can look
+at the <code>trickle</code> status and the "Connection Log" at the
+bottom of the <code>about:webrtc</code> page to see if the TURN failure
+is due to a network timeout (firewall block on UDP/TCP/TLS) or an
+authentication error (401 Unauthorized) caused by expired
+credentials.</li>
+</ul>
+<h2 id="analyzing-rtp-packet-loss">Analyzing RTP Packet Loss</h2>
+<p>Once a connection is established, media quality issues such as
+robotic audio or frozen video are typically caused by network
+congestion. The "RTP Stats" section of the <code>about:webrtc</code>
+page monitors the health of the media streams in real time, separating
+data into <code>Inbound RTP</code> and <code>Outbound RTP</code> for
+both audio and video tracks.</p>
+<p>Engineers use this section to track the following metrics:</p>
+<ul>
+<li><strong>Packets Lost:</strong> The <code>Inbound RTP</code> log
+shows the exact number of packets dropped on the way to the user. A
+rapidly increasing number indicates downstream bandwidth saturation or a
+faulty local wireless connection.</li>
+<li><strong>RTCP Receiver Reports:</strong> Within the
+<code>Outbound RTP</code> section, Firefox displays data sent back from
+the remote peer via RTCP. This allows the engineer to see if the packets
+leaving the local browser are being lost before they reach the
+destination, indicating upstream congestion or ISP routing issues.</li>
+<li><strong>Jitter:</strong> Measured in milliseconds, this metric shows
+the variation in packet arrival times. High jitter alongside packet loss
+confirms that network queues are filling up and dropping packets,
+signaling the need for Quality of Service (QoS) adjustments on the local
+network routers.</li>
+<li><strong>Bitrate and Framerate:</strong> By clicking "Show Details"
+under RTP stats, engineers can view historical graphs of bitrate and
+framerate drops, correlating media degradation directly with spikes in
+packet loss.</li>
+</ul>
+<h2 id="utilizing-the-connection-log-for-deep-inspection">Utilizing the
+Connection Log for Deep Inspection</h2>
+<p>For issues that cannot be resolved through the GUI tables alone, the
+<code>about:webrtc</code> page includes a "Connection Log" and a "Debug
+Mode" toggle. Enabling Debug Mode generates low-level C++ trace logs of
+the entire WebRTC stack. Network engineers can use the Connection Log to
+view the exact timestamps of ICE binding requests, DTLS handshake
+failures, and socket errors, providing the granular packet-level detail
+required to resolve complex enterprise network incompatibilities.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/diagnosing-network-issues-with-firefox-about-webrtc';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

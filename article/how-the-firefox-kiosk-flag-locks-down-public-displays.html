@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the Firefox --kiosk Flag Locks Down Public Displays - firefox</title>
+    <meta name="description" content="This article provides an overview of how launching the Mozilla Firefox web browser with the --kiosk command-line flag secures the user interface for public displays and interactive terminals. By stripping away navigation controls, enforcing full-screen mo">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-the-firefox-kiosk-flag-locks-down-public-displays">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How the Firefox --kiosk Flag Locks Down Public Displays - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-the-firefox-kiosk-flag-locks-down-public-displays" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how launching the Mozilla Firefox web browser with the --kiosk command-line flag secures the user interface for public displays and interactive terminals. By stripping away navigation controls, enforcing full-screen mo" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-the-firefox---kiosk-flag-locks-down-public-displays">How the
+Firefox --kiosk Flag Locks Down Public Displays</h1>
+<p>This article provides an overview of how launching the Mozilla
+Firefox web browser with the <code>--kiosk</code> command-line flag
+secures the user interface for public displays and interactive
+terminals. By stripping away navigation controls, enforcing full-screen
+mode, suppressing menus, and disabling specific keyboard shortcuts, the
+kiosk mode ensures users stay confined to a designated web application
+without accessing the underlying browser settings.</p>
+<h3 id="full-screen-enforcement-and-ui-removal">Full-Screen Enforcement
+and UI Removal</h3>
+<p>When Firefox is launched with the <code>--kiosk</code> flag, it
+immediately boots into a locked full-screen mode. All standard user
+interface elements—often referred to as the "browser chrome"—are
+completely removed from the screen.</p>
+<p>Specifically, the following elements are hidden:</p>
+<ul>
+<li>The address bar and search bar.</li>
+<li>The tab strip and new tab button.</li>
+<li>Navigation buttons (Back, Forward, Reload, Home).</li>
+<li>The bookmarks toolbar and sidebar.</li>
+<li>The main application menu (the hamburger menu).</li>
+<li>The operating system's window controls (Minimize, Maximize, and
+Close buttons) and taskbars.</li>
+</ul>
+<p>This ensures that a user walking up to a public terminal can only
+interact with the content of the webpage itself, with no visual tools
+available to navigate away from the intended URL.</p>
+<h3 id="restricted-keyboard-shortcuts">Restricted Keyboard
+Shortcuts</h3>
+<p>Hiding the visual interface is only effective if users cannot use a
+physical or on-screen keyboard to bypass the restrictions. The
+<code>--kiosk</code> flag disables the vast majority of standard browser
+keyboard shortcuts.</p>
+<p>The following critical shortcuts are blocked in kiosk mode:</p>
+<ul>
+<li><strong>F11:</strong> Disabled so users cannot toggle out of
+full-screen mode.</li>
+<li><strong>Ctrl+T and Ctrl+N:</strong> Blocked to prevent opening new
+tabs or new browser windows.</li>
+<li><strong>Ctrl+W:</strong> Disabled to prevent users from closing the
+current active tab, which would leave them with a blank, unusable
+screen.</li>
+<li><strong>Ctrl+L, Alt+D, and F6:</strong> Disabled so users cannot
+focus on a hidden address bar to type a new URL.</li>
+<li><strong>Ctrl+H, Ctrl+J, and Ctrl+B:</strong> Blocked to prevent
+access to browsing history, downloads, and bookmarks.</li>
+<li><strong>F12 and Ctrl+Shift+I:</strong> Disabled to stop users from
+opening the Developer Tools to manipulate the webpage's code or view
+network activity.</li>
+</ul>
+<h3 id="context-menu-and-status-bar-suppression">Context Menu and Status
+Bar Suppression</h3>
+<p>In a standard browsing session, right-clicking anywhere on a page
+opens a context menu that allows users to navigate backward, reload the
+page, save images, or view the page source. The <code>--kiosk</code>
+flag completely disables the default browser right-click context
+menu.</p>
+<p>Additionally, when a user hovers over a hyperlink in a normal browser
+window, a small status overlay appears in the bottom-left corner
+displaying the destination URL. Kiosk mode suppresses this status bar,
+keeping the underlying web architecture hidden from the public user.</p>
+<h3 id="implementing-the-kiosk-flag">Implementing the Kiosk Flag</h3>
+<p>Executing this lockdown requires launching Firefox via a command-line
+interface, terminal, or a modified desktop shortcut. The basic syntax
+is:</p>
+<p><code>firefox --kiosk https://example.com</code></p>
+<p>To pair the kiosk mode with a private browsing session—ensuring that
+cookies, cache, and session data are wiped when the browser eventually
+closes—administrators can combine flags:</p>
+<p><code>firefox --kiosk --private-window https://example.com</code></p>
+<p>For the <code>--kiosk</code> flag to work properly, all existing
+instances of Firefox must be closed before running the command. If
+Firefox is already running in the background, executing the command will
+simply open a new tab in the existing, unlocked browser session.</p>
+<h3 id="system-level-limitations">System-Level Limitations</h3>
+<p>While the <code>--kiosk</code> flag successfully locks down the
+Firefox interface, it only controls the browser application, not the
+host operating system. Operating system shortcuts like
+<code>Alt+F4</code> (which closes the application), <code>Alt+Tab</code>
+(which switches windows), <code>Ctrl+Alt+Del</code>, and the
+<code>Windows</code> key remain active. Administrators deploying public
+displays must combine the Firefox <code>--kiosk</code> flag with
+operating system-level restrictions—such as Windows Assigned Access or a
+restricted Linux window manager—to achieve a completely tamper-proof
+environment.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-the-firefox-kiosk-flag-locks-down-public-displays';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

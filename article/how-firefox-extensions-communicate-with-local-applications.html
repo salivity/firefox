@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Extensions Communicate with Local Applications - firefox</title>
+    <meta name="description" content="This article explains how the Native Messaging API enables sandboxed Firefox extensions to securely communicate with local binary applications, such as password managers and download managers. By leveraging standard input and output streams, strict config">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-extensions-communicate-with-local-applications">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Extensions Communicate with Local Applications - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-extensions-communicate-with-local-applications" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Native Messaging API enables sandboxed Firefox extensions to securely communicate with local binary applications, such as password managers and download managers. By leveraging standard input and output streams, strict config" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-extensions-communicate-with-local-applications">How
+Firefox Extensions Communicate with Local Applications</h1>
+<p>This article explains how the Native Messaging API enables sandboxed
+Firefox extensions to securely communicate with local binary
+applications, such as password managers and download managers. By
+leveraging standard input and output streams, strict configuration
+manifests, and length-prefixed JSON data payloads, Firefox bridges the
+gap between web extensions and native operating system capabilities
+without compromising browser security.</p>
+<h3 id="the-core-architecture">The Core Architecture</h3>
+<p>Firefox extensions run in a restricted security sandbox, meaning they
+cannot directly access the local file system or execute native binary
+code. The Native Messaging API provides a controlled bridge out of this
+sandbox.</p>
+<p>When an extension initiates communication, Firefox acts as an
+intermediary. It locates the registered local binary application,
+launches it as a separate process on the host machine, and establishes a
+communication pipe. The extension and the local binary never interact
+directly; instead, Firefox passes messages between the extension's
+JavaScript environment and the local application's standard input
+(<code>stdin</code>) and standard output (<code>stdout</code>)
+streams.</p>
+<h3 id="security-and-configuration-requirements">Security and
+Configuration Requirements</h3>
+<p>To prevent malicious extensions from executing arbitrary programs on
+a user's computer, both the Firefox extension and the local binary must
+explicitly register and authorize each other.</p>
+<p><strong>1. The Extension Configuration</strong> The Firefox extension
+must request permission to use the API by including
+<code>"nativeMessaging"</code> in the <code>permissions</code> array of
+its <code>manifest.json</code> file.</p>
+<p><strong>2. The Native Host Configuration</strong> When the user
+installs the local application (such as a desktop password manager), the
+installer must place a separate JSON file—known as the native messaging
+manifest—into a specific directory or registry location dictated by the
+operating system. This manifest contains:</p>
+<ul>
+<li><code>name</code>: The unique identifier the extension will use to
+call the application.</li>
+<li><code>path</code>: The absolute path to the local binary
+executable.</li>
+<li><code>type</code>: Set to <code>"stdio"</code> to indicate
+communication via standard input and output.</li>
+<li><code>allowed_extensions</code>: An array of specific Firefox
+extension IDs. Firefox will block any extension not listed here from
+communicating with the binary.</li>
+</ul>
+<h3 id="establishing-the-connection">Establishing the Connection</h3>
+<p>Once configured, the extension uses the <code>browser.runtime</code>
+API to talk to the local binary. There are two methods of communication
+depending on the use case:</p>
+<p><strong>Persistent Connections
+(<code>browser.runtime.connectNative</code>)</strong> This method
+launches the local binary and keeps the process running, returning a
+<code>runtime.Port</code> object to the extension. Both the extension
+and the local application can listen for and send multiple messages over
+this port until one side explicitly closes it. This is commonly used by
+password managers that require continuous, stateful communication to
+lock, unlock, and autofill credentials.</p>
+<p><strong>One-Time Messages
+(<code>browser.runtime.sendNativeMessage</code>)</strong> This method is
+used for single, stateless transactions. Without creating a persistent
+port, Firefox launches the binary, sends a single JSON message, waits
+for the binary to reply with a single message, and then terminates the
+connection. This is ideal for download managers, where the extension
+simply needs to hand off a download URL and associated cookies to the
+local application and requires only a brief confirmation in return.</p>
+<h3 id="the-data-framing-protocol">The Data Framing Protocol</h3>
+<p>Because <code>stdin</code> and <code>stdout</code> are continuous
+streams of bytes, the local binary needs a reliable way to know where
+one message ends and the next begins. The Native Messaging API enforces
+a strict data protocol for all communication:</p>
+<ol type="1">
+<li><strong>Serialization:</strong> All messages must be formatted as
+valid JSON and encoded in UTF-8.</li>
+<li><strong>Length Prefixing:</strong> Every message is preceded by a
+32-bit (4-byte) integer in the host computer's native byte order. This
+integer specifies the exact byte length of the upcoming JSON
+string.</li>
+<li><strong>Reading and Writing:</strong> When the local binary reads
+from <code>stdin</code>, it must first read the initial 4 bytes to
+determine the size of the incoming payload. It then reads that exact
+number of bytes from the stream and parses the result as JSON. When
+sending data back to the Firefox extension via <code>stdout</code>, the
+binary must pack the length of its JSON response into 4 bytes, write
+those bytes to the stream, and immediately write the UTF-8 JSON
+string.</li>
+</ol>
+<p>To prevent memory exhaustion, Firefox enforces size limits on these
+messages: a single message sent from the extension to the native
+application cannot exceed 4 GB, and a single message sent from the
+native application back to Firefox cannot exceed 1 MB.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-extensions-communicate-with-local-applications';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

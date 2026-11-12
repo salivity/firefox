@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s Process Manager Tracks CPU and RAM Usage - firefox</title>
+    <meta name="description" content="This article explains the underlying mechanisms of the Firefox Process Manager and how it tracks and displays real-time system resource usage. By utilizing the about:processes page or the Shift+Esc keyboard shortcut, users can monitor the exact CPU percen">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-process-manager-tracks-cpu-and-ram-usage">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s Process Manager Tracks CPU and RAM Usage - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-process-manager-tracks-cpu-and-ram-usage" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the underlying mechanisms of the Firefox Process Manager and how it tracks and displays real-time system resource usage. By utilizing the about:processes page or the Shift+Esc keyboard shortcut, users can monitor the exact CPU percen" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-process-manager-tracks-cpu-and-ram-usage">How
+Firefox's Process Manager Tracks CPU and RAM Usage</h1>
+<p>This article explains the underlying mechanisms of the Firefox
+Process Manager and how it tracks and displays real-time system resource
+usage. By utilizing the <code>about:processes</code> page or the
+Shift+Esc keyboard shortcut, users can monitor the exact CPU percentage
+and RAM consumption of individual tabs, background processes, and
+isolated subframes. This guide covers how Firefox's multi-process
+architecture enables this granular tracking, how the browser queries the
+operating system for hardware metrics, and how the data is calculated
+and presented in real time.</p>
+<h2 id="accessing-the-process-manager">Accessing the Process
+Manager</h2>
+<p>Firefox includes a built-in task manager that does not require
+external extensions. You can open it at any time by typing
+<code>about:processes</code> into the address bar and pressing Enter, or
+by pressing the Shift+Esc keyboard shortcut. Once opened, the interface
+immediately begins polling system resources and displaying an updating
+list of everything currently running inside the browser.</p>
+<h2 id="the-role-of-site-isolation-project-fission">The Role of Site
+Isolation (Project Fission)</h2>
+<p>Firefox's ability to show resource usage per tab and per subframe
+relies entirely on its multi-process architecture, specifically a
+security and performance feature known as Site Isolation (or Project
+Fission).</p>
+<p>Instead of running the entire browser in a single system process,
+Firefox splits workloads into multiple independent operating system
+processes. Under Site Isolation, different websites—and even
+cross-origin subframes (such as embedded videos, advertisements, or
+social media widgets inside a webpage)—are locked into their own
+separate content processes. Because the operating system treats each
+isolated site and subframe as an individual program with its own Process
+ID (PID), Firefox can accurately measure the exact resources each
+component consumes without having to guess.</p>
+<h2 id="how-real-time-cpu-percentage-is-calculated">How Real-Time CPU
+Percentage is Calculated</h2>
+<p>To display the real-time CPU percentage, the Process Manager
+continuously takes snapshots of processor activity at regular intervals
+(typically every one to two seconds).</p>
+<ol type="1">
+<li><strong>OS Polling:</strong> Firefox queries the underlying
+operating system (Windows, macOS, or Linux) to find out how much CPU
+time (measured in milliseconds or nanoseconds) each specific Firefox PID
+and its internal threads have used since the browser started.</li>
+<li><strong>Calculating the Delta:</strong> The Process Manager compares
+the current CPU time of a process against the CPU time recorded during
+the previous snapshot.</li>
+<li><strong>Percentage Conversion:</strong> It divides the difference in
+CPU time by the actual real-world time that elapsed between the two
+snapshots. For example, if a tab's process used 500 milliseconds of CPU
+time over a 1,000-millisecond (1 second) interval, the Process Manager
+displays the usage as 50%.</li>
+</ol>
+<p>If a process drops to near-zero activity, the Process Manager drops
+the percentage and eventually labels the process as "Idle" to make the
+table easier to read.</p>
+<h2 id="how-ram-consumption-is-measured">How RAM Consumption is
+Measured</h2>
+<p>Measuring memory per tab and subframe is handled by combining
+operating system metrics with Firefox's internal memory reporters.</p>
+<p>Because every isolated tab and cross-origin subframe runs in its own
+content process, Firefox asks the operating system for the memory
+footprint of each specific PID. To give you the most accurate number,
+Firefox primarily looks at private memory—the exact amount of RAM that a
+specific process is using on its own, excluding memory that is shared
+across the entire browser (such as core browser code or shared graphics
+libraries).</p>
+<p>If you close a specific tab or subframe, the RAM number shown in
+<code>about:processes</code> represents the approximate amount of memory
+that will be immediately freed up and returned to your computer.</p>
+<h2 id="mapping-data-to-tabs-and-subframes-in-the-ui">Mapping Data to
+Tabs and Subframes in the UI</h2>
+<p>The Process Manager translates raw PID data into a human-readable
+hierarchy:</p>
+<ul>
+<li><strong>Site Processes:</strong> The main rows in the list represent
+the isolated processes, usually labeled by the domain name (e.g.,
+<code>example.com</code>) and its corresponding PID. The total RAM and
+CPU usage for that domain are shown on this main line.</li>
+<li><strong>Individual Tabs:</strong> Directly beneath a site's process,
+Firefox indents and lists the open tabs associated with that domain. If
+you have three tabs open from the same website, they share that specific
+content process.</li>
+<li><strong>Subframes:</strong> If a tab contains embedded content from
+a different website (like a third-party payment portal or an ad
+network), Firefox renders that subframe in a completely different
+process. However, for your convenience, the Process Manager visually
+groups and indents these subframes underneath the parent tab you are
+currently viewing, while still displaying the independent CPU and RAM
+metrics gathered from the subframe's separate PID.</li>
+<li><strong>System Processes:</strong> Alongside web content, the
+manager also isolates and tracks the main browser interface (Parent
+Process), extensions, the GPU process, and network utilities, ensuring
+total visibility into the browser's total system impact.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-process-manager-tracks-cpu-and-ram-usage';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

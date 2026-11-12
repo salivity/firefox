@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Network Diagnostics: HTTP/3, DNS, and WebSockets - firefox</title>
+    <meta name="description" content="This article provides a quick overview of the live network diagnostics available on the about:networking page in the Firefox Web Browser. It specifically covers how to monitor and analyze real-time data for HTTP/3 connections, DNS cache entries, and WebSo">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-network-diagnostics-http-3-dns-and-web-sockets">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Network Diagnostics: HTTP/3, DNS, and WebSockets - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-network-diagnostics-http-3-dns-and-web-sockets" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of the live network diagnostics available on the about:networking page in the Firefox Web Browser. It specifically covers how to monitor and analyze real-time data for HTTP/3 connections, DNS cache entries, and WebSo" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-network-diagnostics-http3-dns-and-websockets">Firefox
+Network Diagnostics: HTTP/3, DNS, and WebSockets</h1>
+<p>This article provides a quick overview of the live network
+diagnostics available on the <code>about:networking</code> page in the
+Firefox Web Browser. It specifically covers how to monitor and analyze
+real-time data for HTTP/3 connections, DNS cache entries, and WebSocket
+communications directly from the browser without needing external
+packet-sniffing tools.</p>
+<p>To view these diagnostics, type <code>about:networking</code> into
+the Firefox address bar and press Enter. For live monitoring, check the
+"Autorefresh every 3 seconds" box in the top right corner of the
+interface.</p>
+<h2 id="http3-connections">HTTP/3 Connections</h2>
+<p>Located under the <strong>HTTP</strong> tab, Firefox displays a table
+of all active and idle HTTP connections. Because HTTP/3 runs over the
+QUIC protocol rather than standard TCP, monitoring it here confirms
+whether sites are successfully negotiating the newer protocol. You can
+monitor the following live diagnostics:</p>
+<ul>
+<li><strong>Host:</strong> The domain name of the server the browser is
+communicating with.</li>
+<li><strong>Port:</strong> The network port used for the connection
+(typically port 443).</li>
+<li><strong>HTTP Version:</strong> Explicitly identifies the protocol in
+use, allowing you to filter and confirm active <code>HTTP/3</code>
+sessions alongside older HTTP/1.1 and HTTP/2 traffic.</li>
+<li><strong>SSL:</strong> A boolean indicator (true/false) confirming
+encryption. For HTTP/3, this will always read as true.</li>
+<li><strong>Active and Idle:</strong> Live counters showing the exact
+number of currently active data streams versus idle connections being
+kept alive for that specific host.</li>
+</ul>
+<h2 id="dns-cache-entries">DNS Cache Entries</h2>
+<p>Located under the <strong>DNS</strong> tab, Firefox reveals its
+internal Domain Name System cache. This section is vital for
+troubleshooting name resolution issues and verifying privacy settings.
+The live metrics include:</p>
+<ul>
+<li><strong>Hostname:</strong> The specific web domain that has been
+resolved.</li>
+<li><strong>Family:</strong> Indicates the IP protocol version used for
+the resolution, displayed as either <code>ipv4</code> or
+<code>ipv6</code>.</li>
+<li><strong>TRR (Trusted Recursive Resolver):</strong> A true/false
+value indicating whether the DNS query was routed securely through DNS
+over HTTPS (DoH) rather than the local network's default DNS
+server.</li>
+<li><strong>Addresses:</strong> The actual resolved IP address (or
+multiple addresses) associated with the hostname.</li>
+<li><strong>Expires (Seconds):</strong> A live countdown timer showing
+how many seconds remain before the cached entry expires and requires a
+fresh lookup.</li>
+</ul>
+<p>This tab also features a "Clear DNS Cache" button, which immediately
+purges all entries listed in the table to force fresh resolutions.</p>
+<h2 id="websockets">WebSockets</h2>
+<p>Located under the <strong>WebSockets</strong> tab, Firefox tracks
+persistent, bi-directional communication channels often used for live
+chats, gaming, and real-time data feeds. Unlike standard HTTP requests,
+these connections stay open to pass data back and forth continuously.
+You can monitor the following diagnostics:</p>
+<ul>
+<li><strong>Hostname:</strong> The destination URL of the WebSocket
+server.</li>
+<li><strong>SSL:</strong> Indicates whether the WebSocket is using an
+encrypted connection (<code>wss://</code>) or an unencrypted connection
+(<code>ws://</code>).</li>
+<li><strong>Messages Sent:</strong> A live counter tracking the total
+number of individual data frames the browser has pushed to the
+server.</li>
+<li><strong>Messages Received:</strong> A live counter tracking the
+total number of data frames the server has pushed to the browser.</li>
+<li><strong>Bytes Sent:</strong> The cumulative size of all outbound
+data transmitted over that specific WebSocket connection.</li>
+<li><strong>Bytes Received:</strong> The cumulative size of all inbound
+data received from the server, which is useful for identifying memory
+leaks or bandwidth-heavy web applications.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-network-diagnostics-http-3-dns-and-web-sockets';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

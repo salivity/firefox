@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Translations Works Locally Without the Cloud - firefox</title>
+    <meta name="description" content="Firefox Translations provides completely private web page translation by running advanced machine learning models directly on a user&#39;s device rather than relying on third-party cloud servers. This article explains the specific technologies behind this fea">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-translations-works-locally-without-the-cloud">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Translations Works Locally Without the Cloud - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-translations-works-locally-without-the-cloud" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox Translations provides completely private web page translation by running advanced machine learning models directly on a user&#39;s device rather than relying on third-party cloud servers. This article explains the specific technologies behind this fea" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-translations-works-locally-without-the-cloud">How
+Firefox Translations Works Locally Without the Cloud</h1>
+<p>Firefox Translations provides completely private web page translation
+by running advanced machine learning models directly on a user's device
+rather than relying on third-party cloud servers. This article explains
+the specific technologies behind this feature, detailing how Firefox
+downloads compact language models on demand, utilizes WebAssembly and
+CPU optimizations to process neural networks locally, and seamlessly
+replaces web page text while keeping your browsing data completely
+offline.</p>
+<h3 id="the-bergamot-project-engine">The Bergamot Project Engine</h3>
+<p>At the core of Firefox Translations is an open-source engine
+developed by the Bergamot Project, a consortium led by Mozilla and
+researchers from the University of Edinburgh, Charles University, the
+University of Sheffield, and the University of Tartu.</p>
+<p>This engine is built on Marian NMT, a highly efficient Neural Machine
+Translation framework written in C++. While traditional neural
+translation tools require massive cloud server farms to process text,
+the Bergamot engine is specifically engineered to execute complex neural
+network calculations using the limited memory and processing power of
+standard consumer computers and mobile devices.</p>
+<h3 id="execution-via-webassembly-and-simd">Execution via WebAssembly
+and SIMD</h3>
+<p>To run a C++ translation engine securely inside a web browser,
+Mozilla compiles the Bergamot code into WebAssembly (Wasm). WebAssembly
+is a binary instruction format that allows complex code to run inside
+the browser's sandbox environment at near-native speeds.</p>
+<p>Because most consumer devices do not have dedicated, high-end
+graphics cards (GPUs) to accelerate machine learning tasks, Firefox
+relies entirely on the device's central processor (CPU). To make
+CPU-based translation fast enough for real-time web browsing, Firefox
+utilizes WebAssembly SIMD (Single Instruction, Multiple Data). SIMD
+allows the CPU to perform the same mathematical operation on multiple
+pieces of data simultaneously. This parallel processing drastically
+speeds up the matrix multiplications required by the translation neural
+network.</p>
+<h3 id="compact-on-demand-language-models">Compact, On-Demand Language
+Models</h3>
+<p>Standard machine learning models for language translation often take
+up gigabytes of storage space, making it impossible to bundle them
+directly into the Firefox installer. Mozilla solves this through two
+techniques:</p>
+<ul>
+<li><strong>Model Compression and Quantization:</strong> Mozilla shrinks
+the neural networks by reducing the numerical precision of the model's
+parameters (quantization) from 32-bit floating-point numbers down to
+8-bit integers. By combining this with teacher-student model
+training—where a massive, accurate model trains a much smaller model—the
+file size is reduced to roughly 15 to 20 megabytes per language pair
+without a noticeable drop in translation quality.</li>
+<li><strong>On-Demand Caching:</strong> Firefox does not come
+pre-installed with these models. When you visit a foreign-language
+website and request a translation for the first time, Firefox
+automatically downloads the specific language model required. The model
+is saved locally in your browser's storage cache. From that point
+forward, translations for that language happen entirely offline.</li>
+</ul>
+<h3 id="translating-the-document-object-model-dom">Translating the
+Document Object Model (DOM)</h3>
+<p>Translating a live web page requires more than just converting raw
+text; the browser must maintain the website's layout, interactive
+elements, and styling.</p>
+<p>When a translation is triggered, Firefox scans the web page's
+Document Object Model (DOM) to extract visible text nodes while ignoring
+underlying code and scripts. To make the translation feel instantaneous,
+the browser prioritizes the text currently visible on your screen (the
+viewport) before translating the rest of the page in the background as
+you scroll.</p>
+<p>As the extracted text is fed into the local Bergamot engine, the
+system tracks the placement of inline HTML tags, such as bold text,
+italics, and hyperlinks. Once the neural network generates the
+translated sentences, the engine automatically maps the HTML formatting
+onto the new words and injects the translated text back into the DOM,
+delivering a fully formatted, translated web page without a single word
+ever leaving your device.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-translations-works-locally-without-the-cloud';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

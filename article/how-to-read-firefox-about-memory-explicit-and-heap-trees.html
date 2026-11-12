@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Read Firefox about:memory Explicit and Heap Trees - firefox</title>
+    <meta name="description" content="This article explains how to access and interpret the memory usage tree on the about:memory page in the Firefox web browser. Specifically, it covers how to navigate the hierarchical structure of the &quot;explicit&quot; memory allocation section and understand the">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-read-firefox-about-memory-explicit-and-heap-trees">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Read Firefox about:memory Explicit and Heap Trees - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-read-firefox-about-memory-explicit-and-heap-trees" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how to access and interpret the memory usage tree on the about:memory page in the Firefox web browser. Specifically, it covers how to navigate the hierarchical structure of the &quot;explicit&quot; memory allocation section and understand the" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-read-firefox-aboutmemory-explicit-and-heap-trees">How to
+Read Firefox about:memory Explicit and Heap Trees</h1>
+<p>This article explains how to access and interpret the memory usage
+tree on the <code>about:memory</code> page in the Firefox web browser.
+Specifically, it covers how to navigate the hierarchical structure of
+the "explicit" memory allocation section and understand the significance
+of the "heap-unclassified" metric to diagnose high RAM usage and
+potential memory leaks.</p>
+<h2 id="accessing-the-memory-report">Accessing the Memory Report</h2>
+<ol type="1">
+<li>Open the Firefox browser.</li>
+<li>Type <code>about:memory</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Under the <strong>Free memory</strong> or <strong>Measure and
+save</strong> boxes, find the <strong>Show memory reports</strong>
+section and click the <strong>Measure</strong> button.</li>
+</ol>
+<p>Firefox will generate a detailed report divided by processes,
+starting with the "Main Process" followed by individual "Web Content"
+and "Extension" processes.</p>
+<h2 id="understanding-the-tree-breakdown">Understanding the Tree
+Breakdown</h2>
+<p>The memory report uses a collapsible tree structure to display data.
+You can click on any text node with a <code>++</code> or <code>--</code>
+symbol (or simply click the text itself) to expand or collapse that
+specific branch.</p>
+<p>Each line in the tree follows a standard format:
+<code>1,234.56 MB (100.0%) -- explicit</code></p>
+<ul>
+<li><strong>Size (e.g., 1,234.56 MB):</strong> The exact amount of
+memory consumed by that entry. By default, it is shown in Megabytes
+(MB), though smaller sub-entries may show in Kilobytes (KB) or Bytes
+(B).</li>
+<li><strong>Percentage (e.g., 100.0%):</strong> How much of the parent
+category's memory this specific item is using.</li>
+<li><strong>Tree Connectors (<code>├──</code> and
+<code>└──</code>):</strong> Visual indicators showing the hierarchy.
+Items indented to the right are children of the item above them. The sum
+of all immediate child items will equal the total of their parent
+item.</li>
+</ul>
+<h2 id="reading-explicit-allocations">Reading "Explicit"
+Allocations</h2>
+<p>The <strong>explicit</strong> tree is the most important section for
+diagnosing memory usage. It represents the exact amount of memory that
+Firefox code and its components have explicitly requested from the
+operating system.</p>
+<p>Because the explicit root node represents the total tracked memory
+for that specific process, it always starts at <code>100.0%</code>. When
+you look beneath the <code>explicit</code> line, the browser breaks down
+where that memory is going in descending order from largest consumer to
+smallest.</p>
+<p>Common branches under <strong>explicit</strong> include:</p>
+<ul>
+<li><strong>window-objects:</strong> Memory used by open tabs and user
+interface windows. Expanding this will show the exact URLs of the
+websites currently using your RAM, broken down further into DOM
+elements, style sheets, and scripts.</li>
+<li><strong>js-non-window:</strong> Memory used by JavaScript that is
+not tied to a specific web page, such as background scripts, browser
+internals, and extensions.</li>
+<li><strong>images:</strong> RAM dedicated to caching and rendering
+images on web pages.</li>
+<li><strong>gfx / webrender:</strong> Memory used by the graphics engine
+to draw the browser and web pages on your screen.</li>
+<li><strong>heap-overhead:</strong> Memory wasted due to the way the
+browser's memory allocator rounds up requests or fragments data.</li>
+</ul>
+<p>To find out what is slowing down your browser, simply follow the
+largest percentages down the <code>explicit</code> tree until you reach
+the end of a branch.</p>
+<h2 id="reading-heap-unclassified">Reading "Heap-Unclassified"</h2>
+<p>As you read the top-level branches directly beneath the
+<code>explicit</code> node, you will see an entry labeled
+<strong>heap-unclassified</strong>. Unlike other branches, you cannot
+expand <code>heap-unclassified</code> to see what is inside it.</p>
+<p>Firefox uses internal "memory reporters" to label and track RAM
+usage. When a component requests memory, the reporter tags it so it
+shows up in the <code>explicit</code> tree (like under
+<code>images</code> or <code>window-objects</code>).
+<strong>Heap-unclassified</strong> is the pool of memory that Firefox
+knows it has allocated on the heap, but lacks a specific memory reporter
+to categorize.</p>
+<p>Here is how to interpret the <code>heap-unclassified</code>
+value:</p>
+<ul>
+<li><strong>Normal Usage (5% to 20%):</strong> It is completely normal
+for a portion of memory to be unclassified. Creating a memory reporter
+for every tiny function in the browser would slow Firefox down, so minor
+allocations are intentionally left untracked.</li>
+<li><strong>High Usage (Over 25%):</strong> If
+<code>heap-unclassified</code> makes up a massive percentage of your
+<code>explicit</code> memory, it usually indicates a memory leak.</li>
+</ul>
+<p>Because this memory is untracked, a high
+<code>heap-unclassified</code> number typically points to external
+factors interfering with Firefox. The most common culprits are poorly
+coded browser extensions, outdated graphics card drivers, or third-party
+antivirus software injecting code into the browser. If this number is
+unusually high, you can troubleshoot it by restarting Firefox in
+Troubleshoot Mode (which disables extensions and hardware acceleration)
+and checking <code>about:memory</code> again.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-read-firefox-about-memory-explicit-and-heap-trees';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

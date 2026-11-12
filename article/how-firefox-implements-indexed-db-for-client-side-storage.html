@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Implements IndexedDB for Client-Side Storage - firefox</title>
+    <meta name="description" content="This article explores the internal architecture of the Mozilla Firefox web browser and how it implements the IndexedDB standard for client-side storage. It covers the underlying SQLite database engine used to power the NoSQL API, the inter-process communi">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-implements-indexed-db-for-client-side-storage">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Implements IndexedDB for Client-Side Storage - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-implements-indexed-db-for-client-side-storage" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the internal architecture of the Mozilla Firefox web browser and how it implements the IndexedDB standard for client-side storage. It covers the underlying SQLite database engine used to power the NoSQL API, the inter-process communi" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-implements-indexeddb-for-client-side-storage">How
+Firefox Implements IndexedDB for Client-Side Storage</h1>
+<p>This article explores the internal architecture of the Mozilla
+Firefox web browser and how it implements the IndexedDB standard for
+client-side storage. It covers the underlying SQLite database engine
+used to power the NoSQL API, the inter-process communication (IPC)
+required for security, data serialization methods, and how the browser
+manages disk quotas and transactions.</p>
+<h3 id="sqlite-as-the-underlying-storage-engine">SQLite as the
+Underlying Storage Engine</h3>
+<p>Although the IndexedDB specification defines a NoSQL, transactional,
+key-value object store, Firefox implements it on top of a relational
+database management system: SQLite. For every IndexedDB database created
+by a web application, Firefox generates a corresponding SQLite database
+file on the user's local hard drive.</p>
+<p>The browser maps IndexedDB concepts directly to relational tables.
+For instance, internal SQLite tables are generated to track database
+metadata, object stores, and indexes. By translating IndexedDB API calls
+into SQL queries under the hood, Mozilla leverages SQLite’s proven
+reliability, ACID compliance (Atomicity, Consistency, Isolation,
+Durability), and crash recovery mechanisms rather than building and
+maintaining a custom database engine from scratch.</p>
+<h3 id="multi-process-architecture-and-ipc">Multi-Process Architecture
+and IPC</h3>
+<p>Firefox utilizes a multi-process architecture that separates
+untrusted web content from the core browser system for security and
+stability. Web pages run in sandboxed "content processes" that are
+forbidden from directly accessing the user's file system. Consequently,
+IndexedDB operations must cross process boundaries.</p>
+<p>When a web application executes an IndexedDB request, the content
+process sends an asynchronous message to the privileged "parent process"
+using Firefox's Inter-Process Communication (IPC) layer. Specifically,
+it uses a dedicated background mechanism known as
+<code>PBackground</code>. This ensures that the heavy lifting of message
+routing and disk Input/Output (I/O) happens entirely off the main user
+interface thread, preventing the browser from freezing while large
+datasets are read or written.</p>
+<h3 id="data-serialization-and-file-handling">Data Serialization and
+File Handling</h3>
+<p>SQLite cannot natively store raw JavaScript objects. To store data,
+Firefox first serializes the JavaScript objects in the content process
+using the HTML5 Structured Clone Algorithm. This converts complex
+objects—such as Maps, Sets, Dates, and nested arrays—into a flat binary
+array. To save disk space and improve I/O speed, Firefox compresses this
+binary data using the Snappy compression library before sending it over
+IPC to be written into the SQLite database.</p>
+<p>Large binary objects, such as <code>Blob</code> or <code>File</code>
+instances, are treated differently to prevent the SQLite database from
+becoming bloated and slow. Firefox intercepts these files and writes
+them directly to the local file system in a dedicated directory
+alongside the database. The SQLite database only stores a lightweight
+reference pointer to the external file, which is seamlessly reconnected
+when the web application requests the data back.</p>
+<h3 id="the-quota-manager-and-origin-isolation">The Quota Manager and
+Origin Isolation</h3>
+<p>All IndexedDB files are stored within the user's Firefox profile
+directory and are strictly segregated by the web application's origin
+(the combination of protocol, domain, and port) to enforce the
+Same-Origin Policy.</p>
+<p>Disk space for these files is governed by Firefox's Quota Manager.
+This unified system tracks and limits storage usage across IndexedDB,
+the Cache API, and LocalStorage. Firefox enforces both a global limit (a
+percentage of available disk space) and a per-origin limit. By default,
+IndexedDB data is classified as "best-effort" temporary storage. If the
+user's hard drive runs critically low on space, the Quota Manager uses a
+Least Recently Used (LRU) policy to automatically delete the oldest
+origin data, ensuring web applications cannot exhaust the host system's
+storage.</p>
+<h3 id="transactions-and-concurrency">Transactions and Concurrency</h3>
+<p>The IndexedDB standard dictates strict rules for data access through
+three transaction types: <code>readonly</code>, <code>readwrite</code>,
+and <code>versionchange</code>. Firefox manages these in the parent
+process using a dedicated thread pool for database I/O.</p>
+<p>Firefox allows multiple <code>readonly</code> transactions on the
+same object store to execute concurrently, maximizing performance for
+data retrieval. However, if a web app initiates multiple
+<code>readwrite</code> transactions that target overlapping object
+stores, Firefox queues them and executes them sequentially to prevent
+race conditions and data corruption. A <code>versionchange</code>
+transaction, which is used to create or delete object stores and
+indexes, acts as an exclusive lock, blocking all other transactions on
+that database until the schema modification is fully committed to the
+SQLite file.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-implements-indexed-db-for-client-side-storage';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

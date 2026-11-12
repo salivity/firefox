@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Uses SQLite for History, Bookmarks, and Cookies - firefox</title>
+    <meta name="description" content="This article explores how the Mozilla Firefox web browser utilizes SQLite, a lightweight and serverless relational database engine, to manage and store essential user data locally. Specifically, it examines the architecture of the places.sqlite and cookie">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-uses-sq-lite-for-history-bookmarks-and-cookies">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Uses SQLite for History, Bookmarks, and Cookies - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-uses-sq-lite-for-history-bookmarks-and-cookies" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores how the Mozilla Firefox web browser utilizes SQLite, a lightweight and serverless relational database engine, to manage and store essential user data locally. Specifically, it examines the architecture of the places.sqlite and cookie" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-uses-sqlite-for-history-bookmarks-and-cookies">How
+Firefox Uses SQLite for History, Bookmarks, and Cookies</h1>
+<p>This article explores how the Mozilla Firefox web browser utilizes
+SQLite, a lightweight and serverless relational database engine, to
+manage and store essential user data locally. Specifically, it examines
+the architecture of the <code>places.sqlite</code> and
+<code>cookies.sqlite</code> database files, detailing how Firefox
+organizes browsing history, bookmarks, and website cookies for fast
+retrieval, data integrity, and reliable storage.</p>
+<h3 id="why-firefox-uses-sqlite">Why Firefox Uses SQLite</h3>
+<p>Firefox relies on SQLite because it is an embedded database engine
+that writes directly to ordinary disk files without requiring a separate
+server process. This allows Firefox to store complex, relational data
+inside the user's local profile directory. Because SQLite is
+ACID-compliant (Atomic, Consistent, Isolated, Durable), it ensures that
+user data is not easily corrupted if the browser or operating system
+crashes unexpectedly.</p>
+<h3 id="storing-history-and-bookmarks-placessqlite">Storing History and
+Bookmarks: <code>places.sqlite</code></h3>
+<p>In Firefox, the system responsible for managing both browsing history
+and bookmarks is called "Places." Instead of separating history and
+bookmarks into different files, Firefox combines them into a single
+SQLite database named <code>places.sqlite</code>. This unified approach
+prevents data duplication, as a bookmarked URL and a visited URL often
+point to the exact same web address.</p>
+<p>The <code>places.sqlite</code> file relies on three primary tables to
+organize this information:</p>
+<ul>
+<li><strong><code>moz_places</code>:</strong> This is the central table
+of the database. Every unique URL the user visits or bookmarks is
+assigned a single row here. Columns in this table store the URL itself,
+the page title, a unique identifier (GUID), the total visit count, and a
+"frecency" score. Frecency is a custom Firefox metric combining
+<em>frequency</em> and <em>recency</em> to predict which links should
+appear first in the address bar's autocomplete drop-down.</li>
+<li><strong><code>moz_historyvisits</code>:</strong> While
+<code>moz_places</code> stores the URLs, <code>moz_historyvisits</code>
+logs the actual events of visiting those URLs. Each row represents a
+single visit and links back to the <code>moz_places</code> table via a
+<code>place_id</code>. It records the exact timestamp of the visit, the
+referring URL (where the user came from), and the transition type (e.g.,
+whether the user typed the URL, clicked a link, or used a
+bookmark).</li>
+<li><strong><code>moz_bookmarks</code>:</strong> This table stores the
+hierarchy and metadata of the user's bookmarks. It uses a tree structure
+where rows can represent folders, separators, or actual bookmarks. If a
+row is a bookmark, it contains a foreign key (<code>fk</code>) that
+points directly to the corresponding URL in the <code>moz_places</code>
+table. It also stores user-defined titles, creation dates, and
+last-modified timestamps.</li>
+</ul>
+<h3 id="storing-website-cookies-cookiessqlite">Storing Website Cookies:
+<code>cookies.sqlite</code></h3>
+<p>Cookies—small pieces of data websites use to remember login states,
+preferences, and tracking information—are isolated in their own database
+file named <code>cookies.sqlite</code>. Separating cookies from history
+ensures that heavy cookie read/write operations on complex websites do
+not slow down address bar searches or history logging.</p>
+<p>The core of this database is a single table named
+<strong><code>moz_cookies</code></strong>. Each row in this table
+represents an individual cookie and includes the following data
+columns:</p>
+<ul>
+<li><strong><code>host</code> and <code>baseDomain</code>:</strong>
+Identifies the specific website or domain that owns the cookie.</li>
+<li><strong><code>name</code> and <code>value</code>:</strong> The
+actual data payload of the cookie (such as a session ID).</li>
+<li><strong><code>path</code>:</strong> The specific URL path on the
+host where the cookie is valid.</li>
+<li><strong><code>expiry</code> and <code>lastAccessed</code>:</strong>
+Timestamps that tell Firefox when to automatically delete the cookie and
+when it was last used.</li>
+<li><strong>Security Flags:</strong> Columns such as
+<code>isSecure</code> (requires HTTPS), <code>isHttpOnly</code>
+(prevents client-side scripts from accessing the cookie), and
+<code>sameSite</code> (controls cross-site sending of the cookie)
+enforce web security standards directly at the database level.</li>
+</ul>
+<h3 id="database-performance-and-concurrency">Database Performance and
+Concurrency</h3>
+<p>Reading from and writing to a hard drive is one of the slowest
+operations a browser performs. To prevent the browser interface from
+freezing every time a user clicks a link or receives a cookie, Firefox
+implements specific SQLite optimizations:</p>
+<ol type="1">
+<li><strong>Write-Ahead Logging (WAL):</strong> Firefox configures its
+SQLite databases to use WAL mode. Instead of writing changes directly to
+the main <code>.sqlite</code> file, Firefox quickly appends changes to a
+temporary <code>-wal</code> file. This allows the browser to read from
+the database and write to it simultaneously without locking up the user
+interface. Periodically, Firefox merges the <code>-wal</code> file back
+into the main database.</li>
+<li><strong>In-Memory Caching:</strong> For <code>cookies.sqlite</code>,
+Firefox often loads active cookies into the computer's RAM during a
+browsing session. It processes changes in memory and writes them back to
+the SQLite database asynchronously in the background.</li>
+<li><strong>Idle Maintenance (Vacuuming):</strong> When history or
+cookies are deleted, SQLite does not immediately shrink the file size;
+it simply marks that space as reusable. When the computer is idle,
+Firefox runs a SQLite <code>VACUUM</code> command to rebuild the
+database files, defragment the data, and reclaim disk space.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-uses-sq-lite-for-history-bookmarks-and-cookies';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

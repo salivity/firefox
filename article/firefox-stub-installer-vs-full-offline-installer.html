@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox: Stub Installer vs. Full Offline Installer - firefox</title>
+    <meta name="description" content="This article provides a direct comparison between the Mozilla Firefox Stub Installer and the Full Offline Installers (.exe and .msi). It covers the core differences in file size, internet connectivity requirements, system architecture detection, and enter">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-stub-installer-vs-full-offline-installer">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox: Stub Installer vs. Full Offline Installer - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-stub-installer-vs-full-offline-installer" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a direct comparison between the Mozilla Firefox Stub Installer and the Full Offline Installers (.exe and .msi). It covers the core differences in file size, internet connectivity requirements, system architecture detection, and enter" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-stub-installer-vs-full-offline-installer">Firefox: Stub
+Installer vs. Full Offline Installer</h1>
+<p>This article provides a direct comparison between the Mozilla Firefox
+Stub Installer and the Full Offline Installers (.exe and .msi). It
+covers the core differences in file size, internet connectivity
+requirements, system architecture detection, and enterprise deployment
+features to help you determine which installer best suits your specific
+needs.</p>
+<h3 id="the-lightweight-stub-installer">The Lightweight Stub
+Installer</h3>
+<p>When you visit the standard Firefox download page on a Windows
+computer, you are given the Stub Installer by default. This is a very
+small file, typically under 1 MB, that acts as a download manager rather
+than containing the browser itself.</p>
+<ul>
+<li><strong>Internet Required:</strong> You must have an active internet
+connection during the installation process because the stub downloads
+the latest browser files in real-time.</li>
+<li><strong>Automatic Optimization:</strong> The stub automatically
+detects your operating system's architecture and downloads the correct
+version (32-bit or 64-bit) for optimal performance.</li>
+<li><strong>Streamlined Process:</strong> It installs Firefox in the
+default system directory with minimal user interaction. You cannot
+customize the installation path or specific settings during the
+setup.</li>
+<li><strong>Best For:</strong> Everyday users installing Firefox on a
+single computer with a reliable internet connection.</li>
+</ul>
+<h3 id="the-full-offline-installer-exe">The Full Offline Installer
+(.exe)</h3>
+<p>The Full Offline Installer (.exe) is a standalone executable file
+that contains all the data needed to install Firefox. Because it holds
+the entire browser package, the initial download size is much larger,
+typically ranging from 50 MB to 70 MB.</p>
+<ul>
+<li><strong>No Internet Required for Setup:</strong> Once downloaded,
+you can transfer this file via a USB drive and install Firefox on any
+compatible computer without needing an internet connection.</li>
+<li><strong>Manual Selection:</strong> You must manually choose the
+correct architecture (32-bit or 64-bit) and the specific language
+version before downloading the file.</li>
+<li><strong>Custom Installation:</strong> Unlike the stub, the .exe
+offline installer provides a setup wizard. This allows you to choose a
+custom installation directory, decide which shortcuts to create, and
+opt-out of the Mozilla Maintenance Service.</li>
+<li><strong>Best For:</strong> Users with unstable internet connections,
+those who want to install Firefox on a secondary drive, or technicians
+installing the browser on multiple computers via a flash drive.</li>
+</ul>
+<h3 id="the-full-offline-installer-msi">The Full Offline Installer
+(.msi)</h3>
+<p>The .msi installer is a specialized version of the full offline
+installer built specifically as a Microsoft Windows Installer package.
+Like the .exe version, it contains the entire browser and does not
+require an internet connection to run, though it actually wraps the .exe
+installer inside an MSI format.</p>
+<ul>
+<li><strong>Enterprise Deployment:</strong> The .msi file is designed to
+work seamlessly with Windows deployment tools such as Active Directory,
+Group Policy, and Microsoft Endpoint Configuration Manager (formerly
+SCCM).</li>
+<li><strong>Command-Line Customization:</strong> System administrators
+can use standard MSI command-line switches to run silent installations
+in the background without interrupting the end-user.</li>
+<li><strong>Best For:</strong> IT professionals and system
+administrators deploying and managing Firefox across a corporate,
+educational, or enterprise network.</li>
+</ul>
+<h3 id="summary-of-differences">Summary of Differences</h3>
+<ul>
+<li><strong>File Size:</strong> The Stub Installer is less than 1 MB;
+the Offline Installers (.exe and .msi) are over 50 MB.</li>
+<li><strong>Connection:</strong> The Stub requires internet during
+installation; the Offline Installers only require internet for the
+initial file download.</li>
+<li><strong>Version Control:</strong> The Stub always fetches the newest
+version available at the moment of installation; the Offline Installers
+will install whatever version they were when you originally downloaded
+them.</li>
+<li><strong>Control:</strong> The Stub offers zero customization; the
+.exe offers local path customization; the .msi offers network-wide
+administrative control.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-stub-installer-vs-full-offline-installer';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

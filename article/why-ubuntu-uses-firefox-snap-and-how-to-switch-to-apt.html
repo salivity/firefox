@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Ubuntu Uses Firefox Snap and How to Switch to APT - firefox</title>
+    <meta name="description" content="This article explores the reasons behind Canonical and Mozilla&#39;s decision to transition Ubuntu&#39;s default Firefox web browser from a traditional Debian (.deb) package to a universal Snap package. Additionally, it provides a straightforward, step-by-step gu">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-ubuntu-uses-firefox-snap-and-how-to-switch-to-apt">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Ubuntu Uses Firefox Snap and How to Switch to APT - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-ubuntu-uses-firefox-snap-and-how-to-switch-to-apt" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the reasons behind Canonical and Mozilla&#39;s decision to transition Ubuntu&#39;s default Firefox web browser from a traditional Debian (.deb) package to a universal Snap package. Additionally, it provides a straightforward, step-by-step gu" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-ubuntu-uses-firefox-snap-and-how-to-switch-to-apt">Why
+Ubuntu Uses Firefox Snap and How to Switch to APT</h1>
+<p>This article explores the reasons behind Canonical and Mozilla's
+decision to transition Ubuntu's default Firefox web browser from a
+traditional Debian (<code>.deb</code>) package to a universal Snap
+package. Additionally, it provides a straightforward, step-by-step guide
+for users who prefer to remove the Snap version and install the native
+<code>.deb</code> package directly from Mozilla's official APT
+repository.</p>
+<h2 id="why-ubuntu-switched-firefox-to-a-snap-package">Why Ubuntu
+Switched Firefox to a Snap Package</h2>
+<p>Starting with Ubuntu 21.10 and continuing into Long Term Support
+(LTS) releases like 22.04 and 24.04, Firefox is installed as a Snap
+package by default. Even if you run
+<code>sudo apt install firefox</code>, Ubuntu uses a transitional
+package that installs the Snap version in the background. This decision
+was made in direct collaboration with Mozilla for several key
+reasons:</p>
+<ul>
+<li><strong>Faster Security Updates:</strong> Previously, when Mozilla
+released an update, Canonical engineers had to repackage it into
+<code>.deb</code> formats for every currently supported version of
+Ubuntu (e.g., 20.04, 22.04, 23.10) and test it against different system
+libraries. With Snap, Mozilla can push a single update directly to all
+Ubuntu users simultaneously the moment it is ready.</li>
+<li><strong>Consistent Runtime Environment:</strong> Because Snaps
+bundle their own dependencies, Firefox runs on the exact same libraries
+across all Ubuntu versions. This eliminates bugs caused by older system
+libraries in older Ubuntu LTS releases and allows users on older systems
+to benefit from the latest compiler optimizations.</li>
+<li><strong>Enhanced Security through Sandboxing:</strong> Snap packages
+run in a strictly confined sandbox using AppArmor and Seccomp. This
+isolates the browser from the rest of the operating system, limiting the
+potential damage if the browser is compromised by a security
+vulnerability.</li>
+<li><strong>Reduced Maintenance Overhead:</strong> Maintaining and
+backporting complex browser updates across multiple operating system
+releases required significant developer time. Switching to Snap freed up
+Ubuntu maintainers to focus on other parts of the operating system.</li>
+</ul>
+<h2 id="how-to-switch-to-mozillas-official-apt-repository">How to Switch
+to Mozilla's Official APT Repository</h2>
+<p>While the Snap version has improved significantly since its initial
+release, some users still prefer the traditional <code>.deb</code>
+package for faster cold-start times, better integration with custom
+system themes, or compatibility with specific native messaging host
+extensions (like certain password managers).</p>
+<p>Mozilla now maintains its own official APT repository. Follow these
+steps to completely replace the Firefox Snap with the official
+<code>.deb</code> package.</p>
+<h3 id="1-remove-the-firefox-snap-package">1. Remove the Firefox Snap
+Package</h3>
+<p>Open your terminal and remove the existing Snap installation of
+Firefox:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> snap remove firefox</span></code></pre></div>
+<h3 id="2-import-the-mozilla-apt-repository-signing-key">2. Import the
+Mozilla APT Repository Signing Key</h3>
+<p>First, create a directory to store APT repository keys if it does not
+already exist:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> install <span class="at">-d</span> <span class="at">-m</span> 0755 /etc/apt/keyrings</span></code></pre></div>
+<p>Next, download and import the official Mozilla signing key. (Ensure
+you have <code>wget</code> installed):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-q</span> https://packages.mozilla.org/apt/repo-signing-key.gpg <span class="at">-O-</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/apt/keyrings/packages.mozilla.org.asc <span class="op">&gt;</span> /dev/null</span></code></pre></div>
+<h3 id="3-add-the-mozilla-repository-to-your-system">3. Add the Mozilla
+Repository to Your System</h3>
+<p>Add the official Mozilla APT repository to your system's software
+sources list:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main&quot;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee <span class="at">-a</span> /etc/apt/sources.list.d/mozilla.list <span class="op">&gt;</span> /dev/null</span></code></pre></div>
+<h3 id="4-configure-apt-pinning-to-prioritize-mozillas-package">4.
+Configure APT Pinning to Prioritize Mozilla's Package</h3>
+<p>By default, Ubuntu's repositories contain a transitional package that
+will force the Snap version to reinstall during a system update. You
+must tell the APT package manager to prioritize packages coming from
+Mozilla's servers over Ubuntu's servers:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">Package: *</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">Pin: origin packages.mozilla.org</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">Pin-Priority: 1000</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">&#39;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/apt/preferences.d/mozilla</span></code></pre></div>
+<h3 id="5-prevent-unattended-upgrades-from-reinstalling-the-snap">5.
+Prevent Unattended Upgrades from Reinstalling the Snap</h3>
+<p>To ensure background system updates do not overwrite your preference,
+block the Ubuntu Firefox package specifically:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&#39;Unattended-Upgrade::Origins-Pattern { &quot;site=packages.mozilla.org&quot;; };&#39;</span> <span class="kw">|</span> <span class="fu">sudo</span> tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox</span></code></pre></div>
+<h3 id="6-install-the-native-firefox-deb-package">6. Install the Native
+Firefox Deb Package</h3>
+<p>Finally, update your package lists and install Firefox. APT will now
+pull the traditional <code>.deb</code> package directly from
+Mozilla:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt install firefox</span></code></pre></div>
+<p>You now have the native <code>.deb</code> version of Firefox
+installed, which will update seamlessly alongside the rest of your
+system packages during standard APT updates.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-ubuntu-uses-firefox-snap-and-how-to-switch-to-apt';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

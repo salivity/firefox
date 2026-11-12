@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s Ctrl+Tab Recently Used Order Setting Works - firefox</title>
+    <meta name="description" content="This article explains the functionality of the &quot;Ctrl+Tab cycles through tabs in recently used order&quot; setting in the Mozilla Firefox web browser. It covers how enabling this option changes the default sequential tab-switching behavior into a chronological">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-ctrl-tab-recently-used-order-setting-works">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s Ctrl+Tab Recently Used Order Setting Works - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-ctrl-tab-recently-used-order-setting-works" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the functionality of the &quot;Ctrl+Tab cycles through tabs in recently used order&quot; setting in the Mozilla Firefox web browser. It covers how enabling this option changes the default sequential tab-switching behavior into a chronological" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-ctrltab-recently-used-order-setting-works">How
+Firefox's Ctrl+Tab Recently Used Order Setting Works</h1>
+<p>This article explains the functionality of the "Ctrl+Tab cycles
+through tabs in recently used order" setting in the Mozilla Firefox web
+browser. It covers how enabling this option changes the default
+sequential tab-switching behavior into a chronological one, introduces
+the visual tab-preview overlay, and improves multitasking efficiency for
+users juggling multiple tabs.</p>
+<h2 id="the-default-behavior-setting-disabled">The Default Behavior
+(Setting Disabled)</h2>
+<p>When this setting is unchecked in Firefox's General settings,
+pressing <code>Ctrl+Tab</code> simply moves your active view from the
+current tab to the next tab immediately to its right. Pressing
+<code>Ctrl+Shift+Tab</code> moves to the tab immediately to the left.
+This happens instantly without any pop-ups or visual menus, following
+the strict physical order of the tabs on your tab bar.</p>
+<h2 id="what-happens-when-you-enable-the-setting">What Happens When You
+Enable the Setting</h2>
+<p>Enabling "Ctrl+Tab cycles through tabs in recently used order"
+fundamentally changes how the keyboard shortcut functions, making it
+behave similarly to the <code>Alt+Tab</code> application switcher in
+Windows or <code>Command+Tab</code> in macOS.</p>
+<h3 id="1-chronological-tab-switching">1. Chronological Tab
+Switching</h3>
+<p>Instead of moving left to right, Firefox remembers the exact order in
+which you viewed your tabs.</p>
+<ul>
+<li><strong>Quickly pressing and releasing
+<code>Ctrl+Tab</code>:</strong> This will instantly jump you back to the
+last tab you were looking at, regardless of where it is located on the
+tab bar. Pressing it again returns you to the tab you just left. This
+allows you to rapidly toggle between two distant tabs without moving
+them next to each other.</li>
+</ul>
+<h3 id="2-the-visual-tab-switcher-overlay">2. The Visual Tab Switcher
+Overlay</h3>
+<p>If you press <code>Ctrl+Tab</code> and <strong>continue holding down
+the <code>Ctrl</code> key</strong>, a visual overlay menu appears in the
+center of the Firefox window.</p>
+<ul>
+<li>This menu displays thumbnail previews and titles of your recently
+used tabs, ordered from most recently used (on the left) to least
+recently used (on the right).</li>
+<li>While still holding <code>Ctrl</code>, each subsequent press of the
+<code>Tab</code> key moves the highlight box to the next thumbnail in
+the list.</li>
+<li>Pressing <code>Shift+Tab</code> while holding <code>Ctrl</code>
+moves the highlight box backward through the list.</li>
+<li>You only switch to the newly selected tab once you release the
+<code>Ctrl</code> key.</li>
+</ul>
+<h3 id="3-access-to-all-open-tabs">3. Access to All Open Tabs</h3>
+<p>The visual overlay generally displays up to six of your most recently
+used tabs as thumbnails. If you have more than six tabs open, a button
+labeled "List All [Number] Tabs" appears at the bottom of the overlay.
+Clicking this—or navigating to it—opens a vertical drop-down menu
+showing every open tab in your current browser window.</p>
+<h2 id="summary-of-benefits">Summary of Benefits</h2>
+<p>Turning this feature on is ideal for users who keep dozens of tabs
+open simultaneously but primarily work between two or three specific
+tabs at any given moment. It eliminates the need to manually drag and
+drop tabs next to each other for quick referencing and provides a visual
+preview to help identify the correct tab before switching to it.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-ctrl-tab-recently-used-order-setting-works';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Preferences Prevent Accidental Tab Closure - firefox</title>
+    <meta name="description" content="This article provides an overview of how the browser.tabs.warnOnClose and browser.warnOnQuitShortcut preferences in the Mozilla Firefox web browser protect users from accidentally losing their work. By enabling these hidden configuration settings, Firefox">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-accidental-tab-closure">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Preferences Prevent Accidental Tab Closure - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-accidental-tab-closure" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how the browser.tabs.warnOnClose and browser.warnOnQuitShortcut preferences in the Mozilla Firefox web browser protect users from accidentally losing their work. By enabling these hidden configuration settings, Firefox" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-preferences-prevent-accidental-tab-closure">How
+Firefox Preferences Prevent Accidental Tab Closure</h1>
+<p>This article provides an overview of how the
+<code>browser.tabs.warnOnClose</code> and
+<code>browser.warnOnQuitShortcut</code> preferences in the Mozilla
+Firefox web browser protect users from accidentally losing their work.
+By enabling these hidden configuration settings, Firefox introduces
+confirmation prompts that intercept accidental clicks and mistyped
+keyboard shortcuts, ensuring that multiple open tabs and active browsing
+sessions are not terminated unintentionally.</p>
+<h3 id="understanding-browsertabswarnonclose">Understanding
+<code>browser.tabs.warnOnClose</code></h3>
+<p>The <code>browser.tabs.warnOnClose</code> preference specifically
+protects against the accidental closure of an entire browser window
+containing more than one tab.</p>
+<p>When you are working across multiple tabs, clicking the main window's
+close button by mistake will instantly terminate your session. If you
+have unsaved data in web forms, unsubmitted text, or ongoing downloads,
+that work is immediately lost.</p>
+<p>When <code>browser.tabs.warnOnClose</code> is set to
+<strong>true</strong>, Firefox halts the closing process whenever two or
+more tabs are open in the current window. Instead of shutting down
+immediately, the browser displays a pop-up dialog box asking you to
+confirm that you want to close all the tabs. This gives you the
+opportunity to cancel the action and return to your work safely.</p>
+<h3 id="understanding-browserwarnonquitshortcut">Understanding
+<code>browser.warnOnQuitShortcut</code></h3>
+<p>The <code>browser.warnOnQuitShortcut</code> preference addresses a
+common keyboard mishap: pressing <strong>Ctrl+Q</strong> (or Cmd+Q on
+macOS) instead of a neighboring shortcut.</p>
+<p>On standard keyboards, the "Q" key is located right next to the "W"
+key and the "Tab" key. Users frequently intend to press
+<strong>Ctrl+W</strong> to close a single tab, or
+<strong>Ctrl+Tab</strong> to switch between tabs, and accidentally press
+<strong>Ctrl+Q</strong> instead. By default in some configurations,
+pressing Ctrl+Q instantly quits the entire Firefox application, closing
+all open windows and tabs at once without saving current page
+states.</p>
+<p>When <code>browser.warnOnQuitShortcut</code> is set to
+<strong>true</strong>, Firefox intercepts the Ctrl+Q command. Rather
+than instantly terminating the application, it triggers a confirmation
+prompt asking if you truly intend to quit the browser. This simple
+barrier prevents a slip of the finger from wiping out an entire
+workspace.</p>
+<h3 id="how-to-enable-these-safeguards">How to Enable These
+Safeguards</h3>
+<p>While these settings can often be toggled in the standard Firefox
+Settings menu under the "General" tab (labeled as <em>Confirm before
+closing multiple tabs</em> and <em>Confirm before quitting with
+Ctrl+Q</em>), you can directly enforce them using the advanced
+configuration editor:</p>
+<ol type="1">
+<li>Type <code>about:config</code> into the Firefox address bar and
+press <strong>Enter</strong>.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>In the search bar at the top, type
+<code>browser.tabs.warnOnClose</code>.</li>
+<li>If the value is set to <code>false</code>, double-click the row to
+change it to <code>true</code>.</li>
+<li>Clear the search bar and type
+<code>browser.warnOnQuitShortcut</code>.</li>
+<li>Ensure this value is also set to <code>true</code> by
+double-clicking the row if necessary.</li>
+</ol>
+<p>Once both boolean values are set to <code>true</code>, the safeguards
+are immediately active, requiring no browser restart to protect your
+active sessions.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-accidental-tab-closure';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

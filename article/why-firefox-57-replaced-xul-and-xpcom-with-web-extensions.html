@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox 57 Replaced XUL and XPCOM with WebExtensions - firefox</title>
+    <meta name="description" content="In November 2017, Mozilla released Firefox 57, codenamed Firefox Quantum, which permanently dropped support for legacy XUL and XPCOM extensions in favor of the new WebExtensions API. This monumental shift was driven by the urgent need to modernize the bro">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-57-replaced-xul-and-xpcom-with-web-extensions">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox 57 Replaced XUL and XPCOM with WebExtensions - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-57-replaced-xul-and-xpcom-with-web-extensions" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In November 2017, Mozilla released Firefox 57, codenamed Firefox Quantum, which permanently dropped support for legacy XUL and XPCOM extensions in favor of the new WebExtensions API. This monumental shift was driven by the urgent need to modernize the bro" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-57-replaced-xul-and-xpcom-with-webextensions">Why
+Firefox 57 Replaced XUL and XPCOM with WebExtensions</h1>
+<p>In November 2017, Mozilla released Firefox 57, codenamed Firefox
+Quantum, which permanently dropped support for legacy XUL and XPCOM
+extensions in favor of the new WebExtensions API. This monumental shift
+was driven by the urgent need to modernize the browser's core
+architecture, improve performance through multi-process capabilities,
+enhance user security, and simplify cross-browser extension development.
+While the transition broke compatibility with many beloved, deeply
+integrated add-ons, it was a necessary evolution to ensure Firefox
+remained fast, stable, and competitive in the modern web landscape.</p>
+<h2 id="the-fragility-of-xul-and-xpcom">The Fragility of XUL and
+XPCOM</h2>
+<p>For years, Firefox used XUL (XML User Interface Language) and XPCOM
+(Cross Platform Component Object Model) to build both the browser itself
+and its extensions. This meant legacy extensions were not restricted by
+a defined set of rules; instead, they had direct, unrestricted access to
+Firefox’s internal code.</p>
+<p>While this allowed developers to modify almost any aspect of the
+browser, it created a massive maintenance problem. Because there was no
+separation between the browser's core code and the extensions, routine
+Firefox updates frequently broke add-ons. Conversely, poorly written
+extensions could easily destabilize or crash the entire browser.</p>
+<h2
+id="enabling-multi-process-architecture-and-firefox-quantum">Enabling
+Multi-Process Architecture and Firefox Quantum</h2>
+<p>Modern web browsers split tasks across multiple CPU processes to keep
+the browser responsive if a single web page freezes. Mozilla's
+initiative to bring this multi-process architecture to Firefox was
+called Project Electrolysis (e10s), which culminated in the
+high-performance Firefox 57 Quantum update.</p>
+<p>Legacy XUL and XPCOM extensions were built under the assumption that
+Firefox ran on a single process. They directly manipulated the user
+interface and web content simultaneously, which caused severe
+performance bottlenecks and compatibility failures when multiple
+processes were introduced. Deprecating these legacy systems allowed
+Mozilla to fully implement multi-process rendering and integrate new,
+high-speed engine components written in the Rust programming
+language.</p>
+<h2 id="enhancing-browser-security">Enhancing Browser Security</h2>
+<p>Unrestricted access to browser internals posed a severe security
+risk. Because XPCOM allowed extensions to execute low-level system
+commands and read local files, a malicious extension—or a legitimate
+extension that was compromised—had total control over the user's browser
+and potentially their operating system.</p>
+<p>The WebExtensions API solved this by introducing a strict permissions
+model and sandboxing. With WebExtensions, add-ons can only interact with
+the browser through safe, predefined pathways (APIs). Users are also
+explicitly informed of what permissions an extension requires before
+installation, drastically reducing the risk of malware and data
+theft.</p>
+<h2 id="faster-browser-development">Faster Browser Development</h2>
+<p>Before Firefox 57, Mozilla engineers had to tiptoe around legacy
+extensions whenever they wanted to update the browser's interface or
+underlying engine. Changing a single line of internal code could break
+thousands of add-ons, slowing down Firefox's innovation.</p>
+<p>By moving to WebExtensions, Mozilla created a wall between the
+browser's internal code and the extension ecosystem. As long as Mozilla
+maintains the WebExtensions API, engineers are free to completely
+rewrite the internal workings of Firefox without worrying about breaking
+user add-ons.</p>
+<h2 id="cross-browser-compatibility">Cross-Browser Compatibility</h2>
+<p>Previously, developing an extension for Firefox required learning XUL
+and XPCOM, technologies used by no other major browser. Developers who
+created extensions for Google Chrome, Microsoft Edge, or Opera had to
+rewrite their code from scratch to support Firefox, leading many to
+ignore Firefox entirely.</p>
+<p>The WebExtensions API was specifically designed to be compatible with
+the extension standard used by Chromium-based browsers. This
+standardization allowed developers to write an extension once and deploy
+it across Firefox, Chrome, and Edge with minimal changes, ultimately
+revitalizing the Firefox add-on ecosystem and bringing more developers
+back to the platform.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-57-replaced-xul-and-xpcom-with-web-extensions';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

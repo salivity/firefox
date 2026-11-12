@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Font Fallback and Enumeration Across Platforms - firefox</title>
+    <meta name="description" content="This article explains the technical processes the Firefox web browser uses to enumerate system fonts and execute font fallback across Windows, macOS, and Linux. It covers how Firefox&#39;s Gecko layout engine interacts with native operating system APIs to dis">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-font-fallback-and-enumeration-across-platforms">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Font Fallback and Enumeration Across Platforms - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-font-fallback-and-enumeration-across-platforms" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical processes the Firefox web browser uses to enumerate system fonts and execute font fallback across Windows, macOS, and Linux. It covers how Firefox&#39;s Gecko layout engine interacts with native operating system APIs to dis" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-font-fallback-and-enumeration-across-platforms">Firefox
+Font Fallback and Enumeration Across Platforms</h1>
+<p>This article explains the technical processes the Firefox web browser
+uses to enumerate system fonts and execute font fallback across Windows,
+macOS, and Linux. It covers how Firefox's Gecko layout engine interacts
+with native operating system APIs to discover installed fonts, matches
+CSS font stacks, resolves missing characters, and restricts font
+visibility to protect user privacy.</p>
+<h2 id="system-font-enumeration">System Font Enumeration</h2>
+<p>Before Firefox can render text, it must know which fonts are
+available on the host machine. At startup, the Gecko engine initializes
+a platform-specific font list. To keep startup times fast, Firefox
+enumerates font family names first and loads detailed character map
+(<code>cmap</code>) tables lazily when a specific font is requested.</p>
+<p>Firefox relies on native operating system APIs to gather this
+data:</p>
+<ul>
+<li><strong>Windows:</strong> Firefox uses the DirectWrite API.
+Specifically, it queries <code>IDWriteFontCollection</code> to obtain a
+list of installed font families and reads metadata (such as weight,
+stretch, and style) directly from the Windows system font cache.</li>
+<li><strong>macOS:</strong> Firefox utilizes Apple’s Core Text
+framework. It calls functions like
+<code>CTFontManagerCopyAvailableFontFamilyNames</code> to discover fonts
+located in the System, Library, and User font directories, while also
+managing macOS-specific hidden system fonts.</li>
+<li><strong>Linux:</strong> Firefox depends on Fontconfig. By calling
+<code>FcFontList</code>, Firefox retrieves a list of available fonts
+based on the system's XML-based Fontconfig rules, which dictate font
+directories, aliases, and substitutions.</li>
+</ul>
+<h2 id="the-font-fallback-pipeline">The Font Fallback Pipeline</h2>
+<p>Font fallback occurs when a web page contains a character (Unicode
+codepoint) that is not supported by the primary font specified in the
+CSS. Firefox resolves fonts on a per-character (or per-grapheme cluster)
+basis using a strict, multi-step fallback pipeline.</p>
+<h3 id="1-the-css-font-stack">1. The CSS Font Stack</h3>
+<p>Firefox first checks the <code>font-family</code> property defined by
+the webpage. It evaluates the listed fonts from left to right. If the
+first font (whether a local font or a downloaded <code>@font-face</code>
+web font) lacks the glyph, Firefox checks the second font in the list,
+and so on.</p>
+<h3 id="2-firefox-language-group-preferences">2. Firefox Language Group
+Preferences</h3>
+<p>If none of the author-specified fonts contain the glyph, or if the
+CSS reaches a generic family name (like <code>sans-serif</code>,
+<code>serif</code>, or <code>monospace</code>), Firefox uses its
+internal preference system.</p>
+<p>Firefox analyzes the Unicode block of the missing character to
+determine its script or language group (such as <code>x-western</code>
+for Latin, <code>ja</code> for Japanese, or <code>ar</code> for Arabic).
+It then checks its internal configuration (<code>about:config</code>)
+for settings matching the pattern
+<code>font.name.&lt;generic&gt;.&lt;langGroup&gt;</code> and
+<code>font.name-list.&lt;generic&gt;.&lt;langGroup&gt;</code>. Firefox
+tests the fonts listed in these preferences to see if they contain the
+required glyph.</p>
+<h3 id="3-operating-system-fallback">3. Operating System Fallback</h3>
+<p>When Firefox's internal preference lists fail to provide a
+glyph—which frequently happens with rare symbols, uncommon scripts, or
+emojis—Firefox delegates the search to the operating system's native
+fallback APIs:</p>
+<ul>
+<li><strong>Windows:</strong> Firefox passes the text string to
+DirectWrite’s <code>IDWriteFontFallback::MapCharacters</code> method,
+which uses Microsoft's built-in fallback rules to suggest an appropriate
+system font.</li>
+<li><strong>macOS:</strong> Firefox passes a reference font and the
+target string to Core Text’s <code>CTFontCreateForString</code> API,
+which returns a system font capable of rendering the character.</li>
+<li><strong>Linux:</strong> Firefox constructs a Fontconfig pattern
+containing the missing Unicode character and calls
+<code>FcFontSort</code>. Fontconfig evaluates the system and returns the
+highest-priority font that covers that specific codepoint.</li>
+</ul>
+<h3 id="4-global-system-search">4. Global System Search</h3>
+<p>If the native OS APIs still fail to return a valid font, Firefox
+performs a brute-force search. It iterates through every enumerated font
+on the system, loading their <code>cmap</code> tables into memory one by
+one, to see if any installed font contains the missing character.</p>
+<h3 id="5-last-resort-hexboxes">5. Last Resort (Hexboxes)</h3>
+<p>If the character does not exist in any font on the system, fallback
+fails completely. Firefox then uses its internal "Last Resort" rendering
+mechanism. Instead of leaving a blank space, it draws a "hexbox" (often
+called tofu)—a small rectangular box containing the four- or six-digit
+hexadecimal Unicode value of the missing character.</p>
+<h2 id="privacy-and-font-enumeration-limits">Privacy and Font
+Enumeration Limits</h2>
+<p>Because the list of fonts installed on a computer is often unique,
+malicious scripts try to enumerate system fonts to build a browser
+fingerprint for tracking users.</p>
+<p>To counter this, Firefox implements font visibility restrictions
+controlled by the <code>layout.css.font-visibility</code> preference.
+Firefox categorizes enumerated fonts into two buckets: standard fonts
+that ship with the operating system, and user-installed fonts. When a
+user enables Enhanced Tracking Protection (Strict mode) or uses Private
+Browsing, Firefox restricts the enumeration and fallback pipeline. In
+these modes, web pages can only access the base OS fonts and web fonts,
+effectively hiding locally installed custom fonts from the rendering
+engine.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-font-fallback-and-enumeration-across-platforms';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Firefox from Selecting Trailing Spaces on Double-Click - firefox</title>
+    <meta name="description" content="This article explains the mechanics behind the layout.wordselect.eatspacetonextword preference in the Mozilla Firefox web browser. Specifically, it details how changing this hidden configuration setting to false alters the browser&#39;s text-selection algorit">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/stop-firefox-from-selecting-trailing-spaces-on-double-click">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Stop Firefox from Selecting Trailing Spaces on Double-Click - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/stop-firefox-from-selecting-trailing-spaces-on-double-click" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the mechanics behind the layout.wordselect.eatspacetonextword preference in the Mozilla Firefox web browser. Specifically, it details how changing this hidden configuration setting to false alters the browser&#39;s text-selection algorit" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="stop-firefox-from-selecting-trailing-spaces-on-double-click">Stop
+Firefox from Selecting Trailing Spaces on Double-Click</h1>
+<p>This article explains the mechanics behind the
+<code>layout.word_select.eat_space_to_next_word</code> preference in the
+Mozilla Firefox web browser. Specifically, it details how changing this
+hidden configuration setting to <code>false</code> alters the browser's
+text-selection algorithm to prevent it from highlighting the blank space
+following a word when a user double-clicks it, ultimately improving the
+accuracy of copying and pasting text.</p>
+<h3 id="the-default-word-selection-behavior">The Default Word Selection
+Behavior</h3>
+<p>By default—particularly on Windows operating systems—double-clicking
+a word in Firefox highlights both the word itself and the single blank
+space immediately following it. This behavior is an intentional design
+choice meant to speed up text editing. If you select a word to delete it
+or cut and paste it elsewhere, grabbing the trailing space ensures you
+do not leave behind an awkward double space or accidentally merge two
+words together.</p>
+<p>However, this becomes an annoyance when you simply want to copy a
+word to paste it into a password field, a search bar, or a code editor.
+The extra space comes along with the word, often invalidating passwords
+or requiring you to manually hit the backspace key after pasting.</p>
+<h3 id="how-the-preference-works-under-the-hood">How the Preference
+Works Under the Hood</h3>
+<p>Firefox uses the Gecko layout engine to render web pages and handle
+user interactions like text selection. The
+<code>layout.word_select.eat_space_to_next_word</code> preference is a
+boolean (true/false) flag that directly controls Gecko’s word-boundary
+detection algorithm.</p>
+<p>We can break down the preference name to understand its exact
+function:</p>
+<ul>
+<li><strong>layout:</strong> Refers to the browser's layout and
+rendering engine.</li>
+<li><strong>word_select:</strong> Refers to the specific action of
+selecting a whole word (triggered by a double-click).</li>
+<li><strong>eat_space_to_next_word:</strong> Refers to the action of
+"consuming" or including the whitespace that separates the selected word
+from the next word in the sentence.</li>
+</ul>
+<p>When you double-click a word, Firefox scans the text to find the
+beginning and end of that word based on character types (letters and
+numbers) and delimiters (spaces and punctuation).</p>
+<p>When this preference is set to <code>true</code>, the browser
+identifies the end of the word and then executes an additional step: it
+extends the selection boundary to the right to "eat" the whitespace up
+to the start of the next word.</p>
+<p>When you change
+<code>layout.word_select.eat_space_to_next_word</code> to
+<code>false</code>, you instruct the Gecko engine to skip that final
+extension step. The selection algorithm identifies the first and last
+characters of the word, highlights them, and immediately stops. The
+whitespace is treated strictly as a boundary marker rather than part of
+the selection target.</p>
+<h3 id="how-to-change-the-setting">How to Change the Setting</h3>
+<p>To stop Firefox from selecting the trailing space, you must modify
+this preference in the browser's advanced configuration page:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press <strong>Enter</strong>.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>Copy and paste
+<code>layout.word_select.eat_space_to_next_word</code> into the search
+bar at the top of the page.</li>
+<li>Double-click the preference in the results list (or click the toggle
+icon on the far right) to change its value from <code>true</code> to
+<code>false</code>.</li>
+</ol>
+<p>The change takes effect immediately without needing to restart the
+browser. The next time you double-click a word, the highlight will stop
+precisely at the last letter of that word.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/stop-firefox-from-selecting-trailing-spaces-on-double-click';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

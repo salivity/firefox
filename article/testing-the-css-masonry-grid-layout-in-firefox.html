@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing the CSS Masonry Grid Layout in Firefox - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide for web developers on how to enable and test the experimental CSS Masonry grid layout in the Firefox web browser. It covers how to activate the necessary hidden configuration flag inside Firefox and demonstrates">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/testing-the-css-masonry-grid-layout-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Testing the CSS Masonry Grid Layout in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/testing-the-css-masonry-grid-layout-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide for web developers on how to enable and test the experimental CSS Masonry grid layout in the Firefox web browser. It covers how to activate the necessary hidden configuration flag inside Firefox and demonstrates" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="testing-the-css-masonry-grid-layout-in-firefox">Testing the CSS
+Masonry Grid Layout in Firefox</h1>
+<p>This article provides a step-by-step guide for web developers on how
+to enable and test the experimental CSS Masonry grid layout in the
+Firefox web browser. It covers how to activate the necessary hidden
+configuration flag inside Firefox and demonstrates the exact CSS syntax
+required to build a native, JavaScript-free masonry layout.</p>
+<h3 id="enabling-the-masonry-flag-in-firefox">Enabling the Masonry Flag
+in Firefox</h3>
+<p>Firefox was the first browser to ship a prototype of the CSS Grid
+Masonry specification. Because the specification is still experimental
+and under discussion by the CSS Working Group, the feature is locked
+behind a configuration flag.</p>
+<p>To enable it, follow these steps:</p>
+<ol type="1">
+<li>Open your Firefox browser (Firefox Nightly or Firefox Developer
+Edition is recommended for the latest updates, though the flag exists in
+the standard release).</li>
+<li>Type <code>about:config</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button if
+prompted with a warning page.</li>
+<li>In the search preference name box at the top, paste the following
+flag: <code>layout.css.grid-template-masonry-value.enabled</code></li>
+<li>Click the <strong>Toggle</strong> button on the right side of the
+result to change its value from <code>false</code> to
+<code>true</code>.</li>
+</ol>
+<p>Once this value is set to <code>true</code>, Firefox will immediately
+recognize and render the CSS Masonry syntax without requiring a browser
+restart.</p>
+<h3 id="writing-the-html-and-css-for-testing">Writing the HTML and CSS
+for Testing</h3>
+<p>under the Firefox implementation, masonry is treated as an extension
+of CSS Grid. You define a standard grid container and set either the
+rows or the columns to <code>masonry</code>.</p>
+<p>Create an HTML file with a container and several child elements of
+varying heights:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;masonry-container&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 100px;&quot;</span><span class="dt">&gt;</span>1<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 250px;&quot;</span><span class="dt">&gt;</span>2<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 150px;&quot;</span><span class="dt">&gt;</span>3<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 300px;&quot;</span><span class="dt">&gt;</span>4<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 120px;&quot;</span><span class="dt">&gt;</span>5<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">&quot;item&quot;</span><span class="ot"> style</span><span class="op">=</span><span class="st">&quot;height: 200px;&quot;</span><span class="dt">&gt;</span>6<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>Next, apply the CSS. For a standard vertical masonry layout (like
+Pinterest), define your columns explicitly and set the rows to
+<code>masonry</code>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode css"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.masonry-container</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span><span class="ch">:</span> <span class="dv">grid</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">grid-template-columns</span><span class="ch">:</span> <span class="fu">repeat(</span><span class="dv">3</span><span class="op">,</span> <span class="dv">1</span><span class="dt">fr</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">grid-template-rows</span><span class="ch">:</span> <span class="dv">masonry</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">gap</span><span class="ch">:</span> <span class="dv">16</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">.item</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#333</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#fff</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>If you want a horizontal masonry layout instead, swap the values by
+setting <code>grid-template-rows: repeat(3, 1fr);</code> and
+<code>grid-template-columns: masonry;</code>.</p>
+<h3 id="testing-advanced-masonry-properties">Testing Advanced Masonry
+Properties</h3>
+<p>Firefox also supports several new properties specifically designed to
+control the flow and alignment of items within a masonry grid. You can
+add these to your <code>.masonry-container</code> class to test
+different behaviors:</p>
+<ul>
+<li><strong><code>masonry-auto-flow: next;</code></strong>: By default,
+masonry places the next item into the column with the most available
+space (shortest column). Changing this value to <code>next</code> forces
+items to be placed strictly in order from left to right, regardless of
+column height.</li>
+<li><strong><code>masonry-auto-flow: definite-first;</code></strong>:
+This packs items with a explicitly defined grid placement first, before
+placing auto-positioned items.</li>
+<li><strong><code>align-tracks</code></strong>: Controls the alignment
+of the masonry tracks along the grid axis. You can test values like
+<code>start</code>, <code>center</code>, <code>end</code>, or
+<code>stretch</code>. You can also supply multiple values (e.g.,
+<code>align-tracks: start, center, end;</code>) to align each column
+differently.</li>
+</ul>
+<h3 id="inspecting-the-layout">Inspecting the Layout</h3>
+<p>To debug and test the layout further, right-click on your webpage and
+select <strong>Inspect</strong> to open the Firefox Developer Tools. In
+the <strong>Layout</strong> panel, you can toggle the CSS Grid overlay.
+Firefox's grid inspector fully supports the masonry value, allowing you
+to visualize the tracks, gaps, and item placements directly in the
+viewport.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/testing-the-css-masonry-grid-layout-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

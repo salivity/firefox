@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Firefox Strict Tracking Protection Blocks - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of the additional trackers and scripts blocked when switching Mozilla Firefox’s Enhanced Tracking Protection (ETP) from Standard to Strict mode. While Firefox&#39;s default Standard mode blocks basic cross-site c">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/what-firefox-strict-tracking-protection-blocks">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Firefox Strict Tracking Protection Blocks - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/what-firefox-strict-tracking-protection-blocks" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of the additional trackers and scripts blocked when switching Mozilla Firefox’s Enhanced Tracking Protection (ETP) from Standard to Strict mode. While Firefox&#39;s default Standard mode blocks basic cross-site c" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-firefox-strict-tracking-protection-blocks">What Firefox
+Strict Tracking Protection Blocks</h1>
+<p>This article provides a comprehensive overview of the additional
+trackers and scripts blocked when switching Mozilla Firefox’s Enhanced
+Tracking Protection (ETP) from Standard to Strict mode. While Firefox's
+default Standard mode blocks basic cross-site cookies, social media
+trackers, cryptominers, and known fingerprinters, Strict mode
+significantly tightens security. Below, we examine the specific extra
+layers of defense activated in Strict mode, including blocking tracking
+content across all browsing sessions, halting suspected fingerprinters,
+and stripping tracking parameters from URLs.</p>
+<h3 id="tracking-content-in-all-windows">Tracking Content in All
+Windows</h3>
+<p>In Standard mode, Firefox only blocks "tracking content" when you are
+using a Private Window. Switching to Strict mode blocks tracking content
+in all regular browsing windows as well.</p>
+<p>Tracking content refers to hidden tracking scripts embedded within
+functional website elements, such as advertisements, videos, comment
+sections, and analytics tools. By utilizing the "Content" category of
+the Disconnect protection list, Strict mode stops scripts from companies
+like Google Analytics and various ad networks from loading at all.
+Because these scripts are often tied to how a webpage functions,
+blocking them in all windows increases privacy at the risk of
+occasionally breaking video players or login portals.</p>
+<h3 id="suspected-fingerprinters">Suspected Fingerprinters</h3>
+<p>Digital fingerprinting creates a unique profile of you based on your
+computer's hardware, operating system, browser settings, installed
+fonts, and screen resolution.</p>
+<p>While Standard mode blocks <em>known</em> fingerprinting scripts
+identified on Disconnect’s blocklist, Strict mode adds protection
+against <em>suspected</em> fingerprinters. It does this by actively
+restricting scripts from accessing specific Web APIs (such as Canvas,
+WebGL, and AudioContext) that are commonly abused to harvest your
+system's configuration data, even if the script is not yet on an
+official blocklist.</p>
+<h3 id="url-tracking-parameters-query-parameter-stripping">URL Tracking
+Parameters (Query Parameter Stripping)</h3>
+<p>Websites frequently attach unique tracking codes to the end of URLs
+to see where you came from and who shared the link with you. In Strict
+mode, Firefox activates a feature known as Query Parameter Stripping
+across all browsing sessions.</p>
+<p>This feature automatically deletes known tracking tags from web
+addresses before the page loads. Examples of stripped scripts and tags
+include:</p>
+<ul>
+<li><code>fbclid</code> (Facebook Click Identifier)</li>
+<li><code>gclid</code> (Google Click Identifier)</li>
+<li><code>mc_eid</code> (Mailchimp Email Identifier)</li>
+<li><code>msclkid</code> (Microsoft Click Identifier)</li>
+<li><code>oly_enc_id</code> and <code>oly_anon_id</code> (Omeda
+Marketing)</li>
+</ul>
+<h3 id="third-party-login-and-social-scripts">Third-Party Login and
+Social Scripts</h3>
+<p>While Standard mode blocks basic social media trackers, Strict mode
+aggressively blocks the functional scripts associated with third-party
+logins and embedded social content. Scripts that allow you to "Sign in
+with Facebook" or "Sign in with Google," as well as embedded X (formerly
+Twitter) feeds and Disqus comment sections, are completely blocked from
+executing until you manually grant them permission.</p>
+<h3 id="network-level-bounce-trackers">Network-Level Bounce
+Trackers</h3>
+<p>Bounce tracking occurs when you click a link and are momentarily
+redirected through an intermediate tracking server before landing on
+your final destination. This brief "bounce" allows the intermediate
+server to act as a first-party site and drop tracking scripts and
+cookies onto your browser. Strict mode enables enhanced Bounce Tracking
+Protection, which detects this redirect behavior and automatically
+purges the cookies and site data set by the bounce tracker.</p>
+<h3 id="smartblock-script-replacement">SmartBlock Script
+Replacement</h3>
+<p>Because Strict mode blocks so many additional scripts, many websites
+would normally fail to load correctly. To counter this, enabling Strict
+mode also activates Firefox's "SmartBlock" feature. SmartBlock
+intercepts the blocked third-party tracking scripts and replaces them
+with safe, local "stand-in" scripts stored within the Firefox browser
+itself. This ensures that the website thinks the script has loaded,
+allowing the page to function without sending any of your data to the
+tracker.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/what-firefox-strict-tracking-protection-blocks';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

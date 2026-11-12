@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How SpiderMonkey Executes JS and WebAssembly in Firefox - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of how Mozilla’s SpiderMonkey engine processes and executes JavaScript and WebAssembly code inside the Firefox web browser. It breaks down the multi-tiered Just-In-Time (JIT) compilation pipeline used to spee">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-spider-monkey-executes-js-and-web-assembly-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How SpiderMonkey Executes JS and WebAssembly in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-spider-monkey-executes-js-and-web-assembly-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of how Mozilla’s SpiderMonkey engine processes and executes JavaScript and WebAssembly code inside the Firefox web browser. It breaks down the multi-tiered Just-In-Time (JIT) compilation pipeline used to spee" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-spidermonkey-executes-js-and-webassembly-in-firefox">How
+SpiderMonkey Executes JS and WebAssembly in Firefox</h1>
+<p>This article provides a comprehensive overview of how Mozilla’s
+SpiderMonkey engine processes and executes JavaScript and WebAssembly
+code inside the Firefox web browser. It breaks down the multi-tiered
+Just-In-Time (JIT) compilation pipeline used to speed up dynamic
+JavaScript, details the streamlined compilation process that allows
+WebAssembly to run at near-native speeds, and explains how both
+technologies share a unified execution environment and memory management
+system.</p>
+<h2 id="the-javascript-execution-pipeline">The JavaScript Execution
+Pipeline</h2>
+<p>JavaScript is a dynamically typed language, meaning the engine does
+not know what data types variables will hold until the code actually
+runs. Because of this, SpiderMonkey cannot immediately compile
+JavaScript into optimal machine code. Instead, it uses a tiered pipeline
+that balances fast startup times with heavy optimization for frequently
+used code.</p>
+<h3 id="1-parsing-and-bytecode-generation">1. Parsing and Bytecode
+Generation</h3>
+<p>When Firefox downloads a JavaScript file, SpiderMonkey’s parser reads
+the source code, checks for syntax errors, and transforms it into a data
+structure called an Abstract Syntax Tree (AST). The engine then
+translates this tree into bytecode—a compact, simplified representation
+of the code that is easier for the engine to process than raw text.</p>
+<h3 id="2-the-baseline-interpreter">2. The Baseline Interpreter</h3>
+<p>Execution begins in the Baseline Interpreter, which reads and
+executes the bytecode instruction by instruction. While this is the
+slowest way to run code, it starts instantly. As the interpreter runs,
+it collects profiling data about the code—such as what data types are
+being passed into functions—using a mechanism called Inline Caching
+(IC).</p>
+<h3 id="3-the-baseline-jit-compiler">3. The Baseline JIT Compiler</h3>
+<p>If a function or loop runs repeatedly, SpiderMonkey flags it as
+"warm" and passes it to the Baseline Compiler. This Just-In-Time (JIT)
+compiler translates the bytecode directly into native machine code for
+the user's computer processor. It uses the Inline Cache data gathered
+during the interpretation phase to generate faster code with very little
+compilation delay.</p>
+<h3 id="4-the-optimizing-jit-compiler-warp">4. The Optimizing JIT
+Compiler (Warp)</h3>
+<p>When code runs thousands of times, it is flagged as "hot" and sent to
+SpiderMonkey’s top-tier optimizing compiler, known as Warp (built on the
+IonMonkey compiler backend). Warp analyzes the Inline Cache data and
+makes aggressive assumptions about how the code will behave. It strips
+away unnecessary type checks and produces highly optimized machine
+code.</p>
+<p>If an assumption later proves wrong—for instance, a variable that was
+a number suddenly becomes a text string—the optimized code is no longer
+valid. When this happens, SpiderMonkey performs a "bailout," seamlessly
+discarding the optimized machine code and reverting execution back to
+the Baseline tier without crashing the program.</p>
+<h2 id="the-webassembly-execution-pipeline">The WebAssembly Execution
+Pipeline</h2>
+<p>WebAssembly (Wasm) is fundamentally different from JavaScript. It is
+a pre-compiled, statically typed binary format. Because developers
+compile languages like C++, Rust, or Go into WebAssembly before the
+browser ever sees it, the types are already defined. SpiderMonkey skips
+the interpreter entirely and compiles WebAssembly directly into machine
+code using a two-tiered approach.</p>
+<h3 id="1-validation-and-decoding">1. Validation and Decoding</h3>
+<p>Before execution, SpiderMonkey quickly reads the WebAssembly binary
+to verify that it is structurally valid and memory-safe. Because the
+format is designed for machines, this happens almost
+instantaneously.</p>
+<h3 id="2-the-baseline-compiler-rabaldr">2. The Baseline Compiler
+(Rabaldr)</h3>
+<p>To launch the WebAssembly application as fast as possible,
+SpiderMonkey uses a baseline compiler internally named Rabaldr. It
+performs a single-pass translation of the WebAssembly binary into native
+machine code. This happens via "streaming compilation," meaning
+SpiderMonkey compiles the code while the file is still downloading over
+the network. By the time the download finishes, the unoptimized machine
+code is ready to run immediately.</p>
+<h3 id="3-the-optimizing-compiler-ion">3. The Optimizing Compiler
+(Ion)</h3>
+<p>While the baseline WebAssembly code is running on the main thread,
+SpiderMonkey spawns a background thread using the Ion compiler backend
+(the same backend that powers Warp for JavaScript). Ion takes more time
+to analyze the WebAssembly binary, applying complex optimizations to
+generate the fastest possible machine code. Once Ion finishes compiling,
+SpiderMonkey hot-swaps the running baseline code with the newly
+optimized code, bringing the application to near-native performance.</p>
+<h2 id="shared-runtime-and-memory-management">Shared Runtime and Memory
+Management</h2>
+<p>A major strength of SpiderMonkey is that JavaScript and WebAssembly
+do not run in isolated silos; they share the same runtime
+environment.</p>
+<ul>
+<li><strong>Fast Interoperability:</strong> Because both languages use
+the same internal call stack and engine architecture, a JavaScript
+function can call a WebAssembly function (and vice versa) with
+practically zero performance penalty.</li>
+<li><strong>Garbage Collection (GC):</strong> SpiderMonkey features a
+generational, incremental, and compacting Garbage Collector. It
+automatically monitors memory allocated by JavaScript objects and
+WebAssembly GC structures, freeing up memory that is no longer needed.
+To prevent the Firefox browser from stuttering during this process, the
+garbage collector works in tiny increments of a few milliseconds between
+visual frame renders.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-spider-monkey-executes-js-and-web-assembly-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Reality: Adapting the Web for Virtual Reality - firefox</title>
+    <meta name="description" content="Firefox Reality was an open-source, cross-platform web browser developed by Mozilla specifically for standalone virtual reality (VR) and augmented reality (AR) headsets. Launched in September 2018, the project aimed to bring the fast, private, and open na">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-reality-adapting-the-web-for-virtual-reality">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Reality: Adapting the Web for Virtual Reality - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-reality-adapting-the-web-for-virtual-reality" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Firefox Reality was an open-source, cross-platform web browser developed by Mozilla specifically for standalone virtual reality (VR) and augmented reality (AR) headsets. Launched in September 2018, the project aimed to bring the fast, private, and open na" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-reality-adapting-the-web-for-virtual-reality">Firefox
+Reality: Adapting the Web for Virtual Reality</h1>
+<p>Firefox Reality was an open-source, cross-platform web browser
+developed by Mozilla specifically for standalone virtual reality (VR)
+and augmented reality (AR) headsets. Launched in September 2018, the
+project aimed to bring the fast, private, and open nature of the
+traditional Firefox browser into immersive 3D environments. This article
+explores what the Firefox Reality project was, the technical and design
+adaptations Mozilla used to make the 2D web usable inside VR headsets,
+its support for immersive web standards, and its eventual transition
+into a new open-source project in 2022.</p>
+<h2 id="what-was-the-firefox-reality-project">What Was the Firefox
+Reality Project?</h2>
+<p>Before Firefox Reality, browsing the web in virtual reality was
+largely restricted to proprietary browsers built by headset
+manufacturers. Mozilla created Firefox Reality to offer an independent,
+device-agnostic alternative. It was built from the ground up to run on
+Android-based standalone headsets—devices that do not require a
+connection to a PC or smartphone—such as the Meta Quest (formerly Oculus
+Quest), HTC Vive Focus, and Pico Interactive headsets.</p>
+<p>The project was not merely a port of the desktop or mobile Firefox
+browser. Instead, it was a complete rethinking of how humans interact
+with the internet when they do not have a physical mouse, keyboard, or
+flat monitor in front of them.</p>
+<h2 id="adapting-the-user-interface-for-3d-space">Adapting the User
+Interface for 3D Space</h2>
+<p>The primary challenge of VR web browsing is displaying 2D websites
+inside a 3D environment without causing eye strain or motion sickness.
+Firefox Reality solved this by placing the user inside a virtual 3D room
+with a floating, curved 2D browser window in front of them.</p>
+<p>To make navigation intuitive, Mozilla implemented several spatial
+adaptations:</p>
+<ul>
+<li><strong>Laser-Pointer Navigation:</strong> Instead of a mouse
+cursor, the browser mapped the user's physical VR hand controllers to
+virtual laser pointers. Users could point and click on links, scroll by
+dragging the page with the trigger button, and manipulate tabs in
+mid-air.</li>
+<li><strong>Customizable Viewing:</strong> Users could change the size
+of the browser window and adjust its distance to make reading text
+comfortable in lower-resolution headsets.</li>
+<li><strong>Theater Mode:</strong> When watching standard 2D videos,
+users could darken the surrounding 3D environment to simulate a movie
+theater experience.</li>
+<li><strong>Multi-Window Support:</strong> Later updates allowed users
+to open up to three separate browser windows side-by-side in their
+virtual space, taking advantage of the infinite screen real estate that
+VR provides.</li>
+</ul>
+<h2 id="solving-the-vr-input-problem">Solving the VR Input Problem</h2>
+<p>Typing on a virtual keyboard by pointing at individual letters with
+VR controllers is slow and frustrating. To bypass this limitation,
+Mozilla integrated voice search directly into the browser's core
+interface. By pressing a microphone icon with their controller, users
+could speak their search queries or URLs aloud. This feature was powered
+by Mozilla's own voice recognition technology, allowing for fast,
+hands-free navigation.</p>
+<h2 id="bridging-the-2d-and-3d-web">Bridging the 2D and 3D Web</h2>
+<p>Firefox Reality was designed to be a bridge between the traditional
+flat web and the emerging "immersive web." It natively supported WebVR
+and its successor, the WebXR Device API.</p>
+<p>These web standards allow developers to create 3D experiences, games,
+and 360-degree videos that run directly inside a web browser without
+needing to download an app from an app store. In Firefox Reality, a user
+could read a standard 2D webpage, click a WebXR link, and watch the flat
+browser window instantly dissolve into a full, interactive 360-degree
+virtual environment. With a single button press on their controller,
+they could exit the 3D experience and return to the 2D webpage.</p>
+<h2 id="performance-and-privacy-under-the-hood">Performance and Privacy
+Under the Hood</h2>
+<p>Virtual reality requires consistently high frame rates; if a browser
+lags or stutters, the user can immediately experience nausea. To achieve
+the necessary performance on mobile VR processors, Mozilla built Firefox
+Reality using its mobile engine, GeckoView, alongside components of its
+experimental Quantum and Servo engines. This architecture allowed the
+browser to split workloads across multiple processor cores, ensuring
+smooth rendering of both complex 2D web pages and heavy 3D graphics.</p>
+<p>In addition to performance, Mozilla brought its signature privacy
+features to VR. Firefox Reality included Enhanced Tracking Protection
+turned on by default. This blocked third-party tracking cookies and
+cryptominers. Beyond protecting user data in a medium where biometric
+and movement data are sensitive, blocking these heavy tracking scripts
+significantly sped up page load times and reduced battery consumption on
+the headsets.</p>
+<h2 id="the-discontinuation-and-legacy">The Discontinuation and
+Legacy</h2>
+<p>In February 2022, Mozilla announced it was shutting down the Firefox
+Reality project to focus its resources on its core desktop and mobile
+browsers. However, because the project was open-source, the work was not
+lost. Mozilla partnered with Igalia, an open-source software
+consultancy, to hand over the project's legacy. Igalia forked the
+Firefox Reality source code to create a new, actively maintained VR
+browser called Wolvic, ensuring that an independent, open-source web
+browser remains available for virtual reality headsets today.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-reality-adapting-the-web-for-virtual-reality';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

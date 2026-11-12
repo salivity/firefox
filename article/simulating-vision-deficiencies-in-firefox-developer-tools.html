@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulating Vision Deficiencies in Firefox Developer Tools - firefox</title>
+    <meta name="description" content="Web developers can ensure their applications are accessible to users with visual impairments by utilizing the built-in simulation tools within the Firefox Web Browser. This article provides a direct, step-by-step guide on how to access the Firefox Accessi">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/simulating-vision-deficiencies-in-firefox-developer-tools">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Simulating Vision Deficiencies in Firefox Developer Tools - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/simulating-vision-deficiencies-in-firefox-developer-tools" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Web developers can ensure their applications are accessible to users with visual impairments by utilizing the built-in simulation tools within the Firefox Web Browser. This article provides a direct, step-by-step guide on how to access the Firefox Accessi" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="simulating-vision-deficiencies-in-firefox-developer-tools">Simulating
+Vision Deficiencies in Firefox Developer Tools</h1>
+<p>Web developers can ensure their applications are accessible to users
+with visual impairments by utilizing the built-in simulation tools
+within the Firefox Web Browser. This article provides a direct,
+step-by-step guide on how to access the Firefox Accessibility panel and
+use it to simulate protanopia, deuteranopia, tritanopia, and contrast
+loss on any webpage in real-time.</p>
+<h3 id="opening-the-accessibility-panel">Opening the Accessibility
+Panel</h3>
+<p>To begin simulating vision deficiencies, you first need to access the
+Accessibility panel inside Firefox Developer Tools.</p>
+<ol type="1">
+<li>Open the Firefox Web Browser and navigate to the webpage you want to
+test.</li>
+<li>Open the Developer Tools by pressing <strong>F12</strong> (or
+<strong>Ctrl + Shift + I</strong> on Windows/Linux, <strong>Cmd + Option
++ I</strong> on macOS). Alternatively, right-click anywhere on the page
+and select <strong>Inspect</strong>.</li>
+<li>In the Developer Tools toolbar, click on the
+<strong>Accessibility</strong> tab. If you do not see the tab
+immediately, click the <strong>More Tools</strong>
+(<code>&gt;&gt;</code>) icon at the end of the toolbar and select
+<strong>Accessibility</strong> from the dropdown menu.</li>
+<li>If prompted, click the <strong>Turn on Accessibility
+Features</strong> button to initialize the panel.</li>
+</ol>
+<h3 id="using-the-simulate-feature">Using the Simulate Feature</h3>
+<p>Once the Accessibility panel is active, you can immediately apply
+visual filters to the current viewport.</p>
+<ol type="1">
+<li>Locate the <strong>Simulate</strong> dropdown menu in the top
+toolbar of the Accessibility panel.</li>
+<li>Click the <strong>Simulate</strong> dropdown to reveal the list of
+vision deficiencies.</li>
+<li>Select one of the following options to instantly apply the filter to
+the webpage:</li>
+</ol>
+<ul>
+<li><strong>Protanopia (no red):</strong> Simulates red-blindness.
+Selecting this option alters the page colors to show how a user who
+cannot perceive red light views your interface. Red hues will appear
+dark and muted, often blending in with greens and browns.</li>
+<li><strong>Deuteranopia (no green):</strong> Simulates green-blindness.
+This option adjusts the viewport to reflect the inability to perceive
+green light, causing greens to look more like beige and reds to appear
+brownish-yellow.</li>
+<li><strong>Tritanopia (no blue):</strong> Simulates blue-blindness.
+Choosing this setting shows how users who cannot perceive blue light
+experience the page. Blues will appear greenish, and yellows will look
+violet or light gray.</li>
+<li><strong>Contrast loss:</strong> Simulates decreased sensitivity to
+contrast. This option washes out the webpage, making it harder to
+distinguish between elements that do not have a high luminance
+difference. It is essential for testing text readability and UI boundary
+visibility.</li>
+</ul>
+<h3 id="resetting-the-simulation">Resetting the Simulation</h3>
+<p>After auditing your webpage and identifying areas that require
+adjustments in color palettes or contrast ratios, you can easily return
+the browser to its default state.</p>
+<ol type="1">
+<li>Click the <strong>Simulate</strong> dropdown menu in the
+Accessibility panel again.</li>
+<li>Select <strong>None</strong> at the top of the list.</li>
+</ol>
+<p>Alternatively, closing the Firefox Developer Tools entirely will
+automatically remove any active visual simulations and restore the
+webpage to its original appearance.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/simulating-vision-deficiencies-in-firefox-developer-tools';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding the Firefox Add-ons Manager (about:addons) - firefox</title>
+    <meta name="description" content="This article provides a quick overview of the Firefox Add-ons Manager, accessible via the internal address about:addons, and explains how it serves as the central hub for browser customization. You will learn what the Add-ons Manager is, how to access it,">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/understanding-the-firefox-add-ons-manager-about-addons">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Understanding the Firefox Add-ons Manager (about:addons) - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/understanding-the-firefox-add-ons-manager-about-addons" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a quick overview of the Firefox Add-ons Manager, accessible via the internal address about:addons, and explains how it serves as the central hub for browser customization. You will learn what the Add-ons Manager is, how to access it," />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="understanding-the-firefox-add-ons-manager-aboutaddons">Understanding
+the Firefox Add-ons Manager (about:addons)</h1>
+<p>This article provides a quick overview of the Firefox Add-ons
+Manager, accessible via the internal address <code>about:addons</code>,
+and explains how it serves as the central hub for browser customization.
+You will learn what the Add-ons Manager is, how to access it, and the
+specific ways it categorizes, manages, and controls extensions, themes,
+and plugins to enhance your browsing experience.</p>
+<h3 id="what-is-the-add-ons-manager">What is the Add-ons Manager?</h3>
+<p>The Add-ons Manager is a built-in control panel in the Mozilla
+Firefox web browser. It allows users to discover, install, configure,
+update, and remove various software modules that modify the browser's
+capabilities and appearance.</p>
+<p>You can open the Add-ons Manager using any of the following
+methods:</p>
+<ul>
+<li>Type <code>about:addons</code> directly into the Firefox address bar
+and press Enter.</li>
+<li>Use the keyboard shortcut <code>Ctrl + Shift + A</code>
+(Windows/Linux) or <code>Cmd + Shift + A</code> (macOS).</li>
+<li>Click the three-line menu icon in the top-right corner of the
+browser and select <strong>Add-ons and themes</strong>.</li>
+</ul>
+<p>The manager uses a left-hand navigation sidebar to neatly divide your
+browser modifications into specific functional categories: Extensions,
+Themes, and Plugins.</p>
+<h3 id="how-it-organizes-extensions">How It Organizes Extensions</h3>
+<p>Extensions are small software programs that add new features to
+Firefox or modify existing functionality, such as ad blockers, password
+managers, and grammar checkers.</p>
+<p>In the <strong>Extensions</strong> tab, the Add-ons Manager organizes
+your installed tools into two primary groups:</p>
+<ul>
+<li><strong>Enabled:</strong> Extensions that are currently active and
+running in your browser.</li>
+<li><strong>Disabled:</strong> Extensions that are installed on your
+system but turned off.</li>
+</ul>
+<p>Each extension is displayed as a card featuring a blue toggle switch
+to quickly enable or disable it, alongside a three-dot menu icon for
+quick actions like removing the extension. Clicking directly on an
+extension's name opens a detailed management view organized into three
+sub-tabs:</p>
+<ul>
+<li><strong>Details:</strong> Provides a description of the extension,
+version number, and toggles to allow automatic updates or grant the
+extension permission to run in Private Windows.</li>
+<li><strong>Permissions:</strong> Lists the specific browser data and
+system features the extension has access to, plus optional permissions
+you can toggle on or off.</li>
+<li><strong>Preferences:</strong> Available on select extensions, this
+allows you to configure the tool's specific settings directly within the
+<code>about:addons</code> tab.</li>
+</ul>
+<h3 id="how-it-organizes-themes">How It Organizes Themes</h3>
+<p>Themes alter the visual appearance of the Firefox interface, changing
+the color scheme and background art of the toolbars, tabs, and
+menus.</p>
+<p>In the <strong>Themes</strong> tab, the Add-ons Manager organizes
+visual styles into two sections:</p>
+<ul>
+<li><strong>Enabled:</strong> Displays the single theme that is
+currently active. Only one theme can be enabled at a time.</li>
+<li><strong>Saved Themes:</strong> Lists all other available themes.
+This includes Firefox's built-in defaults (System theme, Light, Dark,
+and Alpenglow) as well as any custom themes you have downloaded from the
+Firefox Add-ons store.</li>
+</ul>
+<p>To switch your browser's look, you simply click the
+<strong>Enable</strong> button on any card in the Saved Themes section.
+It will immediately move to the Enabled section, and your previous theme
+will move down to the Saved list. You can delete downloaded themes from
+the Saved section using the three-dot menu, though built-in system
+themes cannot be removed.</p>
+<h3 id="how-it-organizes-plugins">How It Organizes Plugins</h3>
+<p>Plugins are specialized, third-party software libraries that help
+Firefox process specific types of web content it cannot handle natively.
+In modern versions of Firefox, legacy plugins like Adobe Flash are no
+longer supported; the Plugins section is now exclusively used for media
+codecs and Digital Rights Management (DRM) modules.</p>
+<p>In the <strong>Plugins</strong> tab, Firefox typically lists two
+essential components:</p>
+<ul>
+<li><strong>OpenH264 Video Codec:</strong> Provided by Cisco Systems to
+support WebRTC video calls and H.264 video playback.</li>
+<li><strong>Widevine Content Decryption Module:</strong> Provided by
+Google to allow the playback of DRM-protected streaming media from
+services like Netflix or Spotify.</li>
+</ul>
+<p>Unlike extensions and themes, you cannot browse a store to download
+new plugins, nor can you completely uninstall the default ones from this
+menu. Instead, the Add-ons Manager organizes them into a simple list
+where you can control their execution behavior. By clicking the
+three-dot menu next to a plugin, you can set it to <strong>Always
+Activate</strong> or <strong>Never Activate</strong>, giving you strict
+control over when these media modules are allowed to run.</p>
+<h3 id="global-add-on-settings">Global Add-on Settings</h3>
+<p>At the top right of the Add-ons Manager interface, next to the search
+bar, is a gear icon. This menu provides global organization and
+management tools that apply to all categories. From here, users can
+manually check for updates for all installed add-ons, view recent update
+history, install an add-on directly from a local file
+(<code>.xpi</code>), or access the <code>about:debugging</code> page to
+test custom-built extensions.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/understanding-the-firefox-add-ons-manager-about-addons';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

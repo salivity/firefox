@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Implements Post-Quantum TLS Key Exchange - firefox</title>
+    <meta name="description" content="This article provides an overview of how Mozilla implemented post-quantum hybrid key exchange algorithms within the Firefox web browser to secure TLS 1.3 connections against future quantum computer attacks. It covers the concept of hybrid cryptography, th">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-implements-post-quantum-tls-key-exchange">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Implements Post-Quantum TLS Key Exchange - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-implements-post-quantum-tls-key-exchange" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how Mozilla implemented post-quantum hybrid key exchange algorithms within the Firefox web browser to secure TLS 1.3 connections against future quantum computer attacks. It covers the concept of hybrid cryptography, th" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-implements-post-quantum-tls-key-exchange">How
+Firefox Implements Post-Quantum TLS Key Exchange</h1>
+<p>This article provides an overview of how Mozilla implemented
+post-quantum hybrid key exchange algorithms within the Firefox web
+browser to secure TLS 1.3 connections against future quantum computer
+attacks. It covers the concept of hybrid cryptography, the specific
+integration of the X25519Kyber768 algorithm into Firefox's Network
+Security Services (NSS) library, the mechanics of the upgraded TLS
+handshake, and how Mozilla overcame network engineering challenges to
+enable this security feature by default.</p>
+<h2 id="the-hybrid-approach-to-post-quantum-security">The Hybrid
+Approach to Post-Quantum Security</h2>
+<p>Quantum computers will eventually break the classical public-key
+cryptography currently used to secure the internet. To prevent "harvest
+now, decrypt later" attacks—where adversaries record encrypted traffic
+today to decrypt it with a quantum computer in the future—Firefox
+utilizes a hybrid key exchange.</p>
+<p>A hybrid key exchange combines a battle-tested classical algorithm
+with a new post-quantum algorithm. The resulting connection remains
+secure as long as at least one of the two algorithms remains unbroken.
+This ensures that even if the new post-quantum algorithm has an
+undiscovered flaw, the connection is still as secure as standard
+classical traffic.</p>
+<h2 id="the-algorithm-x25519kyber768">The Algorithm: X25519Kyber768</h2>
+<p>To achieve this hybrid security in TLS 1.3, Mozilla implemented the
+<strong>X25519Kyber768</strong> (and subsequently its final standardized
+form, <strong>X25519MLKEM768</strong>) key exchange mechanism. This
+mechanism fuses two distinct algorithms:</p>
+<ul>
+<li><strong>X25519:</strong> A widely used, fast, and secure classical
+elliptic-curve Diffie-Hellman (ECDH) key exchange.</li>
+<li><strong>Kyber-768 (ML-KEM):</strong> A lattice-based Key
+Encapsulation Mechanism (KEM) selected by the National Institute of
+Standards and Technology (NIST) as the primary standard for post-quantum
+key establishment.</li>
+</ul>
+<h2 id="integration-into-network-security-services-nss">Integration into
+Network Security Services (NSS)</h2>
+<p>Unlike many browsers that rely on BoringSSL or OpenSSL, Firefox
+relies on its own cryptographic library called Network Security Services
+(NSS). Mozilla implemented the post-quantum hybrid key exchange by
+updating NSS to support the Internet Engineering Task Force (IETF) draft
+specifications for hybrid TLS.</p>
+<p>To ensure memory safety and prevent vulnerabilities, Mozilla
+integrated verified, high-performance implementations of the Kyber
+algorithm into NSS. When Firefox initiates a secure connection, NSS
+handles the mathematical operations required to generate both the
+classical and post-quantum keys simultaneously.</p>
+<h2 id="mechanics-of-the-upgraded-tls-13-handshake">Mechanics of the
+Upgraded TLS 1.3 Handshake</h2>
+<p>Firefox restricts post-quantum key exchanges exclusively to TLS 1.3.
+The implementation modifies the standard TLS handshake in the following
+way:</p>
+<ol type="1">
+<li><strong>Client Hello:</strong> When Firefox connects to a server, it
+sends a <code>ClientHello</code> message. Inside the
+<code>key_share</code> extension of this message, Firefox includes a
+single hybrid key share containing both an X25519 public key and a
+Kyber-768 public key.</li>
+<li><strong>Server Hello:</strong> If the server (such as those run by
+Cloudflare or Google) supports the hybrid algorithm, it responds with a
+<code>ServerHello</code>. This contains the server's X25519 public key
+and a Kyber-768 ciphertext.</li>
+<li><strong>Secret Calculation:</strong> Firefox computes the classical
+shared secret using X25519 and decapsulates the Kyber-768 ciphertext to
+reveal the post-quantum shared secret.</li>
+<li><strong>Key Concatenation:</strong> NSS concatenates (joins
+together) both secrets into a single buffer. This combined secret is
+then fed into the standard TLS 1.3 Key Schedule (HKDF) to generate the
+symmetric keys used to encrypt the actual browsing session.</li>
+</ol>
+<p>If the server does not support the hybrid algorithm, it ignores the
+post-quantum data and requests a fallback to a standard X25519 key
+exchange, ensuring websites do not break.</p>
+<h2 id="overcoming-network-intolerance-and-rollout">Overcoming Network
+Intolerance and Rollout</h2>
+<p>The primary challenge in Firefox's implementation was data size. A
+classical X25519 public key is only 32 bytes, whereas a Kyber-768 public
+key is 1,184 bytes. Combining them pushes the <code>ClientHello</code>
+message over the maximum size of a single TCP packet (typically 1,500
+bytes).</p>
+<p>Splitting the <code>ClientHello</code> across multiple packets caused
+older, misconfigured network firewalls and middleboxes to drop the
+connection, resulting in failed page loads. To solve this, Mozilla
+rolled out the feature gradually:</p>
+<ul>
+<li><strong>Experimental Phase:</strong> Beginning in Firefox 118, the
+feature was hidden behind an opt-in configuration flag
+(<code>security.tls.enable_kyber</code> in the <code>about:config</code>
+menu).</li>
+<li><strong>Telemetry Testing:</strong> Mozilla enabled the feature for
+small percentages of Firefox Nightly and Beta users to identify and work
+with vendors of broken middleboxes.</li>
+<li><strong>Default Deployment:</strong> After confirming that
+connection failure rates had dropped to negligible levels, Mozilla
+enabled post-quantum hybrid key exchange by default starting in Firefox
+124 for desktop users.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-implements-post-quantum-tls-key-exchange';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

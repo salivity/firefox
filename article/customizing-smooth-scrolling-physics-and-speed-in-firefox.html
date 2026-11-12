@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customizing Smooth Scrolling Physics and Speed in Firefox - firefox</title>
+    <meta name="description" content="This article provides a complete guide on how to customize the smooth scrolling speed and physics in the Mozilla Firefox web browser. While Firefox offers a basic toggle for smooth scrolling in its standard settings menu, users can unlock full control ove">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/customizing-smooth-scrolling-physics-and-speed-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Customizing Smooth Scrolling Physics and Speed in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/customizing-smooth-scrolling-physics-and-speed-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete guide on how to customize the smooth scrolling speed and physics in the Mozilla Firefox web browser. While Firefox offers a basic toggle for smooth scrolling in its standard settings menu, users can unlock full control ove" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="customizing-smooth-scrolling-physics-and-speed-in-firefox">Customizing
+Smooth Scrolling Physics and Speed in Firefox</h1>
+<p>This article provides a complete guide on how to customize the smooth
+scrolling speed and physics in the Mozilla Firefox web browser. While
+Firefox offers a basic toggle for smooth scrolling in its standard
+settings menu, users can unlock full control over scroll duration,
+distance, friction, and Mass-Spring-Damper (MSD) physics by modifying
+hidden preferences in the browser's advanced configuration page.</p>
+<h2 id="step-1-enable-basic-smooth-scrolling">Step 1: Enable Basic
+Smooth Scrolling</h2>
+<p>Before modifying the advanced physics, ensure that the master smooth
+scrolling setting is active.</p>
+<ol type="1">
+<li>Open Firefox and click the menu button (three horizontal lines) in
+the top-right corner.</li>
+<li>Select <strong>Settings</strong>.</li>
+<li>In the <strong>General</strong> panel, scroll down to the
+<strong>Browsing</strong> section.</li>
+<li>Ensure the box next to <strong>Use smooth scrolling</strong> is
+checked.</li>
+</ol>
+<h2 id="step-2-access-the-advanced-configuration-page">Step 2: Access
+the Advanced Configuration Page</h2>
+<p>To change the speed and physics, you must use Firefox's advanced
+configuration editor.</p>
+<ol type="1">
+<li>Open a new tab in Firefox.</li>
+<li>Type <code>about:config</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>A warning page may appear. Click the <strong>Accept the Risk and
+Continue</strong> button to proceed to the preference search page.</li>
+</ol>
+<h2 id="step-3-customize-scroll-speed-and-distance">Step 3: Customize
+Scroll Speed and Distance</h2>
+<p>You can control how fast the page scrolls and how much distance is
+covered with each notch of your mouse wheel by searching for the
+following preferences in the <code>about:config</code> search bar and
+double-clicking them to change their values.</p>
+<ul>
+<li><strong><code>mousewheel.default.delta_multiplier_y</code></strong>
+<ul>
+<li><strong>What it does:</strong> Controls the distance a page scrolls
+per mouse wheel notch. Increasing this makes scrolling feel faster.</li>
+<li><strong>Default value:</strong> <code>100</code></li>
+<li><strong>Customization:</strong> Change the value to <code>250</code>
+or <code>300</code> for much faster scrolling, or lower it to
+<code>50</code> for slower, more precise scrolling.</li>
+</ul></li>
+<li><strong><code>general.smoothScroll.mouseWheel.durationMaxMS</code></strong>
+<ul>
+<li><strong>What it does:</strong> Sets the maximum duration (in
+milliseconds) for the smooth scroll animation to complete.</li>
+<li><strong>Default value:</strong> <code>200</code></li>
+<li><strong>Customization:</strong> Increase this value (e.g.,
+<code>400</code> to <code>1000</code>) to make the scroll glide longer
+and feel smoother. Decrease it (e.g., <code>100</code>) to make the
+scroll stop more abruptly and feel snappier.</li>
+</ul></li>
+<li><strong><code>general.smoothScroll.mouseWheel.durationMinMS</code></strong>
+<ul>
+<li><strong>What it does:</strong> Sets the minimum duration (in
+milliseconds) for the scroll animation.</li>
+<li><strong>Default value:</strong> <code>50</code></li>
+<li><strong>Customization:</strong> Raise this value to <code>150</code>
+or <code>200</code> to ensure that even quick, single-notch scrolls
+remain smooth.</li>
+</ul></li>
+</ul>
+<p><em>(Note: If you use keyboard arrows or the Page Up/Page Down keys
+to scroll, you can adjust the same duration settings under
+<code>general.smoothScroll.lines</code> and
+<code>general.smoothScroll.pages</code> respectively).</em></p>
+<h2 id="step-4-enable-and-customize-mass-spring-damper-msd-physics">Step
+4: Enable and Customize Mass-Spring-Damper (MSD) Physics</h2>
+<p>Firefox includes an alternative physics engine for scrolling based on
+a Mass-Spring-Damper model. This makes scrolling feel more like a
+physical object with weight and momentum, similar to scrolling on a
+smartphone or macOS trackpad.</p>
+<ol type="1">
+<li>Search for
+<strong><code>general.smoothScroll.msdPhysics.enabled</code></strong>.</li>
+<li>Double-click the preference to change its value from
+<code>false</code> to <strong><code>true</code></strong>.</li>
+</ol>
+<p>Once MSD physics is enabled, the standard <code>durationMaxMS</code>
+settings are bypassed. Instead, you can fine-tune the physics using
+these specific MSD preferences:</p>
+<ul>
+<li><strong><code>general.smoothScroll.msdPhysics.regularSpringConstant</code></strong>
+<ul>
+<li><strong>What it does:</strong> Controls the stiffness of the scroll
+"spring" during normal scrolling.</li>
+<li><strong>Customization:</strong> Lowering this value makes the scroll
+feel looser and glide longer. Raising it makes the scroll tighter and
+more immediate.</li>
+</ul></li>
+<li><strong><code>general.smoothScroll.msdPhysics.slowdownSpringConstant</code></strong>
+<ul>
+<li><strong>What it does:</strong> Controls the friction and
+deceleration when the scroll is coming to a stop.</li>
+<li><strong>Customization:</strong> Decrease this value for a longer,
+gradual coasting effect at the end of a scroll. Increase it to make the
+page brake harder.</li>
+</ul></li>
+<li><strong><code>general.smoothScroll.msdPhysics.motionBeginSpringConstant</code></strong>
+<ul>
+<li><strong>What it does:</strong> Controls the initial acceleration
+when you first move the mouse wheel.</li>
+<li><strong>Customization:</strong> Lower values create a gentler start,
+while higher values provide instant acceleration.</li>
+</ul></li>
+</ul>
+<h2 id="step-5-adjust-standard-velocity-and-friction-non-msd">Step 5:
+Adjust Standard Velocity and Friction (Non-MSD)</h2>
+<p>If you prefer not to use the MSD physics engine (keeping
+<code>general.smoothScroll.msdPhysics.enabled</code> set to
+<code>false</code>), you can still adjust the inertia and friction of
+the standard smooth scrolling engine using these two preferences:</p>
+<ul>
+<li><strong><code>general.smoothScroll.currentVelocityWeighting</code></strong>
+<ul>
+<li><strong>What it does:</strong> Determines how much your current
+scrolling speed affects the next scroll input (momentum).</li>
+<li><strong>Default value:</strong> <code>0.25</code></li>
+<li><strong>Customization:</strong> Set this between <code>0.0</code>
+and <code>1.0</code>. Setting it to <code>0</code> removes acceleration
+build-up entirely.</li>
+</ul></li>
+<li><strong><code>general.smoothScroll.stopDecelerationWeighting</code></strong>
+<ul>
+<li><strong>What it does:</strong> Controls how smoothly the scroll
+decelerates before stopping.</li>
+<li><strong>Default value:</strong> <code>0.4</code></li>
+<li><strong>Customization:</strong> Set this between <code>0.0</code>
+and <code>1.0</code>. A higher value (such as <code>0.8</code>) results
+in a much longer, softer landing as the scroll finishes.</li>
+</ul></li>
+</ul>
+<p>All changes made in the <code>about:config</code> menu take effect
+immediately. You can switch to another open tab to test the feel of your
+new scrolling physics and return to the configuration tab to make
+adjustments until you find your ideal setup. To revert any setting back
+to its original state, simply click the <strong>Reset</strong> arrow
+icon on the far right of the preference row.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/customizing-smooth-scrolling-physics-and-speed-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locking Firefox Preferences with Autoconfig (mozilla.cfg) - firefox</title>
+    <meta name="description" content="System administrators often need to enforce specific browser settings across an organization to maintain security and compliance. This article provides a direct guide on how to use Firefox&#39;s Autoconfig feature—specifically utilizing the autoconfig.js and">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/locking-firefox-preferences-with-autoconfig-mozilla-cfg">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Locking Firefox Preferences with Autoconfig (mozilla.cfg) - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/locking-firefox-preferences-with-autoconfig-mozilla-cfg" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="System administrators often need to enforce specific browser settings across an organization to maintain security and compliance. This article provides a direct guide on how to use Firefox&#39;s Autoconfig feature—specifically utilizing the autoconfig.js and" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="locking-firefox-preferences-with-autoconfig-mozillacfg">Locking
+Firefox Preferences with Autoconfig (mozilla.cfg)</h1>
+<p>System administrators often need to enforce specific browser settings
+across an organization to maintain security and compliance. This article
+provides a direct guide on how to use Firefox's Autoconfig
+feature—specifically utilizing the <code>autoconfig.js</code> and
+<code>mozilla.cfg</code> files—to configure and permanently lock browser
+preferences so end users cannot modify them.</p>
+<h2 id="step-1-create-the-autoconfigjs-file">Step 1: Create the
+autoconfig.js File</h2>
+<p>To instruct Firefox to load a custom configuration file at startup,
+you must first create a JavaScript file named
+<code>autoconfig.js</code>.</p>
+<p>Navigate to the <code>defaults/pref</code> directory within the
+Firefox installation folder. Depending on your operating system, the
+standard paths are:</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>C:\Program Files\Mozilla Firefox\defaults\pref\</code></li>
+<li><strong>macOS:</strong>
+<code>/Applications/Firefox.app/Contents/Resources/defaults/pref/</code></li>
+<li><strong>Linux:</strong>
+<code>/usr/lib/firefox/defaults/pref/</code></li>
+</ul>
+<p>Create the <code>autoconfig.js</code> file in this directory and add
+the following exact lines:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// First line must be a comment</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pref</span>(<span class="st">&quot;general.config.filename&quot;</span><span class="op">,</span> <span class="st">&quot;mozilla.cfg&quot;</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pref</span>(<span class="st">&quot;general.config.obscure_value&quot;</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span></code></pre></div>
+<ul>
+<li><strong>Note:</strong> The first line of this file is ignored by
+Firefox, so it must always be a comment (<code>//</code>).</li>
+<li><code>general.config.filename</code> tells Firefox the name of the
+configuration file to look for.</li>
+<li><code>general.config.obscure_value</code> set to <code>0</code>
+tells Firefox that the <code>mozilla.cfg</code> file is written in plain
+text rather than byte-shifted (obscured) text.</li>
+</ul>
+<h2 id="step-2-create-the-mozillacfg-file">Step 2: Create the
+mozilla.cfg File</h2>
+<p>Next, you need to create the <code>mozilla.cfg</code> file, which
+will contain the actual preferences you want to lock. This file must be
+placed in the root of the Firefox installation directory:</p>
+<ul>
+<li><strong>Windows:</strong>
+<code>C:\Program Files\Mozilla Firefox\</code></li>
+<li><strong>macOS:</strong>
+<code>/Applications/Firefox.app/Contents/Resources/</code></li>
+<li><strong>Linux:</strong> <code>/usr/lib/firefox/</code></li>
+</ul>
+<p>Create the <code>mozilla.cfg</code> file and ensure the very first
+line is a comment (<code>//</code>), as Firefox ignores the first line
+of this file as well. Below the first line, use the
+<code>lockPref()</code> function to lock specific settings.</p>
+<p>Here is an example <code>mozilla.cfg</code> file:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// First line must be a comment</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Lock the browser homepage</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lockPref</span>(<span class="st">&quot;browser.startup.homepage&quot;</span><span class="op">,</span> <span class="st">&quot;https://www.example.com&quot;</span>)<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lockPref</span>(<span class="st">&quot;browser.startup.page&quot;</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Disable the password manager</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lockPref</span>(<span class="st">&quot;signon.rememberSignons&quot;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Force enable Do Not Track</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lockPref</span>(<span class="st">&quot;privacy.donottrackheader.enabled&quot;</span><span class="op">,</span> <span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Disable telemetry</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lockPref</span>(<span class="st">&quot;toolkit.telemetry.enabled&quot;</span><span class="op">,</span> <span class="kw">false</span>)<span class="op">;</span></span></code></pre></div>
+<h2 id="understanding-autoconfig-functions">Understanding Autoconfig
+Functions</h2>
+<p>While <code>lockPref()</code> is used to prevent user changes, you
+can use other functions in <code>mozilla.cfg</code> depending on your
+administrative needs:</p>
+<ul>
+<li><code>lockPref("preference.name", value);</code> — Sets the
+preference and locks it completely. The user cannot change this setting
+in the Firefox UI or via <code>about:config</code>.</li>
+<li><code>defaultPref("preference.name", value);</code> — Sets the
+default value of a preference. The user can change it, but resetting the
+preference returns it to your defined default.</li>
+<li><code>pref("preference.name", value);</code> — Sets the preference
+at every startup. The user can change it during their browsing session,
+but it will revert to your setting the next time Firefox is
+launched.</li>
+<li><code>clearPref("preference.name");</code> — Resets a preference
+back to Firefox's built-in default at startup, erasing any changes the
+user made.</li>
+</ul>
+<p><em>Note on data types:</em> Strings must be enclosed in quotes
+(e.g., <code>"https://example.com"</code>), while booleans
+(<code>true</code> or <code>false</code>) and integers (e.g.,
+<code>1</code>, <code>0</code>) must not be in quotes.</p>
+<h2 id="step-3-verify-the-configuration">Step 3: Verify the
+Configuration</h2>
+<p>To ensure the preferences are locked, launch Firefox and follow these
+steps:</p>
+<ol type="1">
+<li>Type <code>about:config</code> into the address bar and press
+Enter.</li>
+<li>Accept the risk warning to proceed.</li>
+<li>Search for one of the preferences you configured in
+<code>mozilla.cfg</code> (for example,
+<code>signon.rememberSignons</code>).</li>
+<li>Verify that the preference appears greyed out and the edit/toggle
+button at the far right of the row is disabled.</li>
+</ol>
+<p>If Firefox fails to launch and displays an "Failed to read the
+configuration file" error, double-check that both
+<code>autoconfig.js</code> and <code>mozilla.cfg</code> are in the
+correct directories, have the correct file extensions (not
+<code>.txt</code>), start with <code>//</code> on the first line, and
+contain valid JavaScript syntax.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/locking-firefox-preferences-with-autoconfig-mozilla-cfg';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

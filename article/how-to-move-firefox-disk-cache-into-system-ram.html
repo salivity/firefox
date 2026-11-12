@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Move Firefox Disk Cache Into System RAM - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide on how to move the Mozilla Firefox disk cache directly into your system RAM. By adjusting advanced configuration settings—specifically by disabling browser.cache.disk.enable and configuring browser.cache.memory.c">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-move-firefox-disk-cache-into-system-ram">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Move Firefox Disk Cache Into System RAM - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-move-firefox-disk-cache-into-system-ram" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide on how to move the Mozilla Firefox disk cache directly into your system RAM. By adjusting advanced configuration settings—specifically by disabling browser.cache.disk.enable and configuring browser.cache.memory.c" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-move-firefox-disk-cache-into-system-ram">How to Move
+Firefox Disk Cache Into System RAM</h1>
+<p>This article provides a step-by-step guide on how to move the Mozilla
+Firefox disk cache directly into your system RAM. By adjusting advanced
+configuration settings—specifically by disabling
+<code>browser.cache.disk.enable</code> and configuring
+<code>browser.cache.memory.capacity</code>—you can increase browser
+responsiveness and reduce unnecessary write wear on your Solid State
+Drive (SSD).</p>
+<h3 id="step-1-access-the-firefox-configuration-editor">Step 1: Access
+the Firefox Configuration Editor</h3>
+<p>To change how Firefox handles caching, you need to access its
+advanced configuration page.</p>
+<ol type="1">
+<li>Open the Firefox Web Browser.</li>
+<li>Type <code>about:config</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button on
+the warning page that appears.</li>
+</ol>
+<h3 id="step-2-disable-the-disk-cache">Step 2: Disable the Disk
+Cache</h3>
+<p>Next, you must stop Firefox from writing cached files to your hard
+drive or SSD.</p>
+<ol type="1">
+<li>In the Search preference name box at the top of the
+<code>about:config</code> page, type or paste
+<code>browser.cache.disk.enable</code>.</li>
+<li>Locate the preference in the list. Its default value is set to
+<code>true</code>.</li>
+<li>Double-click the row, or click the <strong>Toggle</strong> icon on
+the right side of the screen, to change the value to
+<code>false</code>.</li>
+</ol>
+<h3 id="step-3-verify-memory-cache-is-active">Step 3: Verify Memory
+Cache is Active</h3>
+<p>Before allocating RAM, ensure that the memory cache itself is turned
+on.</p>
+<ol type="1">
+<li>In the search box, type
+<code>browser.cache.memory.enable</code>.</li>
+<li>Ensure the value is set to <code>true</code>. If it is set to
+<code>false</code>, double-click it to change it to
+<code>true</code>.</li>
+</ol>
+<h3 id="step-4-configure-the-memory-cache-capacity">Step 4: Configure
+the Memory Cache Capacity</h3>
+<p>Now you will define how much system RAM Firefox is allowed to use for
+its cache.</p>
+<ol type="1">
+<li>In the search box, type or paste
+<code>browser.cache.memory.capacity</code>.</li>
+<li>If the preference already exists, click the <strong>Edit</strong>
+(pencil) icon on the right.</li>
+<li>If the preference does not exist, select the <strong>Number</strong>
+radio button below the search result, then click the
+<strong>Add</strong> (plus) icon on the right.</li>
+<li>Enter the amount of RAM you wish to allocate in <strong>Kilobytes
+(KB)</strong>. Use the following values as a reference based on your
+available system memory:
+<ul>
+<li><strong>-1:</strong> Allows Firefox to automatically manage the
+cache size based on your total installed RAM (Default).</li>
+<li><strong>262144:</strong> Allocates 256 MB of RAM.</li>
+<li><strong>524288:</strong> Allocates 512 MB of RAM.</li>
+<li><strong>1048576:</strong> Allocates 1 GB of RAM.</li>
+</ul></li>
+<li>Click the <strong>Save</strong> (checkmark) icon or press
+<strong>Enter</strong> to apply the value.</li>
+</ol>
+<h3 id="step-5-restart-firefox">Step 5: Restart Firefox</h3>
+<p>Close all open Firefox windows and relaunch the browser. Your
+browsing cache will now operate exclusively in your system RAM, clearing
+itself automatically whenever you close the browser or shut down your
+computer.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-move-firefox-disk-cache-into-system-ram';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

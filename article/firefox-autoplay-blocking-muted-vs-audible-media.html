@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox Autoplay Blocking: Muted vs. Audible Media - firefox</title>
+    <meta name="description" content="This article explains the technical processes used by the Mozilla Firefox web browser to distinguish between muted videos and audible media within its autoplay blocking system. By inspecting HTML media element properties, analyzing underlying audio tracks">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-autoplay-blocking-muted-vs-audible-media">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox Autoplay Blocking: Muted vs. Audible Media - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-autoplay-blocking-muted-vs-audible-media" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical processes used by the Mozilla Firefox web browser to distinguish between muted videos and audible media within its autoplay blocking system. By inspecting HTML media element properties, analyzing underlying audio tracks" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-autoplay-blocking-muted-vs-audible-media">Firefox
+Autoplay Blocking: Muted vs. Audible Media</h1>
+<p>This article explains the technical processes used by the Mozilla
+Firefox web browser to distinguish between muted videos and audible
+media within its autoplay blocking system. By inspecting HTML media
+element properties, analyzing underlying audio tracks, and monitoring
+real-time volume states before and during playback, Firefox prevents
+disruptive noise while allowing silent visual content to play
+seamlessly.</p>
+<h3 id="the-default-autoplay-policy">The Default Autoplay Policy</h3>
+<p>By default, Firefox blocks media with sound from playing
+automatically when a webpage loads, while permitting silent or muted
+videos to play. This approach balances user experience with website
+functionality, as many modern websites use silent background videos for
+design purposes or as replacements for animated GIFs. To enforce this
+policy, Firefox's layout engine, Gecko, evaluates specific criteria the
+moment a website requests media playback.</p>
+<h3 id="inspecting-html-element-properties">Inspecting HTML Element
+Properties</h3>
+<p>The first step in differentiating media types involves checking the
+Document Object Model (DOM) properties of the HTML
+<code>&lt;video&gt;</code> or <code>&lt;audio&gt;</code> element. When a
+script or an <code>autoplay</code> attribute attempts to start playback,
+Firefox checks two specific states:</p>
+<ol type="1">
+<li><strong>The Muted Attribute:</strong> Firefox checks if the
+<code>muted</code> boolean property on the media element is set to
+<code>true</code>.</li>
+<li><strong>The Volume Level:</strong> Firefox checks if the
+<code>volume</code> property of the element is set to
+<code>0</code>.</li>
+</ol>
+<p>If either of these conditions is met, Firefox categorizes the media
+as silent and permits the autoplay request to proceed without requiring
+prior user interaction.</p>
+<h3 id="analyzing-media-container-tracks">Analyzing Media Container
+Tracks</h3>
+<p>Not all silent videos use the <code>muted</code> attribute. Some
+video files are encoded without an audio track entirely. If a video
+element is not explicitly muted in the HTML code and its volume is
+greater than zero, Firefox inspects the media file's metadata before
+playback begins.</p>
+<p>The browser demuxes the media container (such as an MP4 or WebM file)
+to determine what streams exist inside it. If the browser detects a
+video track but finds no accompanying audio track, it classifies the
+file as silent media and allows it to autoplay. Conversely, if an active
+audio track is detected and the element is not muted, the playback
+request is blocked.</p>
+<h3 id="monitoring-dynamic-state-changes">Monitoring Dynamic State
+Changes</h3>
+<p>Websites sometimes attempt to bypass autoplay restrictions by
+starting a video in a muted state and then using JavaScript to unmute it
+after playback begins. Firefox counters this by continuously monitoring
+the volume state of autoplaying media.</p>
+<p>If a video was allowed to autoplay purely because it was muted,
+Firefox places that media element under strict observation. If a script
+changes the <code>muted</code> property to <code>false</code> or raises
+the <code>volume</code> above <code>0</code> without the user having
+interacted with the page, Firefox immediately intervenes and pauses the
+video.</p>
+<h3 id="user-interaction-and-the-web-audio-api">User Interaction and the
+Web Audio API</h3>
+<p>Firefox's differentiation mechanism also relies on tracking user
+gestures. The browser maintains an internal state that records whether a
+user has consciously interacted with the domain via a mouse click, tap,
+or key press.</p>
+<p>Once a user interacts with the page, the restriction is lifted, and
+Firefox no longer needs to differentiate between muted and audible
+states for that session. This rule also applies to the Web Audio API,
+which developers use for complex audio processing and browser games. If
+a website attempts to generate sound using an <code>AudioContext</code>
+before the user interacts with the page, Firefox automatically forces
+the context into a <code>suspended</code> state, effectively muting it
+until a valid user gesture occurs.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-autoplay-blocking-muted-vs-audible-media';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

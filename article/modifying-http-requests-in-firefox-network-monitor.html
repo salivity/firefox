@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifying HTTP Requests in Firefox Network Monitor - firefox</title>
+    <meta name="description" content="This article explores the Edit and Resend feature within the Firefox Web Browser&#39;s Network Monitor, detailing how it empowers developers to intercept, modify, and replay HTTP requests directly from the browser. You will learn the step-by-step process for">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/modifying-http-requests-in-firefox-network-monitor">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Modifying HTTP Requests in Firefox Network Monitor - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/modifying-http-requests-in-firefox-network-monitor" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the Edit and Resend feature within the Firefox Web Browser&#39;s Network Monitor, detailing how it empowers developers to intercept, modify, and replay HTTP requests directly from the browser. You will learn the step-by-step process for" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="modifying-http-requests-in-firefox-network-monitor">Modifying
+HTTP Requests in Firefox Network Monitor</h1>
+<p>This article explores the Edit and Resend feature within the Firefox
+Web Browser's Network Monitor, detailing how it empowers developers to
+intercept, modify, and replay HTTP requests directly from the browser.
+You will learn the step-by-step process for accessing this tool,
+altering HTTP headers and request payloads, and analyzing the resulting
+server responses to streamline API debugging and web application
+testing.</p>
+<h2 id="accessing-the-edit-and-resend-feature">Accessing the Edit and
+Resend Feature</h2>
+<p>To modify a network request, you first need to capture it in the
+Network Monitor.</p>
+<ol type="1">
+<li>Open Firefox and press <code>F12</code> (or
+<code>Cmd+Option+I</code> on macOS) to launch the Developer Tools.</li>
+<li>Select the <strong>Network</strong> tab.</li>
+<li>Reload the page or trigger the specific action on the website that
+generates the HTTP request you want to inspect.</li>
+<li>Locate the target request in the network log, right-click on it, and
+select <strong>Edit and Resend</strong> from the context menu.</li>
+</ol>
+<p>This opens a new configuration pane on the side of the Network
+Monitor, populating it with the exact data from the original
+request.</p>
+<h2 id="modifying-http-headers">Modifying HTTP Headers</h2>
+<p>The Edit and Resend pane provides full control over the metadata sent
+to the server. In the <strong>Headers</strong> section, all original
+request headers are displayed as editable fields.</p>
+<ul>
+<li><strong>Editing Existing Headers:</strong> Click directly into the
+value field of any header to change it. This is commonly used to test
+different <code>Authorization</code> bearer tokens, modify
+<code>Cookie</code> values to simulate different user sessions, or
+change the <code>User-Agent</code> to test mobile responsiveness.</li>
+<li><strong>Adding New Headers:</strong> Scroll to the bottom of the
+headers list to find empty input fields. Here, you can type a new header
+name and value, such as a custom <code>X-API-Key</code> or
+<code>Cache-Control</code> directive.</li>
+<li><strong>Removing Headers:</strong> Clear the text from a header or
+use the delete icon next to it to remove it entirely. This helps
+developers verify how a server responds when expected headers are
+omitted.</li>
+</ul>
+<h2 id="altering-the-request-body">Altering the Request Body</h2>
+<p>For requests that transmit data to the server—such as
+<code>POST</code>, <code>PUT</code>, and <code>PATCH</code> requests—the
+Edit and Resend tool provides a <strong>Body</strong> (or Request
+Payload) text area.</p>
+<p>This field contains the raw data sent in the original request, such
+as a JSON object, XML payload, or URL-encoded form data. Developers can
+click into this text area and freely modify the content. You can change
+variable values, add new JSON keys, or intentionally break the syntax to
+test the server's error-handling capabilities.</p>
+<p>When you modify the request body, you do not need to manually update
+the <code>Content-Length</code> header. Firefox automatically
+recalculates the byte size of your new payload and updates the header
+accordingly when the request is dispatched.</p>
+<h2 id="changing-the-request-method-and-url">Changing the Request Method
+and URL</h2>
+<p>At the top of the Edit and Resend pane, you can also manipulate the
+fundamental routing of the request:</p>
+<ul>
+<li><strong>HTTP Method:</strong> Use the dropdown menu to switch the
+request method (for example, changing a <code>GET</code> request to a
+<code>POST</code> or <code>DELETE</code> request) to test how an
+endpoint handles different types of operations.</li>
+<li><strong>URL:</strong> Click into the URL bar to change the target
+endpoint, add query parameters, or alter existing path variables.</li>
+</ul>
+<h2 id="sending-and-analyzing-the-request">Sending and Analyzing the
+Request</h2>
+<p>Once you have finished editing the HTTP headers and the request body,
+click the <strong>Send</strong> button at the top of the pane.</p>
+<p>Firefox immediately dispatches the modified request to the server
+without requiring you to interact with the webpage's user interface. A
+new entry will appear in the Network Monitor list representing your
+custom request. You can click on this new entry to inspect the server's
+response status code, response headers, and response body to verify the
+outcome of your changes.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/modifying-http-requests-in-firefox-network-monitor';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

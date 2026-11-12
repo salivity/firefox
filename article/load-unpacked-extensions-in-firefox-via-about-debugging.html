@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Unpacked Extensions in Firefox via about:debugging - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide for developers on how to load an unpacked browser extension directly from a local folder in the Mozilla Firefox web browser. By utilizing the built-in about:debugging interface, you can quickly install temporary">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/load-unpacked-extensions-in-firefox-via-about-debugging">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Load Unpacked Extensions in Firefox via about:debugging - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/load-unpacked-extensions-in-firefox-via-about-debugging" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide for developers on how to load an unpacked browser extension directly from a local folder in the Mozilla Firefox web browser. By utilizing the built-in about:debugging interface, you can quickly install temporary" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="load-unpacked-extensions-in-firefox-via-aboutdebugging">Load
+Unpacked Extensions in Firefox via about:debugging</h1>
+<p>This article provides a step-by-step guide for developers on how to
+load an unpacked browser extension directly from a local folder in the
+Mozilla Firefox web browser. By utilizing the built-in
+<code>about:debugging</code> interface, you can quickly install
+temporary add-ons, test functionality, and reload code changes in
+real-time without needing to package or sign your extension first.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before loading your extension into Firefox, ensure that all your
+extension files are saved in a single local directory on your computer.
+This folder must contain a valid <code>manifest.json</code> file, as
+Firefox uses this file to read the extension's configuration and
+permissions.</p>
+<h3 id="step-by-step-guide-to-loading-the-extension">Step-by-Step Guide
+to Loading the Extension</h3>
+<p>Follow these steps to load your unpacked extension from your local
+folder:</p>
+<ol type="1">
+<li><strong>Open the Firefox Browser:</strong> Launch Mozilla Firefox on
+your computer.</li>
+<li><strong>Access the Debugging Page:</strong> Click on the address bar
+at the top of the browser, type <code>about:debugging</code>, and press
+<strong>Enter</strong>.</li>
+<li><strong>Select Your Browser Instance:</strong> In the left-hand
+sidebar of the page that loads, click on <strong>This Firefox</strong>
+(this may be labeled as <strong>This Nightly</strong> or <strong>This
+Developer Edition</strong> depending on the version of Firefox you are
+using).</li>
+<li><strong>Initiate the Upload:</strong> Locate the <strong>Temporary
+Extensions</strong> section on the main panel and click the <strong>Load
+Temporary Add-on...</strong> button.</li>
+<li><strong>Select Your Extension File:</strong> A file browser window
+will open. Navigate to the local folder containing your unpacked
+extension.</li>
+<li><strong>Load the Manifest:</strong> Click on the
+<code>manifest.json</code> file (or any other file inside your
+extension's root directory) and click <strong>Open</strong>.</li>
+</ol>
+<p>Your unpacked extension is now installed and active in the browser.
+It will immediately appear under the <strong>Temporary
+Extensions</strong> list, and its icon (if configured) will show up in
+the Firefox toolbar.</p>
+<h3 id="managing-your-unpacked-extension">Managing Your Unpacked
+Extension</h3>
+<p>Once your extension is loaded, the <code>about:debugging</code> page
+gives you several tools to manage it during development:</p>
+<ul>
+<li><strong>Inspect:</strong> Click this button to open the Firefox
+Developer Tools specifically for your extension. This allows you to view
+console logs, debug background scripts, and inspect popups.</li>
+<li><strong>Reload:</strong> If you make changes to your local code
+inside your folder, click the <strong>Reload</strong> button to
+immediately apply those changes in the browser without having to
+re-select the file.</li>
+<li><strong>Remove:</strong> Click this button to instantly uninstall
+the temporary extension from Firefox.</li>
+</ul>
+<p>Note that any extension loaded using this method is temporary. It
+will remain active only for your current browsing session and will be
+automatically removed when you completely close the Firefox browser.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/load-unpacked-extensions-in-firefox-via-about-debugging';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

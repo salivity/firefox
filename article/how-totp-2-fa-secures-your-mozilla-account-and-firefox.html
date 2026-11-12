@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How TOTP 2FA Secures Your Mozilla Account and Firefox - firefox</title>
+    <meta name="description" content="Enabling Two-Step Authentication (2FA) using a Time-based One-Time Password (TOTP) authenticator app provides a critical layer of security for a Mozilla Account linked to the Firefox Web Browser. This article explains the mechanics of TOTP authentication,">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-totp-2-fa-secures-your-mozilla-account-and-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How TOTP 2FA Secures Your Mozilla Account and Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-totp-2-fa-secures-your-mozilla-account-and-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Enabling Two-Step Authentication (2FA) using a Time-based One-Time Password (TOTP) authenticator app provides a critical layer of security for a Mozilla Account linked to the Firefox Web Browser. This article explains the mechanics of TOTP authentication," />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-totp-2fa-secures-your-mozilla-account-and-firefox">How TOTP
+2FA Secures Your Mozilla Account and Firefox</h1>
+<p>Enabling Two-Step Authentication (2FA) using a Time-based One-Time
+Password (TOTP) authenticator app provides a critical layer of security
+for a Mozilla Account linked to the Firefox Web Browser. This article
+explains the mechanics of TOTP authentication, how it blocks
+unauthorized access even if your password is stolen, and how it
+specifically protects your synced Firefox data—including saved logins,
+bookmarks, and browsing history—from cyber threats.</p>
+<h2 id="the-connection-between-mozilla-accounts-and-firefox">The
+Connection Between Mozilla Accounts and Firefox</h2>
+<p>A Mozilla Account serves as the central hub for the Firefox
+ecosystem, primarily powering the Firefox Sync feature. When you log
+into your Mozilla Account on the Firefox browser, it continuously backs
+up and synchronizes your personal data across all your connected
+devices. This data includes:</p>
+<ul>
+<li>Saved passwords and login credentials</li>
+<li>Credit card information and autofill data</li>
+<li>Bookmarks and reading lists</li>
+<li>Browsing history and currently open tabs</li>
+<li>Installed add-ons and browser extensions</li>
+</ul>
+<p>Because this account holds the keys to your digital identity and
+daily browsing habits, securing it with just a password is often
+insufficient.</p>
+<h2 id="how-totp-authenticator-apps-work">How TOTP Authenticator Apps
+Work</h2>
+<p>Two-Step Authentication requires two forms of identification to
+access your account: something you know (your password) and something
+you have (your physical device with the authenticator app).</p>
+<p>TOTP authenticator apps—such as Google Authenticator, Authy, or Ente
+Auth—work by using a shared secret key established between your Mozilla
+Account and the app when you scan a setup QR code. Using this secret key
+and the current time, the app algorithmically generates a new six-digit
+numerical code every 30 seconds.</p>
+<p>Because this calculation happens entirely offline based on time
+synchronization, the codes cannot be intercepted over cellular
+networks.</p>
+<h2 id="neutralizing-stolen-passwords">neutralizing Stolen
+Passwords</h2>
+<p>The primary way TOTP 2FA protects your Mozilla Account is by
+rendering stolen passwords useless on their own. Attackers frequently
+obtain passwords through:</p>
+<ul>
+<li><strong>Credential Stuffing:</strong> Using leaked passwords from
+other breached websites to try and log into your Mozilla Account.</li>
+<li><strong>Keyloggers and Malware:</strong> Malicious software that
+records your keystrokes as you type your password.</li>
+<li><strong>Brute-Force Attacks:</strong> Automated software that
+guesses password combinations.</li>
+</ul>
+<p>When TOTP 2FA is enabled, an attacker who successfully enters your
+password hits a wall. They are immediately prompted for the six-digit
+code currently displayed on your personal device. Without physical
+access to your phone or authentication device, they cannot complete the
+login process.</p>
+<h2 id="preventing-unauthorized-firefox-syncing">Preventing Unauthorized
+Firefox Syncing</h2>
+<p>The greatest risk to a compromised Mozilla Account is that an
+attacker can simply open a fresh installation of the Firefox browser on
+their own computer, log into your Mozilla Account, and instantly
+download all of your synced passwords and payment methods.</p>
+<p>TOTP 2FA acts as a gatekeeper for the Firefox Sync protocol. A new
+instance of Firefox cannot begin downloading or decrypting your synced
+browser data until the 2FA challenge is successfully passed. Even if
+your master password is leaked, your Firefox browser data remains
+isolated and inaccessible to the attacker's browser.</p>
+<h2 id="protection-against-sim-swapping-and-interception">Protection
+Against SIM Swapping and Interception</h2>
+<p>While some services rely on SMS text messages for 2FA, Mozilla
+utilizes TOTP apps because they are significantly more secure. SMS
+messages can be intercepted by attackers using rogue cell towers or
+redirected through "SIM swapping" attacks, where a criminal convinces
+your mobile carrier to transfer your phone number to their device.</p>
+<p>TOTP authenticator apps are tied to the hardware of your specific
+device, not your phone number. Even if an attacker hijacks your mobile
+number, the TOTP codes remain safely generated strictly within the app
+on your physical device.</p>
+<h2 id="securing-account-recovery">Securing Account Recovery</h2>
+<p>When you enable TOTP 2FA on a Mozilla Account, the system requires
+you to generate backup authentication codes (or set up a recovery
+phone). This ensures that security does not come at the cost of
+permanent lockouts. These one-time-use backup codes allow you to bypass
+the TOTP requirement only if you lose your physical authenticator
+device, maintaining a strict, encrypted perimeter around your Firefox
+data while ensuring you retain ultimate control over your account.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-totp-2-fa-secures-your-mozilla-account-and-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

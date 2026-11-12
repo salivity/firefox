@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Remembers Custom Zoom Levels Per Domain - firefox</title>
+    <meta name="description" content="This article explains the underlying mechanism the Mozilla Firefox web browser uses to remember custom zoom levels for individual websites across browsing sessions. By utilizing a dedicated local SQLite database within the user&#39;s profile folder, Firefox m">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-remembers-custom-zoom-levels-per-domain">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Remembers Custom Zoom Levels Per Domain - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-remembers-custom-zoom-levels-per-domain" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the underlying mechanism the Mozilla Firefox web browser uses to remember custom zoom levels for individual websites across browsing sessions. By utilizing a dedicated local SQLite database within the user&#39;s profile folder, Firefox m" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-remembers-custom-zoom-levels-per-domain">How Firefox
+Remembers Custom Zoom Levels Per Domain</h1>
+<p>This article explains the underlying mechanism the Mozilla Firefox
+web browser uses to remember custom zoom levels for individual websites
+across browsing sessions. By utilizing a dedicated local SQLite database
+within the user's profile folder, Firefox maps specific domain names to
+user-defined zoom preferences. We will explore the exact file
+responsible for this feature, how the browser processes and retrieves
+this data in real-time, the configuration settings that control it, and
+how privacy modes affect this behavior.</p>
+<h2 id="the-storage-file-content-prefssqlite">The Storage File:
+content-prefs.sqlite</h2>
+<p>Firefox stores all user-specific data—such as bookmarks, passwords,
+and settings—inside a local directory known as the User Profile folder.
+Within this folder lies a specific relational database file named
+<code>content-prefs.sqlite</code>.</p>
+<p>When you adjust the zoom level on a webpage (using <code>Ctrl</code>
++ <code>+</code>/<code>-</code> or the menu controls), Firefox writes
+this change directly to <code>content-prefs.sqlite</code>. The database
+contains three primary components to make this work:</p>
+<ol type="1">
+<li><strong>Groups:</strong> This table stores the domain name of the
+website (e.g., <code>wikipedia.org</code>).</li>
+<li><strong>Settings:</strong> This table defines the type of preference
+being saved. For zooming, Firefox uses the internal identifier
+<code>browser.content.full-zoom</code>.</li>
+<li><strong>Prefs:</strong> This table links the specific domain ID to
+the setting ID and records the numerical zoom value (for example,
+<code>1.2</code> for 120% zoom, or <code>0.8</code> for 80% zoom).</li>
+</ol>
+<p>Because this data is written to a persistent file on your hard drive,
+it remains intact when you close the browser or restart your
+computer.</p>
+<h2 id="domain-extraction-and-grouping">Domain Extraction and
+Grouping</h2>
+<p>Firefox does not save zoom levels on a per-page basis; doing so would
+bloat the database and create a jarring user experience as you click
+through links on the same website. Instead, it uses a component called
+the Content Preference Service to parse the URL.</p>
+<p>When you change the zoom level on
+<code>https://www.example.com/news/article-1.html</code>, Firefox strips
+away the protocol (<code>https://</code>), the path
+(<code>/news/article-1.html</code>), and often the subdomain, isolating
+the base hostname (<code>example.com</code>). It then binds the zoom
+preference to that hostname. Any subsequent pages you visit under that
+same domain will automatically inherit the saved zoom level.</p>
+<h2 id="how-firefox-retrieves-the-zoom-level">How Firefox Retrieves the
+Zoom Level</h2>
+<p>When you start a new browsing session and navigate to a website,
+Firefox executes a quick sequence of actions before displaying the
+page:</p>
+<ol type="1">
+<li>The browser extracts the domain name from the URL you are
+requesting.</li>
+<li>It queries the <code>content-prefs.sqlite</code> database to see if
+an entry for <code>browser.content.full-zoom</code> exists for that
+specific domain.</li>
+<li>If a match is found, Firefox retrieves the stored numerical value
+and instructs the rendering engine (Gecko) to scale the webpage layout
+accordingly before painting it to the screen.</li>
+<li>If no match is found, Firefox applies the browser's global default
+zoom level (usually 100%).</li>
+</ol>
+<p>If you reset the zoom level back to the default 100% on a site with a
+saved preference, Firefox deletes that domain's entry from the database
+rather than storing a value of <code>1.0</code>, keeping the database
+size minimal.</p>
+<h2 id="controlling-the-feature-via-aboutconfig">Controlling the Feature
+via about:config</h2>
+<p>Firefox allows users to modify how this system works through its
+advanced configuration page (<code>about:config</code>). Two primary
+preferences govern per-domain zoom memory:</p>
+<ul>
+<li><strong><code>browser.zoom.siteSpecific</code></strong>: By default,
+this boolean value is set to <code>true</code>. It is the master switch
+that tells Firefox to use the <code>content-prefs.sqlite</code> database
+for zooming. If you change this to <code>false</code>, Firefox stops
+saving zoom levels per domain. Instead, zoom changes will only apply to
+the currently active tab and will reset as soon as you close the tab or
+navigate to a different site.</li>
+<li><strong><code>browser.zoom.updateBackgroundTabs</code></strong>:
+Also set to <code>true</code> by default, this setting ensures that if
+you have multiple tabs from the same domain open simultaneously,
+changing the zoom level in one tab immediately updates the rendering of
+the other tabs using the newly saved database value.</li>
+</ul>
+<h2 id="privacy-and-private-browsing">Privacy and Private Browsing</h2>
+<p>Because saving a domain name to <code>content-prefs.sqlite</code>
+creates a permanent record that you visited that specific website,
+Firefox alters how zoom memory works to protect user privacy in certain
+scenarios:</p>
+<ul>
+<li><strong>Private Browsing Mode:</strong> When you adjust the zoom
+level in a Private Window, Firefox does not write the change to the
+<code>content-prefs.sqlite</code> file on your hard drive. Instead, it
+stores the domain and zoom level in temporary system memory (RAM). It
+will remember the zoom level for that site while the Private Browsing
+session remains active, but the data is permanently erased the moment
+the last Private Window is closed.</li>
+<li><strong>Clearing History:</strong> When clearing your browsing data
+in Firefox, the dialog box separates "Cookies and Site Data" from "Site
+Settings" (or "Site Preferences"). Leaving "Site Settings" unchecked
+allows you to wipe your browsing history while preserving
+<code>content-prefs.sqlite</code>. Checking "Site Settings" purges the
+database, resetting all custom domain zoom levels back to default.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-remembers-custom-zoom-levels-per-domain';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

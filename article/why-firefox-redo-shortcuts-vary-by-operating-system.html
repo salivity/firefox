@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Redo Shortcuts Vary by Operating System - firefox</title>
+    <meta name="description" content="The Mozilla Firefox web browser uses Ctrl+Y as the default &quot;Redo&quot; keyboard shortcut on Windows, while defaulting to Ctrl+Shift+Z on Linux and Cmd+Shift+Z on macOS. This discrepancy exists because Firefox is designed to follow the native Human Interface Gu">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-redo-shortcuts-vary-by-operating-system">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Redo Shortcuts Vary by Operating System - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-redo-shortcuts-vary-by-operating-system" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Mozilla Firefox web browser uses Ctrl+Y as the default &quot;Redo&quot; keyboard shortcut on Windows, while defaulting to Ctrl+Shift+Z on Linux and Cmd+Shift+Z on macOS. This discrepancy exists because Firefox is designed to follow the native Human Interface Gu" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-redo-shortcuts-vary-by-operating-system">Why Firefox
+Redo Shortcuts Vary by Operating System</h1>
+<p>The Mozilla Firefox web browser uses Ctrl+Y as the default "Redo"
+keyboard shortcut on Windows, while defaulting to Ctrl+Shift+Z on Linux
+and Cmd+Shift+Z on macOS. This discrepancy exists because Firefox is
+designed to follow the native Human Interface Guidelines (HIG) of the
+specific operating system it is running on. This article explains the
+historical design choices of Windows, macOS, and Linux, why they settled
+on different shortcuts for the exact same action, and how Firefox
+accommodates these platform-specific standards to meet user
+expectations.</p>
+<h2 id="the-goal-of-native-integration">The Goal of Native
+Integration</h2>
+<p>Cross-platform applications like Firefox must balance uniformity with
+the expectations of the host operating system's users. If a Windows user
+switches from Microsoft Word to Firefox, they expect text editing
+shortcuts to behave identically in both programs. Therefore, Mozilla
+developers programmed Firefox to adopt the system-wide defaults of the
+host OS rather than forcing a single, universal Firefox standard.</p>
+<h2 id="why-windows-uses-ctrly">Why Windows Uses Ctrl+Y</h2>
+<p>In the early days of personal computing, Apple and Microsoft agreed
+on the bottom-left row of the QWERTY keyboard for core editing
+functions: Z for Undo, X for Cut, C for Copy, and V for Paste.</p>
+<p>When Microsoft needed a shortcut for the "Redo" function in early
+versions of Windows and Microsoft Office, they chose Ctrl+Y. The
+reasoning was alphabetical and spatial; Y immediately precedes Z in the
+alphabet, and on a standard US QWERTY keyboard, it is located centrally.
+Once Microsoft codified Ctrl+Y in the Windows User Experience
+Interaction Guidelines, it became the permanent standard for the
+operating system. Consequently, the Windows version of Firefox uses
+Ctrl+Y.</p>
+<h2 id="why-macos-uses-cmdshiftz">Why macOS Uses Cmd+Shift+Z</h2>
+<p>Apple took a different logical approach when expanding its keyboard
+shortcuts. Instead of choosing a new letter for Redo, Apple’s human
+interface designers decided to use the Shift key as a modifier to
+reverse an existing action.</p>
+<p>This is the same logic applied to the Tab key: pressing Tab moves the
+cursor forward, while pressing Shift+Tab moves the cursor backward. By
+applying this rule to the Undo command (Cmd+Z), the opposite
+action—Redo—naturally became Cmd+Shift+Z. Firefox on macOS adheres to
+this standard.</p>
+<h2 id="why-linux-uses-ctrlshiftz">Why Linux Uses Ctrl+Shift+Z</h2>
+<p>When major Linux desktop environments like GNOME and KDE established
+their own Human Interface Guidelines, they had to choose between the
+Microsoft method and the Apple method. Linux developers overwhelmingly
+favored the Apple logic of using the Shift key as a reversing modifier,
+resulting in Ctrl+Shift+Z.</p>
+<p>There were two main reasons Linux avoided the Windows Ctrl+Y
+standard:</p>
+<ol type="1">
+<li><strong>Legacy Unix Conflicts:</strong> In classic Unix systems and
+popular terminal text editors like Emacs, Ctrl+Y was already heavily
+used for the "Yank" command (which functions similarly to Paste). Using
+Ctrl+Y for Redo would have caused constant frustration for long-time
+Unix and Linux users.</li>
+<li><strong>International Keyboard Layouts:</strong> On Central European
+keyboards (such as the German QWERTZ layout), the Y and Z keys are
+swapped. The Ctrl+Shift+Z combination keeps the Undo and Redo actions
+bound to the exact same physical key, preventing confusion across
+different regional keyboard layouts.</li>
+</ol>
+<h2 id="how-firefox-implements-the-shortcuts">How Firefox Implements the
+Shortcuts</h2>
+<p>Inside the Firefox source code, keyboard shortcuts are not
+universally hardcoded. Instead, they are separated by platform
+declarations. When you download Firefox for Windows, the browser checks
+the platform rules and assigns Redo to Ctrl+Y. When you download it for
+Linux, it assigns Redo to Ctrl+Shift+Z.</p>
+<p>However, to make life easier for users who work across multiple
+operating systems, modern versions of Firefox on Windows and Linux often
+support both shortcuts in text fields, even though the visual menus will
+only display the official default shortcut for your current operating
+system.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-redo-shortcuts-vary-by-operating-system';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

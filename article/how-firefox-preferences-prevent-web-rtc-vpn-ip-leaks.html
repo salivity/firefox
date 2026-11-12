@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Preferences Prevent WebRTC VPN IP Leaks - firefox</title>
+    <meta name="description" content="This article provides an overview of how specific Firefox configuration preferences prevent WebRTC from leaking your local and real IP addresses while connected to a VPN. By modifying settings like media.peerconnection.ice.defaultaddressonly and related p">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-web-rtc-vpn-ip-leaks">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Preferences Prevent WebRTC VPN IP Leaks - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-web-rtc-vpn-ip-leaks" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of how specific Firefox configuration preferences prevent WebRTC from leaking your local and real IP addresses while connected to a VPN. By modifying settings like media.peerconnection.ice.defaultaddressonly and related p" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-preferences-prevent-webrtc-vpn-ip-leaks">How Firefox
+Preferences Prevent WebRTC VPN IP Leaks</h1>
+<p>This article provides an overview of how specific Firefox
+configuration preferences prevent WebRTC from leaking your local and
+real IP addresses while connected to a VPN. By modifying settings like
+<code>media.peerconnection.ice.default_address_only</code> and related
+parameters in Firefox's advanced configuration, users can restrict how
+the browser's Interactive Connectivity Establishment (ICE) framework
+discovers network interfaces, ensuring all real-time communication
+traffic strictly adheres to the VPN tunnel.</p>
+<h2 id="why-webrtc-leaks-ip-addresses">Why WebRTC Leaks IP
+Addresses</h2>
+<p>Web Real-Time Communication (WebRTC) allows browsers to establish
+direct peer-to-peer connections for voice, video, and data sharing. To
+establish these connections, WebRTC uses a framework called Interactive
+Connectivity Establishment (ICE), along with STUN/TURN servers, to
+discover the best network path between peers.</p>
+<p>By default, the ICE agent enumerates all available network interfaces
+on your device. When you use a VPN, your system has at least two active
+interfaces: your physical network adapter (assigned your local LAN IP)
+and the virtual VPN adapter (assigned your VPN IP). Standard WebRTC
+behavior queries both, allowing websites to see your local LAN IP
+address and potentially your real public IP address if STUN requests
+bypass the VPN tunnel.</p>
+<h2 id="how-mediapeerconnectionicedefault_address_only-works">How
+<code>media.peerconnection.ice.default_address_only</code> Works</h2>
+<p>Setting <code>media.peerconnection.ice.default_address_only</code> to
+<code>true</code> in Firefox's <code>about:config</code> directly alters
+how the ICE agent gathers network candidates.</p>
+<p>Instead of scanning every active network adapter on your system, this
+preference restricts WebRTC to using only the single network interface
+responsible for default routing. When a VPN is active and properly
+configured, it overrides your system's default gateway so that all
+internet traffic goes through the encrypted VPN tunnel.</p>
+<p>Because the VPN interface is now the default route,
+<code>default_address_only</code> forces WebRTC to bind exclusively to
+the virtual VPN adapter. The browser completely ignores your physical
+Ethernet or Wi-Fi adapters, effectively hiding your local LAN IP address
+and preventing STUN requests from leaking out of your normal ISP
+connection.</p>
+<h2 id="related-preferences-for-complete-leak-protection">Related
+Preferences for Complete Leak Protection</h2>
+<p>While <code>default_address_only</code> is effective, combining it
+with other ICE-related preferences provides comprehensive protection
+against WebRTC leaks, even if a VPN drops or misconfigures the default
+route.</p>
+<h3
+id="mediapeerconnectioniceno_host"><code>media.peerconnection.ice.no_host</code></h3>
+<p>When set to <code>true</code>, this preference prevents the ICE agent
+from gathering "host" candidates altogether. Host candidates are the
+local IP addresses (such as 192.168.x.x or 10.x.x.x) assigned directly
+to your device's network interfaces. By disabling host candidate
+gathering, Firefox will never expose any local LAN IP addresses to a
+website or peer, relying entirely on public-facing IP addresses (such as
+your VPN server's IP) discovered via STUN or TURN servers.</p>
+<h3
+id="mediapeerconnectioniceproxy_only_if_behind_proxy"><code>media.peerconnection.ice.proxy_only_if_behind_proxy</code></h3>
+<p>If you use a SOCKS5 or HTTP proxy in Firefox instead of a system-wide
+VPN, <code>default_address_only</code> will not protect you because a
+browser proxy does not change the operating system's default routing
+table. Setting
+<code>media.peerconnection.ice.proxy_only_if_behind_proxy</code> to
+<code>true</code> forces WebRTC traffic to route exclusively through the
+configured browser proxy, disabling direct UDP connections that would
+otherwise leak your IP.</p>
+<h3
+id="mediapeerconnectioniceobfuscate_host_addresses"><code>media.peerconnection.ice.obfuscate_host_addresses</code></h3>
+<p>Enabled by default in modern versions of Firefox, this setting uses
+Multicast DNS (mDNS) to replace your local LAN IP address with a
+randomly generated <code>.local</code> UUID string. While this hides the
+actual numerical IP address from websites, advanced users often still
+configure <code>default_address_only</code> and <code>no_host</code> to
+stop the browser from querying the local network interfaces
+entirely.</p>
+<h3
+id="mediapeerconnectionenabled"><code>media.peerconnection.enabled</code></h3>
+<p>This is the master switch for WebRTC. Setting this preference to
+<code>false</code> completely disables WebRTC functionality in Firefox.
+While this guarantees zero WebRTC IP leaks, it will break browser-based
+video conferencing, voice calls, and certain web applications. Using
+<code>default_address_only</code> and <code>no_host</code> is generally
+preferred, as these settings maintain WebRTC functionality while
+enforcing VPN privacy.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-preferences-prevent-web-rtc-vpn-ip-leaks';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

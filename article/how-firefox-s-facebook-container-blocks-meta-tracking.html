@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s Facebook Container Blocks Meta Tracking - firefox</title>
+    <meta name="description" content="This article provides a comprehensive breakdown of how the official Facebook Container extension for Mozilla Firefox stops Meta from tracking your browsing habits across the web. By isolating your Facebook identity into a dedicated digital sandbox, blocki">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-facebook-container-blocks-meta-tracking">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s Facebook Container Blocks Meta Tracking - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-facebook-container-blocks-meta-tracking" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive breakdown of how the official Facebook Container extension for Mozilla Firefox stops Meta from tracking your browsing habits across the web. By isolating your Facebook identity into a dedicated digital sandbox, blocki" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-facebook-container-blocks-meta-tracking">How
+Firefox's Facebook Container Blocks Meta Tracking</h1>
+<p>This article provides a comprehensive breakdown of how the official
+Facebook Container extension for Mozilla Firefox stops Meta from
+tracking your browsing habits across the web. By isolating your Facebook
+identity into a dedicated digital sandbox, blocking third-party tracking
+scripts, and managing how cookies are shared, the extension ensures your
+external web activity remains completely invisible to Meta's data
+collection systems.</p>
+<p><strong>1. Cookie Deletion Upon Installation</strong> The moment you
+install the Facebook Container extension, it immediately deletes all
+existing Facebook cookies stored in your standard Firefox browser. This
+logs you out of Facebook. This initial step is crucial because it severs
+any active tracking links that Meta has already established between your
+browser and your profile.</p>
+<p><strong>2. Session Isolation via Container Tabs</strong> When you
+visit Facebook.com and log back in, the extension automatically opens
+the site inside a special, isolated "Container" tab, indicated by a blue
+line and a fence icon in the address bar. The new authentication cookies
+generated when you log in are locked strictly inside this container.</p>
+<p>In a normal browser, websites can sometimes read cookies from other
+tabs. With the Facebook Container active, any website you open in a
+standard, non-container tab cannot access your Facebook cookies.
+Therefore, when you browse an external news site or online store,
+Facebook has no way of knowing it is <em>you</em> visiting those pages,
+because your logged-in identity is walled off in the separate
+container.</p>
+<p><strong>3. Blocking Embedded Trackers and Social Buttons</strong>
+Meta tracks users on external websites primarily through the Meta Pixel,
+"Like" buttons, "Share" buttons, and embedded comment sections. Even if
+you do not click these buttons, their mere presence on a webpage allows
+them to send data back to Meta about where you are and what you are
+looking at.</p>
+<p>The Facebook Container actively scans external websites for these
+embedded elements and blocks them from loading. You will know the
+extension is working when you see a purple fence badge covering where a
+"Share on Facebook" or "Log in with Facebook" button would normally be.
+Because these scripts are blocked from loading, they cannot ping Meta's
+servers with your IP address or browsing data.</p>
+<p><strong>4. Isolating Other Meta Properties</strong> Meta's tracking
+network extends beyond just Facebook. The official extension
+automatically groups other Meta-owned domains—specifically Instagram,
+Messenger, and Workplace—into the same isolated container. This prevents
+Meta from using your Instagram login to bypass the blocks placed on your
+Facebook account.</p>
+<p><strong>5. Stripping Tracking Parameters from Links</strong> When you
+click a link to an external website from inside your Facebook feed, the
+extension forces that link to open in a standard, non-container tab.
+This prevents the external site from loading inside your Facebook
+session, stopping Meta from following your actions once you leave their
+platform. Conversely, if you are on an external website and click a link
+that leads to Facebook, the browser automatically routes that request
+back into the isolated Facebook Container.</p>
+<p><strong>Limitations to Keep in Mind</strong> Because the extension
+blocks Facebook scripts on external sites, the "Log in with Facebook"
+feature will no longer work on third-party websites. You will need to
+create standard email and password accounts for those services.
+Additionally, while the extension stops Meta from associating your
+external web browsing with your Facebook profile, it does not stop Meta
+from tracking everything you do <em>inside</em> the container on
+Facebook, Instagram, and Messenger.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-facebook-container-blocks-meta-tracking';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

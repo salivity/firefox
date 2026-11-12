@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspect and Modify Firefox Extension Local Storage - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide on how to view and edit the local storage data of any installed extension in the Firefox web browser. By utilizing Firefox&#39;s built-in Add-on Debugger, developers and advanced users can access the Storage Inspecto">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/inspect-and-modify-firefox-extension-local-storage">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Inspect and Modify Firefox Extension Local Storage - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/inspect-and-modify-firefox-extension-local-storage" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide on how to view and edit the local storage data of any installed extension in the Firefox web browser. By utilizing Firefox&#39;s built-in Add-on Debugger, developers and advanced users can access the Storage Inspecto" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="inspect-and-modify-firefox-extension-local-storage">Inspect and
+Modify Firefox Extension Local Storage</h1>
+<p>This article provides a step-by-step guide on how to view and edit
+the local storage data of any installed extension in the Firefox web
+browser. By utilizing Firefox's built-in Add-on Debugger, developers and
+advanced users can access the Storage Inspector and Web Console to read,
+modify, or delete data stored via both the standard DOM local storage
+and the WebExtensions Storage API.</p>
+<h3 id="step-1-open-the-add-on-debugger">Step 1: Open the Add-on
+Debugger</h3>
+<p>To access the storage of an extension, you first need to launch its
+dedicated developer tools environment.</p>
+<ol type="1">
+<li>Open the Firefox browser.</li>
+<li>Type <code>about:debugging</code> into the address bar and press
+<strong>Enter</strong>.</li>
+<li>Click on <strong>This Firefox</strong> in the left-hand
+sidebar.</li>
+<li>Scroll down to the <strong>Extensions</strong> section to find the
+extension you want to modify.</li>
+<li>Click the <strong>Inspect</strong> button next to the extension. A
+new Developer Tools window (the Add-on Debugger) will open specifically
+for that extension.</li>
+</ol>
+<h3 id="step-2-inspect-and-modify-via-the-storage-tab">Step 2: Inspect
+and Modify via the Storage Tab</h3>
+<p>Firefox extensions typically store data in one of two places:
+<strong>Local Storage</strong> (standard web storage) or
+<strong>Extension Storage</strong> (the
+<code>browser.storage.local</code> API). You can view and edit both
+using the Storage tab.</p>
+<ol type="1">
+<li>In the Add-on Debugger window, click on the <strong>Storage</strong>
+tab at the top. If you do not see it, click the <code>&gt;&gt;</code>
+icon to reveal more tabs.</li>
+<li>On the left pane, expand the <strong>Local Storage</strong> or
+<strong>Extension Storage</strong> dropdown menu.</li>
+<li>Click on the extension's URL or ID listed under the dropdown to view
+its stored key-value pairs in the main pane.</li>
+<li><strong>To modify a value:</strong> Double-click on the existing
+value in the table, type the new data, and press
+<strong>Enter</strong>.</li>
+<li><strong>To add a new item:</strong> Click the <strong>+</strong>
+(Plus) button at the top of the Storage panel, then enter the new key
+and value.</li>
+<li><strong>To delete an item:</strong> Right-click the row you want to
+remove and select <strong>Delete "key_name"</strong>.</li>
+</ol>
+<h3 id="step-3-inspect-and-modify-via-the-console-for-complex-data">Step
+3: Inspect and Modify via the Console (For Complex Data)</h3>
+<p>The Storage tab is ideal for simple strings and numbers, but if an
+extension stores complex, nested JSON objects using the
+<code>browser.storage.local</code> API, it is often easier to manipulate
+the data using the Console.</p>
+<ol type="1">
+<li><p>In the Add-on Debugger window, click on the
+<strong>Console</strong> tab.</p></li>
+<li><p><strong>To view all stored data:</strong> Type the following
+command into the console and press <strong>Enter</strong>:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">storage</span><span class="op">.</span><span class="at">local</span><span class="op">.</span><span class="fu">get</span>(<span class="kw">null</span>)<span class="op">;</span></span></code></pre></div>
+<p>This will output an object containing all keys and values currently
+saved in the extension's local storage.</p></li>
+<li><p><strong>To view a specific key:</strong> Replace
+<code>keyName</code> with the actual key you want to inspect:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">storage</span><span class="op">.</span><span class="at">local</span><span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;keyName&quot;</span>)<span class="op">;</span></span></code></pre></div></li>
+<li><p><strong>To modify or add data:</strong> Use the <code>set</code>
+method. If the key already exists, this will overwrite it. If it does
+not exist, it will create it:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">storage</span><span class="op">.</span><span class="at">local</span><span class="op">.</span><span class="fu">set</span>({ <span class="st">&quot;keyName&quot;</span><span class="op">:</span> <span class="st">&quot;newValue&quot;</span> })<span class="op">;</span></span></code></pre></div>
+<p>You can also pass complex objects or arrays in place of
+<code>"newValue"</code>.</p></li>
+<li><p><strong>To delete a specific key:</strong> Use the
+<code>remove</code> method:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">storage</span><span class="op">.</span><span class="at">local</span><span class="op">.</span><span class="fu">remove</span>(<span class="st">&quot;keyName&quot;</span>)<span class="op">;</span></span></code></pre></div></li>
+<li><p><strong>To clear all storage for the extension:</strong> Use the
+<code>clear</code> method (use with caution, as this resets the
+extension):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> browser<span class="op">.</span><span class="at">storage</span><span class="op">.</span><span class="at">local</span><span class="op">.</span><span class="fu">clear</span>()<span class="op">;</span></span></code></pre></div></li>
+</ol>
+<p>Changes made through either the Storage tab or the Console take
+effect immediately, though you may need to reload the extension's popup
+or options page to see the changes reflected in its user interface.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/inspect-and-modify-firefox-extension-local-storage';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

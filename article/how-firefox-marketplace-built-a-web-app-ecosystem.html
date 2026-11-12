@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox Marketplace Built a Web App Ecosystem - firefox</title>
+    <meta name="description" content="In the early 2010s, Mozilla launched the Firefox Marketplace in an ambitious effort to challenge the dominance of proprietary mobile and desktop app stores. This article examines how Mozilla attempted to build an open, cross-platform ecosystem of installa">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-marketplace-built-a-web-app-ecosystem">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox Marketplace Built a Web App Ecosystem - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-marketplace-built-a-web-app-ecosystem" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In the early 2010s, Mozilla launched the Firefox Marketplace in an ambitious effort to challenge the dominance of proprietary mobile and desktop app stores. This article examines how Mozilla attempted to build an open, cross-platform ecosystem of installa" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefox-marketplace-built-a-web-app-ecosystem">How Firefox
+Marketplace Built a Web App Ecosystem</h1>
+<p>In the early 2010s, Mozilla launched the Firefox Marketplace in an
+ambitious effort to challenge the dominance of proprietary mobile and
+desktop app stores. This article examines how Mozilla attempted to build
+an open, cross-platform ecosystem of installable web applications for
+the Firefox Web Browser using standard web technologies, custom hardware
+APIs, and operating system integrations, before ultimately shutting the
+project down in favor of modern web standards.</p>
+<h2 id="the-technical-foundation-open-web-apps">The Technical
+Foundation: Open Web Apps</h2>
+<p>To make websites function like installable software, Mozilla
+introduced the concept of Open Web Apps. Unlike traditional browser
+extensions, these applications were built strictly using standard HTML5,
+CSS, and JavaScript.</p>
+<p>The defining technical feature of a Firefox Marketplace app was the
+app manifest. This was a simple JSON file containing metadata such as
+the app's name, icons, description, and required system permissions.
+When a user clicked "install" in the Firefox Marketplace, the Firefox
+browser read this manifest to register the web app with the device's
+underlying operating system.</p>
+<h2 id="native-os-integration-via-the-firefox-browser">Native OS
+Integration via the Firefox Browser</h2>
+<p>Mozilla’s primary goal was to blur the line between a website and a
+native application. The Firefox Marketplace achieved this by using the
+Firefox browser as a background runtime environment on Windows, macOS,
+Linux, and Android, as well as natively on Firefox OS.</p>
+<p>When a user installed an app from the Marketplace, Firefox
+communicated with the host operating system to create a dedicated
+desktop shortcut, Start Menu entry, or mobile home screen icon.
+Launching the app opened it in a "chromeless" window. This meant the app
+ran independently of the main browser interface, stripping away the
+address bar, back buttons, and tab strip. To the end user, the web app
+looked like a standalone program and even appeared as a separate
+application in the operating system's task switcher.</p>
+<h2 id="hosted-vs-packaged-apps">Hosted vs. Packaged Apps</h2>
+<p>To cater to different developer needs and security requirements, the
+Firefox Marketplace supported two distinct types of applications:</p>
+<ul>
+<li><strong>Hosted Apps:</strong> These functioned like elevated
+bookmarks. The app's code lived on the developer’s web server, and the
+Firefox runtime simply wrapped the website in a standalone window.
+Updates were instantaneous because developers only needed to update
+their web servers.</li>
+<li><strong>Packaged Apps:</strong> These were <code>.zip</code> bundles
+containing all the HTML, CSS, JavaScript, and media files needed to run
+the application. Downloaded directly to the user's device via the
+Firefox browser, packaged apps worked entirely offline. Because they did
+not rely on a live web server, they were eligible for deeper system
+access, provided they passed a strict code review by Mozilla.</li>
+</ul>
+<h2 id="bridging-the-hardware-gap-with-webapis">Bridging the Hardware
+Gap with WebAPIs</h2>
+<p>At the time of the Marketplace's launch, standard websites were
+severely limited in how they could interact with device hardware. To
+create a viable app ecosystem that could compete with iOS and Android,
+Mozilla spearheaded the WebAPI project.</p>
+<p>Mozilla built custom JavaScript APIs directly into the Firefox
+browser engine (Gecko). These APIs allowed installable web apps to
+bypass traditional browser sandboxing and access native device features.
+Through WebAPIs, a web app could access a device's camera,
+accelerometer, contacts list, battery status, Bluetooth, USB ports, and
+local file storage. This allowed developers to build complex software,
+such as 3D games and photo editors, using only web code.</p>
+<h2 id="decentralization-and-developer-incentives">Decentralization and
+Developer Incentives</h2>
+<p>Mozilla designed the Firefox Marketplace to be an open alternative to
+the walled gardens of Apple’s App Store and the Google Play Store. While
+the Marketplace served as a centralized hub for app discovery, Mozilla
+did not enforce a monopoly on distribution.</p>
+<p>Using the <code>navigator.mozApps</code> API, any developer could
+place an "Install" button directly on their own website. If a user
+visited that website using the Firefox browser, they could install the
+web app directly to their device, bypassing the Firefox Marketplace
+entirely. Furthermore, Mozilla introduced the
+<code>navigator.mozPay</code> API, which offered developers a built-in
+system for handling in-app payments and subscriptions without forcing
+them to use a single payment processor.</p>
+<h2 id="why-the-ecosystem-failed">Why the Ecosystem Failed</h2>
+<p>Despite its technical innovations, the Firefox Marketplace failed to
+achieve mass adoption for several reasons:</p>
+<ol type="1">
+<li><strong>The Demise of Firefox OS:</strong> The Marketplace was
+heavily tied to the success of Firefox OS, Mozilla’s mobile operating
+system aimed at developing markets. When Firefox OS failed to capture
+market share against cheap Android devices, the primary audience for the
+Marketplace vanished.</li>
+<li><strong>Performance Issues:</strong> On desktop and Android, users
+found the reliance on the Firefox browser as a background runtime to be
+clunky. Web apps often suffered from slower startup times and sluggish
+performance compared to native applications.</li>
+<li><strong>Lack of Browser Consensus:</strong> Other major browser
+vendors, such as Google, Apple, and Microsoft, refused to adopt
+Mozilla's proprietary manifest format and WebAPIs, meaning Firefox
+Marketplace apps could not be installed via Chrome, Safari, or
+Edge.</li>
+<li><strong>The Rise of PWAs:</strong> Google eventually introduced
+Progressive Web Apps (PWAs), which achieved Mozilla's vision of
+installable, offline-capable web apps using standardized technologies
+like Service Workers and W3C Web App Manifests.</li>
+</ol>
+<p>Recognizing that the industry was rallying around the standardized
+PWA model rather than Firefox-specific APIs, Mozilla began dismantling
+its ecosystem. The company removed the native app runtime from the
+desktop browser in 2016 and permanently shut down the Firefox
+Marketplace in March 2018.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-marketplace-built-a-web-app-ecosystem';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

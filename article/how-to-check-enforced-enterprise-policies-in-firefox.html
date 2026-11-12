@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Check Enforced Enterprise Policies in Firefox - firefox</title>
+    <meta name="description" content="This article provides a straightforward guide for enterprise users on how to view the organizational restrictions and configurations currently applied to their Mozilla Firefox browser. By accessing the built-in about:policies page, you can quickly identif">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-to-check-enforced-enterprise-policies-in-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Check Enforced Enterprise Policies in Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-to-check-enforced-enterprise-policies-in-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a straightforward guide for enterprise users on how to view the organizational restrictions and configurations currently applied to their Mozilla Firefox browser. By accessing the built-in about:policies page, you can quickly identif" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-to-check-enforced-enterprise-policies-in-firefox">How to
+Check Enforced Enterprise Policies in Firefox</h1>
+<p>This article provides a straightforward guide for enterprise users on
+how to view the organizational restrictions and configurations currently
+applied to their Mozilla Firefox browser. By accessing the built-in
+<code>about:policies</code> page, you can quickly identify active
+administrative rules, understand what each specific policy does, and
+check for any configuration errors applied by your IT department.</p>
+<h3 id="accessing-the-policies-page">Accessing the Policies Page</h3>
+<p>To see if your organization is managing your Firefox browser, follow
+these steps:</p>
+<ol type="1">
+<li>Open your Mozilla Firefox web browser.</li>
+<li>Click on the address bar at the top of the window.</li>
+<li>Type <code>about:policies</code> into the address bar and press
+<strong>Enter</strong> (or <strong>Return</strong> on Mac).</li>
+</ol>
+<h3 id="understanding-the-policy-tabs">Understanding the Policy
+Tabs</h3>
+<p>Once the page loads, you will see a menu on the left side of the
+screen containing up to three sections. Here is how to use them to check
+your restrictions:</p>
+<p><strong>1. Active</strong> This is the default view. It displays all
+the enterprise policies currently enforced on your browser.</p>
+<ul>
+<li>If your browser is not managed by an organization, it will simply
+state: "The Enterprise Policies service is inactive."</li>
+<li>If policies are enforced, you will see a table with two columns:
+<strong>Policy Name</strong> and <strong>Policy Value</strong>.</li>
+<li>The <strong>Policy Name</strong> tells you the specific rule being
+applied (for example, <code>DisablePrivateBrowsing</code> or
+<code>BlockAboutConfig</code>).</li>
+<li>The <strong>Policy Value</strong> shows the setting for that rule
+(such as <code>true</code>, <code>false</code>, or specific URLs and
+file paths).</li>
+</ul>
+<p><strong>2. Documentation</strong> If you see a Policy Name in the
+"Active" tab and do not know what restriction it actually applies, click
+on the <strong>Documentation</strong> tab.</p>
+<ul>
+<li>This section lists every possible enterprise policy supported by
+Firefox.</li>
+<li>Locate the name of the active policy in this list to read a
+plain-language description of how it restricts or modifies your
+browser's behavior.</li>
+</ul>
+<p><strong>3. Errors</strong> This tab will only appear if your IT
+administrator has made a mistake while configuring the browser's
+restrictions.</p>
+<ul>
+<li>Clicking this tab will reveal which policies failed to load and the
+technical reason why they are not currently enforced on your
+system.</li>
+</ul>
+<h3 id="verifying-management-status-elsewhere">Verifying Management
+Status Elsewhere</h3>
+<p>If you only need to know whether your browser is managed without
+looking at the specific rules, you can also check the main menu:</p>
+<ol type="1">
+<li>Click the three horizontal lines (the application menu) in the
+top-right corner of Firefox.</li>
+<li>Look at the very top of the menu list. If enterprise policies are
+active, you will see a banner that says <strong>"Managed by your
+organization"</strong>. Clicking this banner will take you directly to
+the <code>about:policies</code> page.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-to-check-enforced-enterprise-policies-in-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

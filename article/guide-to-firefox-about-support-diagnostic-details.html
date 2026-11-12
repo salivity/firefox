@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide to Firefox about:support Diagnostic Details - firefox</title>
+    <meta name="description" content="The about:support page in the Mozilla Firefox web browser, officially titled the Troubleshooting Information page, provides a comprehensive summary of the browser&#39;s internal configuration and environment. This article examines three critical diagnostic se">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/guide-to-firefox-about-support-diagnostic-details">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Guide to Firefox about:support Diagnostic Details - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/guide-to-firefox-about-support-diagnostic-details" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The about:support page in the Mozilla Firefox web browser, officially titled the Troubleshooting Information page, provides a comprehensive summary of the browser&#39;s internal configuration and environment. This article examines three critical diagnostic se" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="guide-to-firefox-aboutsupport-diagnostic-details">Guide to
+Firefox about:support Diagnostic Details</h1>
+<p>The <code>about:support</code> page in the Mozilla Firefox web
+browser, officially titled the Troubleshooting Information page,
+provides a comprehensive summary of the browser's internal configuration
+and environment. This article examines three critical diagnostic
+sections found on this page: graphics drivers and rendering
+specifications, important modified preferences, and active extensions.
+Understanding these specific summaries allows users to efficiently
+pinpoint the root causes of browser crashes, visual glitches, and
+unexpected behavioral changes.</p>
+<h2 id="graphics-drivers-and-rendering-specifications">Graphics Drivers
+and Rendering Specifications</h2>
+<p>The Graphics section is one of the most detailed areas on the
+<code>about:support</code> page, offering a complete breakdown of how
+Firefox interacts with your computer's visual hardware. It is primarily
+used to diagnose video playback issues, screen flickering, high CPU
+usage, and hardware acceleration crashes.</p>
+<p>Key diagnostic details in this section include:</p>
+<ul>
+<li><strong>Features and Compositing:</strong> Displays the current
+rendering engine in use, such as WebRender or Software WebRender. This
+immediately tells you if Firefox is successfully using your graphics
+card for hardware acceleration or falling back on your CPU.</li>
+<li><strong>GPU Specifications:</strong> Lists data for your primary
+(GPU #1) and secondary (GPU #2) graphics cards. It reveals the exact
+hardware description, Vendor ID, Device ID, allocated RAM, and whether
+the GPU is currently active.</li>
+<li><strong>Driver Information:</strong> Provides the exact driver
+version, the driver release date, and the specific driver files being
+utilized by the operating system. Outdated dates here are the primary
+indicator that a user needs to update their graphics card drivers.</li>
+<li><strong>WebGL Driver Info:</strong> Shows the renderer and version
+strings for WebGL 1 and WebGL 2, which are essential for running 3D
+graphics and complex web applications in the browser.</li>
+<li><strong>Decision Log:</strong> Tracks internal checks Firefox
+performs during startup. It explains <em>why</em> certain graphics
+features (like Direct2D, Vulkan, or hardware video decoding) are
+enabled, disabled by default, or blocked due to known driver bugs.</li>
+<li><strong>Failure Log:</strong> Records any real-time graphics errors
+or driver resets that have occurred during the current browsing
+session.</li>
+</ul>
+<h2 id="important-modified-preferences">Important Modified
+Preferences</h2>
+<p>Firefox allows deep customization through its advanced configuration
+editor (<code>about:config</code>), but changing these settings can
+sometimes break website functionality or degrade performance. The
+<code>about:support</code> page does not list every single setting in
+the browser; instead, it filters and displays only the "Important
+Modified Preferences."</p>
+<p>Key diagnostic details in this section include:</p>
+<ul>
+<li><strong>Altered <code>about:config</code> Entries:</strong> Displays
+an alphabetical table of core preferences that have been changed from
+their factory default values, alongside their current boolean
+(true/false), integer, or string values.</li>
+<li><strong>Whitelisted Categories:</strong> Focuses strictly on
+preferences known to impact stability, security, and rendering. These
+typically start with prefixes like <code>accessibility.</code>,
+<code>browser.cache.</code>, <code>dom.</code>,
+<code>extensions.</code>, <code>gfx.</code>, <code>media.</code>,
+<code>network.</code>, <code>privacy.</code>, and
+<code>security.</code>.</li>
+<li><strong><code>user.js</code> Preferences:</strong> Indicates right
+below the main table whether a <code>user.js</code> file exists in the
+profile folder. This file can forcefully overwrite preferences every
+time Firefox starts, often without the user's knowledge if placed there
+by third-party software.</li>
+<li><strong>Important Locked Preferences:</strong> Lists settings that
+have been permanently locked by a system administrator or enterprise
+policy, preventing the user from changing them.</li>
+</ul>
+<h2 id="active-extensions-and-add-ons">Active Extensions and
+Add-ons</h2>
+<p>Extensions are a frequent source of memory leaks, slow page loads,
+and layout issues on websites. The Add-ons section on the
+<code>about:support</code> page provides a clean, exportable inventory
+of every extension, theme, and language pack installed in the current
+Firefox profile, without requiring you to navigate through the visual
+Add-ons Manager.</p>
+<p>Key diagnostic details in this section include:</p>
+<ul>
+<li><strong>Name and Type:</strong> Clearly identifies the
+human-readable name of the add-on and categorizes it as an
+<code>extension</code>, <code>theme</code>, or <code>locale</code>
+(language pack).</li>
+<li><strong>Version:</strong> Shows the exact version number of the
+installed add-on. This helps verify if an extension is outdated and
+potentially incompatible with the current version of Firefox.</li>
+<li><strong>Enabled Status:</strong> Uses a simple <code>true</code> or
+<code>false</code> value to separate active extensions from those that
+are installed but currently disabled. Only extensions marked as
+<code>true</code> actively inject code or modify browser behavior.</li>
+<li><strong>ID:</strong> Displays the unique internal identifier string
+(often formatted like an email address or a UUID in curly brackets)
+assigned to the extension. This ID is necessary for locating the
+extension's specific files inside the local Firefox profile folder or
+looking up the extension in malware databases.</li>
+</ul></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/guide-to-firefox-about-support-diagnostic-details';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

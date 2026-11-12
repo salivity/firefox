@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox bfcache: Controlling Instant Page Navigation - firefox</title>
+    <meta name="description" content="This article explains the Back/Forward Cache (bfcache) in the Mozilla Firefox web browser and how it enables instant page loading when navigating through your browsing history. Additionally, it covers how you can directly control this memory-caching behav">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-bfcache-controlling-instant-page-navigation">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox bfcache: Controlling Instant Page Navigation - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-bfcache-controlling-instant-page-navigation" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the Back/Forward Cache (bfcache) in the Mozilla Firefox web browser and how it enables instant page loading when navigating through your browsing history. Additionally, it covers how you can directly control this memory-caching behav" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-bfcache-controlling-instant-page-navigation">Firefox
+bfcache: Controlling Instant Page Navigation</h1>
+<p>This article explains the Back/Forward Cache (bfcache) in the Mozilla
+Firefox web browser and how it enables instant page loading when
+navigating through your browsing history. Additionally, it covers how
+you can directly control this memory-caching behavior using the
+<code>browser.sessionhistory.max_total_viewers</code> configuration
+preference to balance instant navigation speeds with your system's RAM
+usage.</p>
+<h2 id="what-is-the-backforward-cache-bfcache">What is the Back/Forward
+Cache (bfcache)?</h2>
+<p>The Back/Forward Cache, commonly known as bfcache, is a browser
+optimization feature that stores a complete snapshot of a web page in
+your computer's memory (RAM) when you navigate away from it.</p>
+<p>Unlike the standard HTTP browser cache—which only saves individual
+files like images, stylesheets, and scripts to reduce network
+downloads—the bfcache preserves the entire state of the page. This
+includes the fully rendered Document Object Model (DOM), the layout, and
+the exact state of the JavaScript heap.</p>
+<p>When you click the Back or Forward button in Firefox, the browser
+does not need to re-download, re-parse, or re-render the page. Instead,
+it pulls the frozen page directly from your RAM and displays it
+instantly.</p>
+<h2 id="how-bfcache-works-in-firefox">How bfcache Works in Firefox</h2>
+<p>When you are on a web page and click a link to go to a new page,
+Firefox evaluates whether the current page is eligible for the bfcache.
+If it is, Firefox does not destroy the page. Instead, it performs the
+following actions:</p>
+<ul>
+<li>Fires the <code>pagehide</code> event to let the website know the
+user is leaving.</li>
+<li>Pauses all active JavaScript timers, animations, and pending
+tasks.</li>
+<li>Moves the fully constructed page into an invisible, in-memory
+cache.</li>
+</ul>
+<p>If you click the Back button, Firefox retrieves the page from memory,
+resumes the paused JavaScript tasks, fires the <code>pageshow</code>
+event, and immediately presents the page in the exact state you left it,
+down to your exact scroll position and unsubmitted text in form
+fields.</p>
+<h2
+id="understanding-browsersessionhistorymax_total_viewers">Understanding
+browser.sessionhistory.max_total_viewers</h2>
+<p>Because storing entire web pages in RAM consumes significant system
+memory, Firefox cannot store an infinite number of pages in the bfcache.
+The browser uses an internal preference called
+<code>browser.sessionhistory.max_total_viewers</code> to determine how
+many pages to keep alive in memory at any given time.</p>
+<p>In Firefox's terminology, a "viewer" is the internal representation
+of a rendered document. Therefore, this setting literally defines the
+maximum total number of rendered documents that can remain in the
+session history cache simultaneously.</p>
+<h2 id="how-to-control-instant-page-navigation">How to Control Instant
+Page Navigation</h2>
+<p>You can manually adjust
+<code>browser.sessionhistory.max_total_viewers</code> to either speed up
+navigation at the cost of RAM, or save RAM at the cost of navigation
+speed.</p>
+<p>To access this setting:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> in the address bar,
+then press Enter.</li>
+<li>Click the button to accept the risk and continue.</li>
+<li>Type <code>browser.sessionhistory.max_total_viewers</code> into the
+search bar.</li>
+</ol>
+<p>You can double-click the preference to change its integer value,
+which alters navigation behavior in the following ways:</p>
+<ul>
+<li><strong>-1 (Default):</strong> This sets the bfcache to automatic
+mode. Firefox dynamically calculates how many pages to store in memory
+based on the total amount of physical RAM installed on your device. On
+most modern systems with 4GB of RAM or more, this typically defaults to
+caching a maximum of 8 pages.</li>
+<li><strong>0 (Disabled):</strong> Setting this value to <code>0</code>
+completely disables the bfcache. When you navigate away from a page, it
+is immediately unloaded from memory. Clicking the Back or Forward button
+will force Firefox to rebuild the page from the standard disk cache or
+fetch it from the network again. This slows down navigation but
+minimizes Firefox's memory footprint.</li>
+<li><strong>Positive Integers (1, 2, 3, etc.):</strong> Setting a
+specific positive number forces Firefox to retain up to that exact
+number of pages in the bfcache, regardless of how much RAM your system
+has. Lowering this to <code>1</code> or <code>2</code> is a common tweak
+for low-end computers to keep the most recent page fast while conserving
+memory. Conversely, increasing it to <code>10</code> or higher on a
+high-RAM machine allows you to click the Back button multiple times in a
+row with zero loading delays.</li>
+</ul>
+<p>As the limit set by
+<code>browser.sessionhistory.max_total_viewers</code> is reached,
+Firefox uses a First-In, First-Out (FIFO) method, evicting the oldest
+cached page from memory to make room for the newest one.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-bfcache-controlling-instant-page-navigation';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

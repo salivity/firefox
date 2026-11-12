@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Balrog Delivers Differential MAR Updates to Firefox - firefox</title>
+    <meta name="description" content="This article provides a complete overview of how Mozilla&#39;s Balrog update server infrastructure delivers differential Mozilla Archive (MAR) patches to the Firefox web browser. It covers the entire lifecycle of an update, starting from the initial client re">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-balrog-delivers-differential-mar-updates-to-firefox">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Balrog Delivers Differential MAR Updates to Firefox - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-balrog-delivers-differential-mar-updates-to-firefox" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete overview of how Mozilla&#39;s Balrog update server infrastructure delivers differential Mozilla Archive (MAR) patches to the Firefox web browser. It covers the entire lifecycle of an update, starting from the initial client re" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-balrog-delivers-differential-mar-updates-to-firefox">How
+Balrog Delivers Differential MAR Updates to Firefox</h1>
+<p>This article provides a complete overview of how Mozilla's Balrog
+update server infrastructure delivers differential Mozilla Archive (MAR)
+patches to the Firefox web browser. It covers the entire lifecycle of an
+update, starting from the initial client request, moving through
+Balrog's internal rule evaluation and XML manifest generation, and
+concluding with how Firefox downloads and applies the binary patch to
+update the browser efficiently.</p>
+<h2 id="understanding-mar-files-and-differential-updates">Understanding
+MAR Files and Differential Updates</h2>
+<p>A MAR (Mozilla Archive) file is the proprietary archive format used
+by Mozilla to package updates for Firefox. To save bandwidth and speed
+up the update process, Mozilla uses two types of MAR files:</p>
+<ul>
+<li><strong>Complete MAR:</strong> Contains the entire Firefox
+application. It is used as a fallback or when a user is updating from a
+very old version.</li>
+<li><strong>Partial (Differential) MAR:</strong> Contains only the
+binary differences between the user's current version of Firefox and the
+new target version. These differences are generated using a modified
+version of the <code>bsdiff</code> tool called
+<code>mbsdiff</code>.</li>
+</ul>
+<p>Balrog is the system responsible for telling Firefox which MAR file
+to download. Crucially, Balrog does not host the heavy MAR files itself;
+instead, it acts as a decision engine that directs Firefox to the
+correct files hosted on Content Delivery Networks (CDNs).</p>
+<h2 id="step-1-the-client-update-request">Step 1: The Client Update
+Request</h2>
+<p>The update process begins when Firefox checks for updates in the
+background. The browser sends an HTTPS GET request to the Balrog
+server.</p>
+<p>Rather than sending query parameters, Firefox encodes its current
+system state directly into the URL path. This path includes:</p>
+<ul>
+<li><strong>Product:</strong> (e.g., Firefox)</li>
+<li><strong>Version:</strong> (e.g., 120.0)</li>
+<li><strong>Build ID:</strong> A timestamp representing the exact build
+the user is running.</li>
+<li><strong>Build Target:</strong> The operating system and CPU
+architecture (e.g., WINNT_x86_64-msvc).</li>
+<li><strong>Locale:</strong> The language pack in use (e.g.,
+en-US).</li>
+<li><strong>Channel:</strong> The release track (e.g., release, beta,
+nightly).</li>
+<li><strong>OS Version and System Capabilities:</strong> Details about
+the host machine to ensure compatibility.</li>
+</ul>
+<h2 id="step-2-balrog-rule-evaluation">Step 2: Balrog Rule
+Evaluation</h2>
+<p>When Balrog receives the GET request, it extracts the client
+parameters from the URL and compares them against its internal database
+of <strong>Rules</strong>.</p>
+<p>In Balrog, a Rule is a set of criteria (such as channel, version, or
+operating system) that maps a client to a specific
+<strong>Release</strong>. A Release in Balrog is not the software
+itself, but a massive JSON object (often called a "blob") that contains
+metadata about a specific version of Firefox, including file URLs,
+cryptographic hashes, and file sizes.</p>
+<p>During this step, Balrog performs the following actions:</p>
+<ol type="1">
+<li><strong>Matches Rules:</strong> It finds the rule that matches the
+client's channel and system configuration.</li>
+<li><strong>Checks Rollout Rates:</strong> If a new Firefox update is
+set to a 25% rollout, Balrog uses a consistent hashing algorithm or
+random number provided by the client to determine if this specific
+request falls within that 25%.</li>
+<li><strong>Identifies the Target Release:</strong> Once the correct
+rule is applied, Balrog loads the corresponding Release JSON blob.</li>
+</ol>
+<h2 id="step-3-finding-the-differential-patch">Step 3: Finding the
+Differential Patch</h2>
+<p>With the target Release JSON loaded, Balrog must determine if a
+differential (partial) MAR is available for the specific client.</p>
+<p>Differential patches are strictly tied to the <strong>Build
+ID</strong> and <strong>Locale</strong>. A partial MAR only works if it
+is applied to the exact binary files it was generated from. Balrog looks
+inside the Release JSON to see if a partial update entry exists that
+matches the client's current Build ID.</p>
+<ul>
+<li>If the client is updating from the immediately preceding version, a
+partial MAR entry will almost certainly exist.</li>
+<li>If the client is updating from a version that is several months old,
+a partial MAR will not exist in the JSON, and Balrog will prepare to
+serve only the complete MAR.</li>
+</ul>
+<h2 id="step-4-generating-the-xml-update-manifest">Step 4: Generating
+the XML Update Manifest</h2>
+<p>Balrog does not return JSON to Firefox; it dynamically constructs and
+returns a lightweight XML document known as the update manifest.</p>
+<p>If a matching differential update was found in Step 3, the XML
+manifest will include two <code>&lt;patch&gt;</code> elements: one for
+the <code>partial</code> update and one for the <code>complete</code>
+update. Each element contains:</p>
+<ul>
+<li><strong>Type:</strong> Indicates whether it is a partial or complete
+MAR.</li>
+<li><strong>URL:</strong> The direct link to the MAR file on Mozilla’s
+CDN.</li>
+<li><strong>Hash Function and Value:</strong> Typically a SHA-512 hash
+used to verify the file was not corrupted during transit.</li>
+<li><strong>Size:</strong> The exact size of the MAR file in bytes.</li>
+</ul>
+<p>If no updates are available, or if the client is already on the
+latest version, Balrog returns an empty XML manifest.</p>
+<h2 id="step-5-downloading-and-applying-the-patch">Step 5: Downloading
+and Applying the Patch</h2>
+<p>Once Firefox receives the XML manifest from Balrog, Balrog's job is
+done. The browser takes over to complete the update:</p>
+<ol type="1">
+<li><strong>Prioritizing the Differential Patch:</strong> Firefox reads
+the XML and always prioritizes the <code>partial</code> patch to save
+bandwidth.</li>
+<li><strong>Downloading:</strong> Firefox downloads the differential MAR
+from the CDN URL provided in the XML.</li>
+<li><strong>Verification:</strong> Firefox verifies the downloaded
+file's size and SHA-512 hash against the values provided by Balrog. It
+also verifies the embedded cryptographic signature inside the MAR file
+to ensure it was signed by Mozilla.</li>
+<li><strong>Patching:</strong> When the browser restarts, a standalone
+executable (the <code>updater</code> binary) extracts the MAR file. It
+reads the internal manifest instructions, takes the binary diff files,
+and merges them with the existing Firefox installation files to create
+the new version's binaries.</li>
+<li><strong>Fallback Mechanism:</strong> If the <code>updater</code>
+detects that a local file was modified or corrupted, the differential
+patch will fail checksum verification. Firefox will abort the partial
+update, automatically fall back to the <code>complete</code> MAR URL
+provided in Balrog's original XML manifest, download the full browser
+archive, and overwrite the installation cleanly.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-balrog-delivers-differential-mar-updates-to-firefox';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

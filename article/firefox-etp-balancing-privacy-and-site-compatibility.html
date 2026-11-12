@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefox ETP: Balancing Privacy and Site Compatibility - firefox</title>
+    <meta name="description" content="This article examines how the Firefox Web Browser uses Enhanced Tracking Protection (ETP) in Standard mode to balance robust user privacy with reliable website compatibility. It covers the core mechanisms Firefox employs—such as Total Cookie Protection, s">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/firefox-etp-balancing-privacy-and-site-compatibility">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Firefox ETP: Balancing Privacy and Site Compatibility - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/firefox-etp-balancing-privacy-and-site-compatibility" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article examines how the Firefox Web Browser uses Enhanced Tracking Protection (ETP) in Standard mode to balance robust user privacy with reliable website compatibility. It covers the core mechanisms Firefox employs—such as Total Cookie Protection, s" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="firefox-etp-balancing-privacy-and-site-compatibility">Firefox
+ETP: Balancing Privacy and Site Compatibility</h1>
+<p>This article examines how the Firefox Web Browser uses Enhanced
+Tracking Protection (ETP) in Standard mode to balance robust user
+privacy with reliable website compatibility. It covers the core
+mechanisms Firefox employs—such as Total Cookie Protection, selective
+tracker blocking, and dynamic exceptions—to stop invasive data
+collection while ensuring that everyday web features like logins,
+embedded media, and payment gateways continue to work seamlessly.</p>
+<h2 id="total-cookie-protection">Total Cookie Protection</h2>
+<p>The cornerstone of Firefox’s Standard mode is Total Cookie
+Protection. Historically, browsers had two choices regarding third-party
+cookies: allow them (which compromises privacy) or block them entirely
+(which breaks websites).</p>
+<p>Firefox solves this dilemma by creating a separate "cookie jar" for
+every website you visit. Instead of blocking third-party cookies
+outright, Firefox confines them to the specific site where they were
+created.</p>
+<ul>
+<li><strong>Privacy Benefit:</strong> Third-party trackers cannot link
+your browsing behavior across different websites because they cannot
+access cookies outside of the specific site's jar.</li>
+<li><strong>Compatibility Benefit:</strong> Websites that rely on
+third-party cookies for essential functions—such as keeping you logged
+in, remembering site preferences, or hosting embedded videos—continue to
+function normally because the cookies themselves are not destroyed, only
+isolated.</li>
+</ul>
+<h2 id="selective-tracker-blocking">Selective Tracker Blocking</h2>
+<p>Aggressive ad and tracker blockers often break websites by preventing
+essential page scripts from loading. To prevent this in Standard mode,
+Firefox selectively blocks only the most invasive and non-essential
+tracking mechanisms during normal browsing sessions.</p>
+<p>In Standard mode, Firefox automatically blocks:</p>
+<ul>
+<li><strong>Social Media Trackers:</strong> Prevents social networks
+from tracking your activity via embedded "Like" or "Share" buttons on
+other websites.</li>
+<li><strong>Cryptominers:</strong> Stops malicious scripts from secretly
+using your computer's processor to mine cryptocurrency.</li>
+<li><strong>Known Fingerprinters:</strong> Blocks scripts that attempt
+to identify you by collecting a unique profile of your hardware,
+operating system, and browser settings.</li>
+</ul>
+<p>To maintain site compatibility, Firefox’s Standard mode intentionally
+avoids blocking general "Tracking Content" (scripts hidden inside ads,
+videos, and other page elements) during regular browsing, as doing so
+frequently breaks page layouts. Instead, Standard mode only blocks this
+specific tracking content when you open a Private Window.</p>
+<h2 id="smart-exceptions-for-essential-functionality">Smart Exceptions
+for Essential Functionality</h2>
+<p>Modern websites are deeply interconnected, often requiring legitimate
+cross-site communication for Single Sign-On (SSO) services, payment
+processors, and commenting systems. If ETP isolated every single
+cross-site request without exception, you would not be able to log into
+a third-party site using your Google, Apple, or Facebook account.</p>
+<p>Firefox maintains compatibility in these scenarios through two
+methods:</p>
+<ol type="1">
+<li><strong>The Storage Access API:</strong> Firefox allows embedded
+third-party content to request access to its unpartitioned cookies,
+provided the user explicitly interacts with the embedded feature (such
+as clicking a "Log in with" button).</li>
+<li><strong>Heuristic Exceptions:</strong> Firefox automatically detects
+common authentication flows and grants temporary, tightly scoped
+exceptions to Total Cookie Protection. Once the login or payment process
+is verified, the strict isolation boundaries remain in place for
+everything else on the page.</li>
+</ol>
+<h2 id="relying-on-the-disconnect-list">Relying on the Disconnect
+List</h2>
+<p>Rather than guessing which scripts are harmful, Firefox relies on a
+curated list of known trackers provided by Disconnect. By using a
+thoroughly vetted, industry-standard list rather than aggressive,
+automated heuristics in Standard mode, Firefox minimizes "false
+positives"—situations where a browser mistakenly blocks a benign script
+required for a website's shopping cart, video player, or navigation menu
+to function.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/firefox-etp-balancing-privacy-and-site-compatibility';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

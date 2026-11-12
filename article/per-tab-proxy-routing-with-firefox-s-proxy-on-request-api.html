@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Per-Tab Proxy Routing with Firefox&#39;s proxy.onRequest API - firefox</title>
+    <meta name="description" content="This article explores the fundamental architectural differences between Firefox and Chromium regarding network proxy management. Specifically, it examines how Firefox’s browser.proxy.onRequest API intercepts network requests dynamically to enable granular">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/per-tab-proxy-routing-with-firefox-s-proxy-on-request-api">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Per-Tab Proxy Routing with Firefox&#39;s proxy.onRequest API - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/per-tab-proxy-routing-with-firefox-s-proxy-on-request-api" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores the fundamental architectural differences between Firefox and Chromium regarding network proxy management. Specifically, it examines how Firefox’s browser.proxy.onRequest API intercepts network requests dynamically to enable granular" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="per-tab-proxy-routing-with-firefoxs-proxyonrequest-api">Per-Tab
+Proxy Routing with Firefox's proxy.onRequest API</h1>
+<p>This article explores the fundamental architectural differences
+between Firefox and Chromium regarding network proxy management.
+Specifically, it examines how Firefox’s
+<code>browser.proxy.onRequest</code> API intercepts network requests
+dynamically to enable granular, per-tab, and per-container proxy
+routing, contrasting this with Chromium's more restrictive, profile-wide
+global proxy system.</p>
+<h3 id="the-limitation-of-chromiums-global-proxy-setting">The Limitation
+of Chromium's Global Proxy Setting</h3>
+<p>Chromium-based browsers manage proxies using the
+<code>chrome.proxy</code> API. This system relies on applying a fixed
+configuration or a Proxy Auto-Configuration (PAC) script globally to the
+active browser profile.</p>
+<p>When a network request occurs in Chromium, the underlying system
+evaluates the global proxy rules. Even if an extension uses a dynamic
+PAC script to route traffic, that script is sandboxed and only receives
+two pieces of information: the target <code>url</code> and the
+<code>host</code>. The PAC script is completely blind to the browser's
+user interface context. It does not know which tab, window, or extension
+triggered the request. Consequently, routing Tab A through one proxy and
+Tab B through another—especially when both tabs are visiting the exact
+same domain—is impossible in Chromium without launching entirely
+separate browser profiles.</p>
+<h3 id="firefoxs-event-driven-approach">Firefox's Event-Driven
+Approach</h3>
+<p>Firefox solves this limitation by abandoning the static, state-based
+proxy model in favor of an event-driven architecture. Through the
+<code>browser.proxy.onRequest</code> API, Firefox allows extensions to
+register an event listener that intercepts every single network request
+right before the browser establishes a connection.</p>
+<p>Instead of telling the browser how to behave globally in advance, a
+Firefox extension acts as a real-time traffic controller. For every
+outgoing request, Firefox pauses, hands the request details to the
+extension, and waits for the extension to return a
+<code>ProxyInfo</code> object. This object instructs Firefox on how to
+route that single, specific request—whether through a SOCKS proxy, an
+HTTP proxy, or a direct connection.</p>
+<h3 id="the-power-of-the-details-object">The Power of the
+<code>details</code> Object</h3>
+<p>The reason Firefox can route traffic on a per-tab or per-container
+basis comes down to the rich metadata passed into the
+<code>browser.proxy.onRequest</code> listener. When a request is
+intercepted, Firefox provides the extension with a <code>details</code>
+object. Unlike Chromium's PAC scripts, this object contains
+comprehensive browser context, including:</p>
+<ul>
+<li><strong><code>tabId</code></strong>: The unique integer identifying
+the specific browser tab that initiated the request.</li>
+<li><strong><code>cookieStoreId</code></strong>: The string identifier
+for the Contextual Identity (Firefox Container) where the request
+originated.</li>
+<li><strong><code>url</code></strong>: The destination URL of the
+request.</li>
+<li><strong><code>documentUrl</code></strong>: The URL of the document
+in which the resource will be loaded.</li>
+</ul>
+<h3 id="how-per-tab-and-per-container-routing-works-in-practice">How
+Per-Tab and Per-Container Routing Works in Practice</h3>
+<p>Because the <code>onRequest</code> listener runs inside the
+extension's background script with full access to the
+<code>details</code> object, developers can write straightforward
+conditional logic to isolate and route network traffic dynamically.</p>
+<p><strong>Per-Tab Routing:</strong> A user wants Tab 1 to use a US
+proxy and Tab 2 to use a UK proxy, both accessing the same website. The
+extension records the <code>tabId</code> of both tabs. When Tab 1 makes
+a network request, <code>browser.proxy.onRequest</code> fires. The
+extension reads <code>details.tabId</code>, sees it matches Tab 1, and
+returns the configuration for the US proxy. Milliseconds later, Tab 2
+makes a request to the same URL. The listener fires again, identifies
+the <code>details.tabId</code> as Tab 2, and returns the UK proxy
+configuration.</p>
+<p><strong>Per-Container Routing:</strong> Firefox Multi-Account
+Containers separate browsing sessions by assigning a unique
+<code>cookieStoreId</code> to different tabs (e.g.,
+<code>firefox-container-1</code> for Work,
+<code>firefox-container-2</code> for Personal). A proxy extension can
+map specific proxy servers to these IDs. When
+<code>browser.proxy.onRequest</code> intercepts a network call, it
+checks the <code>details.cookieStoreId</code>. If the request comes from
+the Work container, the extension routes it through a corporate proxy.
+If it comes from the Personal container, it routes it through a direct
+connection.</p>
+<p>By evaluating proxy rules per-request rather than per-profile, and by
+exposing internal browser metadata like <code>tabId</code> and
+<code>cookieStoreId</code> to the network layer, Firefox's
+<code>browser.proxy.onRequest</code> API achieves a level of routing
+granularity that Chromium's architecture fundamentally cannot
+support.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/per-tab-proxy-routing-with-firefox-s-proxy-on-request-api';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

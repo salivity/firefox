@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Spell Checking in the Firefox Browser - firefox</title>
+    <meta name="description" content="This article explains how the Mozilla Firefox web browser supports simultaneous multilingual spell checking within text areas. It covers the underlying mechanics of how the browser validates text against multiple active dictionaries at once, how it genera">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/multilingual-spell-checking-in-the-firefox-browser">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Multilingual Spell Checking in the Firefox Browser - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/multilingual-spell-checking-in-the-firefox-browser" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains how the Mozilla Firefox web browser supports simultaneous multilingual spell checking within text areas. It covers the underlying mechanics of how the browser validates text against multiple active dictionaries at once, how it genera" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="multilingual-spell-checking-in-the-firefox-browser">Multilingual
+Spell Checking in the Firefox Browser</h1>
+<p>This article explains how the Mozilla Firefox web browser supports
+simultaneous multilingual spell checking within text areas. It covers
+the underlying mechanics of how the browser validates text against
+multiple active dictionaries at once, how it generates correction
+suggestions, and the exact steps required to install and enable multiple
+languages for seamless multilingual typing.</p>
+<h2 id="how-simultaneous-checking-works">How Simultaneous Checking
+Works</h2>
+<p>Firefox uses an open-source spell-checking engine called Hunspell.
+Historically, this implementation only allowed users to check spelling
+against one dictionary at a time. Starting with Firefox version 100,
+Mozilla updated the browser to hold multiple dictionary files in memory
+simultaneously.</p>
+<p>When you type in a text area with multiple languages enabled, Firefox
+processes spell checking using an "OR" logic gate:</p>
+<ol type="1">
+<li><strong>Tokenization:</strong> As you type, Firefox breaks your text
+down into individual words.</li>
+<li><strong>Sequential Validation:</strong> The browser checks each word
+against the first active dictionary. If the word is recognized, Firefox
+marks it as correct and moves to the next word.</li>
+<li><strong>Secondary Validation:</strong> If the word is not found in
+the first dictionary, Firefox immediately checks it against the second
+enabled dictionary (and any subsequent enabled dictionaries).</li>
+<li><strong>Error Flagging:</strong> A word is only underlined in red as
+misspelled if it fails validation across <strong>all</strong> currently
+enabled dictionaries.</li>
+</ol>
+<h2 id="aggregated-spelling-suggestions">Aggregated Spelling
+Suggestions</h2>
+<p>When a word fails validation in all active dictionaries,
+right-clicking the misspelled word triggers the suggestion engine.
+Firefox queries all enabled dictionaries simultaneously to find the
+closest phonetic and typographical matches. The context menu then
+displays a combined list of suggested corrections from all active
+languages, allowing you to select the correct word regardless of which
+language you were intending to use.</p>
+<h2 id="how-to-enable-multiple-dictionaries">How to Enable Multiple
+Dictionaries</h2>
+<p>To use simultaneous spell checking, you must install specific
+language dictionaries, which are separate from the Firefox user
+interface "Language Packs."</p>
+<ol type="1">
+<li><strong>Locate a Text Area:</strong> Click inside any multi-line
+text box on a webpage.</li>
+<li><strong>Open the Context Menu:</strong> Right-click inside the text
+box. (Ensure that <strong>Check Spelling</strong> is checked).</li>
+<li><strong>Add Dictionaries:</strong> Hover over the
+<strong>Languages</strong> menu and click <strong>Add
+Dictionaries...</strong> This will open the Firefox Add-ons page for
+dictionaries and language packs.</li>
+<li><strong>Install Languages:</strong> Find the languages you need and
+click the <strong>Add to Firefox</strong> button in the "Dictionary"
+column, not the "Language Pack" column.</li>
+<li><strong>Activate Multiple Languages:</strong> Return to your text
+area, right-click, and hover over <strong>Languages</strong>. You will
+see your installed dictionaries listed with checkboxes next to them.
+Click to place a checkmark next to every language you want Firefox to
+check simultaneously.</li>
+</ol>
+<p>Once multiple checkboxes are selected, Firefox will immediately
+re-evaluate the text in the box and remove red underlines from words
+that are valid in any of your newly activated languages. Your selections
+are saved automatically and will apply to all text areas across the
+browser until you manually uncheck them.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/multilingual-spell-checking-in-the-firefox-browser';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

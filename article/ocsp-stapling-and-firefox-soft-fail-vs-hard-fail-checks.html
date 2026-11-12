@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCSP Stapling and Firefox Soft-Fail vs. Hard-Fail Checks - firefox</title>
+    <meta name="description" content="This article provides a direct overview of Online Certificate Status Protocol (OCSP) stapling and how the Firefox web browser manages certificate revocation checks. It covers the mechanics of OCSP stapling, why it was created to improve upon traditional c">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/ocsp-stapling-and-firefox-soft-fail-vs-hard-fail-checks">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="OCSP Stapling and Firefox Soft-Fail vs. Hard-Fail Checks - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/ocsp-stapling-and-firefox-soft-fail-vs-hard-fail-checks" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a direct overview of Online Certificate Status Protocol (OCSP) stapling and how the Firefox web browser manages certificate revocation checks. It covers the mechanics of OCSP stapling, why it was created to improve upon traditional c" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="ocsp-stapling-and-firefox-soft-fail-vs-hard-fail-checks">OCSP
+Stapling and Firefox Soft-Fail vs. Hard-Fail Checks</h1>
+<p>This article provides a direct overview of Online Certificate Status
+Protocol (OCSP) stapling and how the Firefox web browser manages
+certificate revocation checks. It covers the mechanics of OCSP stapling,
+why it was created to improve upon traditional certificate verification
+methods, and the critical operational differences between soft-fail and
+hard-fail security policies. Finally, it details how Firefox implements
+these checks by default and how users can configure the browser to
+enforce stricter security standards.</p>
+<h2 id="what-is-ocsp-stapling">What is OCSP Stapling?</h2>
+<p>When you visit a secure website (HTTPS), your browser checks the
+website's SSL/TLS certificate to ensure it is valid and has not been
+revoked by the issuing Certificate Authority (CA). Historically, this
+was done using the Online Certificate Status Protocol (OCSP). In a
+standard OCSP check, your browser contacts the CA’s server directly to
+ask if the website's certificate is still trustworthy.</p>
+<p>Standard OCSP introduces two major problems:</p>
+<ul>
+<li><strong>Performance Latency:</strong> The browser must pause the
+connection to the website until the CA responds, slowing down page load
+times.</li>
+<li><strong>Privacy Concerns:</strong> Because the browser contacts the
+CA directly, the CA knows which websites the user is visiting and
+when.</li>
+</ul>
+<p>OCSP stapling solves both issues. Instead of the browser contacting
+the CA, the website's own server regularly queries the CA and obtains a
+digitally signed, time-stamped OCSP response. When a user connects to
+the website, the server "staples" this pre-fetched proof of validity
+directly to the TLS handshake. The browser gets the revocation status
+immediately without contacting a third party, preserving privacy and
+speeding up the connection.</p>
+<h2 id="soft-fail-vs-hard-fail-explained">Soft-Fail vs. Hard-Fail
+Explained</h2>
+<p>When a web server does not use OCSP stapling, the browser must fall
+back to a traditional OCSP check. However, OCSP servers occasionally go
+offline, experience high traffic, or get blocked by firewalls. When a
+browser requests a certificate's status and receives no response, it
+must make a choice: soft-fail or hard-fail.</p>
+<h3 id="soft-fail">Soft-Fail</h3>
+<p>In a soft-fail scenario, if the OCSP server fails to respond within a
+specific timeframe, the browser assumes the certificate is still valid
+and allows the connection to proceed.</p>
+<ul>
+<li><strong>Pros:</strong> Ensures a smooth user experience. Websites
+will not break simply because a CA's server is experiencing
+downtime.</li>
+<li><strong>Cons:</strong> Creates a major security loophole. An
+attacker who has stolen a revoked certificate can intercept the
+connection and intentionally block the OCSP request, forcing the browser
+to soft-fail and accept the compromised certificate.</li>
+</ul>
+<h3 id="hard-fail">Hard-Fail</h3>
+<p>In a hard-fail scenario, if the browser cannot reach the OCSP server
+to verify the certificate's status, it immediately terminates the
+connection and displays a security error to the user.</p>
+<ul>
+<li><strong>Pros:</strong> Guarantees maximum security. A revoked
+certificate cannot be used via a manipulation of the network.</li>
+<li><strong>Cons:</strong> Reduces reliability. If a CA's OCSP
+infrastructure goes down, users are locked out of completely legitimate,
+safe websites.</li>
+</ul>
+<h2 id="how-firefox-handles-certificate-checks">How Firefox Handles
+Certificate Checks</h2>
+<p>Mozilla Firefox actively uses both OCSP and OCSP stapling, along with
+its own internal revocation system called CRLite, to verify
+certificates. How it handles a failed check depends on the certificate
+type and the user's browser settings.</p>
+<h3 id="default-behavior-soft-fail">Default Behavior (Soft-Fail)</h3>
+<p>By default, Firefox uses a <strong>soft-fail</strong> policy for
+standard OCSP checks. If you visit a website that does not use OCSP
+stapling, Firefox will reach out to the CA. If that request times out or
+fails, Firefox will allow you to visit the site anyway. Mozilla made
+this the default because CA servers are historically unreliable, and
+enforcing a strict hard-fail policy by default would result in too many
+false-positive error pages for everyday users.</p>
+<h3 id="the-exception-ocsp-must-staple-hard-fail">The Exception: OCSP
+Must-Staple (Hard-Fail)</h3>
+<p>To bridge the gap between reliability and security, the "OCSP
+Must-Staple" extension was introduced. Website owners can request that
+their CA include this flag in their SSL/TLS certificate.</p>
+<p>If a certificate contains the Must-Staple extension, it tells Firefox
+that the web server <em>must</em> provide a stapled OCSP response during
+the handshake. If Firefox connects to a site with a Must-Staple
+certificate and the stapled response is missing, Firefox will
+<strong>hard-fail</strong> and block the connection. This stops
+attackers from stripping out the stapled response and forcing a
+soft-fail.</p>
+<h3 id="how-to-force-hard-fail-in-firefox">How to Force Hard-Fail in
+Firefox</h3>
+<p>Users who prioritize strict security over convenience can manually
+configure Firefox to use a hard-fail policy for all OCSP checks,
+regardless of whether the site uses Must-Staple.</p>
+<p>To enable hard-fail in Firefox:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press Enter.</li>
+<li>Click "Accept the Risk and Continue."</li>
+<li>In the search bar, type <code>security.OCSP.require</code>.</li>
+<li>Double-click the preference to change its value from
+<code>false</code> to <code>true</code>.</li>
+</ol>
+<p>With this setting enabled, if Firefox cannot definitively prove a
+certificate is unrevoked—either through a stapled response or a live
+OCSP query—it will hard-fail and block access to the website.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/ocsp-stapling-and-firefox-soft-fail-vs-hard-fail-checks';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

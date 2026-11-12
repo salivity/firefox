@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Firefox&#39;s Narrate Feature Uses Speech Synthesis - firefox</title>
+    <meta name="description" content="This article explains the technical process behind the Narrate feature in the Mozilla Firefox Reader View. By combining content extraction algorithms with the Web Speech API, Firefox translates written web content into spoken audio. The browser relies on">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/how-firefox-s-narrate-feature-uses-speech-synthesis">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Firefox&#39;s Narrate Feature Uses Speech Synthesis - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/how-firefox-s-narrate-feature-uses-speech-synthesis" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explains the technical process behind the Narrate feature in the Mozilla Firefox Reader View. By combining content extraction algorithms with the Web Speech API, Firefox translates written web content into spoken audio. The browser relies on" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="how-firefoxs-narrate-feature-uses-speech-synthesis">How
+Firefox's Narrate Feature Uses Speech Synthesis</h1>
+<p>This article explains the technical process behind the Narrate
+feature in the Mozilla Firefox Reader View. By combining content
+extraction algorithms with the Web Speech API, Firefox translates
+written web content into spoken audio. The browser relies on the user's
+underlying operating system to provide voice synthesis, resulting in a
+seamless, accessible reading experience that processes text locally and
+reads articles aloud paragraph by paragraph.</p>
+<h3 id="preparing-the-text-with-reader-view">Preparing the Text with
+Reader View</h3>
+<p>Before speech synthesis can occur, Firefox must isolate the main text
+of a webpage. When a user activates Reader View, Firefox uses a
+JavaScript library called Readability to strip away advertisements,
+navigation bars, pop-ups, and background scripts. This leaves a clean
+Document Object Model (DOM) containing only the article's title,
+headings, and body paragraphs. This extraction step ensures the speech
+synthesizer only reads the actual article and ignores irrelevant webpage
+elements.</p>
+<h3 id="utilizing-the-web-speech-api">Utilizing the Web Speech API</h3>
+<p>The core technology driving the Narrate feature is the Web Speech
+API, specifically the <code>SpeechSynthesis</code> interface. This is a
+standard web controller built directly into the Firefox browser. When a
+user clicks the "Listen" button inside Reader View, Firefox's internal
+scripts take the cleaned text and pass it to the browser's
+<code>window.speechSynthesis</code> object, which manages the playback
+queue.</p>
+<h3 id="chunking-the-content-into-utterances">Chunking the Content into
+Utterances</h3>
+<p>Rather than feeding the entire article into the speech engine as one
+massive block of text, Firefox breaks the article down into smaller
+segments, typically by paragraphs and headings. For each segment, the
+browser creates a <code>SpeechSynthesisUtterance</code> object. This
+object acts as a data packet containing the specific string of text to
+be read, alongside user-defined parameters such as the selected voice
+and the playback speed.</p>
+<h3 id="connecting-to-the-operating-system">Connecting to the Operating
+System</h3>
+<p>Firefox does not package its own text-to-speech (TTS) voices within
+the browser installation. Instead, the Web Speech API acts as a bridge
+to the native TTS engines already installed on the user's device.</p>
+<ul>
+<li><strong>Windows:</strong> Firefox communicates with the Microsoft
+Speech API (SAPI) and Windows OneCore voices.</li>
+<li><strong>macOS:</strong> Firefox utilizes the native macOS Speech
+Synthesis framework.</li>
+<li><strong>Linux:</strong> Firefox routes requests through the system's
+Speech Dispatcher.</li>
+</ul>
+<p>When the Narrate feature is active, Firefox hands the
+<code>SpeechSynthesisUtterance</code> over to the operating system. The
+OS processes the text, generates the synthetic voice audio locally, and
+outputs it through the device's speakers.</p>
+<h3 id="synchronizing-audio-and-visuals">Synchronizing Audio and
+Visuals</h3>
+<p>As the operating system synthesizes the text into speech, it fires
+status events back to the Firefox browser. Firefox listens for these
+<code>onstart</code>, <code>onboundary</code>, and <code>onend</code>
+events to synchronize the audio with the visual interface. This allows
+the browser to apply a visual highlight to the specific paragraph
+currently being read. Once the OS signals that an utterance has
+finished, Firefox removes the highlight, scrolls the page if necessary,
+and triggers the next utterance in the queue. Because the text is
+processed in chunks, users can pause, skip paragraphs, or adjust the
+reading speed in real time without crashing the audio stream.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/how-firefox-s-narrate-feature-uses-speech-synthesis';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

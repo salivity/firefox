@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Do Not Track Failed Despite Early Firefox Support - firefox</title>
+    <meta name="description" content="The Do Not Track (DNT) HTTP header, first implemented by the Mozilla Firefox web browser in 2011, was designed to give internet users a simple way to opt out of third-party online tracking. Despite rapid adoption by other major web browsers and strong adv">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-do-not-track-failed-despite-early-firefox-support">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Do Not Track Failed Despite Early Firefox Support - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-do-not-track-failed-despite-early-firefox-support" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="The Do Not Track (DNT) HTTP header, first implemented by the Mozilla Firefox web browser in 2011, was designed to give internet users a simple way to opt out of third-party online tracking. Despite rapid adoption by other major web browsers and strong adv" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-do-not-track-failed-despite-early-firefox-support">Why Do
+Not Track Failed Despite Early Firefox Support</h1>
+<p>The Do Not Track (DNT) HTTP header, first implemented by the Mozilla
+Firefox web browser in 2011, was designed to give internet users a
+simple way to opt out of third-party online tracking. Despite rapid
+adoption by other major web browsers and strong advocacy from privacy
+groups, the initiative ultimately failed to achieve industry compliance.
+This failure stemmed from the lack of legal enforcement, fierce
+resistance from the online advertising industry, a controversial
+decision by Microsoft to enable the setting by default, and the
+inability of standards organizations to agree on what actually
+constituted "tracking."</p>
+<h2 id="a-voluntary-signal-without-legal-teeth">A Voluntary Signal
+Without Legal Teeth</h2>
+<p>The primary reason DNT failed is that it was entirely voluntary. When
+a user enabled DNT in Firefox, the browser simply sent a line of text in
+the HTTP header (<code>DNT: 1</code>) to the websites they visited,
+politely asking them not to track the user. However, there were no laws
+in the United States or Europe at the time that required websites or ad
+networks to honor this request. Without regulatory penalties for
+ignoring the signal, companies had no compelling legal reason to
+comply.</p>
+<h2 id="direct-conflict-with-the-ad-tech-business-model">Direct Conflict
+with the Ad-Tech Business Model</h2>
+<p>Compliance with DNT directly threatened the primary revenue stream of
+the modern internet: targeted advertising. Ad networks, data brokers,
+and publishers rely on tracking user behavior across the web to build
+profiles and serve high-value, personalized ads. Honoring the DNT header
+meant willfully blinding themselves to valuable user data. Consequently,
+major platforms like Google, Facebook, and the vast majority of ad-tech
+companies simply chose to ignore the signal to protect their bottom
+lines.</p>
+<h2 id="the-internet-explorer-10-controversy">The Internet Explorer 10
+Controversy</h2>
+<p>The fatal blow to DNT’s credibility occurred in 2012 when Microsoft
+announced that its upcoming browser, Internet Explorer 10 (IE10), would
+have Do Not Track enabled by default. Prior to this, the tenuous
+agreement between privacy advocates and the advertising industry was
+that DNT must reflect a deliberate choice made by the user.</p>
+<p>The Digital Advertising Alliance (DAA), representing the largest ad
+networks, argued that an "on-by-default" setting did not represent
+genuine user intent, as most users never change their default browser
+settings. The advertising industry used Microsoft's decision as
+justification to officially abandon DNT compliance altogether, refusing
+to honor the signal from IE10 and eventually ignoring it from all other
+browsers, including Firefox, where users had actively opted in.</p>
+<h2 id="gridlock-at-the-w3c">Gridlock at the W3C</h2>
+<p>To become an effective web standard, DNT needed a clear set of rules
+defined by the World Wide Web Consortium (W3C). The W3C formed the
+Tracking Protection Working Group, bringing together browser vendors,
+privacy advocates, and advertising executives.</p>
+<p>For years, the group was locked in a stalemate. The factions could
+not agree on fundamental definitions, such as the difference between
+necessary data collection (like security and basic analytics) and
+invasive tracking. They also clashed over whether first-party websites
+should be restricted from sharing data with third parties. Unable to
+reach a consensus, the W3C officially disbanded the working group in
+January 2019, effectively declaring the DNT standard dead.</p>
+<h2 id="the-shift-from-asking-to-blocking">The Shift from Asking to
+Blocking</h2>
+<p>Recognizing that the advertising industry would never voluntarily
+comply with DNT, Mozilla and other browser makers changed their
+strategy. Instead of politely asking trackers to respect user privacy
+via the DNT header, browsers began actively blocking trackers by
+default. Firefox introduced Enhanced Tracking Protection, and Apple
+introduced Intelligent Tracking Prevention in Safari. Furthermore, the
+failure of DNT paved the way for Global Privacy Control (GPC), a newer
+browser signal that, unlike DNT, is backed by modern privacy laws such
+as the California Consumer Privacy Act (CCPA), making compliance
+mandatory rather than optional.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-do-not-track-failed-despite-early-firefox-support';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

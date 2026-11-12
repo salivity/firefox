@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Was Mozilla&#39;s Persona Authentication System? - firefox</title>
+    <meta name="description" content="This article explores Mozilla Persona, originally known as BrowserID, a decentralized and privacy-focused web authentication system tested in the Firefox browser. It covers the core purpose of the technology, how the underlying cryptographic protocol func">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/what-was-mozilla-s-persona-authentication-system">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Was Mozilla&#39;s Persona Authentication System? - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/what-was-mozilla-s-persona-authentication-system" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores Mozilla Persona, originally known as BrowserID, a decentralized and privacy-focused web authentication system tested in the Firefox browser. It covers the core purpose of the technology, how the underlying cryptographic protocol func" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="what-was-mozillas-persona-authentication-system">What Was
+Mozilla's Persona Authentication System?</h1>
+<p>This article explores Mozilla Persona, originally known as BrowserID,
+a decentralized and privacy-focused web authentication system tested in
+the Firefox browser. It covers the core purpose of the technology, how
+the underlying cryptographic protocol functioned to protect user data,
+its intended integration into web browsers, and the reasons why Mozilla
+ultimately discontinued the project in 2016.</p>
+<h3 id="the-core-purpose-of-persona">The Core Purpose of Persona</h3>
+<p>Introduced by Mozilla in July 2011 as BrowserID and later rebranded
+as Persona, the system was designed to solve a major flaw of the modern
+web: password fatigue. Websites either forced users to create unique
+accounts with easily forgotten passwords or relied on Single Sign-On
+(SSO) systems provided by tech giants like Google, Facebook, and
+Twitter.</p>
+<p>While third-party SSO systems were convenient, they allowed those
+companies to track every website a user visited. Persona aimed to
+provide the convenience of a single login using an existing email
+address, without allowing any central authority—including Mozilla or the
+user's email provider—to track the user's browsing habits.</p>
+<h3 id="how-the-browserid-protocol-worked">How the BrowserID Protocol
+Worked</h3>
+<p>Persona was built on the open-source BrowserID protocol, which relied
+on public-key cryptography managed directly by the user's web browser,
+such as Firefox. The login process worked in a few distinct steps:</p>
+<ol type="1">
+<li><strong>Key Generation:</strong> The user's browser generated a
+public and private cryptographic key pair. The private key remained
+securely stored within the browser.</li>
+<li><strong>Identity Verification:</strong> The user logged into their
+email provider. The email provider then signed a digital certificate
+tying the user's email address to the browser's public key.</li>
+<li><strong>Website Login:</strong> When logging into a third-party
+website that supported Persona, the browser created a signed "assertion"
+using the private key. This assertion proved the user owned the email
+address.</li>
+<li><strong>Decentralized Validation:</strong> The website verified the
+assertion using the public key provided by the email server.</li>
+</ol>
+<p>Because the browser handled the transaction locally, the email
+provider only knew that the user was setting up a browser key; it never
+knew which websites the user subsequently logged into.</p>
+<h3 id="the-mozilla-fallback-bridge">The Mozilla Fallback Bridge</h3>
+<p>For the BrowserID protocol to be truly decentralized, email providers
+(like Gmail, Yahoo, and Outlook) needed to natively support the
+technology. To jumpstart adoption before email providers joined, Mozilla
+created a centralized fallback service. If a user's email provider did
+not support Persona natively, Mozilla's servers would verify the user's
+email address via a confirmation link and issue the cryptographic
+certificates on the provider's behalf. Mozilla intended for this bridge
+to be temporary.</p>
+<h3 id="why-persona-failed-and-shut-down">Why Persona Failed and Shut
+Down</h3>
+<p>Despite strong advocacy from privacy enthusiasts and deep testing
+within the Firefox ecosystem and Firefox OS, Persona failed to gain
+widespread traction. The downfall of the system was attributed to
+several factors:</p>
+<ul>
+<li><strong>Lack of Email Provider Adoption:</strong> Major email
+providers had no financial incentive to adopt the BrowserID protocol, as
+many of them (like Google and Microsoft) offered their own competing,
+data-gathering login systems.</li>
+<li><strong>Reliance on Mozilla's Servers:</strong> Because email
+providers ignored the protocol, Persona relied heavily on Mozilla's
+fallback servers. This inadvertently turned a supposed decentralized
+system into a centralized one managed by Mozilla.</li>
+<li><strong>Developer Friction:</strong> Website developers favored
+login systems from Facebook or Google because those platforms provided
+rich user profile data and marketing analytics alongside authentication,
+whereas Persona only provided a verified email address.</li>
+</ul>
+<p>Due to low adoption rates, Mozilla announced the end of the project
+in early 2016 to focus resources on other areas of the Firefox browser.
+All Persona services and servers were permanently shut down on November
+30, 2016.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/what-was-mozilla-s-persona-authentication-system';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

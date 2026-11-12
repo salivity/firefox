@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Firefox Disabled Backspace and How to Restore It - firefox</title>
+    <meta name="description" content="In Firefox 86, Mozilla officially disabled the ability to use the Backspace key as a shortcut to navigate to the previous web page. This article explains that the change was made to prevent users from accidentally losing data while filling out online form">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/why-firefox-disabled-backspace-and-how-to-restore-it">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Why Firefox Disabled Backspace and How to Restore It - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/why-firefox-disabled-backspace-and-how-to-restore-it" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In Firefox 86, Mozilla officially disabled the ability to use the Backspace key as a shortcut to navigate to the previous web page. This article explains that the change was made to prevent users from accidentally losing data while filling out online form" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="why-firefox-disabled-backspace-and-how-to-restore-it">Why
+Firefox Disabled Backspace and How to Restore It</h1>
+<p>In Firefox 86, Mozilla officially disabled the ability to use the
+Backspace key as a shortcut to navigate to the previous web page. This
+article explains that the change was made to prevent users from
+accidentally losing data while filling out online forms, and it provides
+a direct, step-by-step guide on how to restore the shortcut by modifying
+the <code>browser.backspace_action</code> preference in Firefox's
+advanced configuration settings.</p>
+<h3 id="why-firefox-disabled-the-backspace-shortcut">Why Firefox
+Disabled the Backspace Shortcut</h3>
+<p>For decades, pressing the Backspace key in web browsers served as a
+convenient shortcut to go back to the previous page. However, this
+feature caused a widespread problem: accidental data loss.</p>
+<p>When users were typing into online forms, text boxes, or web
+applications, they would occasionally click outside the text box by
+mistake. Taking the text box out of focus meant that the next time the
+user pressed the Backspace key to delete a typo, the browser interpreted
+it as a command to leave the page. Consequently, the browser would
+navigate backward, and everything the user had typed was instantly
+erased.</p>
+<p>To solve this, Mozilla aligned Firefox with other major browsers like
+Google Chrome and Microsoft Edge, which had already removed the shortcut
+years prior. Instead of the Backspace key, Firefox now encourages users
+to use the <code>Alt + Left Arrow</code> shortcut (or
+<code>Command + Left Arrow</code> on Mac) to navigate back safely.</p>
+<h3 id="how-browserbackspace_action-restores-the-feature">How
+<code>browser.backspace_action</code> Restores the Feature</h3>
+<p>Mozilla did not completely remove the code for the Backspace
+shortcut; they simply changed its default setting. The behavior of the
+Backspace key is controlled by a hidden preference called
+<code>browser.backspace_action</code> located in Firefox’s configuration
+editor.</p>
+<p>This setting accepts three specific integer values:</p>
+<ul>
+<li><strong>2 (Current Default):</strong> Pressing Backspace does
+nothing.</li>
+<li><strong>1:</strong> Pressing Backspace scrolls up the current page (
+pressing <code>Shift + Backspace</code> scrolls down).</li>
+<li><strong>0 (Legacy Default):</strong> Pressing Backspace navigates
+back to the previous page (pressing <code>Shift + Backspace</code>
+navigates forward).</li>
+</ul>
+<h3 id="steps-to-re-enable-the-backspace-key">Steps to Re-enable the
+Backspace Key</h3>
+<p>You can restore the Backspace navigation shortcut in less than a
+minute by changing the preference value back to <code>0</code>. Follow
+these steps:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press <strong>Enter</strong>.</li>
+<li>A warning page may appear stating "Proceed with Caution." Click the
+<strong>Accept the Risk and Continue</strong> button.</li>
+<li>In the "Search preference name" box at the top of the page, type
+<code>browser.backspace_action</code>.</li>
+<li>Locate <code>browser.backspace_action</code> in the results list.
+You will see its value is currently set to <code>2</code>.</li>
+<li>Double-click on the row (or click the <strong>Edit</strong> pencil
+icon on the far right) to change the value.</li>
+<li>Type <code>0</code> into the text box.</li>
+<li>Press <strong>Enter</strong> or click the blue
+<strong>Checkmark</strong> icon to save the change.</li>
+</ol>
+<p>The change takes effect immediately. You can now close the
+configuration tab and use the Backspace key to navigate back to previous
+web pages just as you did in older versions of Firefox.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/why-firefox-disabled-backspace-and-how-to-restore-it';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

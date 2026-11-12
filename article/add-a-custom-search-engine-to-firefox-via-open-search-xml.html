@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a Custom Search Engine to Firefox via OpenSearch XML - firefox</title>
+    <meta name="description" content="This article provides a step-by-step guide on how to add a custom search engine to the Mozilla Firefox web browser using a website&#39;s OpenSearch XML description file. By leveraging Firefox&#39;s built-in detection for the OpenSearch standard, you can quickly i">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/add-a-custom-search-engine-to-firefox-via-open-search-xml">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Add a Custom Search Engine to Firefox via OpenSearch XML - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/add-a-custom-search-engine-to-firefox-via-open-search-xml" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide on how to add a custom search engine to the Mozilla Firefox web browser using a website&#39;s OpenSearch XML description file. By leveraging Firefox&#39;s built-in detection for the OpenSearch standard, you can quickly i" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="add-a-custom-search-engine-to-firefox-via-opensearch-xml">Add a
+Custom Search Engine to Firefox via OpenSearch XML</h1>
+<p>This article provides a step-by-step guide on how to add a custom
+search engine to the Mozilla Firefox web browser using a website's
+OpenSearch XML description file. By leveraging Firefox's built-in
+detection for the OpenSearch standard, you can quickly integrate
+site-specific search tools directly into your browser, allowing you to
+search your favorite websites straight from the address bar or search
+bar.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before you can add the search engine, the target website must
+properly host an OpenSearch XML description file and link to it within
+the <code>&lt;head&gt;</code> section of its HTML code. The link tag on
+the website must look like this:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">&quot;search&quot;</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;application/opensearchdescription+xml&quot;</span><span class="ot"> title</span><span class="op">=</span><span class="st">&quot;Search Title&quot;</span><span class="ot"> href</span><span class="op">=</span><span class="st">&quot;/opensearch.xml&quot;</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>If the website has this configured correctly, Firefox will
+automatically detect the XML file when you visit the webpage.</p>
+<h2 id="method-1-using-the-address-bar-context-menu">Method 1: Using the
+Address Bar Context Menu</h2>
+<p>The fastest way to add an OpenSearch engine in modern versions of
+Firefox is directly through the address bar.</p>
+<ol type="1">
+<li>Open Firefox and navigate to the webpage that contains the
+OpenSearch XML link.</li>
+<li>Right-click directly inside the address bar (URL bar) at the top of
+the browser.</li>
+<li>In the context menu that appears, look for the option labeled
+<strong>Add "[Website Name]"</strong> near the bottom of the list.</li>
+<li>Left-click this option. The custom search engine is now installed in
+Firefox.</li>
+</ol>
+<h2 id="method-2-using-the-address-bar-drop-down">Method 2: Using the
+Address Bar Drop-Down</h2>
+<p>You can also add the search engine using the one-off search buttons
+located at the bottom of the address bar's drop-down menu.</p>
+<ol type="1">
+<li>Visit the website that hosts the OpenSearch XML file.</li>
+<li>Click once inside the Firefox address bar as if you are going to
+type a new URL.</li>
+<li>Look at the very bottom of the drop-down panel that appears, in the
+"This time, search with:" section.</li>
+<li>Locate the website's icon, which will feature a small green plus (+)
+badge over it.</li>
+<li>Hover over the icon to see the tooltip that says <strong>Add search
+engine</strong>, and click it to install.</li>
+</ol>
+<h2 id="method-3-using-the-dedicated-search-bar">Method 3: Using the
+Dedicated Search Bar</h2>
+<p>If you have enabled the optional, dedicated search bar next to your
+address bar in Firefox, you can use it to add the OpenSearch XML
+file.</p>
+<ol type="1">
+<li>Navigate to the website offering the OpenSearch XML engine.</li>
+<li>Look at the magnifying glass icon inside the dedicated Search Bar.
+It will display a small green plus (+) symbol indicating an OpenSearch
+file was detected.</li>
+<li>Click the magnifying glass icon in the Search Bar.</li>
+<li>Click <strong>Add "[Website Name]"</strong> from the drop-down
+menu.</li>
+</ol>
+<h2 id="managing-your-custom-search-engine">Managing Your Custom Search
+Engine</h2>
+<p>Once you have added the search engine via its OpenSearch XML file,
+you can make it your default search engine or assign it a custom
+shortcut keyword.</p>
+<ol type="1">
+<li>Click the menu button (three horizontal lines) in the top-right
+corner of Firefox and select <strong>Settings</strong>.</li>
+<li>Click on <strong>Search</strong> in the left-hand navigation
+pane.</li>
+<li>Scroll down to the <strong>Search Shortcuts</strong> section to view
+your newly added search engine.</li>
+<li>Double-click the <strong>Keyword</strong> column next to your new
+search engine to assign a shortcut (for example, typing
+<code>@custom</code> in the address bar to trigger that specific search
+engine).</li>
+<li>To make it your primary search tool, scroll back up to the
+<strong>Default Search Engine</strong> section and select your new
+engine from the drop-down menu.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/add-a-custom-search-engine-to-firefox-via-open-search-xml';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

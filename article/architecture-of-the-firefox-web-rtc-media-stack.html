@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture of the Firefox WebRTC Media Stack - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of the WebRTC media stack architecture in the Mozilla Firefox web browser, detailing how it processes real-time, peer-to-peer audio and video. It covers Firefox’s multi-process security model, the media captu">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/architecture-of-the-firefox-web-rtc-media-stack">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Architecture of the Firefox WebRTC Media Stack - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/architecture-of-the-firefox-web-rtc-media-stack" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of the WebRTC media stack architecture in the Mozilla Firefox web browser, detailing how it processes real-time, peer-to-peer audio and video. It covers Firefox’s multi-process security model, the media captu" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="architecture-of-the-firefox-webrtc-media-stack">Architecture of
+the Firefox WebRTC Media Stack</h1>
+<p>This article provides a comprehensive overview of the WebRTC media
+stack architecture in the Mozilla Firefox web browser, detailing how it
+processes real-time, peer-to-peer audio and video. It covers Firefox’s
+multi-process security model, the media capture and routing pipelines,
+the integration of the upstream <code>libwebrtc</code> engine for
+encoding and decoding, and the custom networking and cryptographic
+layers used to securely transport data between peers.</p>
+<h2 id="the-multi-process-model">The Multi-Process Model</h2>
+<p>Firefox isolates the WebRTC stack across multiple processes to
+prevent a single failure or security vulnerability from compromising the
+entire browser.</p>
+<ul>
+<li><strong>Parent Process:</strong> Manages hardware access permissions
+and coordinates high-level inter-process communication (IPC).</li>
+<li><strong>Content Process:</strong> Runs the web page’s JavaScript,
+exposes the WebRTC APIs (like <code>RTCPeerConnection</code>), and
+manages the local media routing.</li>
+<li><strong>Socket Process:</strong> Handles direct network traffic,
+including STUN, TURN, and RTP packets, keeping network bottlenecks away
+from the user interface.</li>
+<li><strong>Gecko Media Plugin (GMP) and RDD Processes:</strong>
+Isolated sandboxes used for running third-party codecs (like Cisco's
+OpenH264) and managing hardware-accelerated decoding via the Remote Data
+Decoder (RDD).</li>
+</ul>
+<h2 id="media-capture-and-the-mediatrackgraph">Media Capture and the
+MediaTrackGraph</h2>
+<p>The media pipeline begins when a web application requests camera and
+microphone access via
+<code>navigator.mediaDevices.getUserMedia()</code>.</p>
+<ol type="1">
+<li><strong>MediaManager:</strong> This component intercepts the API
+call, verifies user permissions through the Parent Process, and
+initializes the hardware drivers.</li>
+<li><strong>Audio Capture (Cubeb):</strong> Firefox uses an internal,
+cross-platform library called <code>Cubeb</code> to interface directly
+with the operating system's native audio APIs (such as WASAPI on
+Windows, CoreAudio on macOS, and PulseAudio/PipeWire on Linux).</li>
+<li><strong>Video Capture:</strong> Video frames are captured using
+OS-specific frameworks and delivered into shared memory buffers to avoid
+expensive data copying.</li>
+<li><strong>MediaTrackGraph (MTG):</strong> Once captured, both audio
+and video streams are fed into the <code>MediaTrackGraph</code>. The MTG
+is a real-time, thread-safe processing engine that synchronizes, mixes,
+and routes media tracks across the browser. It acts as the central
+bridge between local hardware, WebAudio, <code>&lt;video&gt;</code>
+elements, and the WebRTC encoding engine.</li>
+</ol>
+<h2 id="signaling-and-session-management">Signaling and Session
+Management</h2>
+<p>To establish a connection, peers must exchange configuration data
+using the JavaScript Session Establishment Protocol (JSEP) and Session
+Description Protocol (SDP).</p>
+<p>Firefox implements the <code>RTCPeerConnection</code> API using a C++
+bridge (<code>PeerConnectionImpl</code>). For parsing and generating SDP
+offers and answers, Firefox relies on <code>sipcc</code>, a library
+originally developed by Cisco and heavily modified by Mozilla. This
+layer negotiates which codecs, resolutions, and encryption keys the
+peers will use before any media is transmitted.</p>
+<h2 id="media-processing-and-libwebrtc-integration">Media Processing and
+<code>libwebrtc</code> Integration</h2>
+<p>Rather than building the entire real-time media engine from scratch,
+Firefox integrates Google’s open-source <code>libwebrtc</code> library
+for core media processing.</p>
+<p>When the <code>MediaTrackGraph</code> routes raw media to an active
+<code>RTCPeerConnection</code>, the data is handed over to the
+<code>libwebrtc</code> layer. This layer is responsible for:</p>
+<ul>
+<li><strong>Audio Processing:</strong> Applying Acoustic Echo
+Cancellation (AEC),Automatic Gain Control (AGC), and noise
+suppression.</li>
+<li><strong>Encoding and Decoding:</strong> Compressing audio using the
+Opus (or G.711) codec and video using VP8, VP9, or AV1. If H.264 is
+negotiated, Firefox routes the frames via IPC to the sandboxed GMP
+process.</li>
+<li><strong>Packetization and Jitter Management:</strong> Slicing
+encoded frames into Real-time Transport Protocol (RTP) packets for
+transmission, and reassembling incoming packets in a jitter buffer to
+smooth out network irregularities.</li>
+<li><strong>Bandwidth Estimation:</strong> Processing Real-time
+Transport Control Protocol (RTCP) feedback to dynamically adjust video
+bitrates and frame rates based on network congestion.</li>
+</ul>
+<h2 id="networking-security-and-transport">Networking, Security, and
+Transport</h2>
+<p>While Firefox uses <code>libwebrtc</code> for media processing, it
+replaces <code>libwebrtc</code>'s default networking and cryptography
+modules with Mozilla’s own battle-tested components. This happens
+primarily within the dedicated Socket Process.</p>
+<ul>
+<li><strong>nICEr:</strong> To traverse NATs and firewalls, Firefox uses
+an internal C-based library called <code>nICEr</code> to implement
+Interactive Connectivity Establishment (ICE), STUN, and TURN
+protocols.</li>
+<li><strong>NSS (Network Security Services):</strong> WebRTC mandates
+encryption for all media. Firefox uses its native NSS library to perform
+the DTLS (Datagram Transport Layer Security) handshake.</li>
+<li><strong>SRTP:</strong> Once the DTLS handshake is complete, the
+negotiated keys are used to encrypt the media payloads using Secure RTP
+(SRTP) before they are sent over UDP or TCP sockets to the remote
+peer.</li>
+</ul>
+<h2 id="playback-and-rendering">Playback and Rendering</h2>
+<p>When encrypted media packets arrive from a remote peer, the
+architecture executes the pipeline in reverse:</p>
+<ol type="1">
+<li>The <strong>Socket Process</strong> receives the packets via
+<code>nICEr</code>, decrypts the SRTP payload, and forwards the RTP
+packets to the Content Process.</li>
+<li>The <strong><code>libwebrtc</code></strong> engine places the
+packets into a jitter buffer, reconstructs the frames, and decodes them
+(utilizing the RDD or GMP process if hardware acceleration or H.264 is
+used).</li>
+<li>Decoded frames are injected back into the
+<strong><code>MediaTrackGraph</code></strong>.</li>
+<li><strong>Audio</strong> is pushed from the MTG to <code>Cubeb</code>
+for immediate playback through the user's speakers.</li>
+<li><strong>Video</strong> frames are sent from the MTG directly to
+<strong>WebRender</strong> (Firefox's GPU-based compositor), which
+renders the video onto the screen within the designated HTML
+<code>&lt;video&gt;</code> element.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/architecture-of-the-firefox-web-rtc-media-stack';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

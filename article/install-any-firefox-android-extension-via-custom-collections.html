@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Any Firefox Android Extension via Custom Collections - firefox</title>
+    <meta name="description" content="This article provides a complete guide for Android developers and advanced users on how to bypass the default extension limitations in the mobile Firefox web browser. By creating a custom Add-ons Mozilla Org (AMO) collection and unlocking a hidden debug m">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/install-any-firefox-android-extension-via-custom-collections">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Install Any Firefox Android Extension via Custom Collections - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/install-any-firefox-android-extension-via-custom-collections" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a complete guide for Android developers and advanced users on how to bypass the default extension limitations in the mobile Firefox web browser. By creating a custom Add-ons Mozilla Org (AMO) collection and unlocking a hidden debug m" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1
+id="install-any-firefox-android-extension-via-custom-collections">Install
+Any Firefox Android Extension via Custom Collections</h1>
+<p>This article provides a complete guide for Android developers and
+advanced users on how to bypass the default extension limitations in the
+mobile Firefox web browser. By creating a custom Add-ons Mozilla Org
+(AMO) collection and unlocking a hidden debug menu within the Firefox
+Android app, you can sideload and install almost any desktop extension
+directly onto your mobile device. This process involves setting up a
+Mozilla account collection, retrieving your specific user and collection
+IDs, enabling secret settings in the browser, and linking your custom
+repository.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Before starting, ensure you have the following:</p>
+<ul>
+<li>A Mozilla Account.</li>
+<li>Firefox for Android installed (This method works best on Firefox
+Beta or Firefox Nightly, though the secret menu is also accessible on
+recent versions of Stable).</li>
+</ul>
+<h3 id="step-1-create-a-custom-amo-collection">Step 1: Create a Custom
+AMO Collection</h3>
+<p>To tell Firefox which extensions you want to use, you must first
+group them into a custom collection on Mozilla's website.</p>
+<ol type="1">
+<li>Open a web browser and log in to your account on the official
+Mozilla Add-ons website (addons.mozilla.org).</li>
+<li>Click on your profile icon in the top right corner and select
+<strong>View My Collections</strong> under the Tools section.</li>
+<li>Click <strong>Create a Collection</strong>.</li>
+<li>Enter a name for your collection. Note that the <strong>Collection
+Name</strong> (the URL slug at the end of the custom URL field) is what
+you will need later. Avoid using spaces.</li>
+<li>Set the privacy to <strong>Public</strong> or <strong>Accessible to
+only me</strong> (both work) and click <strong>Create
+Collection</strong>.</li>
+<li>Use the search bar provided to find and add the specific extensions
+you wish to install on your mobile browser.</li>
+</ol>
+<h3 id="step-2-locate-your-user-id-and-collection-name">Step 2: Locate
+Your User ID and Collection Name</h3>
+<p>Once your collection is created, look at the URL in your browser's
+address bar. It will follow this format:
+<code>https://addons.mozilla.org/en-US/firefox/collections/12345678/my-collection/</code></p>
+<p>Write down the two pieces of information from your specific URL:</p>
+<ul>
+<li><strong>Collection Owner (User ID):</strong> The long string of
+numbers (e.g., <code>12345678</code>).</li>
+<li><strong>Collection Name:</strong> The text immediately following the
+numbers (e.g., <code>my-collection</code>).</li>
+</ul>
+<h3 id="step-3-unlock-the-secret-settings-in-firefox-for-android">Step
+3: Unlock the Secret Settings in Firefox for Android</h3>
+<p>Next, you need to enable the hidden developer menu inside the mobile
+browser to access the custom collection input fields.</p>
+<ol type="1">
+<li>Open the Firefox browser on your Android device.</li>
+<li>Tap the three-dot menu icon and select
+<strong>Settings</strong>.</li>
+<li>Scroll all the way to the bottom and tap <strong>About
+Firefox</strong> (or About Firefox Beta/Nightly).</li>
+<li>Tap the Firefox logo five times rapidly. A notification will appear
+at the bottom of the screen stating: <strong>Debug menu
+enabled</strong>.</li>
+</ol>
+<h3 id="step-4-apply-the-custom-amo-collection-id">Step 4: Apply the
+Custom AMO Collection ID</h3>
+<p>With the debug menu unlocked, you can now link your custom collection
+to the browser.</p>
+<ol type="1">
+<li>Navigate back one screen to the main <strong>Settings</strong>
+menu.</li>
+<li>Scroll down to the Advanced section and tap on the newly revealed
+<strong>Custom Add-on Collection</strong> option.</li>
+<li>In the first field, enter your numeric <strong>Collection Owner
+(User ID)</strong>.</li>
+<li>In the second field, enter your <strong>Collection Name</strong>
+(this is case-sensitive).</li>
+<li>Tap <strong>OK</strong>. Firefox will automatically close to apply
+the changes.</li>
+</ol>
+<h3 id="step-5-install-your-extensions">Step 5: Install Your
+Extensions</h3>
+<ol type="1">
+<li>Reopen the Firefox app on your Android device.</li>
+<li>Tap the three-dot menu icon and select <strong>Add-ons</strong>,
+then <strong>Add-ons Manager</strong>.</li>
+<li>The list of available extensions will now exclusively mirror the
+custom AMO collection you created.</li>
+<li>Tap the <strong>+</strong> icon next to any extension in your list
+to install it onto your mobile browser.</li>
+</ol></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/install-any-firefox-android-extension-via-custom-collections';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

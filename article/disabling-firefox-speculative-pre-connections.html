@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disabling Firefox Speculative Pre-Connections - firefox</title>
+    <meta name="description" content="This article provides a comprehensive overview of the network.http.speculative-parallel-limit configuration in the Mozilla Firefox web browser. It explains how Firefox uses background pre-connections to speed up browsing and details how setting this speci">
+    <link rel="canonical" href="https://salivity.github.io/firefox/article/disabling-firefox-speculative-pre-connections">
+    <link rel="search" type="application/opensearchdescription+xml" title="firefox" href="/firefox/opensearch.xml">
+    <link rel="icon" href="/firefox/favicon.ico">
+    <link rel="stylesheet" href="/firefox/css/style.css">
+    <link media="print" rel="stylesheet" href="/firefox/css/print.css">
+    <script src="/firefox/js/fuse.min.js"></script>
+    <script src="/firefox/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <script src="/monetize/monetize.js"></script>
+    <script src="/social/social.js"></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Disabling Firefox Speculative Pre-Connections - firefox" />
+    <meta property="og:url" content="https://salivity.github.io/firefox/article/disabling-firefox-speculative-pre-connections" />
+    <meta property="og:image" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/firefox/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive overview of the network.http.speculative-parallel-limit configuration in the Mozilla Firefox web browser. It explains how Firefox uses background pre-connections to speed up browsing and details how setting this speci" />
+    <link rel="manifest" href="/firefox/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/firefox/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>firefox</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="/firefox/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+    <div class="article-layout">
+        <aside id="profile-sidebar" class="profile-column" aria-label="Author Profile"></aside>
+        <div class="article-main-column">
+            <article><h1 id="disabling-firefox-speculative-pre-connections">Disabling Firefox
+Speculative Pre-Connections</h1>
+<p>This article provides a comprehensive overview of the
+<code>network.http.speculative-parallel-limit</code> configuration in
+the Mozilla Firefox web browser. It explains how Firefox uses background
+pre-connections to speed up browsing and details how setting this
+specific preference to zero disables the feature, resulting in improved
+user privacy, enhanced security, and reduced bandwidth usage.</p>
+<h2 id="what-are-speculative-pre-connections">What Are Speculative
+Pre-Connections?</h2>
+<p>By default, Firefox attempts to make your browsing experience faster
+by predicting which links you might click next. When you hover your
+mouse cursor over a link on a webpage, Firefox initiates a background
+connection to that link's server before you actually click it.</p>
+<p>This process, known as a speculative pre-connection, completes the
+initial steps of loading a website—such as the TCP handshake and TLS
+encryption negotiation—in advance. If you decide to click the link, the
+page loads noticeably faster because the connection is already
+established. By default, Firefox allows up to six of these speculative
+connections to occur simultaneously.</p>
+<h2 id="what-setting-the-limit-to-zero-accomplishes">What Setting the
+Limit to Zero Accomplishes</h2>
+<p>When you change the value of
+<code>network.http.speculative-parallel-limit</code> to <code>0</code>
+in Firefox's advanced configuration settings, you completely disable the
+browser's ability to make these background HTTP connections.</p>
+<p>Accomplishing this changes the browser's behavior in three specific
+ways:</p>
+<h3 id="1-enhanced-privacy">1. Enhanced Privacy</h3>
+<p>Every time your browser connects to a web server, it reveals your IP
+address and browser information to that server. With speculative
+connections enabled, websites can log your IP address simply because
+your mouse hovered over a link pointing to them, even if you had no
+intention of visiting the page. Setting the limit to zero ensures that
+Firefox only connects to a server when you explicitly click a link,
+preventing unintended data leakage.</p>
+<h3 id="2-improved-security">2. Improved Security</h3>
+<p>Disabling speculative connections prevents your browser from silently
+communicating with potentially malicious servers. If a webpage contains
+a link to a compromised or harmful domain, hovering over that link will
+no longer trigger an automatic background handshake with that
+server.</p>
+<h3 id="3-reduced-bandwidth-and-resource-usage">3. Reduced Bandwidth and
+Resource Usage</h3>
+<p>While speculative connections are small, they still consume system
+memory, CPU cycles, and data bandwidth. If you are on a metered internet
+connection or using older hardware, setting this value to zero stops
+Firefox from wasting resources on connections to webpages you never
+actually open.</p>
+<h2 id="trade-offs-of-disabling-the-feature">Trade-offs of Disabling the
+Feature</h2>
+<p>The only downside to setting
+<code>network.http.speculative-parallel-limit</code> to zero is a slight
+decrease in perceived browsing speed. Because Firefox will wait until
+you actively click a link to begin the server handshake, webpages may
+take a few extra milliseconds to begin loading. For most users on modern
+internet connections, this delay is barely noticeable.</p>
+<h2 id="how-to-change-the-setting">How to Change the Setting</h2>
+<p>To disable background pre-connections in Firefox, follow these
+steps:</p>
+<ol type="1">
+<li>Open Firefox and type <code>about:config</code> into the address
+bar, then press <strong>Enter</strong>.</li>
+<li>Click the <strong>Accept the Risk and Continue</strong> button if
+prompted.</li>
+<li>Copy and paste <code>network.http.speculative-parallel-limit</code>
+into the search bar at the top of the page.</li>
+<li>Double-click on the preference name, or click the
+<strong>Edit</strong> (pencil) icon on the right side.</li>
+<li>Change the number from <code>6</code> to <code>0</code>.</li>
+<li>Press <strong>Enter</strong> or click the <strong>Save</strong>
+(checkmark) icon to apply the change.</li>
+</ol>
+<p>The setting takes effect immediately, and no browser restart is
+required.</p></article>
+        <div id='disqus_thread'></div>
+        <script>
+
+            var disqus_config = function () {
+                this.page.url =         'https://salivity.github.io/firefox/article/disabling-firefox-speculative-pre-connections';  
+                //this.page.identifier =  PAGE_IDENTIFIER; 
+            };
+            
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://salivity-github-io.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+        </div>
+    </div>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="social-links">
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="https://smvc.dev/contact">Contact</a></li>
+                <li><a href="/firefox/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/firefox/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>
